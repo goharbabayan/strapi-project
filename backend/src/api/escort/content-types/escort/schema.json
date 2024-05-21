@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "escorts",
+  "info": {
+    "singularName": "escort",
+    "pluralName": "escorts",
+    "displayName": "Escort"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Name": {
+      "type": "string"
+    }
+  }
+}
