@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_buttoncategory_button_tests",
+  "info": {
+    "displayName": "Button-test",
+    "icon": "arrowDown"
+  },
+  "options": {},
+  "attributes": {
+    "yes": {
+      "type": "boolean"
+    }
+  }
+}

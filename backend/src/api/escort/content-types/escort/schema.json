@@ -4,7 +4,8 @@
   "info": {
     "singularName": "escort",
     "pluralName": "escorts",
-    "displayName": "Escort"
+    "displayName": "women-profile-page",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
