@@ -1,19 +1,18 @@
-'use client'
 import React, { useState, useEffect } from 'react';
 
-export default function MyComponent() {
+function MyComponent() {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const singleTypeEndpoint = `http://localhost:1337/user-single-type`;
+  // Replace 'your-single-type' with the actual name of your Strapi Single Type
+  const singleTypeEndpoint = `http://localhost:1337/your-single-type`;
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
         const response = await fetch(singleTypeEndpoint);
-        console.log(response, 'responce');
         if (!response.ok) {
           throw new Error(`Error fetching data: ${response.statusText}`);
         }
@@ -37,7 +36,7 @@ export default function MyComponent() {
       {error && <p>Error: {error}</p>}
       {data && (
         <>
-          <h1>{data.id}</h1> {/* Access data based on your Strapi field names */}
+          <h1>{data.attributes.title}</h1> {/* Access data based on your Strapi field names */}
           {/* Display other data fields as needed */}
         </>
       )}
