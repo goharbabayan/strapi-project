@@ -883,6 +883,39 @@ export interface ApiEscortEscort extends Schema.CollectionType {
   };
 }
 
+export interface ApiUserSingleTypeUserSingleType extends Schema.SingleType {
+  collectionName: 'user_single_types';
+  info: {
+    singularName: 'user-single-type';
+    pluralName: 'user-single-types';
+    displayName: 'User Single Type';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Name: Attribute.String;
+    Photo: Attribute.Media;
+    email: Attribute.Email;
+    Phone_Numer: Attribute.Integer;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::user-single-type.user-single-type',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::user-single-type.user-single-type',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -904,6 +937,7 @@ declare module '@strapi/types' {
       'api::banner.banner': ApiBannerBanner;
       'api::banner-single-type.banner-single-type': ApiBannerSingleTypeBannerSingleType;
       'api::escort.escort': ApiEscortEscort;
+      'api::user-single-type.user-single-type': ApiUserSingleTypeUserSingleType;
     }
   }
 }
