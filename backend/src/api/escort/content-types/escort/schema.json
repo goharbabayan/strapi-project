@@ -1,0 +1,19 @@
+{
+  "kind": "collectionType",
+  "collectionName": "escorts",
+  "info": {
+    "singularName": "escort",
+    "pluralName": "escorts",
+    "displayName": "women-profile-page",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Name": {
+      "type": "string"
+    }
+  }
+}
