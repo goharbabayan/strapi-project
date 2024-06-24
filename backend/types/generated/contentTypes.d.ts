@@ -362,6 +362,79 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
+export interface ApiHomePageHomePage extends Schema.SingleType {
+  collectionName: 'home_pages';
+  info: {
+    singularName: 'home-page';
+    pluralName: 'home-pages';
+    displayName: 'Home Page';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String;
+    description: Attribute.Text;
+    slug: Attribute.UID<'api::home-page.home-page', 'title'>;
+    Header: Attribute.Component<'section.header'> & Attribute.Required;
+    Banner: Attribute.Component<'section.banner'>;
+    Slider1: Attribute.DynamicZone<['section.slider']>;
+    FindByType: Attribute.Component<'section.find-by-type'>;
+    ByLocations: Attribute.Component<'section.find-by-location'>;
+    Footer: Attribute.Component<'section.footer'>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::home-page.home-page',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::home-page.home-page',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiMenuItemMenuItem extends Schema.CollectionType {
+  collectionName: 'menu_items';
+  info: {
+    singularName: 'menu-item';
+    pluralName: 'menu-items';
+    displayName: 'Menu item';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    item: Attribute.String &
+      Attribute.Required &
+      Attribute.DefaultTo<'menu item'>;
+    redirection_url: Attribute.String & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::menu-item.menu-item',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::menu-item.menu-item',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -788,134 +861,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
-export interface ApiBannerBanner extends Schema.CollectionType {
-  collectionName: 'banners';
-  info: {
-    singularName: 'banner';
-    pluralName: 'banners';
-    displayName: 'Banner';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    image: Attribute.Media;
-    Button: Attribute.String;
-    BannerButton: Attribute.Component<'buttoncategory.button-test'>;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::banner.banner',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::banner.banner',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiBannerSingleTypeBannerSingleType extends Schema.SingleType {
-  collectionName: 'banner_single_types';
-  info: {
-    singularName: 'banner-single-type';
-    pluralName: 'banner-single-types';
-    displayName: 'Banner Single Type';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    Media: Attribute.Media & Attribute.Required;
-    Title: Attribute.String;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::banner-single-type.banner-single-type',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::banner-single-type.banner-single-type',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiEscortEscort extends Schema.CollectionType {
-  collectionName: 'escorts';
-  info: {
-    singularName: 'escort';
-    pluralName: 'escorts';
-    displayName: 'women-profile-page';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    Name: Attribute.String;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::escort.escort',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::escort.escort',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiUserSingleTypeUserSingleType extends Schema.SingleType {
-  collectionName: 'user_single_types';
-  info: {
-    singularName: 'user-single-type';
-    pluralName: 'user-single-types';
-    displayName: 'User Single Type';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    Name: Attribute.String;
-    Photo: Attribute.Media;
-    email: Attribute.Email;
-    Phone_Numer: Attribute.Integer;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::user-single-type.user-single-type',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::user-single-type.user-single-type',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -926,6 +871,8 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
+      'api::home-page.home-page': ApiHomePageHomePage;
+      'api::menu-item.menu-item': ApiMenuItemMenuItem;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
@@ -934,10 +881,6 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
-      'api::banner.banner': ApiBannerBanner;
-      'api::banner-single-type.banner-single-type': ApiBannerSingleTypeBannerSingleType;
-      'api::escort.escort': ApiEscortEscort;
-      'api::user-single-type.user-single-type': ApiUserSingleTypeUserSingleType;
     }
   }
 }

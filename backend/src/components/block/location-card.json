@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_block_location_cards",
+  "info": {
+    "displayName": "LocationCard",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "badge": {
+      "type": "text"
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

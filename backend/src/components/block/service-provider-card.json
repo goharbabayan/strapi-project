@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_block_service_provider_cards",
+  "info": {
+    "displayName": "EscortCard",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "badge": {
+      "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "name": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "cost": {
+      "type": "string",
+      "required": false
+    }
+  }
+}

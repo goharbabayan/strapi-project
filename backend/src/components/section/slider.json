@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_section_sliders",
+  "info": {
+    "displayName": "Section",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Section title",
+      "required": false
+    },
+    "card": {
+      "type": "component",
+      "repeatable": true,
+      "component": "block.service-provider-card",
+      "required": false,
+      "min": 1
+    },
+    "activateBlackMode": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}
