@@ -6,7 +6,7 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'snlxdashboard.giesystems.com', // Replace with your Strapi domain
-        pathname: '/uploads/**', // Adjust if your image paths differ
+        pathname: '/public/uploads/**', // Adjust if your image paths differ
       },
     ],
   },
