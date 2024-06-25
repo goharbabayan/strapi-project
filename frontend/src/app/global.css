@@ -1,5 +1,12 @@
 :root {
   --swiper-theme-color: #333333 !important;
+  --text-color-main: #000;
+  --text-color-primary: #FFF;
+  --text-color-secondary: #D1D5DB;
+  --background-color-main: #F6F3F3;
+  --background-color-primary: #FFF;
+  --background-color-secondary: #F9F9F9;
+  --background-color-tertiary: #000;
 }
 
 /* Swipper styles start*/
@@ -34,7 +41,7 @@
 .swiper-button-next,
 .swiper-button-prev {
   width: var(--swiper-navigation-size) !important;
-  background-color: #FFF;
+  background-color: var(--background-color-primary);
   opacity: 0.25;
 }
 
@@ -234,7 +241,7 @@ body {
 
 .btn_PRIMARY {
   background-color: #000;
-  color: #FFF;
+  color: var(--text-color-primary);
   font-family: 'Urbanist';
   font-size: 16px;
   font-style: normal;

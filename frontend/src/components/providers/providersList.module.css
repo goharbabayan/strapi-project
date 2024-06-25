@@ -1,9 +1,9 @@
 .mainWrap {
-  background: #FFF;
+  background: var(--background-color-primary);
 }
 
 .mainWrap.greyFone {
-  background: #F8F8F8;
+  background: var(--background-color-main);
 }
 
 .container {
@@ -21,7 +21,7 @@
 
 .title {
   margin: 0;
-  color: #000;
+  color: var(--text-color-main);
   font-family: "Abril Fatface";
   font-size: 44px;
   font-style: normal;

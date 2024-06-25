@@ -21,13 +21,13 @@ const ProvidersList = ( props ) => {
       slidesPerView: 1.2,
     },
     375: {
-      slidesPerView: 1.5,
+      slidesPerView: shouldBeVisibleThreeGrids ? 1.2 : 1.5,
     },
     570: {
-      slidesPerView: 2.5,
+      slidesPerView: shouldBeVisibleThreeGrids ? 1.5 : 2.5,
     },
     650: {
-      slidesPerView: 3.5,
+      slidesPerView: shouldBeVisibleThreeGrids ? 2.5 : 3.5,
     },
     1024: {
       slidesPerView: shouldBeVisibleThreeGrids ? 3 : 4,

@@ -39,7 +39,7 @@
 
 .title {
   display: flex;
-  color: #FFF;
+  color: var(--text-color-primary);
   text-align: center;
   font-family: "Abril Fatface";
   font-size: 30px;
@@ -65,7 +65,7 @@
   display: flex;
   margin: 0;
   width: 50%;
-  color: #000;
+  color: var(--text-color-main);
   text-overflow: ellipsis;
   font-family: 'Urbanist';
   font-size: 18px;
@@ -87,7 +87,7 @@
 
 .cost {
   display: flex;
-  color: #000;
+  color: var(--text-color-main);
   font-family: 'Urbanist';
   font-size: 14px;
   font-style: normal;
@@ -97,7 +97,7 @@
 
 .location {
   display: flex;
-  color: #000;
+  color: var(--text-color-main);
   font-family: 'Urbanist';
   font-size: 14px;
   font-style: normal;

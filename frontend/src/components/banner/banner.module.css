@@ -36,7 +36,7 @@
 
 .title {
   max-width: 543px;
-  color: #000;
+  color: var(--text-color-main);
   font-family: "Abril Fatface";
   font-size: 48px;
   font-style: normal;
@@ -47,7 +47,7 @@
 }
 
 .description {
-  color: #000;
+  color: var(--text-color-main);;
   font-family: "Urbanist";
   font-size: 16px;
   font-style: normal;

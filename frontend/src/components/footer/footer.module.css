@@ -1,5 +1,5 @@
 .mainWrap {
-  background-color:#F6F3F3;
+  background-color: var(--background-color-main);
 }
 
 .container {
@@ -48,7 +48,7 @@
 }
 
 .MenuItemsWrapper li a {
-  color: #000;
+  color: var(--text-color-main);;
   font-family: 'Urbanist';
   font-size: 18px;
   font-style: normal;
@@ -67,7 +67,7 @@
 }
 
 .bottomContainer {
-  background-color:#F6F3F3;
+  background-color: var(--background-color-main);
   display: flex;
   flex-wrap: wrap;
   row-gap: 20px;
@@ -92,7 +92,7 @@
 .footerText {
   display: flex;
   margin: 0;
-  color: #D1D5DB;
+  color: var(--text-color-secondary);
   font-family: 'Urbanist';
   font-size: 20px;
   font-style: normal;
@@ -107,7 +107,7 @@
 }
 
 .text {
-  color: #000;
+  color: var(--text-color-main);
   font-family: 'Urbanist';
   font-size: 16px;
   font-style: normal;
