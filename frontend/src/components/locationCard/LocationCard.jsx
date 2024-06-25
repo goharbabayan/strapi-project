@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import styles from './locationCard.module.css';
 import Link from 'next/link';
 
@@ -14,7 +13,7 @@ const LocationCard = ({ data }) => {
     <div className={`${styles.container} location-card`}>
       { imageUrl && url &&
         <Link href={url} className={`${styles.imageWrapper}`}>
-          <Image src={imageUrl} alt={alt} width="302" height="397" className='card-image'/>
+          <img src={imageUrl} alt={alt} width="302" height="397" class='card-image'/>
         </Link>
       }
       { badge &&

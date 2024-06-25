@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import styles from './header.module.css';
 import SearchInput from '../../components/input/SearchInput';
 import Button from '@/components/button/Button';
@@ -27,10 +26,10 @@ export default function Header(props) {
         <div className={`${styles.left_wrap}`}>
           <Link href='/' className={styles.logoWrap}>
             {logoUrl && (
-              <Image
+              <img
                 src={`${baseUrl}${logoUrl}`}
                 alt='logo'
-                className={styles.logo}
+                class='logo'
                 width='170'
                 height='41'
               />

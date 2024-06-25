@@ -1,6 +1,5 @@
 
 import Link from 'next/link';
-import Image from 'next/image';
 import styles from './footer.module.css';
 
 export default function Footer({ data, logoUrl }) {
@@ -21,9 +20,10 @@ export default function Footer({ data, logoUrl }) {
         <div className={styles.leftWrap}>
         { logoUrl && (
           <Link href='' className={styles.logoWrap}>
-            <Image
+            <img
               src={`${baseUrl}${logoUrl}`}
-              alt='logo' className={styles.logo}
+              alt='logo'
+              class={styles.logo}
               width="295"
               height="70"
             />

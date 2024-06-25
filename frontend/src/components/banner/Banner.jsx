@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import styles from './banner.module.css';
 
 const Banner = ({ bannerSection }) => {
@@ -32,12 +31,7 @@ const Banner = ({ bannerSection }) => {
           </div>
           <div className={styles.imageWrap}>
             { bannerImageURL &&
-              <Image
-                src={imageURL}
-                width="179"
-                height="179"
-                alt="banner-image"
-              />
+              <img src={imageURL} width="179" height="179" alt="banner-image"/>
             }
           </div>
         </div>

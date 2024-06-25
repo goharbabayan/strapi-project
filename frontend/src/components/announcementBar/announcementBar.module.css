@@ -30,7 +30,7 @@
 
 .text {
   display: flex;
-  color: #000;
+  color: var(--text-color-main);
   font-family: "Abril Fatface";
   font-size: 24px;
   font-style: normal;
@@ -56,8 +56,8 @@
 }
 
 .button.active {
-  color: white;
-  background-color: black;
+  color: var(--text-color-primary);
+  background-color: var(--background-color-tertiary);
 }
 
 @media screen and (max-width: 749px) {

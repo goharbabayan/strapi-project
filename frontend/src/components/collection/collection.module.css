@@ -1,9 +1,9 @@
 .mainWrap {
-  background: #F9F9F9;
+  background: var(--background-color-secondary);
 }
 
 .title {
-  color: #000;
+  color: var(--text-color-main);;
   font-family: 'Abril Fatface';
   font-size: 44px;
   font-style: normal;

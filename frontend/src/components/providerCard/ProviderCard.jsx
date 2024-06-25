@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import styles from './providerCard.module.css';
 import LocationIcon from  '../icons/LocationIcon';
 import DollarIcon from '../icons/DollarIcon';
@@ -16,7 +15,7 @@ const ProviderCard = ({ provider, blackScheme }) => {
     <div className={`${styles.wrapper} ${isblackScheme} provider-card`}>
       { image && imageUrl &&
         <div className={styles.imageWrapper}>
-          <Image src={imageUrl} alt={alt} width="267" height="282" className='card-image'/>
+          <img src={imageUrl} alt={alt} width="267" height="282" class='card-image'/>
         </div>
       }
       { badge &&

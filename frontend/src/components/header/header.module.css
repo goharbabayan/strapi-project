@@ -4,7 +4,7 @@
 }
 
 .mainWrap {
-  background-color: #FFF;
+  background-color: var(--background-color-primary);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -19,7 +19,8 @@
 
 .logoWrap {
   display: flex;
-  width: 170px;
+  max-width: 170px;
+  width: auto;
   height: 41px;
   cursor: pointer;
 }
@@ -38,7 +39,7 @@
   list-style-type: none;
   margin: 0;
   padding: 0 0 5px 47px;
-  color: #000;
+  color: var(--text-color-main);
   font-family: 'Urbanist';
   font-size: 16px;
   font-style: normal;
@@ -73,8 +74,8 @@
   border: 1px solid #000;
   padding: 10px 16px;
   border-radius: 6px;
-  color: #000;
-  background: #fff;
+  color: var(--text-color-main);;
+  background: var(--background-color-primary);
 }
 
 .iconAccordion {

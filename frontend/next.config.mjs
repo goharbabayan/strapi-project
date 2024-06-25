@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['snlxdashboard.giesystems.com'], // Add 'localhost' to the allowed domains
+    domains: ['snlxdashboard.giesystems.com', 'localhost'], // Add 'localhost' to the allowed domains
     remotePatterns: [
       {
         protocol: 'https',

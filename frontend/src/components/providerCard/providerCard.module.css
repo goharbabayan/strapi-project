@@ -6,7 +6,7 @@
   position: relative;
   border: 2px solid #E8E8E8;
   border-radius: 10px;
-  background: #FFF;
+  background: var(--background-color-primary);
 }
 
 .wrapper.blackScheme {
@@ -56,7 +56,7 @@
 
 .title {
   display: flex;
-  color: #FFF;
+  color: var(--text-color-primary);
   font-family: 'Urbanist';
   font-size: 16px;
   font-style: normal;
@@ -80,7 +80,7 @@
 .name {
   margin: 0;
   width: 50%;
-  color: #000;
+  color: var(--text-color-main);
   text-overflow: ellipsis;
   font-family: 'Urbanist';
   font-size: 18px;
@@ -123,7 +123,7 @@
 
 .cost {
   display: flex;
-  color: #000;
+  color: var(--text-color-main);
   font-family: 'Urbanist';
   font-size: 14px;
   font-style: normal;
@@ -133,7 +133,7 @@
 
 .location {
   display: flex;
-  color: #000;
+  color: var(--text-color-main);
   font-family: 'Urbanist';
   font-size: 14px;
   font-style: normal;
@@ -142,7 +142,7 @@
 }
 
 .location.blackScheme, .cost.blackScheme, .name.blackScheme {
-  color: white;
+  color: var(--text-color-primary);
 }
 
 @media screen and (max-width: 1789px) {
