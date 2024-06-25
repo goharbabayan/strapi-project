@@ -1,2 +1,5 @@
 .DS_Store
 access.MD
+.env
+node_modules
+.next

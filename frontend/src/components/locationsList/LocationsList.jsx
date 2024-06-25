@@ -2,6 +2,8 @@ import LocationCard from '../../components/locationCard/LocationCard';
 import styles from './locationsList.module.css';
 
 const LocationsList = ({ data }) => {
+  if (data === undefined || data === null) return;
+
   const { heading, card } = data
   return (
     <div className={`${styles.container} page-width`}>

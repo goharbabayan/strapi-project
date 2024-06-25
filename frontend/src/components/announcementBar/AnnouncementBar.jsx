@@ -1,6 +1,7 @@
-import styles from './AnnouncementBar.module.css';
+import styles from './announcementBar.module.css';
 
 export default function AnnouncementBar() {
+  // Todo change JS code to react
   function handleClick(e) {
     const type = e.target.dataset.type;
     const providerCards = document.querySelectorAll('.card-image');
