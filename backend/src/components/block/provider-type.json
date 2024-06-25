@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_block_provider_types",
+  "info": {
+    "displayName": "EscortType",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true,
+      "default": "Type"
+    },
+    "link": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

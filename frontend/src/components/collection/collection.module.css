@@ -1,0 +1,60 @@
+.mainWrap {
+  background: #F9F9F9;
+}
+
+.title {
+  color: #000;
+  font-family: 'Abril Fatface';
+  font-size: 44px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding-block: 64px 40px;
+  margin: 0;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding-block: 32px 64px;
+  grid-gap: 22px;
+  padding-right: 18px;
+}
+
+@media screen and (max-width: 1179px) {
+  .wrapper {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 989px) {
+  .wrapper {
+    grid-template-columns: repeat(3, 1fr);
+    padding-block: 20px 40px;
+    padding-right: 0;
+  }
+
+  .title {
+    padding-block: 40px 5px;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .title {
+    font-size: 24px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .wrapper {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .title {
+    font-size: 24px;
+  }
+}

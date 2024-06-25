@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_section_find_by_locations",
+  "info": {
+    "displayName": "FindByLocation",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "string"
+    },
+    "card": {
+      "displayName": "LocationCard",
+      "type": "component",
+      "repeatable": true,
+      "component": "block.location-card",
+      "required": true
+    },
+    "activateBlackMode": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

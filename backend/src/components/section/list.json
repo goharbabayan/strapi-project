@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_section_lists",
+  "info": {
+    "displayName": "list"
+  },
+  "options": {},
+  "attributes": {
+    "Heading": {
+      "type": "component",
+      "repeatable": false,
+      "component": "elements.heading"
+    }
+  }
+}

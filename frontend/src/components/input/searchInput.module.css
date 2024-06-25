@@ -1,0 +1,32 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  justify-content: center;
+}
+
+.input {
+  height: 100%;
+  min-width: 364px;
+  padding: 11.5px 8px;
+  border-radius: 6px;
+  border: 1px solid #000;
+  margin: auto;
+}
+
+.input::placeholder {
+  color: rgba(0, 0, 0, 0.40);
+  font-family: 'Urbanist';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.icon {
+  display: flex;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  bottom: 8px;
+}

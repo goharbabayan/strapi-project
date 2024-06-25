@@ -1,0 +1,92 @@
+.header {
+  display: flex;
+  padding-block: 88px 10px;
+}
+
+.mainWrap {
+  background-color: #FFF;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.left_wrap,.right_wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.logoWrap {
+  display: flex;
+  width: 170px;
+  height: 41px;
+  cursor: pointer;
+}
+
+.logoWrap > img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  gap: 48px;
+  align-items: center;
+  list-style-type: none;
+  margin: 0;
+  padding: 0 0 5px 47px;
+  color: #000;
+  font-family: 'Urbanist';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.right_wrap {
+  gap: 24px;
+}
+
+.buttons_wrap {
+  display: flex;
+  gap: 16px;
+}
+
+.btn {
+  font-family: 'Urbanist';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid #000;
+  padding: 10px 16px;
+  border-radius: 6px;
+  color: #000;
+  background: #fff;
+}
+
+.iconAccordion {
+  display: none;
+}
+
+@media screen and (max-width: 1280px) {
+  .right_wrap, .navigation {
+    display: none;
+  }
+
+  .iconAccordion {
+    display: block;
+  }
+}

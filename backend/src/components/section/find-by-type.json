@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_section_find_by_types",
+  "info": {
+    "displayName": "FindByType",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": false,
+      "default": "Section title"
+    },
+    "type": {
+      "displayName": "ProviderType",
+      "type": "component",
+      "repeatable": true,
+      "component": "block.provider-type"
+    },
+    "card": {
+      "type": "component",
+      "repeatable": true,
+      "component": "block.service-provider-card"
+    },
+    "activateBlackMode": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}
