@@ -9,6 +9,7 @@ import Accordion from '../icons/Accordion';
 
 export default function Header(props) {
   const { headerSection, logoUrl } = props;
+  if (headerSection === undefined) return;
 
   let firstNavigationText, secondNavigationText;
   if (headerSection.menuItem1) {
@@ -19,7 +20,7 @@ export default function Header(props) {
   }
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const buttons = headerSection.Button;
-  
+  const isButtonsExisting = buttons.length > 0;
   return (
     <header className={`${styles.header}`}>
       <div className={`${styles.mainWrap} page-width`}>
@@ -56,23 +57,28 @@ export default function Header(props) {
         </div>
         <div className={`${styles.right_wrap}`}>
           <SearchInput/>
-          <div className={styles.buttons_wrap}>
-            {
-              buttons.length > 0 && buttons.map((button, index) => {
-                let href = null;
-                button.link ? href = button.link : null;
-                return (
-                  <Button
-                    key={`${button.id}`}
-                    href={href}
-                    className={`${styles.btn} btn_${button.type}`}
-                  >
-                    <span>{button.title}</span>
-                  </Button>
-                )
-              })
-            }
-          </div>
+          { isButtonsExisting &&
+            <div className={styles.buttons_wrap}>
+              { buttons.map((button) => {
+                  let href = null;
+                  button.link ? href = button.link : null;
+                  return (
+                    button.title
+                    ?
+                    <Button
+                      key={`${button.id}`}
+                      href={href}
+                      className={`${styles.btn} btn_${button.type}`}
+                    >
+                      <span>{button.title}</span>
+                    </Button>
+                    :
+                    null
+                  )
+                })
+              }
+            </div>
+          }
         </div>
         <div className={styles.iconAccordion}>
           <Accordion/>

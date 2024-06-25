@@ -4,6 +4,8 @@ import Image from 'next/image';
 import styles from './footer.module.css';
 
 export default function Footer({ data, logoUrl }) {
+  if (data === undefined || data === null) return;
+
   const hasMenuItems = data?.menu_items?.data?.length > 0;
   const href = data?.link?.redirection_url;
   const text = data?.text;
@@ -33,8 +35,7 @@ export default function Footer({ data, logoUrl }) {
           { data?.menu_items?.data?.length > 0 &&
             <ul className={ styles.MenuItemsWrapper }>
               { menuItems.map((item, index) => {
-                let title = item.attributes.item
-                let href = item.attributes.redirection_url
+                const { attributes: { item: title, redirection_url: href } } = item;
                 return <li key={index}><Link href={href}>{title}</Link></li>
               })}
             </ul>

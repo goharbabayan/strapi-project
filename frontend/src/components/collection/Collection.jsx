@@ -1,15 +1,16 @@
-import ProviderType from "../poviderType/ProviderType";
-import ProviderCard from "../providerCard/ProviderCard";
+import ProviderType from '../poviderType/ProviderType';
+import ProviderCard from '../providerCard/ProviderCard';
 import styles from './collection.module.css';
-import cardStyles from 'swiper/css/effect-cards';
 
 export default function Collection({ data }) {
-  const { title, type, card, activateBlackMode } = data;
+  if (data === undefined || data === null) return;
 
+  const { title, type, card, activateBlackMode } = data;
+  const isAtLeastOneTypeOrCardExisting = type.length > 0 || card.length > 0;
   return (
     <section className={styles.mainWrap}>
-      { (type.length > 0 || card.length > 0) &&
-        <div className="page-width">
+      { isAtLeastOneTypeOrCardExisting &&
+        <div className='page-width'>
           { title && <h2 className={styles.title}>{ title }</h2> }
           { type.length > 0 && <ProviderType type={ type } /> }
           { card.length > 0 &&

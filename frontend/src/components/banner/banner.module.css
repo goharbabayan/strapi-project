@@ -58,7 +58,6 @@
 }
 
 .imageWrap > img {
-  margin-right: -9px;
   object-fit: contain;
 }
 

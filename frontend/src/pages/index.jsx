@@ -15,16 +15,19 @@ import Footer from '../components/footer/Footer';
 
 const HomePage = (props) => {
   const { headerSection, logoUrl, bannerSection, providersSections, findByTypeDataSection, findByLocationSection, findFooterSection } = props;
+  const isAtLeastOneProvidersSectionExisting = providersSections && providersSections.length > 0;
   return (
     <>
       <AnnouncementBar/>
-      <Header headerSection={headerSection} logoUrl={logoUrl}
+      <Header
+        headerSection={headerSection}
+        logoUrl={logoUrl}
       />
       <main>
         <Banner
           bannerSection={bannerSection}
         />
-        { providersSections.map((section, index) => {
+        { isAtLeastOneProvidersSectionExisting && providersSections.map((section, index) => {
           const providers = section.card;
           return (
             <ProvidersList
@@ -44,7 +47,7 @@ const HomePage = (props) => {
 };
 
 export async function getStaticProps() {
-  const [headerData, bannerData, serviceProvidersData, findByTypeData, findByLocationData, findFooterData ] = await Promise.all([
+  const [headerData, bannerData, serviceProvidersData, findByTypeData, findByLocationData, footerData ] = await Promise.all([
     Client.query({ query: GET_HEADER_QUERIES }),
     Client.query({ query: GET_BANNER_QUERIES }),
     Client.query({ query: GET_PROVIDERS_LIST_QUERIES }),
@@ -52,6 +55,9 @@ export async function getStaticProps() {
     Client.query({ query: GET_BY_LOCATION_QUERIES }),
     Client.query({ query: GET_FOOTER_QUERIES }),
   ]);
+
+  const contentIsEmpty = (headerData === undefined || headerData === null) || (footerData === undefined || footerData === null);
+  if(contentIsEmpty) return { props: {}};
 
   // Data from header
   const {loading, error, data } = headerData;
@@ -64,21 +70,22 @@ export async function getStaticProps() {
 
   // Data from Header
   const headerSection = data?.homePage?.data?.attributes?.Header;
-  const logoUrl = headerSection.logo.data?.attributes?.url;
+  const logoUrl = headerSection?.logo.data?.attributes?.url;
+
   // Data from Banner
-  const bannerSection = bannerData.data?.homePage?.data?.attributes?.Banner;
+  const bannerSection = bannerData?.data?.homePage?.data?.attributes?.Banner;
 
   // Data from Providers List
-  const providersSections = serviceProvidersData.data.homePage.data.attributes.Slider1;
+  const providersSections = serviceProvidersData?.data?.homePage?.data?.attributes?.Slider1;
 
   // Data from Find By Type
-  const findByTypeDataSection = findByTypeData.data.homePage.data.attributes.FindByType;
+  const findByTypeDataSection = findByTypeData?.data?.homePage?.data?.attributes?.FindByType;
 
   // Data from Find by Location
-  const findByLocationSection = findByLocationData.data.homePage.data.attributes.ByLocations;
+  const findByLocationSection = findByLocationData?.data?.homePage?.data?.attributes?.ByLocations;
 
    // Data from Footer
-   const findFooterSection = findFooterData.data.homePage.data.attributes.Footer;
+   const findFooterSection = footerData?.data?.homePage?.data?.attributes?.Footer;
 
   return {
     props: { headerSection, logoUrl, bannerSection, providersSections, findByTypeDataSection, findByLocationSection, findFooterSection }

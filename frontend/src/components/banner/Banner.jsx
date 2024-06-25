@@ -2,18 +2,18 @@ import Image from 'next/image';
 import styles from './banner.module.css';
 
 const Banner = ({ bannerSection }) => {
+  if (bannerSection === undefined || bannerSection === null) return;
+
   const { title, description, image } = bannerSection;
 
-  let bannerTitle, bannerDescription, url, bannerImageURL;
-  title ? bannerTitle = title : null;
-  description ? bannerDescription = description : null;
+  let url, bannerImageURL;
   image ? url = image?.data?.attributes?.url : null;
   bannerImageURL = url ? url : '';
 
   let imageURL = '';
   let bannerContentIsNotEmpty = false;
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  bannerTitle || bannerDescription ? bannerContentIsNotEmpty = true : false;
+  title || description ? bannerContentIsNotEmpty = true : false;
   bannerImageURL ? imageURL = `${baseUrl}${bannerImageURL}` : null;
 
   return (
@@ -21,13 +21,13 @@ const Banner = ({ bannerSection }) => {
       { bannerContentIsNotEmpty &&
         <div className={`${styles.wrapper} page-width`}>
           <div className={`${styles.mainContent}`}>
-            { bannerTitle &&
+            { title &&
               <h2 className={`${styles.title}`}>
-                { bannerTitle }
+                { title }
               </h2>
             }
-            { bannerDescription &&
-              <h3 className={styles.description}>{bannerDescription}</h3>
+            { description &&
+              <h3 className={styles.description}>{description}</h3>
             }
           </div>
           <div className={styles.imageWrap}>
