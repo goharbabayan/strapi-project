@@ -1,9 +1,13 @@
+'use client'
+import { useQuery } from '@apollo/client';
+import { GET_BANNER_QUERIES } from '@/app/graphql/bannerQueries';
 import styles from './banner.module.css';
 
-const Banner = ({ bannerSection }) => {
-  if (bannerSection === undefined || bannerSection === null) return;
+const Banner = () => {
+  const { loading, error, data } = useQuery(GET_BANNER_QUERIES);
 
-  const { title, description, image } = bannerSection;
+  if (data === undefined || data === null) return;
+  const { title, description, image } = data?.homePage?.data?.attributes?.Banner;
 
   let url, bannerImageURL;
   image ? url = image?.data?.attributes?.url : null;
@@ -20,17 +24,17 @@ const Banner = ({ bannerSection }) => {
       { bannerContentIsNotEmpty &&
         <div className={`${styles.wrapper} page-width`}>
           <div className={`${styles.mainContent}`}>
-            { title &&
+            {title &&
               <h2 className={`${styles.title}`}>
                 { title }
               </h2>
             }
-            { description &&
+            {description &&
               <h3 className={styles.description}>{description}</h3>
             }
           </div>
           <div className={styles.imageWrap}>
-            { bannerImageURL &&
+            {bannerImageURL &&
               <img src={imageURL} width="179" height="179" alt="banner-image"/>
             }
           </div>

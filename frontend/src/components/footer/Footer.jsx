@@ -1,38 +1,53 @@
+'use client'
 
+import { useQuery } from '@apollo/client';
+import { GET_FOOTER_QUERIES } from '@/app/graphql/footerQueries';
+import { GET_LOGO_QUERIES } from '@/app/graphql/findLogoQueries';
 import Link from 'next/link';
 import styles from './footer.module.css';
 
-export default function Footer({ data, logoUrl }) {
-  if (data === undefined || data === null) return;
+export default function Footer() {
+  const { loading: footerLoading, error: footerError, data: footerSectionData } = useQuery(GET_FOOTER_QUERIES);
+  const { loading: logoLoading, error: logoError, data: logoData } = useQuery(GET_LOGO_QUERIES);
 
-  const hasMenuItems = data?.menu_items?.data?.length > 0;
-  const href = data?.link?.redirection_url;
-  const text = data?.text;
+  if (footerLoading) {
+    // Something for loading;
+  }
+  if (footerError) {
+    // Something for error;
+  };
+  if (footerSectionData === undefined || footerSectionData === null) return;
+
+  const logoUrl = logoData?.homePage?.data?.attributes?.Header?.logo.data?.attributes?.url;
+  const footerData = footerSectionData?.homePage?.data?.attributes?.Footer;
+  const hasMenuItems = footerData?.menu_items?.data?.length > 0;
+  const href = footerData?.link?.redirection_url;
+  const text = footerData?.text;
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   let menuItems = [];
   if (hasMenuItems) {
-    menuItems = data.menu_items.data;
+    menuItems = footerData.menu_items.data;
   }
 
   return (
     <footer className={styles.mainWrap}>
       <div className={`${styles.container} page-width`}>
         <div className={styles.leftWrap}>
-        { logoUrl && (
+        {logoUrl && (
           <Link href='' className={styles.logoWrap}>
             <img
               src={`${baseUrl}${logoUrl}`}
               alt='logo'
-              class={styles.logo}
+              className={styles.logo}
               width="295"
               height="70"
             />
           </Link>
         )}
-        { data.info && <p className={styles.text}>{data.info}</p> }
+        {footerData.info && <p className={styles.text}>{footerData.info}</p> }
         </div>
         <div className={styles.rightWrap}>
-          { data?.menu_items?.data?.length > 0 &&
+          { footerData?.menu_items?.data?.length > 0 &&
             <ul className={ styles.MenuItemsWrapper }>
               { menuItems.map((item, index) => {
                 const { attributes: { item: title, redirection_url: href } } = item;

@@ -8,16 +8,6 @@ const GET_HEADER_QUERIES = gql`
           Header {
             menuItem1
             menuItem2
-            logo {
-              data {
-                attributes {
-                  url
-                  alternativeText
-                  name
-                  width
-                }
-              }
-            }
             Button {
               id
               title

@@ -13,29 +13,29 @@ const ProviderCard = ({ provider, blackScheme }) => {
   }
   return (
     <div className={`${styles.wrapper} ${isblackScheme} provider-card`}>
-      { image && imageUrl &&
+      {image && imageUrl &&
         <div className={styles.imageWrapper}>
-          <img src={imageUrl} alt={alt} width="267" height="282" class='card-image'/>
+          <img src={imageUrl} alt={alt} width="267" height="282" className='card-image'/>
         </div>
       }
-      { badge &&
+      {badge &&
         <div className={styles.cardtitle}>
           <span className={styles.title}>{badge}</span>
         </div>
       }
       <div className={styles.info}>
         <div className={styles.data}>
-          { name &&
+          {name &&
             <h4 className={`${styles.name} ${isblackScheme}`}>{name}</h4>
           }
-          { cost &&
+          {cost &&
             <div className={`${styles.datawrap} ${styles.costData} ${name ? styles.flexEnd : ''} ${isblackScheme}`}>
               <DollarIcon isblackScheme={isblackScheme}/>
               <span className={`${styles.cost} ${isblackScheme}`}>{cost}</span>
             </div>
           }
         </div>
-        { location &&
+        {location &&
           <div className={`${styles.datawrap} ${styles.locationdata}`}>
             <LocationIcon blackScheme={blackScheme}/>
             <span className={`${styles.location} ${isblackScheme}`}>{location}</span>

@@ -1,24 +1,39 @@
+'use client';
 import Link from 'next/link';
+import { useQuery } from '@apollo/client';
+import { GET_HEADER_QUERIES } from '../../app/graphql/headerQueries';
+import { GET_LOGO_QUERIES } from '@/app/graphql/findLogoQueries';
 import styles from './header.module.css';
 import SearchInput from '../../components/input/SearchInput';
 import Button from '@/components/button/Button';
-import globalStyles from '../../app/global.css';
 import Accordion from '../icons/Accordion';
 
 
-export default function Header(props) {
-  const { headerSection, logoUrl } = props;
-  if (headerSection === undefined) return;
+
+export default function Header() {
+  const { loading: headerLoading, error: headerError, data: headerSectionData } = useQuery(GET_HEADER_QUERIES);
+  const { loading: logoLoading, error: logoError, data: logoData } = useQuery(GET_LOGO_QUERIES);
+  if (headerLoading) {
+    // Something for loading;
+  }
+  if (headerError) {
+    // Something for error;
+  };
+
+  if (headerSectionData === undefined || headerSectionData === null) return;
+
+  const headerData = headerSectionData?.homePage?.data?.attributes?.Header;
+  const logoUrl = logoData?.homePage?.data?.attributes?.Header?.logo.data?.attributes?.url;
 
   let firstNavigationText, secondNavigationText;
-  if (headerSection.menuItem1) {
-    firstNavigationText = headerSection.menuItem1;
+  if (headerData.menuItem1) {
+    firstNavigationText = headerData.menuItem1;
   }
-  if (headerSection.menuItem2) {
-    secondNavigationText = headerSection.menuItem2;
+  if (headerData.menuItem2) {
+    secondNavigationText = headerData.menuItem2;
   }
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const buttons = headerSection.Button;
+  const buttons = headerData.Button;
   const isButtonsExisting = buttons.length > 0;
   return (
     <header className={`${styles.header}`}>
@@ -29,14 +44,14 @@ export default function Header(props) {
               <img
                 src={`${baseUrl}${logoUrl}`}
                 alt='logo'
-                class='logo'
+                className='logo'
                 width='170'
                 height='41'
               />
             )}
           </Link>
           <ul className={styles.navigation}>
-            { firstNavigationText &&
+            {firstNavigationText &&
               <li className={styles.navItem}>
                 <span>{firstNavigationText}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
@@ -44,7 +59,7 @@ export default function Header(props) {
                 </svg>
               </li>
             }
-            { secondNavigationText &&
+            {secondNavigationText &&
               <li className={styles.navItem}>
                 <span>{secondNavigationText}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
@@ -56,7 +71,7 @@ export default function Header(props) {
         </div>
         <div className={`${styles.right_wrap}`}>
           <SearchInput/>
-          { isButtonsExisting &&
+          {isButtonsExisting &&
             <div className={styles.buttons_wrap}>
               { buttons.map((button) => {
                   let href = null;

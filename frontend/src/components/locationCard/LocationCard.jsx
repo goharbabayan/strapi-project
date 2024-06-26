@@ -11,12 +11,12 @@ const LocationCard = ({ data }) => {
   }
   return (
     <div className={`${styles.container} location-card`}>
-      { imageUrl && url &&
+      {imageUrl && url &&
         <Link href={url} className={`${styles.imageWrapper}`}>
-          <img src={imageUrl} alt={alt} width="302" height="397" class='card-image'/>
+          <img src={imageUrl} alt={alt} width="302" height="397" className='card-image'/>
         </Link>
       }
-      { badge &&
+      {badge &&
         <div className={styles.cardtitle}>
           <span className={styles.title}>{badge}</span>
         </div>

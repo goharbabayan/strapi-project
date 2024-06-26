@@ -1,19 +1,22 @@
+import { useQuery } from '@apollo/client';
+import { GET_FIND_BY_TYPE_QUERIES } from '@/app/graphql/findByTypeQueries';
 import ProviderType from '../poviderType/ProviderType';
 import ProviderCard from '../providerCard/ProviderCard';
 import styles from './collection.module.css';
 
-export default function Collection({ data }) {
+export default function Collection() {
+  const { loading, error, data } = useQuery(GET_FIND_BY_TYPE_QUERIES)
   if (data === undefined || data === null) return;
 
-  const { title, type, card, activateBlackMode } = data;
+  const { title, type, card, activateBlackMode } = data?.homePage?.data?.attributes?.FindByType;
   const isAtLeastOneTypeOrCardExisting = type.length > 0 || card.length > 0;
   return (
     <section className={styles.mainWrap}>
-      { isAtLeastOneTypeOrCardExisting &&
+      {isAtLeastOneTypeOrCardExisting &&
         <div className='page-width'>
-          { title && <h2 className={styles.title}>{ title }</h2> }
-          { type.length > 0 && <ProviderType type={ type } /> }
-          { card.length > 0 &&
+          {title && <h2 className={styles.title}>{ title }</h2> }
+          {type.length > 0 && <ProviderType type={ type } /> }
+          {card.length > 0 &&
             <div className={`${styles.wrapper} collections-wrap`}>
               { card.map((data, index) => {
                   return (

@@ -1,9 +1,9 @@
 .mainWrap {
   background-color: var(--background-color-main);
+  padding-block: 61px;
 }
 
 .container {
-  padding-block: 61px;
   display: flex;
   gap: 102px;
   justify-content: center;
@@ -135,11 +135,14 @@
 }
 
 @media screen and (max-width: 749px) {
+  .mainWrap {
+    padding-block: 20px;
+  }
+
   .container {
     flex-wrap: wrap;
     gap: 20px;
     justify-content: flex-start;
-    padding-block: 20px;
   }
 
   .leftWrap, .rightWrap {

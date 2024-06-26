@@ -1,10 +1,13 @@
+import { useQuery } from '@apollo/client';
+import { GET_BY_LOCATION_QUERIES } from '@/app/graphql/findByLocationQueries';
 import LocationCard from '../../components/locationCard/LocationCard';
 import styles from './locationsList.module.css';
 
-const LocationsList = ({ data }) => {
+const LocationsList = () => {
+  const { loading, error, data } = useQuery(GET_BY_LOCATION_QUERIES);
   if (data === undefined || data === null) return;
 
-  const { heading, card } = data
+  const { heading, card } = data?.homePage?.data?.attributes?.ByLocations;
   return (
     <div className={`${styles.container} page-width`}>
       { heading  &&

@@ -11,7 +11,7 @@ export default function AnnouncementBar() {
         document.querySelector('header').style.paddingTop = '15px';
         break;
       case 'on':
-        providerCards.forEach(card => card.style.filter = 'blur(5px)');
+        providerCards.forEach(card => card.style.filter = 'blur(8px)');
         e.target.classList.add(`${styles.active}`);
         document.querySelector('button[data-type=off]').classList.remove(`${styles.active}`);
         break;

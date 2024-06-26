@@ -7,9 +7,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
-const ProvidersList = ( props ) => {
-  const { providersSection, providers, index } = props;
-  const isBlackScheme = providersSection.activateBlackMode === true ? true : false;
+const ProvidersList = ({ providersSection, providers, index}) => {
+  const isBlackScheme = providersSection.activateBlackMode;
   const sectionTitle = providersSection.title;
   let hasGreyBackgroundFone = true;
   let shouldBeVisibleThreeGrids = false;
@@ -33,14 +32,15 @@ const ProvidersList = ( props ) => {
       slidesPerView: shouldBeVisibleThreeGrids ? 3 : 4,
     },
   };
+
   return (
     <div className={`${styles.mainWrap} ${hasGreyBackgroundFone && styles.greyFone}`}>
-      { providers.length > 0 &&
+      {providers.length > 0 &&
         <div className={`${styles.container} page-width`}>
-          { (sectionTitle && providers.length) > 0 &&
+          {(sectionTitle && providers.length) > 0 &&
             <h3 className={styles.title}>{sectionTitle}</h3>
           }
-          { providers.length > 0 &&
+          {providers.length > 0 &&
             <div className={styles.wrapper}>
               <Swiper
                 modules={[Navigation, Pagination, Scrollbar, A11y]}
@@ -52,7 +52,7 @@ const ProvidersList = ( props ) => {
                 breakpoints={myBreakpoints}
                 data-sldes={shouldBeVisibleThreeGrids ? 3 : 4}
               >
-                { providers.map((provider, index) => {
+                  { providers.map((provider, index) => {
                   return <SwiperSlide key={index} virtualIndex={index}><ProviderCard provider={provider} key={index} blackScheme={isBlackScheme}/></SwiperSlide>
                 })}
               </Swiper>
@@ -62,6 +62,6 @@ const ProvidersList = ( props ) => {
       }
     </div>
   )
-};
+}
 
 export default ProvidersList;

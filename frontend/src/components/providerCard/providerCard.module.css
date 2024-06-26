@@ -27,7 +27,7 @@
 }
 
 .imageWrapper > img {
-  filter: blur(5px);
+  filter: blur(8px);
   object-fit: cover;
   object-position: center;
   width: 100%;
