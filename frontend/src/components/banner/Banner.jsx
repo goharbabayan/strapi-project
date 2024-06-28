@@ -34,11 +34,7 @@ const Banner = () => {
             }
           </div>
           <div className={styles.imageWrap}>
-<<<<<<< HEAD
             {bannerImageURL &&
-=======
-            { bannerImageURL &&
->>>>>>> dac915429db80f37997d5c2505b3d785dfa8bba3
               <img src={imageURL} width="179" height="179" alt="banner-image"/>
             }
           </div>
