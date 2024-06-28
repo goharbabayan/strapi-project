@@ -38,7 +38,7 @@ export default function Footer() {
             <img
               src={`${baseUrl}${logoUrl}`}
               alt='logo'
-              className={styles.logo}
+              class={styles.logo}
               width="295"
               height="70"
             />

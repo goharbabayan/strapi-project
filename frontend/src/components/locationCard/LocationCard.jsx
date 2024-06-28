@@ -13,7 +13,7 @@ const LocationCard = ({ data }) => {
     <div className={`${styles.container} location-card`}>
       {imageUrl && url &&
         <Link href={url} className={`${styles.imageWrapper}`}>
-          <img src={imageUrl} alt={alt} width="302" height="397" className='card-image'/>
+          <img src={imageUrl} alt={alt} width="302" height="397" class='card-image'/>
         </Link>
       }
       {badge &&

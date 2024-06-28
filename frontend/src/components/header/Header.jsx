@@ -1,8 +1,11 @@
 'use client';
 import Link from 'next/link';
+<<<<<<< HEAD
 import { useQuery } from '@apollo/client';
 import { GET_HEADER_QUERIES } from '../../app/graphql/headerQueries';
 import { GET_LOGO_QUERIES } from '@/app/graphql/findLogoQueries';
+=======
+>>>>>>> dac915429db80f37997d5c2505b3d785dfa8bba3
 import styles from './header.module.css';
 import SearchInput from '../../components/input/SearchInput';
 import Button from '@/components/button/Button';
@@ -44,7 +47,7 @@ export default function Header() {
               <img
                 src={`${baseUrl}${logoUrl}`}
                 alt='logo'
-                className='logo'
+                class='logo'
                 width='170'
                 height='41'
               />

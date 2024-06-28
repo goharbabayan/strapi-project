@@ -15,7 +15,7 @@ const ProviderCard = ({ provider, blackScheme }) => {
     <div className={`${styles.wrapper} ${isblackScheme} provider-card`}>
       {image && imageUrl &&
         <div className={styles.imageWrapper}>
-          <img src={imageUrl} alt={alt} width="267" height="282" className='card-image'/>
+          <img src={imageUrl} alt={alt} width="267" height="282" class='card-image'/>
         </div>
       }
       {badge &&
