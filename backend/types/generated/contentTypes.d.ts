@@ -362,6 +362,15 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
+export interface ApiAboutUsAboutUs extends Schema.SingleType {
+  collectionName: 'about_uses';
+  info: {
+    singularName: 'about-us';
+    pluralName: 'about-uses';
+    displayName: 'About us';
+  }
+}
+
 export interface ApiFaqFaq extends Schema.SingleType {
   collectionName: 'faqs';
   info: {
@@ -969,6 +978,7 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
+      'api::about-us.about-us': ApiAboutUsAboutUs;
       'api::faq.faq': ApiFaqFaq;
       'api::home-page.home-page': ApiHomePageHomePage;
       'api::menu-item.menu-item': ApiMenuItemMenuItem;

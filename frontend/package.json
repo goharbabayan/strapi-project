@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.10.6",
+    "@strapi/blocks-react-renderer": "^1.0.1",
     "@sendgrid/mail": "^8.1.3",
     "dotenv": "^16.4.5",
     "graphql": "^16.9.0",

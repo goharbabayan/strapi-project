@@ -44,6 +44,17 @@ export interface BlockProviderType extends Schema.Component {
   };
 }
 
+export interface BlockRichText extends Schema.Component {
+  collectionName: 'components_block_rich_texts';
+  info: {
+    displayName: 'RichText';
+  };
+  attributes: {
+    heading: Attribute.String;
+    text: Attribute.Blocks;
+  };
+}
+
 export interface BlockServiceProviderCard extends Schema.Component {
   collectionName: 'components_block_service_provider_cards';
   info: {
@@ -308,6 +319,7 @@ declare module '@strapi/types' {
       'block.favorites-ids': BlockFavoritesIds;
       'block.location-card': BlockLocationCard;
       'block.provider-type': BlockProviderType;
+      'block.rich-text': BlockRichText;
       'block.service-provider-card': BlockServiceProviderCard;
       'block.skill': BlockSkill;
       'elements.button-link': ElementsButtonLink;
