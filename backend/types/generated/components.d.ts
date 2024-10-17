@@ -1,5 +1,16 @@
 import type { Schema, Attribute } from '@strapi/strapi';
 
+export interface BlockAccordion extends Schema.Component {
+  collectionName: 'components_block_accordions';
+  info: {
+    displayName: 'Accordion';
+  };
+  attributes: {
+    title: Attribute.String;
+    text: Attribute.Text;
+  };
+}
+
 export interface BlockFavoritesIds extends Schema.Component {
   collectionName: 'components_block_favorites_ids';
   info: {
@@ -238,6 +249,29 @@ export interface SectionHeader extends Schema.Component {
   };
 }
 
+export interface SectionImageBanner extends Schema.Component {
+  collectionName: 'components_section_image_banners';
+  info: {
+    displayName: 'imageBanner';
+    description: '';
+  };
+  attributes: {
+    image: Attribute.Media;
+  };
+}
+
+export interface SectionInfo extends Schema.Component {
+  collectionName: 'components_section_infos';
+  info: {
+    displayName: 'TextWithTitle';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String;
+    text: Attribute.Text;
+  };
+}
+
 export interface SectionList extends Schema.Component {
   collectionName: 'components_section_lists';
   info: {
@@ -270,6 +304,7 @@ export interface SectionSlider extends Schema.Component {
 declare module '@strapi/types' {
   export module Shared {
     export interface Components {
+      'block.accordion': BlockAccordion;
       'block.favorites-ids': BlockFavoritesIds;
       'block.location-card': BlockLocationCard;
       'block.provider-type': BlockProviderType;
@@ -289,6 +324,8 @@ declare module '@strapi/types' {
       'section.find-by-type': SectionFindByType;
       'section.footer': SectionFooter;
       'section.header': SectionHeader;
+      'section.image-banner': SectionImageBanner;
+      'section.info': SectionInfo;
       'section.list': SectionList;
       'section.slider': SectionSlider;
     }

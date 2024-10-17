@@ -16,9 +16,8 @@ const Banner = () => {
 
   let imageURL = '';
   let bannerContentIsNotEmpty = false;
-  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
   title || description ? bannerContentIsNotEmpty = true : false;
-  bannerImageURL ? imageURL = `${baseUrl}${bannerImageURL}` : null;
+  bannerImageURL ? imageURL = `${process.env.NEXT_PUBLIC_STRAPI_URL}${bannerImageURL}` : null;
 
   return (
     <div className={styles.container}>

@@ -30,6 +30,10 @@
   font-variant-ligatures: none;
 }
 
+div[hidden] {
+  display: none;
+}
+
 /* Swipper styles start*/
 .swiper {
   width: 100%;

@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_section_infos",
+  "info": {
+    "displayName": "TextWithTitle",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text"
+    }
+  }
+}
