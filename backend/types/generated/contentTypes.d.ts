@@ -959,41 +959,6 @@ export interface ApiHomePageHomePage extends Schema.SingleType {
   };
 }
 
-export interface ApiMenuItemMenuItem extends Schema.CollectionType {
-  collectionName: 'menu_items';
-  info: {
-    singularName: 'menu-item';
-    pluralName: 'menu-items';
-    displayName: 'Menu item';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    item: Attribute.String &
-      Attribute.Required &
-      Attribute.DefaultTo<'menu item'>;
-    redirection_url: Attribute.String & Attribute.Required;
-    dcacac: Attribute.String;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::menu-item.menu-item',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::menu-item.menu-item',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 export interface ApiMyAccountMyAccount extends Schema.SingleType {
   collectionName: 'my_accounts';
   info: {
@@ -1113,7 +1078,6 @@ declare module '@strapi/types' {
       'api::faq.faq': ApiFaqFaq;
       'api::header.header': ApiHeaderHeader;
       'api::home-page.home-page': ApiHomePageHomePage;
-      'api::menu-item.menu-item': ApiMenuItemMenuItem;
       'api::my-account.my-account': ApiMyAccountMyAccount;
       'api::navigation.navigation': ApiNavigationNavigation;
       'api::navigation-item.navigation-item': ApiNavigationItemNavigationItem;

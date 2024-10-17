@@ -285,11 +285,6 @@ export interface SectionFooter extends Schema.Component {
   };
   attributes: {
     info: Attribute.Text;
-    menu_items: Attribute.Relation<
-      'section.footer',
-      'oneToMany',
-      'api::menu-item.menu-item'
-    >;
     text: Attribute.String;
     link: Attribute.Component<'elements.link'>;
   };
