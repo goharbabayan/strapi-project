@@ -15,7 +15,7 @@ export default function HomePage() {
   return (
     <>
       <Banner />
-      {isAtLeastOneProvidersSectionExisting && providersSections.map((section, index) => {
+      {/* {isAtLeastOneProvidersSectionExisting && providersSections.map((section, index) => {
         const providers = section.card;
         return (
           <ProvidersList
@@ -27,7 +27,7 @@ export default function HomePage() {
         )}
       )}
       <Collection/>
-      <LocationsList/>
+      <LocationsList/> */}
     </>
   )
 }

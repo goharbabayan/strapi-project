@@ -23,6 +23,9 @@
   --color-main: #772A40;
   --color-hover: #753642;
   --red-r5: #FF4D4F;
+  --header-height: 140px;
+  --header-navigation-height: 100px;
+  --header-height-mobile: 72px;
 }
 
 * {
@@ -353,7 +356,51 @@ body.overflow-hidden {
 
 .unstyled-anchor {
   text-decoration: none;
-  color: inherit;
+}
+
+.button_main {
+  background-color: var(--color-main);
+  border-radius: 10px;
+  display: flex;
+  padding: 10px 16px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: var(--neutral-white-n10);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px;
+  border: none;
+}
+
+.button_general {
+  background-color: var(--neutral-white-n10);
+  border-radius: 10px;
+  display: flex;
+  padding: 10px 16px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: var(--color-main);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px;
+  outline: 1px solid var(--color-main);
+  border: none;
+}
+
+.button_main:hover {
+  background-color: var(--color-hover);
+  opacity: 80%;
+}
+
+.button_general:hover {
+  color: var(--color-hover);
+  opacity: 80%;
 }
 
 @media screen and (min-width: 750px) {

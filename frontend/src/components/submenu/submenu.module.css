@@ -1,0 +1,64 @@
+.childWrapper {
+  list-style: none;
+  padding: 0;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc #eee;
+}
+
+@media screen and (min-width: 750px) {
+  .level_one {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.70);
+    backdrop-filter: blur(12px);
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.3s ease-in-out;
+    overflow-y: hidden;
+    transition: all .3s ease-in-out;
+    z-index: 99;
+  }
+
+  .level_one.withoutLocationItems {
+    top: var(--header-navigation-height);
+  }
+
+  .level_two {
+    display: none;
+    position: absolute;
+    top: 24px;
+    left: 300px;
+    padding-bottom: 40px;
+    height: 100%;
+    z-index: 99;
+    width: calc(100% - 300px);
+  }
+
+  .level_one_container {
+    position: relative;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    overflow-y: hidden;
+  }
+
+  .level_two_container {
+    width: 100%;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #9e9e9e rgb(76 76 76);
+  }
+
+  .childWrapper {
+    max-height: 0;
+    overflow-y: hidden;
+    transition: all 1s ease-in;
+  }
+
+  .childWrapper.show {
+    max-height: unset;
+    overflow-y: visible;
+  }
+}

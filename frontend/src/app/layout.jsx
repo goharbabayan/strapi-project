@@ -18,12 +18,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <ApolloProvider client={Client}>
-          {isHomePage && <AnnouncementBar />}
-          <Header isHomePage={isHomePage}/>
-          <Suspense fallback={<Loading/>}>
-            <main className="main-wrapper">{children}</main>
-          </Suspense>
-          <Footer/>
+          {/* <AnnouncementBar/> */}
+          <Header />
+          <main className="main-wrapper">{children}</main>
+          {/* <Footer/> */}
         </ApolloProvider>
       </body>
     </html>

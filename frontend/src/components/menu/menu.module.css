@@ -1,0 +1,144 @@
+.list {
+  display: flex;
+  align-items: center;
+  column-gap: 32px;
+}
+
+.item, .childItem {
+  display: flex;
+}
+
+.list, .childList, .grandchildList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  padding: 0;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc #eee;
+}
+
+.link {
+  list-style-type: none;
+  text-decoration: none;
+}
+
+.title {
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  margin: 0;
+  color: var(--neutral-black);
+}
+
+.menuItem {
+  display: flex;
+  column-gap: 8px;
+}
+
+@media screen and (min-width: 750px) {
+  .list {
+    height: 100%;
+  }
+
+  .childList .title {
+    color: var(--neutral-white-n10);
+  }
+
+  .link, .title.hasNextLevel, .item > svg {
+    cursor: pointer;
+  }
+
+  .childList {
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 168px;
+    row-gap: 24px;
+    padding-block: 24px;
+    height: 100%;
+    position: sticky;
+    top: 0;
+    flex-grow: 1;
+    display: inline-flex;
+    opacity: 0;
+    height: 0;
+  }
+
+  .grandchildList {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    min-width: 168px;
+    row-gap: 24px;
+    display: inline-flex;
+    transition: all .3s ease-in;
+  }
+
+  .submenu.show {
+    max-height: 100%;
+    opacity: 1;
+    height: calc(100vh / 2);
+    overflow-y: auto;
+  }
+
+  .submenu.show .childList {
+    height: 100%;
+    opacity: 1;
+  }
+
+  .item {
+    height: calc(100% - 38px);
+    margin-top: 38px;
+    align-items: flex-start;
+  }
+
+  .subsubmenu.show {
+    display: flex;
+    opacity: 1;
+  }
+
+  .menuItem.child, .menuItem.grandChild {
+    min-width: 168px;
+    justify-content: space-between;
+  }
+
+  .childList svg {
+    transform: rotate(-90deg);
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .list {
+    width: 100%;
+    align-items: flex-start;
+    flex-direction: column;
+    max-height: calc(100% - 50px);
+  }
+
+  .item {
+    padding-bottom: 32px;
+  }
+
+  .childItem {
+    padding-top: 20px;
+  }
+
+  .item, .childItem {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .title {
+    width: calc(100% - 32px);
+  }
+
+  .childList, .grandchildList {
+    padding-left: 24px;
+  }
+
+  .childList {
+    display: flex;
+    flex-direction: column;
+  }
+}

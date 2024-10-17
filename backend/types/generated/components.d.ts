@@ -11,12 +11,49 @@ export interface BlockAccordion extends Schema.Component {
   };
 }
 
+export interface BlockCategory extends Schema.Component {
+  collectionName: 'components_block_categories';
+  info: {
+    displayName: 'category';
+    description: '';
+  };
+  attributes: {
+    name: Attribute.String;
+    link: Attribute.String;
+  };
+}
+
 export interface BlockFavoritesIds extends Schema.Component {
   collectionName: 'components_block_favorites_ids';
   info: {
     displayName: 'favoritesIds';
   };
   attributes: {};
+}
+
+export interface BlockLevel2 extends Schema.Component {
+  collectionName: 'components_block_level_2s';
+  info: {
+    displayName: 'level_2';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String;
+    link: Attribute.String;
+    level_3: Attribute.Component<'block.level-3', true>;
+  };
+}
+
+export interface BlockLevel3 extends Schema.Component {
+  collectionName: 'components_block_level_3s';
+  info: {
+    displayName: 'level_3';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String;
+    link: Attribute.String;
+  };
 }
 
 export interface BlockLocationCard extends Schema.Component {
@@ -83,13 +120,24 @@ export interface BlockSkill extends Schema.Component {
 export interface ElementsButtonLink extends Schema.Component {
   collectionName: 'components_elements_button_links';
   info: {
-    displayName: 'Button link';
+    displayName: 'Button';
     description: '';
   };
   attributes: {
     title: Attribute.String;
-    type: Attribute.Enumeration<['PRIMARY', 'SECONDARY']>;
     link: Attribute.String;
+  };
+}
+
+export interface ElementsCollection extends Schema.Component {
+  collectionName: 'components_elements_collections';
+  info: {
+    displayName: 'categories';
+    description: '';
+  };
+  attributes: {
+    categories_title: Attribute.String;
+    categories: Attribute.Component<'block.category', true>;
   };
 }
 
@@ -119,11 +167,12 @@ export interface ElementsHeading extends Schema.Component {
 export interface ElementsLink extends Schema.Component {
   collectionName: 'components_elements_links';
   info: {
-    displayName: 'Link';
+    displayName: 'ButtonWithLink';
     description: '';
   };
   attributes: {
-    redirection_url: Attribute.String;
+    title: Attribute.String;
+    link: Attribute.String;
   };
 }
 
@@ -246,20 +295,6 @@ export interface SectionFooter extends Schema.Component {
   };
 }
 
-export interface SectionHeader extends Schema.Component {
-  collectionName: 'components_section_headers';
-  info: {
-    displayName: 'Header';
-    description: '';
-  };
-  attributes: {
-    logo: Attribute.Media & Attribute.Required;
-    menuItem1: Attribute.String;
-    menuItem2: Attribute.String;
-    Button: Attribute.Component<'elements.button-link', true>;
-  };
-}
-
 export interface SectionImageBanner extends Schema.Component {
   collectionName: 'components_section_image_banners';
   info: {
@@ -316,13 +351,17 @@ declare module '@strapi/types' {
   export module Shared {
     export interface Components {
       'block.accordion': BlockAccordion;
+      'block.category': BlockCategory;
       'block.favorites-ids': BlockFavoritesIds;
+      'block.level-2': BlockLevel2;
+      'block.level-3': BlockLevel3;
       'block.location-card': BlockLocationCard;
       'block.provider-type': BlockProviderType;
       'block.rich-text': BlockRichText;
       'block.service-provider-card': BlockServiceProviderCard;
       'block.skill': BlockSkill;
       'elements.button-link': ElementsButtonLink;
+      'elements.collection': ElementsCollection;
       'elements.data': ElementsData;
       'elements.heading': ElementsHeading;
       'elements.link': ElementsLink;
@@ -335,7 +374,6 @@ declare module '@strapi/types' {
       'section.find-by-location': SectionFindByLocation;
       'section.find-by-type': SectionFindByType;
       'section.footer': SectionFooter;
-      'section.header': SectionHeader;
       'section.image-banner': SectionImageBanner;
       'section.info': SectionInfo;
       'section.list': SectionList;

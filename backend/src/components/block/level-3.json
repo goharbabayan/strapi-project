@@ -1,7 +1,7 @@
 {
-  "collectionName": "components_elements_links",
+  "collectionName": "components_block_level_3s",
   "info": {
-    "displayName": "ButtonWithLink",
+    "displayName": "level_3",
     "description": ""
   },
   "options": {},
@@ -10,8 +10,7 @@
       "type": "string"
     },
     "link": {
-      "type": "string",
-      "required": false
+      "type": "string"
     }
   }
 }

@@ -1,12 +1,12 @@
 {
-  "collectionName": "components_elements_button_links",
+  "collectionName": "components_block_categories",
   "info": {
-    "displayName": "Button",
+    "displayName": "category",
     "description": ""
   },
   "options": {},
   "attributes": {
-    "title": {
+    "name": {
       "type": "string"
     },
     "link": {
