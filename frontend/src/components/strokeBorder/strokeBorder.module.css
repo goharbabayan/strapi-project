@@ -1,0 +1,13 @@
+.border {
+  background: var(--neutral-n30);
+  display: block;
+  width: 100%;
+  height: 1px;
+  margin-block: 32px;
+}
+
+@media screen and (max-width:749px) {
+  .border {
+    margin-block: 16px;
+  }
+}

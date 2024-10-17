@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_elements_reviews",
+  "info": {
+    "displayName": "Review",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "author": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text"
+    },
+    "date": {
+      "type": "date"
+    },
+    "show": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

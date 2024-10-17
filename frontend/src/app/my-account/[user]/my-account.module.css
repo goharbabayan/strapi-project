@@ -1,0 +1,28 @@
+.mainWrap {
+  padding-block: 50px;
+  position: relative;
+}
+
+.mainWrap.client {
+  padding-block: 0 50px;
+}
+
+.successfullMessage {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  bottom: 13px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.successfullMessage.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media screen and (max-width: 949px) {
+  .mainWrap {
+    padding-block: 0;
+  }
+}

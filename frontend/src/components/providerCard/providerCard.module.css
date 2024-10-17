@@ -6,12 +6,12 @@
   position: relative;
   border: 2px solid #E8E8E8;
   border-radius: 10px;
-  background: var(--background-color-primary);
+  background: var(--neutral-white-n10);
 }
 
 .wrapper.blackScheme {
   border-radius: 10px;
-  border: 2px solid #333;
+  border: 2px solid var(--neutral-n100);
   background: linear-gradient(142deg, #111 46%, #2A2A2A 92%);
 }
 
@@ -56,8 +56,8 @@
 
 .title {
   display: flex;
-  color: var(--text-color-primary);
-  font-family: 'Urbanist';
+  color: var(--neutral-white-n10);
+  font-family: var(--primary-bold-font);
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
@@ -80,12 +80,12 @@
 .name {
   margin: 0;
   width: 50%;
-  color: var(--text-color-main);
+  color: var(--neutral-black);
   text-overflow: ellipsis;
-  font-family: 'Urbanist';
+  font-family: var(--primary-font);
   font-size: 18px;
   font-style: normal;
-  font-weight: 600;
+  font-family: var(--primary-bold-font);
   line-height: normal;
   display: block;
   -webkit-line-clamp: 3; /* WebKit (Chrome, Safari) */
@@ -123,8 +123,8 @@
 
 .cost {
   display: flex;
-  color: var(--text-color-main);
-  font-family: 'Urbanist';
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -133,8 +133,8 @@
 
 .location {
   display: flex;
-  color: var(--text-color-main);
-  font-family: 'Urbanist';
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -142,7 +142,7 @@
 }
 
 .location.blackScheme, .cost.blackScheme, .name.blackScheme {
-  color: var(--text-color-primary);
+  color: var(--neutral-white-n10);
 }
 
 @media screen and (max-width: 1789px) {

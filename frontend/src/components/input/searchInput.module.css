@@ -10,14 +10,14 @@
   min-width: 364px;
   padding: 11.5px 8px;
   border-radius: 6px;
-  border: 1px solid #000;
+  border: 1px solid var(--neutral-black);
   margin: auto;
   outline: none;
 }
 
 .input::placeholder {
-  color: rgba(0, 0, 0, 0.40);
-  font-family: 'Urbanist';
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
   font-size: 16px;
   font-style: normal;
   font-weight: 400;

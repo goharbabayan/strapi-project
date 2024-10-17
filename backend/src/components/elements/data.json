@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_elements_data",
+  "info": {
+    "displayName": "data"
+  },
+  "options": {},
+  "attributes": {
+    "duration": {
+      "type": "string"
+    },
+    "price": {
+      "type": "integer"
+    },
+    "additionalInfo": {
+      "type": "string"
+    }
+  }
+}

@@ -1,4 +1,5 @@
 'use client'
+
 import { useQuery } from '@apollo/client';
 import { GET_BANNER_QUERIES } from '@/app/graphql/bannerQueries';
 import styles from './banner.module.css';
@@ -15,7 +16,7 @@ const Banner = () => {
 
   let imageURL = '';
   let bannerContentIsNotEmpty = false;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
   title || description ? bannerContentIsNotEmpty = true : false;
   bannerImageURL ? imageURL = `${baseUrl}${bannerImageURL}` : null;
 
@@ -35,7 +36,7 @@ const Banner = () => {
           </div>
           <div className={styles.imageWrap}>
             {bannerImageURL &&
-              <img src={imageURL} width="179" height="179" alt="banner-image"/>
+              <img src={imageURL} width='179' height='179' alt='banner-image'/>
             }
           </div>
         </div>

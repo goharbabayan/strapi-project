@@ -1,0 +1,11 @@
+.title {
+  display: flex;
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 34px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border-bottom: 1px solid #c6c6c6;
+  margin-block: 30px 20px;
+}

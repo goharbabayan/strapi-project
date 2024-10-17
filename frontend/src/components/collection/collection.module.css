@@ -3,8 +3,8 @@
 }
 
 .title {
-  color: var(--text-color-main);;
-  font-family: 'Abril Fatface';
+  color: var(--neutral-black);;
+  font-family: var(--primary-font);
   font-size: 44px;
   font-style: normal;
   font-weight: 400;

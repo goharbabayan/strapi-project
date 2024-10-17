@@ -1,4 +1,5 @@
 'use client';
+
 import Link from 'next/link';
 import { useQuery } from '@apollo/client';
 import { GET_HEADER_QUERIES } from '../../app/graphql/headerQueries';
@@ -7,12 +8,13 @@ import styles from './header.module.css';
 import SearchInput from '../../components/input/SearchInput';
 import Button from '@/components/button/Button';
 import Accordion from '../icons/Accordion';
+import { usePathname } from 'next/navigation';
 
-
-
-export default function Header() {
+export default function Header({isHomePage}) {
   const { loading: headerLoading, error: headerError, data: headerSectionData } = useQuery(GET_HEADER_QUERIES);
   const { loading: logoLoading, error: logoError, data: logoData } = useQuery(GET_LOGO_QUERIES);
+  const pathname = usePathname();
+  const isAccountPage = pathname.includes('/my-account');
   if (headerLoading) {
     // Something for loading;
   }
@@ -32,11 +34,15 @@ export default function Header() {
   if (headerData.menuItem2) {
     secondNavigationText = headerData.menuItem2;
   }
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
   const buttons = headerData.Button;
   const isButtonsExisting = buttons.length > 0;
+
+  const handleLogoutButtonClick = () => {
+    localStorage.removeItem('token');
+  }
   return (
-    <header className={`${styles.header}`}>
+    <header className={`${styles.header} ${isHomePage ? styles.withAnnouncementBar : ''}`}>
       <div className={`${styles.mainWrap} page-width`}>
         <div className={`${styles.left_wrap}`}>
           <Link href='/' className={styles.logoWrap}>
@@ -44,7 +50,7 @@ export default function Header() {
               <img
                 src={`${baseUrl}${logoUrl}`}
                 alt='logo'
-                class='logo'
+                className='logo'
                 width='170'
                 height='41'
               />
@@ -73,7 +79,17 @@ export default function Header() {
           <SearchInput/>
           {isButtonsExisting &&
             <div className={styles.buttons_wrap}>
-              { buttons.map((button) => {
+              {isAccountPage
+                ?
+                <Button
+                  href='/'
+                  className={`${styles.btn} btn_PRIMARY`}
+                  onClick={handleLogoutButtonClick}
+                >
+                  <span>Logout</span>
+                </Button>
+                :
+                buttons.map((button) => {
                   let href = null;
                   button.link ? href = button.link : null;
                   return (

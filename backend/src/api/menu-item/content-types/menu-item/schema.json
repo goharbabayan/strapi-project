@@ -20,6 +20,9 @@
     "redirection_url": {
       "type": "string",
       "required": true
+    },
+    "dcacac": {
+      "type": "string"
     }
   }
 }

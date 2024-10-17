@@ -1,11 +1,16 @@
 .mainWrap {
-  background-color: var(--background-color-main);
+  background-color: var(--neutral-n20);
 }
 
 .container {
   display: flex;
   gap: 102px;
   justify-content: center;
+}
+
+.leftWrap,
+.rightWrap {
+  padding-block: 61px 83px;
 }
 
 .leftWrap {
@@ -47,11 +52,10 @@
 }
 
 .MenuItemsWrapper li a {
-  color: var(--text-color-main);;
-  font-family: 'Urbanist';
+  color: var(--neutral-black);;
   font-size: 18px;
   font-style: normal;
-  font-weight: 600;
+  font-family: var(--primary-bold-font);
   line-height: normal;
   display: flex;
   flex-wrap: wrap;
@@ -63,14 +67,20 @@
   background-image: url(../../../public/assets/footerBgImage/Footer_gree_bg_image.png);
   background-repeat: no-repeat;
   background-size: cover;
+  flex-basis: 100%;
+  padding: 10px 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 140px;
+  margin-bottom: 57px;
 }
 
 .bottomContainer {
-  background-color: var(--background-color-main);
+  background-color: var(--neutral-n20);
   display: flex;
   flex-wrap: wrap;
   row-gap: 20px;
-  padding-bottom: 57px;
   justify-content: center;
 }
 
@@ -79,20 +89,11 @@
   flex-basis: 100%;
 }
 
-.bottomInfoContainer {
-  flex-basis: 100%;
-  padding: 10px 64px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 140px;
-}
-
 .footerText {
   display: flex;
   margin: 0;
-  color: var(--text-color-secondary);
-  font-family: 'Urbanist';
+  color: var(--neutral-n60);
+  font-family: var(--primary-font);
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
@@ -106,8 +107,8 @@
 }
 
 .text {
-  color: var(--text-color-main);
-  font-family: 'Urbanist';
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -115,6 +116,10 @@
 }
 
 @media screen and (max-width: 989px) {
+  .leftWrap, .rightWrap {
+    padding-block: 20px;
+  }
+
   .bottomInfoContainer {
     min-height: 65px;
     padding: 10px 34px;
@@ -134,10 +139,6 @@
 }
 
 @media screen and (max-width: 749px) {
-  .mainWrap {
-    padding-block: 20px;
-  }
-
   .container {
     flex-wrap: wrap;
     gap: 20px;
@@ -146,6 +147,10 @@
 
   .leftWrap, .rightWrap {
     width: 100%;
+  }
+
+  .rightWrap {
+    padding-block: 0 20px;
   }
 
   .MenuItemsWrapper {
@@ -171,9 +176,6 @@
   .bottomInfoContainer {
     min-height: 65px;
     padding: 5px 24px;
-  }
-
-  .bottomContainer {
-    padding-bottom: 24px;
+    margin-bottom: 24px;
   }
 }

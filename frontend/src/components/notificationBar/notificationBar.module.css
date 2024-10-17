@@ -1,0 +1,58 @@
+
+.notificationBar {
+  display: flex;
+  position: fixed;
+  top: 0;
+  height: var(--notification-bar-height);
+  width: 100%;
+  background: var(--neutral-n90);
+  left: 0;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  z-index: 3;
+}
+
+.notificationText {
+  margin: 0 30px 0 0;
+  color: var(--neutral-white-n10);
+}
+
+.cancelButton {
+  background-color: var(--neutral-black);
+  color: var(--neutral-white-n10);
+}
+
+.submitButton,
+.cancelButton {
+  padding: 6px 12px;
+  border: none;
+}
+
+.primaryButtonsWrapper {
+  gap: 10px;
+  display: flex;
+  margin-right: 30px;
+}
+
+@media screen and (max-width: 749px) {
+  .notificationBar {
+    padding: 7px 14px;
+  }
+
+  .notificationText {
+    margin: 0;
+  }
+
+  .submitButton,
+  .cancelButton {
+    padding: 3px 6px;
+    min-height: 34px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .primaryButtonsWrapper {
+    margin-right: 0;
+  }
+}

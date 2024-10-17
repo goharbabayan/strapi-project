@@ -1,5 +1,13 @@
 import type { Schema, Attribute } from '@strapi/strapi';
 
+export interface BlockFavoritesIds extends Schema.Component {
+  collectionName: 'components_block_favorites_ids';
+  info: {
+    displayName: 'favoritesIds';
+  };
+  attributes: {};
+}
+
 export interface BlockLocationCard extends Schema.Component {
   collectionName: 'components_block_location_cards';
   info: {
@@ -40,6 +48,16 @@ export interface BlockServiceProviderCard extends Schema.Component {
   };
 }
 
+export interface BlockSkill extends Schema.Component {
+  collectionName: 'components_block_skills';
+  info: {
+    displayName: 'Skill';
+  };
+  attributes: {
+    name: Attribute.String;
+  };
+}
+
 export interface ElementsButtonLink extends Schema.Component {
   collectionName: 'components_elements_button_links';
   info: {
@@ -53,10 +71,23 @@ export interface ElementsButtonLink extends Schema.Component {
   };
 }
 
+export interface ElementsData extends Schema.Component {
+  collectionName: 'components_elements_data';
+  info: {
+    displayName: 'data';
+  };
+  attributes: {
+    duration: Attribute.String;
+    price: Attribute.Integer;
+    additionalInfo: Attribute.String;
+  };
+}
+
 export interface ElementsHeading extends Schema.Component {
   collectionName: 'components_elements_headings';
   info: {
     displayName: 'Heading';
+    description: '';
   };
   attributes: {
     Heading: Attribute.String & Attribute.Required;
@@ -67,9 +98,71 @@ export interface ElementsLink extends Schema.Component {
   collectionName: 'components_elements_links';
   info: {
     displayName: 'Link';
+    description: '';
   };
   attributes: {
-    redirection_url: Attribute.String & Attribute.Required;
+    redirection_url: Attribute.String;
+  };
+}
+
+export interface ElementsReview extends Schema.Component {
+  collectionName: 'components_elements_reviews';
+  info: {
+    displayName: 'Review';
+    description: '';
+  };
+  attributes: {
+    author: Attribute.String;
+    text: Attribute.Text;
+    date: Attribute.Date;
+    show: Attribute.Boolean & Attribute.DefaultTo<false>;
+  };
+}
+
+export interface ElementsText extends Schema.Component {
+  collectionName: 'components_elements_texts';
+  info: {
+    displayName: 'Text';
+    description: '';
+  };
+  attributes: {
+    item: Attribute.String;
+  };
+}
+
+export interface ElementsWorkingTime extends Schema.Component {
+  collectionName: 'components_elements_working_times';
+  info: {
+    displayName: 'WorkingTime';
+    description: '';
+  };
+  attributes: {
+    workday: Attribute.String;
+    start: Attribute.String;
+    end: Attribute.String;
+  };
+}
+
+export interface EntryStateEntry extends Schema.Component {
+  collectionName: 'components_entry_state_entries';
+  info: {
+    displayName: 'StateEntry';
+    description: '';
+  };
+  attributes: {
+    name: Attribute.String;
+    code: Attribute.String;
+  };
+}
+
+export interface EntrySuburb extends Schema.Component {
+  collectionName: 'components_entry_suburbs';
+  info: {
+    displayName: 'suburb';
+    description: '';
+  };
+  attributes: {
+    name: Attribute.String;
   };
 }
 
@@ -177,12 +270,20 @@ export interface SectionSlider extends Schema.Component {
 declare module '@strapi/types' {
   export module Shared {
     export interface Components {
+      'block.favorites-ids': BlockFavoritesIds;
       'block.location-card': BlockLocationCard;
       'block.provider-type': BlockProviderType;
       'block.service-provider-card': BlockServiceProviderCard;
+      'block.skill': BlockSkill;
       'elements.button-link': ElementsButtonLink;
+      'elements.data': ElementsData;
       'elements.heading': ElementsHeading;
       'elements.link': ElementsLink;
+      'elements.review': ElementsReview;
+      'elements.text': ElementsText;
+      'elements.working-time': ElementsWorkingTime;
+      'entry.state-entry': EntryStateEntry;
+      'entry.suburb': EntrySuburb;
       'section.banner': SectionBanner;
       'section.find-by-location': SectionFindByLocation;
       'section.find-by-type': SectionFindByType;

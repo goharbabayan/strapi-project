@@ -1,0 +1,123 @@
+
+.input {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--neutral-n50);
+  border-radius: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  outline: none;
+}
+
+.input[type="number"]::-webkit-outer-spin-button,
+.input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.label {
+  display: block;
+  position: relative;
+}
+
+.label, .input, .selectClassName {
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.label .selectClassName,
+.label .input {
+  margin-top: 8px;
+}
+
+.selectClassName {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--neutral-n50);
+  border-radius: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+}
+
+.options {
+  display: none;
+  position: absolute;
+  top: 66px;
+  right: 0;
+  left: 0;
+  margin: 0;
+  flex-direction: column;
+  max-height: 150px;
+  overflow: hidden;
+  overflow-y: scroll;
+  z-index: 2;
+  padding: 8px;
+  background: var(--neutral-white-n10);
+  border: 1px solid var(--neutral-n50);
+  border-radius: 3px;
+}
+
+.options.show {
+  display: flex;
+}
+
+.options .option {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.options .option:hover {
+  background-color: var(--neutral-n30);
+}
+
+.errorText {
+  text-align: center;
+  display: block;
+  margin-top: 3px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  color: var(--red-r5);
+}
+
+.showPasswordButton {
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.showPasswordButton:hover {
+  border-bottom: 1px solid var(--neutral-black);
+}
+
+.input.invalid {
+  border-color: #9b0a0a;
+}
+
+@media screen and (max-width: 749px) {
+  .label,
+  .selectClassName {
+    font-size: 14px;
+  }
+
+  .options {
+    top: 60px;
+  }
+}

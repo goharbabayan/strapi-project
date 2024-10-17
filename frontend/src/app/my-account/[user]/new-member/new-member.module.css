@@ -1,0 +1,36 @@
+.details {
+  width: calc(100% - 33% - 12px);
+  display: inline-block;
+}
+
+.details > .title {
+  margin-block: 0 40px;
+}
+
+.settingIcon {
+  background: #ada9a9;
+  border-radius: 10%;
+  cursor: pointer;
+}
+
+.settingIconWrap {
+  display: flex;
+  justify-content: flex-end;
+  margin-block: 20px;
+}
+
+.settingIconWrap .settings {
+  color: var(--neutral-black);
+  margin-right: 10px;
+  line-height: 32px;
+}
+
+@media screen and (max-width: 749px) {
+  .details {
+    width: 100%;
+  }
+
+  .details > .title {
+    margin-block: 40px 20px;
+  }
+}

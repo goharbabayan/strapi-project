@@ -1,0 +1,114 @@
+.mainWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  padding: 45px;
+  width: 100%;
+}
+
+.formWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding-top: 45px;
+  width: 422px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.form.hidden {
+  display: none;
+}
+
+.inputWrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-family: var(--primary-bold-font);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--neutral-n100);
+}
+
+.input {
+  outline: none;
+  padding: 8px 8px 8px 12px;
+  border: 1px solid #E6E6E6;
+  font-size: 16px;
+  border-radius: 0;
+}
+
+.submitButton {
+  display: inline-block;
+  width: 100%;
+  padding: 14px 24px;
+  font-family: var(--primary-font);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  text-transform: uppercase;
+  color: var(--neutral-white-n10);
+  background-color: var(--neutral-black);
+}
+
+.link {
+  text-decoration: none;
+  font-family: var(--primary-font);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: var(--neutral-black);
+}
+
+.loginButton {
+  font-family: var(--primary-font);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  border: none;
+  border: 1px solid var(--neutral-black);
+  padding-block: 9px;
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--neutral-black);
+  background-color: var(--neutral-white-n10);
+}
+
+.recoverText {
+  display: none;
+}
+
+.recoverText.show {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.recoverText h2 {
+  margin: 0;
+  font-family: var(--primary-font);
+  font-style: normal;
+  color: var(--neutral-black);
+  font-weight: 400;
+  font-size: 14px;
+}

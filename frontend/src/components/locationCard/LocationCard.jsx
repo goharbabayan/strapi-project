@@ -4,16 +4,16 @@ import Link from 'next/link';
 const LocationCard = ({ data }) => {
   const { badge, image, url } = data;
   let alt, imageUrl;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
   if (image) {
-    imageUrl = `${baseUrl}${image.data.attributes.url}`;
-    alt = image.data.attributes.alternativeText || 'locationCard';
+    imageUrl = `${baseUrl}${image?.data?.attributes?.url}`;
+    alt = image?.data?.attributes?.alternativeText || 'location';
   }
   return (
     <div className={`${styles.container} location-card`}>
       {imageUrl && url &&
         <Link href={url} className={`${styles.imageWrapper}`}>
-          <img src={imageUrl} alt={alt} width="302" height="397" class='card-image'/>
+          <img src={imageUrl} alt={alt} width="302" height="397" className='card-image'/>
         </Link>
       }
       {badge &&

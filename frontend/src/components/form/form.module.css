@@ -1,0 +1,121 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.form.hidden {
+  display: none;
+}
+
+.inputWrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-family: var(--primary-bold-font);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--neutral-n100);
+}
+
+.input {
+  outline: none;
+  padding: 8px 8px 8px 12px;
+  border: 1px solid #E6E6E6;
+  font-size: 16px;
+  border-radius: 0;
+}
+
+.shoHidePassword {
+  cursor: pointer;
+}
+
+.submitButton {
+  display: inline-block;
+  width: 100%;
+  padding: 14px 24px;
+  font-family: var(--primary-font);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  text-transform: uppercase;
+  color: var(--neutral-white-n10);
+  background-color: var(--neutral-black);
+}
+
+.link {
+  text-decoration: none;
+  font-family: var(--primary-font);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: var(--neutral-black);
+}
+
+.loginButton {
+  font-family: var(--primary-font);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  border: none;
+  border: 1px solid var(--neutral-black);
+  padding-block: 9px;
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--neutral-black);
+  background-color: var(--neutral-white-n10);
+}
+
+.succesfullMessage {
+  display: none;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.succesfullMessage.show,
+.signupText,
+.loginText,
+.forgotPassword {
+  display: flex;
+}
+
+.forgotPassword {
+  text-align: end;
+}
+
+.succesfullMessage h2,
+.succesfullMessage p {
+  margin: 0;
+  font-family: var(--primary-font);
+  font-style: normal;
+  font-weight: 400;
+  color:var(--neutral-black);
+  font-size: 14px;
+}
+
+.succesfullMessage h2 {
+  font-family: var(--primary-bold-font);
+  font-size: 16px;
+}
+
+.errorMessage {
+  margin-top: 7px;
+  color: var(--red-r5);
+  font-family: var(--primary-font);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+}

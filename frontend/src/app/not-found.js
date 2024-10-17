@@ -1,19 +1,11 @@
-const NotFound = () => {
-  return (
-    <div>
-      <h1>404 - Not Found</h1>
-      <p>The page you requested could not be found.</p>
-      <p>Here are some options:</p>
-      <ul>
-        <li>
-          <a href="/">Go to the homepage</a>
-        </li>
-        <li>
-          <a href="/search">Search for what you're looking for</a>
-        </li>
-      </ul>
-    </div>
-  );
-};
+import Link from 'next/link';
 
-export default NotFound;
+export default function NotFound() {
+  return (
+    <div className="page-width">
+      <h2>Not Found</h2>
+      <p>Could not find requested resource</p>
+      <Link href="/">Return Home</Link>
+    </div>
+  )
+}

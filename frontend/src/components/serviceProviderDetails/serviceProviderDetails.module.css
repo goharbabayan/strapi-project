@@ -1,0 +1,464 @@
+.details {
+  width: calc(100% - 33% - 12px);
+  display: inline-block;
+}
+
+.profileInfo {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 12px;
+  margin-top: 40px;
+}
+
+.socialLinks {
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.socialLink.email, .socialLink.phoneNumber, .socialLink.address {
+  flex-grow: 1;
+}
+
+.fullName {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 19px;
+  width: 100%;
+}
+
+.infoMessage {
+  min-height: 20px;
+}
+
+.ratesAndServices {
+  width: 100%;
+}
+.list {
+  padding: 0;
+  margin: 0;
+}
+
+.container {
+  margin-bottom: 40px;
+}
+
+.buttonsWrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  column-gap: 15px;
+}
+
+.selectOption {
+  display: flex;
+  flex-direction: column;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: transparent;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position-x: 98%;
+  background-position-y: 3px;
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  outline: none;
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--neutral-n50);
+  border-radius: 3px;
+  position: relative;
+}
+
+.selectOption option {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+}
+
+.userDetails {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 10px;
+  margin-top: 25px;
+  row-gap: 25px;
+}
+
+.settingIconWrap {
+  display: flex;
+  justify-content: flex-end;
+  margin-block: 20px;
+}
+
+.settingIcon {
+  background: #ada9a9;
+  border-radius: 10%;
+  cursor: pointer;
+}
+
+.userName {
+  display: flex;
+  flex-basis: 100%;
+  font-family: var(--primary-font);
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 400;
+  margin: 0;
+}
+
+.heading {
+  display: flex;
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 38px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-block: 20px 45px;
+  justify-content: center;
+}
+
+.title {
+  display: flex;
+  flex-basis: 100%;
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 34px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border-bottom: 1px solid #c6c6c6;
+  margin-block: 0 10px;
+}
+
+.subtitle {
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-block: 0 20px;
+}
+
+.settingIconWrap .settings {
+  color: var(--neutral-black);
+  margin-right: 10px;
+  line-height: 32px;
+}
+
+.item {
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  border-radius: 51px;
+  background: #F8F8F8;
+  padding: 5px 16px;
+}
+
+.formGroups {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.section {
+  padding-top: 40px;
+}
+
+.input {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--neutral-n50);
+  border-radius: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.label, .input, .date {
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.input {
+  outline: none;
+}
+
+.hidden {
+  display: none;
+}
+
+.infoWrap {
+  width: 100%;
+}
+
+.infoWrap .formGroup {
+  position: relative;
+  border-radius: 6px;
+  border: 1px solid #F5F5F5;
+  background: var(--neutral-n20);
+  padding: 12px;
+}
+
+.right {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+}
+
+.editIcon,.infoIcon {
+  position: absolute;
+  top: 57%;
+  right: 2px;
+  cursor: pointer;
+}
+
+.infoMessageWrapper {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  background-color: var(--neutral-white-n10);
+  border: 1px solid var(--neutral-n50);
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  top: 100%;
+  right: 0;
+}
+
+.button {
+  background-color: var(--neutral-n20);
+  border: none;
+  cursor: pointer;
+}
+
+.button:hover {
+  opacity: 60%;
+}
+
+.buttonChangePassword {
+  width: 100%;
+}
+
+.error {
+  display: none;
+}
+
+.error.show {
+  display: block;
+}
+
+.successMessage {
+  display: none;
+  margin-top: 7px;
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-style: normal;
+  font-family: var(--primary-bold-font);
+  font-size: 14px;
+  text-align: center;
+}
+
+.successMessage.show {
+  display: block;
+}
+
+.smallButton {
+  align-self: end;
+  font-size: 10px;
+}
+
+.priceInput {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--neutral-n50);
+  border-radius: 3px;
+}
+
+.email {
+  position: relative;
+}
+
+.email .inputEmail {
+  padding-right: 20px;
+}
+
+.input.serviceInput {
+  width: 35%;
+  padding: 7px 10px;
+  border: 1px solid var(--neutral-n50);
+  border-radius: 3px;
+}
+
+.input.info {
+  width: 80%;
+}
+
+.schedule {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  width: 100%;
+}
+
+.column {
+  width: calc(50% - 20px);
+}
+
+.infoContainer {
+  min-height: 336px;
+}
+
+.reviews {
+  width: 100%;
+  padding-bottom: 50px;
+}
+
+.date {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 13px;
+  background: var(--neutral-n20);
+  padding: 2px;
+  opacity: 50%;
+}
+
+@media screen and (min-width: 980px) {
+  .infoIcon:hover ~ .infoMessageWrapper {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+@media screen and (max-width: 979px) {
+  .button {
+    font-size: 14px;
+    padding: 6px 12px;
+    line-height: normal;
+  }
+
+  .formGroups {
+    gap: 0;
+  }
+
+  .infoWrap {
+    position: relative;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .schedule {
+    flex-direction: column;
+  }
+
+  .column {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .details {
+    width: 100%;
+  }
+
+  .details > .title {
+    margin-block: 40px 20px;
+  }
+
+  .selectOption,
+  .date,
+  .item,
+  .uploadButton,
+  .deleteButton,
+  .button {
+    font-size: 12px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .subtitle {
+    font-size: 18px;
+  }
+
+  .formGroup {
+    flex-wrap: wrap;
+  }
+
+  .infoIcon {
+    bottom: 15px;
+  }
+
+  .editIcon,
+  .infoIcon {
+    height: 15px;
+    width: 15px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .userDetails {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .ratesContainer {
+    padding: 15px 8px;
+  }
+
+  .rateItem {
+    grid-gap: 5px;
+  }
+
+  .input {
+    padding: 5px;
+  }
+
+  .dollarIcon {
+    margin-right: 2px;
+    margin-left: 2px;
+  }
+
+  .rateItem .inputWrap > label {
+    margin-bottom: 20px;
+  }
+
+  .inputWrap > label.additionalInfoLabel {
+    display: flex;
+    white-space: nowrap;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .inputWrap > label.additionalInfoLabel {
+    margin-bottom: 5px;
+    white-space: wrap;
+  }
+
+  .userDetails {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

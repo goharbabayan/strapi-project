@@ -8,8 +8,7 @@ const Button = ({ children, href, ...props }) => {
       </Link>
     );
   }
-
-  return <button {...props}>{ children }</button>;
+  return <button type='button' {...props}>{ children }</button>;
 };
 
 export default Button;

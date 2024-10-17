@@ -4,8 +4,8 @@ import DollarIcon from '../icons/DollarIcon';
 
 const ProviderCard = ({ provider, blackScheme }) => {
   const { badge, image, cost, location, name } = provider;
+  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
   let imageUrl, alt;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const isblackScheme = blackScheme ? styles.blackScheme : '';
   if (image) {
     imageUrl = `${baseUrl}${image.data.attributes.url}`;
@@ -15,7 +15,7 @@ const ProviderCard = ({ provider, blackScheme }) => {
     <div className={`${styles.wrapper} ${isblackScheme} provider-card`}>
       {image && imageUrl &&
         <div className={styles.imageWrapper}>
-          <img src={imageUrl} alt={alt} width="267" height="282" class='card-image'/>
+          <img src={imageUrl} alt={alt} width="267" height="282" className='card-image'/>
         </div>
       }
       {badge &&

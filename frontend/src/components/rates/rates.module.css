@@ -1,0 +1,186 @@
+.mainInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  position: relative;
+}
+
+.error {
+  display: block;
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: var(--red-r5);
+}
+
+.ratesAndServices {
+  width: 100%;
+}
+
+.title {
+  display: flex;
+  flex-basis: 100%;
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 34px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border-bottom: 1px solid #c6c6c6;
+  margin-block: 0 10px;
+}
+
+.subtitle {
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-block: 40px 8px;
+}
+
+.section {
+  padding-top: 40px;
+}
+
+.input {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--neutral-n50);
+  border-radius: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.label, .input, .date {
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.input {
+  outline: none;
+}
+
+.hidden {
+  display: none;
+}
+
+.ratesContainer {
+  width: 100%;
+  display: block;
+  padding: 24px;
+  /* border-radius: 10px; */
+  border: 1px solid var(--neutral-n50);
+}
+
+.rateItem {
+  display: grid;
+  grid-template-columns: 3fr 3fr 6fr 1fr;
+  align-items: center;
+  grid-gap: 10px;
+  margin-bottom: 20px;
+}
+
+.button {
+  border: 1px solid var(--neutral-n50);
+}
+
+.smallButton {
+  align-self: end;
+  font-size: 12px;
+}
+
+.priceInput {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--neutral-n50);
+  border-radius: 3px;
+}
+
+
+.formGroup .priceInput .input {
+  border: none;
+}
+
+.dollarIcon {
+  margin-right: 5px;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 749px)  {
+  .button {
+    font-size: 12px;
+  }
+
+  .smallButton {
+    font-size: 10px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .subtitle {
+    font-size: 18px;
+  }
+
+  .formGroup {
+    flex-wrap: wrap;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .ratesContainer {
+    padding: 15px 8px;
+  }
+
+  .input {
+    padding: 5px;
+  }
+
+  .dollarIcon {
+    margin-right: 2px;
+    margin-left: 2px;
+  }
+
+  .rateItem .duration {
+    margin-top: 20px;
+  }
+
+  .rateItem .inputWrap > label {
+    margin-bottom: 20px;
+  }
+
+  .inputWrap > label.additionalInfoLabel {
+    display: flex;
+    white-space: nowrap;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .rateItem {
+    grid-gap: 8px;
+    grid-template-columns: unset;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .inputWrap > label.additionalInfoLabel {
+    margin-bottom: 5px;
+    white-space: wrap;
+  }
+}

@@ -1,0 +1,86 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.itemWrap {
+  display: flex;
+  gap: 25px;
+  height: 100%;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.label {
+  height: 100%;
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  width: 100px;
+}
+
+.timeWrapper {
+  display: flex;
+  gap: 20px;
+}
+
+.input {
+  outline: none;
+  height: 100%;
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  padding-inline: 8px;
+  box-sizing: border-box;
+  border: 1px solid var(--neutral-n50);
+}
+
+.additionalInfoWrapper {
+  width: 100%;
+}
+
+.workday {
+  font-family: var(--primary-bold-font);
+  font-size: 18px;
+}
+
+@media screen and (max-width: 749px) {
+  .itemWrap {
+    gap: 5px;
+    justify-content: space-between;
+  }
+
+  .label {
+    align-self: center;
+    line-height: normal;
+    width: 70px;
+  }
+}
+
+@media screen and (max-width: 459px) {
+  .itemWrap {
+    flex-wrap: wrap;
+  }
+
+  .itemWrap label:nth-child(1) {
+    flex-basis: 100%;
+  }
+
+  .label {
+    width: 100%;
+  }
+
+  .workday {
+    margin-bottom: 8px;
+    font-size: 16px;
+  }
+}

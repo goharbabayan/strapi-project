@@ -14,7 +14,7 @@
   align-items: flex-start;
   gap: 10px;
   border-radius: 50px;
-  border: 1px solid #000;
+  border: 1px solid var(--neutral-black);
   flex-shrink: 0;
   transition: all 0.5s;
 }
@@ -24,21 +24,20 @@
 }
 
 .wrapper:hover {
-  background-color: var(--background-color-tertiary);
+  background-color: var(--neutral-black--neutral-black);
 }
 
 .wrapper:hover .link .text {
-  color: var(--text-color-secondary);
+  color: var(--neutral-n60);
 }
 
 .text {
-  color: var(--text-color-main);
+  color: var(--neutral-black);
   text-align: center;
   text-overflow: ellipsis;
-  font-family: 'Urbanist';
   font-size: 16px;
   font-style: normal;
-  font-weight: 600;
+  font-family: var(--primary-bold-font);
   line-height: normal;
   margin: 0;
   transition: all 0.5s;
@@ -46,7 +45,7 @@
 
 .container {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
+  scrollbar-color: var(--neutral-black) transparent;
 }
 
 .container::-webkit-scrollbar {
@@ -59,7 +58,7 @@
 }
 
 .container::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--neutral-black);
   border-radius: 6px;
 }
 

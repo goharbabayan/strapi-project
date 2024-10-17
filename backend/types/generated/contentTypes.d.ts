@@ -417,6 +417,7 @@ export interface ApiMenuItemMenuItem extends Schema.CollectionType {
       Attribute.Required &
       Attribute.DefaultTo<'menu item'>;
     redirection_url: Attribute.String & Attribute.Required;
+    dcacac: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -428,6 +429,36 @@ export interface ApiMenuItemMenuItem extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::menu-item.menu-item',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiMyAccountMyAccount extends Schema.SingleType {
+  collectionName: 'my_accounts';
+  info: {
+    singularName: 'my-account';
+    pluralName: 'my-accounts';
+    displayName: 'My account';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    dashboard: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::my-account.my-account',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::my-account.my-account',
       'oneToOne',
       'admin::user'
     > &
@@ -838,12 +869,54 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     resetPasswordToken: Attribute.String & Attribute.Private;
     confirmationToken: Attribute.String & Attribute.Private;
     confirmed: Attribute.Boolean & Attribute.DefaultTo<false>;
+    isApprovedByAdmin: Attribute.Boolean & Attribute.DefaultTo<false>;
+    managerID: Attribute.String;
     blocked: Attribute.Boolean & Attribute.DefaultTo<false>;
     role: Attribute.Relation<
       'plugin::users-permissions.user',
       'manyToOne',
       'plugin::users-permissions.role'
     >;
+    ressidentialAddress: Attribute.String;
+    photos: Attribute.Media;
+    name: Attribute.String;
+    lastName: Attribute.String;
+    country: Attribute.String;
+    city: Attribute.String;
+    suburbs: Attribute.Component<'entry.suburb', true>;
+    age: Attribute.String;
+    eyeColor: Attribute.String;
+    height: Attribute.String;
+    bust: Attribute.String;
+    dressSize: Attribute.String;
+    hairColor: Attribute.String;
+    bodyType: Attribute.String;
+    placeOfService: Attribute.String;
+    selfies: Attribute.Media;
+    profilePicture: Attribute.Media;
+    coverPhoto: Attribute.Media;
+    phoneNumber: Attribute.String;
+    contactInfo: Attribute.String;
+    instagramLink: Attribute.String;
+    onlyFansLink: Attribute.String;
+    websiteLink: Attribute.String;
+    aboutMe: Attribute.RichText;
+    interests: Attribute.Component<'elements.text', true>;
+    wishlist: Attribute.Component<'elements.text', true>;
+    outfits: Attribute.Component<'elements.text', true>;
+    makeup: Attribute.Component<'elements.text', true>;
+    costume: Attribute.Component<'elements.text', true>;
+    extras: Attribute.Component<'elements.text', true>;
+    digitalServices: Attribute.Component<'elements.text', true>;
+    incallRates: Attribute.Component<'elements.data', true>;
+    outcallRates: Attribute.Component<'elements.data', true>;
+    services: Attribute.Component<'elements.text', true>;
+    schedule: Attribute.Component<'elements.working-time', true>;
+    additionalInfo: Attribute.Component<'elements.text', true>;
+    reviews: Attribute.Component<'elements.review', true>;
+    digitalService: Attribute.Boolean & Attribute.DefaultTo<false>;
+    favoriteProvidersIds: Attribute.Component<'elements.text', true>;
+    gender: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -873,6 +946,7 @@ declare module '@strapi/types' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'api::home-page.home-page': ApiHomePageHomePage;
       'api::menu-item.menu-item': ApiMenuItemMenuItem;
+      'api::my-account.my-account': ApiMyAccountMyAccount;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;

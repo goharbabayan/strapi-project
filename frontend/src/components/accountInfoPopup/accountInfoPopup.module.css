@@ -1,0 +1,192 @@
+.modalOverlay {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 9;
+}
+
+.modalOverlay.show {
+  display: flex;
+}
+
+.modalContent {
+  background-color: var(--neutral-white-n10);
+  padding: 20px 40px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.modalContent > h2 {
+  width: 100%;
+  flex-basis: 100%;
+  text-align: center;
+}
+
+.modalClose {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--neutral-n100);
+  background: none;
+  border: none;
+}
+
+.column {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
+}
+
+.profileName,
+.address {
+  margin-bottom: 22px;
+}
+
+.profileName .input,
+.address .input {
+  padding-right: 25px;
+}
+
+.input {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--neutral-n50);
+  border-radius: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  outline: none;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.label, .input {
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.editIcon,.infoIcon {
+  position: absolute;
+  top: 57%;
+  right: 15px;
+  cursor: pointer;
+}
+
+.subtitle {
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-block: 0 20px;
+  text-align: center;
+}
+
+.heading {
+  display: flex;
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 38px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-block: 20px 45px;
+}
+
+.infoWrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.address, .profileName, .passwordContainer {
+  position: relative;
+  border-radius: 6px;
+  border: 1px solid #F5F5F5;
+  background: var(--neutral-n20);
+  padding: 12px;
+}
+
+.passwordContainer {
+  padding: 12px 40px;
+}
+
+.messages {
+  display: flex;
+  justify-content: center;
+}
+
+.newPassword {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px auto;
+}
+
+.container {
+  min-height: 300px;
+  min-width: 330px;
+}
+
+.error {
+  display: none;
+  text-align: center;
+}
+
+.error.show {
+  display: block;
+}
+
+.successMessage {
+  display: none;
+  margin-top: 7px;
+  color: var(--neutral-black);
+  font-style: normal;
+  font-family: var(--primary-bold-font);
+  font-size: 14px;
+  text-align: center;
+}
+
+.successMessage.show {
+  display: block;
+}
+
+@media screen and (max-width: 749px) {
+  .label,
+  .buttonChangePassword {
+    font-size: 14px;
+  }
+
+  .editIcon,
+  .infoIcon {
+    height: 15px;
+    width: 15px;
+  }
+
+  .subtitle {
+    font-size: 18px;
+  }
+}

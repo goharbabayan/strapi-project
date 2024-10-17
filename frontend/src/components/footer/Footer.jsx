@@ -23,7 +23,7 @@ export default function Footer() {
   const hasMenuItems = footerData?.menu_items?.data?.length > 0;
   const href = footerData?.link?.redirection_url;
   const text = footerData?.text;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
   let menuItems = [];
   if (hasMenuItems) {
     menuItems = footerData.menu_items.data;
@@ -38,7 +38,7 @@ export default function Footer() {
             <img
               src={`${baseUrl}${logoUrl}`}
               alt='logo'
-              class={styles.logo}
+              className={styles.logo}
               width="295"
               height="70"
             />

@@ -1,0 +1,61 @@
+.buttons {
+  margin: 50px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.message {
+  display: none;
+  margin-top: 7px;
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  text-align: center;
+}
+
+.message.show {
+  display: block;
+}
+
+.mainWrap {
+  margin-block: 100px;
+}
+
+.heading {
+  text-align: center;
+  font-family: var(--primary-font);
+  font-size: 28px;
+
+}
+
+.mainInfo {
+  margin: 40px auto;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  max-width: 800px;
+  grid-row-gap: 10px;
+}
+
+.mainInfo span {
+  font-size: 16px;
+  font-family: var(--primary-font);
+  font-weight: 400;
+  display: inline-block;
+  border: 1px solid #ddd;
+  padding: 5px;
+  margin: 0 5px;
+}
+
+@media screen and (max-width: 749px) {
+  .mainWrap {
+    margin-block: 25px;
+  }
+
+  .heading {
+    font-size: 24px;
+  }
+}
