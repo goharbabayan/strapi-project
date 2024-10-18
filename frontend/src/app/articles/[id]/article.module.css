@@ -12,6 +12,7 @@
   font-family: var(--headings-font);
   font-size: 32px;
   text-transform: uppercase;
+  font-weight: normal;
   padding: 0;
   text-align: center;
   line-height: 1;

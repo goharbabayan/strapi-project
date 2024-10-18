@@ -13,7 +13,7 @@
 
 .title {
   color: var(--neutral-n100);
-  font-family: var(--primary-font);
+  font-family: var(--primary-bold-font);
   font-size: 18px;
   font-style: normal;
   font-weight: 400;

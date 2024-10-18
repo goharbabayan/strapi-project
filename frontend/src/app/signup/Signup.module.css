@@ -13,8 +13,8 @@
   align-items: center;
   justify-content: center;
   gap: 24px;
-  padding-top: 45px;
-  width: 422px;
+  max-width: 422px;
+  width: 100%;
 }
 
 .form {
@@ -36,7 +36,7 @@
 .label {
   font-family: var(--primary-bold-font);
   font-style: normal;
-  font-weight: 700;
+  font-weight: normal;
   font-size: 14px;
   line-height: 18px;
   color: var(--neutral-n100);
@@ -151,7 +151,7 @@
   align-items: center;
   font-family: var(--primary-bold-font);
   font-style: normal;
-  font-weight: 700;
+  font-weight: normal;
   font-size: 14px;
   line-height: 18px;
   color: var(--neutral-n100);

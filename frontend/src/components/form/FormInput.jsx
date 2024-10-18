@@ -33,7 +33,7 @@ export default function FormInput({ id, type, name, placeholder, errorMessage, o
         placeholder={placeholder}
         required
       />
-      {type === 'password' ? <span className={`text-small ${styles.shoHidePassword}`} data-id={id} onClick={(e) => handleShowHidePassword(e)}>
+      {type === 'password' ? <span className={`text-small ${styles.showHidePassword}`} data-id={id} onClick={(e) => handleShowHidePassword(e)}>
         {inputType.id === id && inputType.showPassword ? "Hide password" : "Show password"}
         </span> : null}
       <span className={styles.errorMessage}>{errorMessage}</span>

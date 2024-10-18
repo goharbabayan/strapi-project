@@ -15,10 +15,10 @@
 
 .title {
   color: var(--neutral-black);
-  font-family: var(--primary-font);
+  font-family: var(--headings-font);
   font-size: 46px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: normal;
   line-height: normal;
   margin-block: 0 24px;
 }
