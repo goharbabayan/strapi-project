@@ -27,7 +27,6 @@ export default function Footer() {
 
   const atLeastOneNavigationItemExist = navigationItems && navigationItems.length > 0;
   const isLogoOrNavigationExisting = logo || atLeastOneNavigationItemExist;
-console.log('data: ', data);
 
   return (
     <>

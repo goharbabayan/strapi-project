@@ -83,11 +83,11 @@
   display: flex;
 }
 
-.navItem .link {
+.link {
   border-bottom: 1px solid transparent;
 }
 
-.navItem:hover .link {
+.link:hover {
   border-bottom: 1px solid var(--neutral-white-n10);
 }
 

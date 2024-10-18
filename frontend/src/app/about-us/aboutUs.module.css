@@ -45,9 +45,9 @@
   color: var(--neutral-black);
   font-size: 46px;
   font-style: normal;
-  font-weight: 600;
   font-family: var(--headings-font);
   line-height: normal;
+  font-weight: normal;
   margin: 0;
 }
 
@@ -76,7 +76,7 @@
   .imageWrapper {
     width: 100%;
     max-width: unset;
-    max-height: 350px;
+    max-height: 390px;
   }
 
   .desktopImage {
@@ -90,6 +90,10 @@
 
 @media screen and (max-width: 749px) {
   .heading {
-    font-size: 36px;
+    font-size: 38px;
+  }
+
+  .content {
+    padding: 16px;
   }
 }

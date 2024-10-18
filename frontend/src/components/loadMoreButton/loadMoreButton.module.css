@@ -26,8 +26,7 @@
 .spinner {
   margin: 0 auto;
   display: none;
-  font-family: var(--typography-primary-font-family);
-  font-weight: 900;
+  font-family: var(--primary-bold-font);
   line-height: 1;
 }
 
@@ -36,16 +35,15 @@
 }
 
 .button {
-  font-family: var(--typography-primary-font-family);
-  font-weight: 500;
-  background-color: var(--background-color-tertiary);
+  font-family: var(--primary-font);
+  background-color: var(--neutral-black);
   display: inline-block;
   line-height: 1;
   font-size: 15px;
   padding: 12px 24px;
   border-radius: 3px;
-  color: var(--background-color-primary);
-  fill: var(--background-color-primary);
+  color: var(--neutral-white-n10);
+  fill: var(--neutral-white-n10);
   text-align: center;
   transition: all .3s;
   position: relative;

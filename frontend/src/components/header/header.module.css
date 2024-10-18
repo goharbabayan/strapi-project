@@ -6,6 +6,7 @@
   width: 100%;
   height: var(--header-navigation-height);
   display: flex;
+  justify-content: flex-end;
 }
 
 .navigation {
@@ -17,11 +18,13 @@
 .logo {
   display: inline-flex;
   align-self: center;
+  max-width: 176px;
 }
 
 .logo > img {
   width: 100%;
   height: 100%;
+  object-fit: contain;
 }
 
 .container {

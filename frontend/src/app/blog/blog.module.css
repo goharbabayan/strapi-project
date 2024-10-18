@@ -9,7 +9,7 @@
   grid-template-columns: repeat(2, 1fr);
   grid-column-gap: 30px;
   grid-row-gap: 35px;
-  font-family: var(--typography-primary-font-family);
+  font-family: var(--primary-font);
 }
 
 .articleWrap {
@@ -60,13 +60,14 @@
   overflow: hidden;
   text-overflow: ellipsis;
   height: 100%;
+  font-family: var(--primary-font);
 }
 
 .content * {
   margin: 0;
   line-height: 1.5em;
   font-size: 14px;
-  color: var(--card-content-text-color);
+  color: var(--neutral-black);
 }
 
 .button {
@@ -75,16 +76,16 @@
   text-transform: uppercase;
   font-weight: 500;
   font-size: 12px;
-  color: var(--text-color-main);
+  color: var(--neutral-black);
 }
 
 .date {
   padding: 15px 30px;
   margin: 0;
-  border-top: 1px solid var(--card-border-color);
+  border-top: 1px solid var(--neutral-n60);
   line-height: 1.3em;
   font-size: 12px;
-  color: var(--card-title-color);
+  color: var(--neutral-black);
 }
 
 .heroImage {
@@ -94,9 +95,8 @@
 }
 
 .heading {
-  color: var(--card-title-color);
-  font-family: var(--typography-primary-font-family);
-  font-weight: 600;
+  color: var(--neutral-n90);
+  font-family: var(--primary-bold-font);
   font-size: 21px;
 }
 
