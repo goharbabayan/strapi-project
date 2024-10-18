@@ -1,22 +1,26 @@
 import { gql } from '@apollo/client';
 
 const GET_FOOTER_QUERIES = gql`
-  query GetFooter {
-    homePage {
+  query {
+    footer {
       data {
         attributes {
-          Footer {
-            info
-            text
-            link {
-              redirection_url
+          logo {
+            data {
+              attributes {
+                alternativeText
+                url
+                width
+                height
+              }
             }
-            menu_items(pagination: { start: 0, limit: 50 }) {
-              data {
-                attributes {
-                  item
-                  redirection_url
-                }
+          }
+          description
+          navigation(pagination: { limit: 20}) {
+            data {
+              attributes {
+                name
+                url
               }
             }
           }

@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
           {/* <AnnouncementBar/> */}
           <Header />
           <main className="main-wrapper">{children}</main>
-          {/* <Footer/> */}
+          <Footer />
         </ApolloProvider>
       </body>
     </html>

@@ -1,78 +1,93 @@
 'use client'
 
+import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_FOOTER_QUERIES } from '@/app/graphql/footerQueries';
-import { GET_LOGO_QUERIES } from '@/app/graphql/findLogoQueries';
-import Link from 'next/link';
 import styles from './footer.module.css';
+import Arrow from '../icons/Arrow';
+import Text from '../text/Text';
+import Button from '../button/Button';
 
 export default function Footer() {
-  const { loading: footerLoading, error: footerError, data: footerSectionData } = useQuery(GET_FOOTER_QUERIES);
-  const { loading: logoLoading, error: logoError, data: logoData } = useQuery(GET_LOGO_QUERIES);
-
-  if (footerLoading) {
-    // Something for loading;
-  }
-  if (footerError) {
-    // Something for error;
-  };
-  if (footerSectionData === undefined || footerSectionData === null) return;
-
-  const logoUrl = logoData?.homePage?.data?.attributes?.Header?.logo.data?.attributes?.url;
-  const footerData = footerSectionData?.homePage?.data?.attributes?.Footer;
-  const hasMenuItems = footerData?.menu_items?.data?.length > 0;
-  const href = footerData?.link?.redirection_url;
-  const text = footerData?.text;
+  const [logo, setLogo] = useState(null);
+  const [description, setDescription] = useState('');
+  const [navigationItems, setNavigationItems] = useState([]);
+  const {loading, error, data} = useQuery(GET_FOOTER_QUERIES);
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
-  let menuItems = [];
-  if (hasMenuItems) {
-    menuItems = footerData.menu_items.data;
-  }
+
+  useEffect(() => {
+    data !== undefined && setLogo(data?.footer?.data?.attributes?.logo?.data?.attributes);
+    data !== undefined && setDescription(data?.footer?.data?.attributes?.description);
+    data !== undefined && setNavigationItems(data?.footer?.data?.attributes?.navigation?.data);
+  }, [data]);
+
+  const handleScrollToSection = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const atLeastOneNavigationItemExist = navigationItems && navigationItems.length > 0;
+  const isLogoOrNavigationExisting = logo || atLeastOneNavigationItemExist;
+console.log('data: ', data);
 
   return (
-    <footer className={styles.mainWrap}>
-      <div className={`${styles.container} page-width`}>
-        <div className={styles.leftWrap}>
-        {logoUrl && (
-          <Link href='' className={styles.logoWrap}>
-            <img
-              src={`${baseUrl}${logoUrl}`}
-              alt='logo'
-              className={styles.logo}
-              width="295"
-              height="70"
-            />
-          </Link>
-        )}
-        {footerData.info && <p className={styles.text}>{footerData.info}</p> }
-        </div>
-        <div className={styles.rightWrap}>
-          { footerData?.menu_items?.data?.length > 0 &&
-            <ul className={ styles.MenuItemsWrapper }>
-              { menuItems.map((item, index) => {
-                const { attributes: { item: title, redirection_url: href } } = item;
-                return <li key={index}><Link href={href}>{title}</Link></li>
-              })}
-            </ul>
+    <>
+      {loading
+      ?
+        <footer className={styles.emptyFooter}></footer>
+      :
+        <>
+          {isLogoOrNavigationExisting &&
+            <footer className={styles.footer}>
+              <section className="page-width">
+                <div className={styles.container}>
+                  {(logo || description) &&
+                    <div className={`${styles.logoWrapper} ${!atLeastOneNavigationItemExist ? styles.fullWidth : ''}`}>
+                      {logo &&
+                        <a className={styles.logo} href="/">
+                          <img
+                            src={`${baseUrl}${logo.url}`}
+                            alt={logo.alternativeText || 'logo'}
+                            width={202}
+                            height={100}
+                          />
+                        </a>
+                      }
+                      {description &&
+                        <Text
+                          tag={'p'}
+                          children={description}
+                          className={styles.description}
+                        />
+                      }
+                    </div>
+                  }
+                  {atLeastOneNavigationItemExist &&
+                    <div className={styles.navigation}>
+                      {navigationItems.map((item, index) => {
+                        const {name, url} = item.attributes;
+                        if (index < 12) return (
+                          <div className={styles.navItem} key={index}>
+                            <Button
+                              href={url}
+                              children={name}
+                              className={styles.link}
+                            />
+                          </div>
+                        )}
+                      )}
+                    </div>
+                  }
+                  {logo &&
+                    <div className={styles.iconWrap} onClick={handleScrollToSection}>
+                      <Arrow className={styles.iconArrow}/>
+                    </div>
+                  }
+                </div>
+              </section>
+            </footer>
           }
-        </div>
-      </div>
-      <div className={`${styles.bottomContainer} page-width`}>
-        <div className={styles.svgWrapper}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="43" height="44" viewBox="0 0 43 44" fill="none">
-            <rect x="1.2666" y="0.5" width="40.7389" height="43" rx="20.3694" stroke="#3C403C"/>
-            <path d="M21.7666 29L21.7666 15M21.7666 15L15.7666 21M21.7666 15L27.7666 21" stroke="black" strokeWidth="1.5"/>
-          </svg>
-        </div>
-        <div className={styles.bottomInfoContainer}>
-          <h4 className={styles.footerText}>{text}</h4>
-          <Link href={href} className={styles.url}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <path d="M1.57588 16.4245L16.4251 1.57526M16.4251 1.57526L3.6972 1.57526M16.4251 1.57526L16.4251 14.3032" stroke="#ECEEEC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </Link>
-        </div>
-      </div>
-    </footer>
+        </>
+      }
+    </>
   )
 }

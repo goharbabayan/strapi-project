@@ -33,6 +33,14 @@
   font-variant-ligatures: none;
 }
 
+/* Added for header and footer to be in place */
+body {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 100%;
+  min-height: 100vh;
+}
+
 div[hidden] {
   display: none;
 }
@@ -165,9 +173,9 @@ body.overflow-hidden {
 }
 
 .page-width {
-  max-width: 85.375rem;
+  max-width: 1348.4px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 24px;
 }
 
 .btn_general {
@@ -434,18 +442,7 @@ body.overflow-hidden {
   }
 
   .page-width {
-    padding: 0 3.125rem;
-  }
-
-  .btn_SECONDARY {
-    font-size: 16px;
-    line-height: 20px;
-  }
-}
-
-@media screen and (min-width: 990px) {
-  .page-width {
-    padding: 0 3.25rem;
+    padding: 0 43px;
   }
 }
 
