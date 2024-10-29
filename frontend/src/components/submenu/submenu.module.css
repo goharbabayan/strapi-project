@@ -5,7 +5,7 @@
   scrollbar-color: #ccc #eee;
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 850px) {
   .level_one {
     position: fixed;
     top: var(--header-height);

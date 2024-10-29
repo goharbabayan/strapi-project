@@ -3,22 +3,24 @@ import { gql } from '@apollo/client';
 
 const GET_NAVIGATION_QUERIES = gql`
   query {
-    navigation {
+    header {
       data {
         attributes {
-          navigation_items {
-            data {
-              attributes {
-                title
-                link
-                level_2 {
-                  id
+          navigation {
+            navigation_items {
+              data {
+                attributes {
                   title
                   link
-                  level_3 {
+                  level_2 {
                     id
                     title
                     link
+                    level_3 {
+                      id
+                      title
+                      link
+                    }
                   }
                 }
               }

@@ -4,7 +4,18 @@ import ArrowDown from '../icons/arrowDown/ArrowDown';
 import Text from '../text/Text';
 import Submenu from '../submenu/Submenu';
 
-export default function Menu({menu, level, isMobileLayout, menuItemsHasAtLeastOneItem}) {
+export default function Menu({
+  menu,
+  level,
+  isMobileLayout,
+  menuItemsHasAtLeastOneItem,
+  openedFirstLevelMobileItemId,
+  setOpenedFirstLevelMobileItemId,
+  isOneOfTheMobileMenuItemsOpened,
+  setIsOneOfTheMobileMenuItemsOpened,
+  listItemsAreOpened
+}) {
+
   const [openLevels, setOpenLevels] = useState({});
   const [expandedSubmenuLevel, setExpandedSubmenuLevel] = useState(null);
   const [isOpened, setIsOpened] = useState(false);
@@ -30,6 +41,15 @@ export default function Menu({menu, level, isMobileLayout, menuItemsHasAtLeastOn
   };
 
   const toggleMenu = (id, hasNextLevel, level) => {
+    if (level === 1) {
+      setOpenedFirstLevelMobileItemId(id);
+      id === openedFirstLevelMobileItemId
+        ? setIsOneOfTheMobileMenuItemsOpened(!isOneOfTheMobileMenuItemsOpened)
+        : setIsOneOfTheMobileMenuItemsOpened(true);
+    } else if (level === 2) {
+      setIsOneOfTheMobileMenuItemsOpened(true);
+    };
+
     setOpenLevels((prevState) => {
       if (level === 1) {
         const isCurrentlyOpen = prevState[id];
@@ -46,6 +66,13 @@ export default function Menu({menu, level, isMobileLayout, menuItemsHasAtLeastOn
       }
     });
   };
+
+  useEffect(() => {
+    if (listItemsAreOpened) {
+      setOpenedFirstLevelMobileItemId(null);
+      setOpenLevels({});
+    }
+  }, [listItemsAreOpened]);
 
   const hasChild = menu && Array.isArray(menu) && menu.length > 0;
   const nextLevel = `level_${level + 1}`;
@@ -101,6 +128,11 @@ export default function Menu({menu, level, isMobileLayout, menuItemsHasAtLeastOn
                         nextLevelMenu={menuItem[nextLevel]}
                         level={level + 1}
                         isMobileLayout={isMobileLayout}
+                        isOneOfTheMobileMenuItemsOpened={isOneOfTheMobileMenuItemsOpened}
+                        setIsOneOfTheMobileMenuItemsOpened={setIsOneOfTheMobileMenuItemsOpened}
+                        listItemsAreOpened={listItemsAreOpened}
+                        openedFirstLevelMobileItemId={openedFirstLevelMobileItemId}
+                        setOpenedFirstLevelMobileItemId={setOpenedFirstLevelMobileItemId}
                       />
                     </div>
                   ) :

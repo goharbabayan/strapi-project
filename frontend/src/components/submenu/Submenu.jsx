@@ -1,7 +1,19 @@
 import Menu from '../menu/Menu';
 import styles from './submenu.module.css';
 
-export default function Submenu({className, nextLevelMenu, level, isMobileLayout, isOpen, menuItemsHasAtLeastOneItem}) {
+export default function Submenu({
+  className,
+  nextLevelMenu,
+  level,
+  isMobileLayout,
+  isOpen,
+  menuItemsHasAtLeastOneItem,
+  isOneOfTheMobileMenuItemsOpened,
+  openedFirstLevelMobileItemId,
+  setOpenedFirstLevelMobileItemId,
+  setIsOneOfTheMobileMenuItemsOpened,
+  listItemsAreOpened
+}) {
   return (
     <section
       className={`${level === 2 ? styles.level_one : styles.level_two} ${className ? className : ''} ${!menuItemsHasAtLeastOneItem ? styles.withoutLocationItems : ''}`}
@@ -13,6 +25,11 @@ export default function Submenu({className, nextLevelMenu, level, isMobileLayout
           className={`${styles.childWrapper} ${isOpen ? styles.show: ''}`}
           isMobileLayout={isMobileLayout}
           menuItemsHasAtLeastOneItem={menuItemsHasAtLeastOneItem}
+          openedFirstLevelMobileItemId={openedFirstLevelMobileItemId}
+          setOpenedFirstLevelMobileItemId={setOpenedFirstLevelMobileItemId}
+          isOneOfTheMobileMenuItemsOpened={isOneOfTheMobileMenuItemsOpened}
+          setIsOneOfTheMobileMenuItemsOpened={setIsOneOfTheMobileMenuItemsOpened}
+          listItemsAreOpened={listItemsAreOpened}
         />
       </div>
     </section>

@@ -4,7 +4,7 @@
   transition: transform 0.3s ease;
 }
 
-@media screen and (max-width: 749px) {
+@media screen and (max-width: 849px) {
   .arrow.rotatedUp {
     transform: rotate(180deg);
     transition: transform 0.3s ease;

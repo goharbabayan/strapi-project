@@ -15,7 +15,6 @@ export default function FindByLocation () {
   const [cards, setCards] = useState([]);
   const [heading, setHeading] = useState('');
   const {loading, data, error} = useQuery(GET_BY_LOCATION_QUERIES);
-
   useEffect(() => {
     if (data != undefined) {
       setHeading(data?.home?.data?.attributes?.Find_by_location?.heading);

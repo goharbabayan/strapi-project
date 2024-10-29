@@ -32,6 +32,12 @@
       "type": "component",
       "repeatable": true,
       "component": "elements.link"
+    },
+    "navigation": {
+      "displayName": "navigation",
+      "type": "component",
+      "repeatable": false,
+      "component": "section.navigation"
     }
   }
 }

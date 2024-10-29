@@ -41,16 +41,12 @@
 @media screen and (max-width: 849px) {
   .mobileLayout {
     width: 100%;
-    height: 100%;
     align-items: flex-start;
   }
 
   .mainWrap {
     max-height: calc(100% - 52px);
     margin-block: 26px;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #ccc #eee;
   }
 }
 

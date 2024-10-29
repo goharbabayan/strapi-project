@@ -9,7 +9,8 @@
     "displayName": "User"
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": false,
+    "timestamps": true
   },
   "attributes": {
     "username": {
@@ -53,6 +54,13 @@
       "default": false,
       "configurable": false
     },
+    "isApprovedByAdmin": {
+      "type": "boolean",
+      "default": false
+    },
+    "managerID": {
+      "type": "string"
+    },
     "blocked": {
       "type": "boolean",
       "default": false,
@@ -64,13 +72,6 @@
       "target": "plugin::users-permissions.role",
       "inversedBy": "users",
       "configurable": false
-    },
-    "isApprovedByAdmin": {
-      "type": "boolean",
-      "default": false
-    },
-    "managerID": {
-      "type": "string"
     },
     "ressidentialAddress": {
       "type": "string"
@@ -94,11 +95,6 @@
     },
     "city": {
       "type": "string"
-    },
-    "suburbs": {
-      "type": "component",
-      "repeatable": true,
-      "component": "entry.suburb"
     },
     "age": {
       "type": "string"

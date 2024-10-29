@@ -996,6 +996,7 @@ export interface ApiHeaderHeader extends Schema.SingleType {
     logo: Attribute.Media;
     categories: Attribute.Component<'elements.collection'>;
     buttons: Attribute.Component<'elements.link', true>;
+    navigation: Attribute.Component<'section.navigation'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1105,40 +1106,6 @@ export interface ApiMyAccountMyAccount extends Schema.SingleType {
   };
 }
 
-export interface ApiNavigationNavigation extends Schema.SingleType {
-  collectionName: 'navigations';
-  info: {
-    singularName: 'navigation';
-    pluralName: 'navigations';
-    displayName: 'Navigation';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    navigation_items: Attribute.Relation<
-      'api::navigation.navigation',
-      'oneToMany',
-      'api::navigation-item.navigation-item'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::navigation.navigation',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::navigation.navigation',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 export interface ApiNavigationItemNavigationItem extends Schema.CollectionType {
   collectionName: 'navigation_items';
   info: {
@@ -1199,7 +1166,6 @@ declare module '@strapi/types' {
       'api::home.home': ApiHomeHome;
       'api::menu-item.menu-item': ApiMenuItemMenuItem;
       'api::my-account.my-account': ApiMyAccountMyAccount;
-      'api::navigation.navigation': ApiNavigationNavigation;
       'api::navigation-item.navigation-item': ApiNavigationItemNavigationItem;
     }
   }

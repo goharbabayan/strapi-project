@@ -13,16 +13,21 @@ import Navigation from '../navigation/Navigation';
 
 export default function Header() {
   const [menuItems, setMenuItems] = useState([]);
+  const [menuItemsTitle, setMenuItemsTitle] = useState(null);
   const [buttons, setButtons] = useState([]);
   const [logo, setLogo] = useState(null);
   const [isMobileLayout, setIsMobileLayout] = useState(false);
   const [showMobileNavigation, setShowMobileNavigation] = useState(false);
+  const [listItemsAreOpened, setListItemsAreOpened] = useState(false);
+  const [isOneOfTheMobileMenuItemsOpened, setIsOneOfTheMobileMenuItemsOpened] = useState(false);
+  const [openedFirstLevelMobileItemId, setOpenedFirstLevelMobileItemId] = useState(null);
   const [navigationClassName, setNavigationClassName] = useState(false);
   const {loading, error, data} = useQuery(GET_HEADER_QUERIES);
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
   useEffect(() => {
     data !== undefined && setMenuItems(data?.header?.data?.attributes?.categories?.categories);
+    data !== undefined && setMenuItemsTitle(data?.header?.data?.attributes?.categories?.categories_title);
     data !== undefined && setLogo(data?.header?.data?.attributes?.logo?.data?.attributes);
     data !== undefined && setButtons(data?.header?.data?.attributes?.buttons);
   }, [data]);
@@ -110,10 +115,26 @@ export default function Header() {
               </div>
               {isMobileLayout &&
                 <div className={`${styles.mobileNavigation} ${showMobileNavigation ? styles.show : ''} ${navigationClassName ? 'navigation_is_open' : ''}`}>
+                  {menuItemsHasAtLeastOneItem &&
+                    <ListItems
+                      items={menuItems}
+                      isMobile={true}
+                      title={menuItemsTitle}
+                      isOneOfTheMobileMenuItemsOpened={isOneOfTheMobileMenuItemsOpened}
+                      setIsOneOfTheMobileMenuItemsOpened={setIsOneOfTheMobileMenuItemsOpened}
+                      listItemsAreOpened={listItemsAreOpened}
+                      setListItemsAreOpened={setListItemsAreOpened}
+                    />
+                  }
                   <Navigation
                     isMobileLayout={isMobileLayout}
                     atLeastOneButtonExists={atLeastOneButtonExists}
                     buttons={buttons}
+                    isOneOfTheMobileMenuItemsOpened={isOneOfTheMobileMenuItemsOpened}
+                    setIsOneOfTheMobileMenuItemsOpened={setIsOneOfTheMobileMenuItemsOpened}
+                    openedFirstLevelMobileItemId={openedFirstLevelMobileItemId}
+                    setOpenedFirstLevelMobileItemId={setOpenedFirstLevelMobileItemId}
+                    listItemsAreOpened={listItemsAreOpened}
                   />
                 </div>
               }

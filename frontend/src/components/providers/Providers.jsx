@@ -54,7 +54,6 @@ export default function Providers ({
 
   const atLeastOneCardExists = providers && providers.length > 0;
   const contentIsNotEmpty = heading || atLeastOneCardExists;
-
   return (
     <>
     {contentIsNotEmpty &&

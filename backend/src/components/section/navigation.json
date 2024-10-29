@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_section_navigations",
+  "info": {
+    "displayName": "navigation"
+  },
+  "options": {},
+  "attributes": {
+    "navigation_items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::navigation-item.navigation-item"
+    }
+  }
+}

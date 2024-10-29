@@ -65,7 +65,7 @@ export interface BlockLocationCard extends Schema.Component {
   attributes: {
     image: Attribute.Media & Attribute.Required;
     badge: Attribute.String;
-    url: Attribute.String & Attribute.Required;
+    url: Attribute.String;
   };
 }
 
@@ -187,18 +187,6 @@ export interface ElementsWorkingTime extends Schema.Component {
   };
 }
 
-export interface EntryStateEntry extends Schema.Component {
-  collectionName: 'components_entry_state_entries';
-  info: {
-    displayName: 'StateEntry';
-    description: '';
-  };
-  attributes: {
-    name: Attribute.String;
-    code: Attribute.String;
-  };
-}
-
 export interface EntrySuburb extends Schema.Component {
   collectionName: 'components_entry_suburbs';
   info: {
@@ -303,6 +291,20 @@ export interface SectionList extends Schema.Component {
   };
 }
 
+export interface SectionNavigation extends Schema.Component {
+  collectionName: 'components_section_navigations';
+  info: {
+    displayName: 'navigation';
+  };
+  attributes: {
+    navigation_items: Attribute.Relation<
+      'section.navigation',
+      'oneToMany',
+      'api::navigation-item.navigation-item'
+    >;
+  };
+}
+
 export interface SectionTopProviders extends Schema.Component {
   collectionName: 'components_section_top_providers';
   info: {
@@ -338,7 +340,6 @@ declare module '@strapi/types' {
       'elements.review': ElementsReview;
       'elements.text': ElementsText;
       'elements.working-time': ElementsWorkingTime;
-      'entry.state-entry': EntryStateEntry;
       'entry.suburb': EntrySuburb;
       'section.banner': SectionBanner;
       'section.find-by-location': SectionFindByLocation;
@@ -347,6 +348,7 @@ declare module '@strapi/types' {
       'section.image-banner': SectionImageBanner;
       'section.info': SectionInfo;
       'section.list': SectionList;
+      'section.navigation': SectionNavigation;
       'section.top-providers': SectionTopProviders;
     }
   }
