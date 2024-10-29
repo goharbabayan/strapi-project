@@ -7,13 +7,12 @@ import styles from './navigation.module.css';
 import Menu from '../menu/Menu';
 import Button from '../button/Button';
 
-export default function Navigation ({className, isMobileLayout, atLeastOneButtonExists, buttons, menuItesmHasAtLeastOneItem}) {
+export default function Navigation ({className, isMobileLayout, atLeastOneButtonExists, buttons, menuItemsHasAtLeastOneItem}) {
   const [navigationItems, setNavigationItems] = useState([]);
   const {loading, error, data} = useQuery(GET_NAVIGATION_QUERIES);
-
   useEffect(() => {
-    let menu;
-    data !== undefined ? menu = [...data?.navigation?.data?.attributes?.navigation_items?.data] : null;
+    let menu = [];
+    (data !== undefined && data?.navigation?.data !== null) ? menu = [...data?.navigation?.data?.attributes?.navigation_items?.data] : null;
     data !== undefined && setNavigationItems(menu.map(item => item.attributes));
   }, [data]);
 
@@ -27,7 +26,7 @@ export default function Navigation ({className, isMobileLayout, atLeastOneButton
               menu={navigationItems}
               level={1}
               isMobileLayout={isMobileLayout}
-              menuItesmHasAtLeastOneItem={menuItesmHasAtLeastOneItem}
+              menuItemsHasAtLeastOneItem={menuItemsHasAtLeastOneItem}
             />
             {atLeastOneButtonExists && isMobileLayout &&
               <div className={styles.buttonsWrapper}>

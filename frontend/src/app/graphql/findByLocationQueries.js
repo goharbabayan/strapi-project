@@ -2,21 +2,22 @@ import { gql } from '@apollo/client';
 
 const GET_BY_LOCATION_QUERIES = gql`
   query GetByLocation {
-    homePage {
+    home {
       data {
         attributes {
-          ByLocations {
+          Find_by_location {
             heading
-            activateBlackMode
-            ...on ComponentSectionFindByLocation {
-              card {
-                url
-                badge
-                image {
-                  data {
-                    attributes {
-                      url
-                    }
+            card {
+              url
+              badge
+              image {
+                data {
+                  attributes {
+                    url
+                    name
+                    alternativeText
+                    height
+                    width
                   }
                 }
               }

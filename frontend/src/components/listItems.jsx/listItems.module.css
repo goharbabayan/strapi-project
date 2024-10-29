@@ -1,10 +1,10 @@
 .link {
   text-decoration: none;
   color: var(--neutral-white-n10);
-  font-family: 'Urbanist';
+  font-family: var(--primary-font);
   font-size: 16px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: normal;
   line-height: 20px;
   text-align: center;
   background: none;
@@ -31,13 +31,11 @@
 
   .link {
     font-size: 15px;
-    line-height: normal;
   }
 }
 
 @media screen and (max-width: 960px) {
   .link {
     font-size: 13px;
-    line-height: normal;
   }
 }

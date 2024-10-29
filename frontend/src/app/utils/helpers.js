@@ -6,3 +6,7 @@ export async function debounce(callback, delay) {
     timeoutId = setTimeout(callback, delay);
   }
 }
+
+export const calculateImageAspectRatio = (width, height) => {
+  return width / height;
+}

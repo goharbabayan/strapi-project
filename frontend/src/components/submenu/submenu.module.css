@@ -46,7 +46,7 @@
 
   .level_two_container {
     width: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #9e9e9e rgb(76 76 76);
   }

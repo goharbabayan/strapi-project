@@ -248,6 +248,9 @@ module.exports = {
     },
     gender: {
       type: "string"
+    },
+    badge: {
+      type: "string"
     }
   },
   config: schemaConfig, // TODO: to move to content-manager options

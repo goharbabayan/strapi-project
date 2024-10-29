@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_section_top_providers",
+  "info": {
+    "displayName": "Providers",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "string"
+    },
+    "providers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}

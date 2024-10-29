@@ -10,7 +10,8 @@
       "type": "string"
     },
     "link": {
-      "type": "string"
+      "type": "string",
+      "required": true
     }
   }
 }

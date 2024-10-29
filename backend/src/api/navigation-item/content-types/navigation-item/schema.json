@@ -15,13 +15,13 @@
     "title": {
       "type": "string"
     },
+    "link": {
+      "type": "string"
+    },
     "level_2": {
       "type": "component",
       "repeatable": true,
       "component": "block.level-2"
-    },
-    "link": {
-      "type": "string"
     }
   }
 }

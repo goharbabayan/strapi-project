@@ -813,6 +813,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     digitalService: Attribute.Boolean & Attribute.DefaultTo<false>;
     favoriteProvidersIds: Attribute.Component<'elements.text', true>;
     gender: Attribute.String;
+    badge: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1013,40 +1014,29 @@ export interface ApiHeaderHeader extends Schema.SingleType {
   };
 }
 
-export interface ApiHomePageHomePage extends Schema.SingleType {
-  collectionName: 'home_pages';
+export interface ApiHomeHome extends Schema.SingleType {
+  collectionName: 'homes';
   info: {
-    singularName: 'home-page';
-    pluralName: 'home-pages';
-    displayName: 'Home Page';
+    singularName: 'home';
+    pluralName: 'homes';
+    displayName: 'Home';
     description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    title: Attribute.String;
-    description: Attribute.Text;
-    slug: Attribute.UID<'api::home-page.home-page', 'title'>;
     Banner: Attribute.Component<'section.banner'>;
-    Slider1: Attribute.DynamicZone<['section.slider']>;
-    FindByType: Attribute.Component<'section.find-by-type'>;
-    ByLocations: Attribute.Component<'section.find-by-location'>;
-    Footer: Attribute.Component<'section.footer'>;
+    Find_by_location: Attribute.Component<'section.find-by-location'>;
+    Top_Providers: Attribute.Component<'section.top-providers'>;
+    Popular_Providers: Attribute.Component<'section.top-providers'>;
+    Find_By_Type: Attribute.Component<'section.find-by-type'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::home-page.home-page',
-      'oneToOne',
-      'admin::user'
-    > &
+    createdBy: Attribute.Relation<'api::home.home', 'oneToOne', 'admin::user'> &
       Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::home-page.home-page',
-      'oneToOne',
-      'admin::user'
-    > &
+    updatedBy: Attribute.Relation<'api::home.home', 'oneToOne', 'admin::user'> &
       Attribute.Private;
   };
 }
@@ -1162,8 +1152,8 @@ export interface ApiNavigationItemNavigationItem extends Schema.CollectionType {
   };
   attributes: {
     title: Attribute.String;
-    level_2: Attribute.Component<'block.level-2', true>;
     link: Attribute.String;
+    level_2: Attribute.Component<'block.level-2', true>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1206,7 +1196,7 @@ declare module '@strapi/types' {
       'api::faq.faq': ApiFaqFaq;
       'api::footer.footer': ApiFooterFooter;
       'api::header.header': ApiHeaderHeader;
-      'api::home-page.home-page': ApiHomePageHomePage;
+      'api::home.home': ApiHomeHome;
       'api::menu-item.menu-item': ApiMenuItemMenuItem;
       'api::my-account.my-account': ApiMyAccountMyAccount;
       'api::navigation.navigation': ApiNavigationNavigation;

@@ -7,6 +7,8 @@
   --primary-font: 'Urbanist';
   --primary-bold-font: 'UrbanistBold';
 
+  ---header-height: 140px;
+  ---header-height-mobile: 72px;
   /* color scheme */
   --neutral-white-n10: #FFFFFF;
   --neutral-n20: #F2F2F2;
@@ -41,6 +43,11 @@ body {
   min-height: 100vh;
 }
 
+body:has(.navigation_is_open),
+body:has(.navigation_is_hovered) {
+  overflow: hidden;
+}
+
 div[hidden] {
   display: none;
 }
@@ -63,6 +70,11 @@ div[hidden] {
   display: flex !important;
 }
 
+.popular_providers .swiper-slide {
+  flex-grow: 1;
+  justify-content: center;
+}
+
 .menu-bar-container .swiper-slide {
   justify-content: center;
 }
@@ -72,11 +84,11 @@ div[hidden] {
 }
 
 .swiper-button-prev {
-  left: 45px !important;
+  left: 0 !important;
 }
 
 .swiper-button-next {
-  right: 45px !important;
+  right: 0 !important;
 }
 
 .menu-bar-container .swiper-button-next {
@@ -89,9 +101,10 @@ div[hidden] {
 
 .swiper-button-next,
 .swiper-button-prev {
+  margin-top: 0 !important;
+  top: 0 !important;
   width: var(--swiper-navigation-size) !important;
-  background-color: var(--neutral-white-n10);
-  opacity: 0.25;
+  background-color: var(--background-color-primary);
 }
 
 .menu-bar-container .swiper-button-next,
@@ -107,25 +120,35 @@ div[hidden] {
 .swiper-button-next::after,
 .swiper-button-prev::after {
   font-size: 25px !important;
+  display: none;
+} 
+
+.swiper-nav-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin: 16px auto;
+  height: 45px;
+  width: 100px;
+  justify-content: center;
 }
 
-.reviews .swiper-button-next,
-.reviews .swiper-button-prev {
-  background-color: var(--neutral-n50);
-  border: 2px solid var(--neutral-black);
-  border-radius: 50%;
+.swiper-nav-buttons button {
+  border-radius: 10px;
+  border: 1px solid var(--color-main);
+  background: var(--neutral-white-n10);
 }
 
-.menu-bar-container .swiper-button-prev,
-.menu-bar-container .swiper-button-next {
-  color: var(--neutral-white-n10);
-  opacity: 70%;
+.swiper-nav-buttons button:hover {
+  border: 1px solid var(--color-hover);
 }
 
-.menu-bar-container .swiper-button-next::after,
-.menu-bar-container .swiper-button-prev::after {
-  font-size: 15px !important;
+.location .swiper-slide,
+.popular_providers .swiper-wrapper {
+  height: fit-content;
 }
+
 /* Swipper styles end*/
 
 @font-face {
@@ -415,6 +438,13 @@ body.overflow-hidden {
 }
 
 /* Custom Loading styles */
+.loading {
+  min-height: calc(100vh / 2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .loading-container {
   display: flex;
   flex-direction: column;

@@ -4,13 +4,15 @@ import ArrowDown from '../icons/arrowDown/ArrowDown';
 import Text from '../text/Text';
 import Submenu from '../submenu/Submenu';
 
-export default function Menu({menu, level, isMobileLayout, menuItesmHasAtLeastOneItem}) {
+export default function Menu({menu, level, isMobileLayout, menuItemsHasAtLeastOneItem}) {
   const [openLevels, setOpenLevels] = useState({});
   const [expandedSubmenuLevel, setExpandedSubmenuLevel] = useState(null);
+  const [isOpened, setIsOpened] = useState(false);
   // const [hoveredFirstLevelMenuItemId, setHoveredFirstLevelMenuItemId] = useState(null);
   // const [hoveredSecondLevelMenuItemId, setHoveredSecondLevelMenuItemId] = useState(null);
 
   const handleMouseOver = (id, level) => {
+    setIsOpened(true);
     if (level === 1) {
       // setHoveredFirstLevelMenuItemId(id);
       setExpandedSubmenuLevel(id);
@@ -21,6 +23,7 @@ export default function Menu({menu, level, isMobileLayout, menuItesmHasAtLeastOn
   };
 
   const handleMouseOut = (id, level) => {
+    setIsOpened(false);
     if (level === 1) {
       setExpandedSubmenuLevel(null);
     }
@@ -49,7 +52,7 @@ export default function Menu({menu, level, isMobileLayout, menuItesmHasAtLeastOn
   return (
     <>
       {hasChild && (
-        <ul className={`${level === 1 ? styles.list : level === 2 ? styles.childList : styles.grandchildList}`}>
+        <ul className={`${level === 1 ? styles.list : level === 2 ? styles.childList : styles.grandchildList} ${level === 1 && isOpened ? 'navigation_is_hovered' : ''}`}>
           {menu.map((menuItem, index) => {
             const id = `level-${level}-${index+1}`
             const isOpen = openLevels[id];
@@ -107,7 +110,7 @@ export default function Menu({menu, level, isMobileLayout, menuItesmHasAtLeastOn
                       nextLevelMenu={menuItem[nextLevel]}
                       level={level + 1}
                       isMobileLayout={isMobileLayout}
-                      menuItesmHasAtLeastOneItem={menuItesmHasAtLeastOneItem}
+                      menuItemsHasAtLeastOneItem={menuItemsHasAtLeastOneItem}
                     />
                   )
                 }

@@ -2,19 +2,35 @@ import { gql } from '@apollo/client';
 
 const GET_BANNER_QUERIES = gql`
   query {
-    homePage {
+    home {
       data {
         attributes {
           Banner {
-            title
-            description
-            image {
+            link
+            heading
+            Button {
+              title
+              link
+            }
+            image_for_desktop {
               data {
                 attributes {
                   url
                   alternativeText
                   name
                   width
+                  height
+                }
+              }
+            }
+            image_for_mobile {
+              data {
+                attributes {
+                  url
+                  alternativeText
+                  name
+                  width
+                  height
                 }
               }
             }

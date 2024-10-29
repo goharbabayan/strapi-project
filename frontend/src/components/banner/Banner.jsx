@@ -1,46 +1,67 @@
-'use client'
-
-import { useQuery } from '@apollo/client';
-import { GET_BANNER_QUERIES } from '@/app/graphql/bannerQueries';
 import styles from './banner.module.css';
+import Button from '../button/Button';
+import Image from '../image/Image';
+import Text from '../text/Text';
 
-const Banner = () => {
-  const { loading, error, data } = useQuery(GET_BANNER_QUERIES);
-
-  if (data === undefined || data === null) return;
-  const { title, description, image } = data?.homePage?.data?.attributes?.Banner;
-
-  let url, bannerImageURL;
-  image ? url = image?.data?.attributes?.url : null;
-  bannerImageURL = url ? url : '';
-
-  let imageURL = '';
-  let bannerContentIsNotEmpty = false;
-  title || description ? bannerContentIsNotEmpty = true : false;
-  bannerImageURL ? imageURL = `${process.env.NEXT_PUBLIC_STRAPI_URL}${bannerImageURL}` : null;
+const Banner = ({bannerLink, desktopImage, mobileImage, text, button}) => {
+  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
   return (
-    <div className={styles.container}>
-      { bannerContentIsNotEmpty &&
-        <div className={`${styles.wrapper} page-width`}>
-          <div className={`${styles.mainContent}`}>
-            {title &&
-              <h2 className={`${styles.title}`}>
-                { title }
-              </h2>
-            }
-            {description &&
-              <h3 className={styles.description}>{description}</h3>
-            }
-          </div>
-          <div className={styles.imageWrap}>
-            {bannerImageURL &&
-              <img src={imageURL} width='179' height='179' alt='banner-image'/>
-            }
-          </div>
-        </div>
+    <>
+      {desktopImage &&
+        <section className={`${styles.container} ${bannerLink ? styles.withLink : ''}`}>
+          {desktopImage && desktopImage.url &&
+            <Image
+              src={`${baseUrl}${desktopImage.url}`}
+              alt={desktopImage.alternativeText || desktopImage.name}
+              height={desktopImage.height}
+              width={desktopImage.width}
+              className={'desktop'}
+              {...(bannerLink && { link: bannerLink })}
+            />
+          }
+          {mobileImage && mobileImage.url ?
+            <Image
+              src={`${baseUrl}${mobileImage.url}`}
+              alt={mobileImage.alternativeText || mobileImage.name}
+              height={mobileImage.height}
+              width={mobileImage.width}
+              className={'mobile'}
+              {...(bannerLink && { link: bannerLink })}
+            />
+          : desktopImage && desktopImage.url &&
+            <Image
+              src={`${baseUrl}${desktopImage.url}`}
+              alt={desktopImage.alternativeText || desktopImage.name}
+              height={desktopImage.height}
+              width={desktopImage.width}
+              className={'mobile'}
+              {...(bannerLink && { link: bannerLink })}
+            />
+          }
+          {(text || button) &&
+            <div className={`${styles.wrapper} ${bannerLink ? styles.withLink : ''}`}>
+              <div className={`${styles.info} page-width`}>
+                {text &&
+                  <Text
+                    tag={'h2'}
+                    className={styles.title}
+                    children={text}
+                  />
+                }
+                {button &&
+                  <Button
+                    {...(button.link && { href: button.link })}
+                    className={styles.button}
+                    children={button.title}
+                  />
+                }
+              </div>
+            </div>
+          }
+        </section>
       }
-    </div>
+    </>
   )
 };
 

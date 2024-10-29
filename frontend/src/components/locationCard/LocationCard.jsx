@@ -1,24 +1,32 @@
 import styles from './locationCard.module.css';
 import Link from 'next/link';
+import Text from '../text/Text';
+import Image from '../image/Image';
 
-const LocationCard = ({ data }) => {
-  const { badge, image, url } = data;
-  let alt, imageUrl;
+const LocationCard = ({ card }) => {
+  const { badge, image, url } = card;
+  const {name, alternativetext, url: src, width, height } = image?.data.attributes;
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
-  if (image) {
-    imageUrl = `${baseUrl}${image?.data?.attributes?.url}`;
-    alt = image?.data?.attributes?.alternativeText || 'location';
-  }
+
   return (
-    <div className={`${styles.container} location-card`}>
-      {imageUrl && url &&
-        <Link href={url} className={`${styles.imageWrapper}`}>
-          <img src={imageUrl} alt={alt} width="302" height="397" className='card-image'/>
-        </Link>
+    <div className={`${styles.container} ${styles.card}`}>
+      {src &&
+        <Image
+          src={`${baseUrl}${src}`}
+          alt={alternativetext || name}
+          width={193}
+          height={184}
+          className={styles.imageWrapper}
+          link={url}
+        />
       }
       {badge &&
-        <div className={styles.cardtitle}>
-          <span className={styles.title}>{badge}</span>
+        <div className={styles.textWrap}>
+          <Text
+            tag={'span'}
+            children={badge}
+            className={styles.badge}
+          />
         </div>
       }
     </div>

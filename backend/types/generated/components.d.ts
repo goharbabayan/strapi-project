@@ -19,7 +19,7 @@ export interface BlockCategory extends Schema.Component {
   };
   attributes: {
     name: Attribute.String;
-    link: Attribute.String;
+    link: Attribute.String & Attribute.Required;
   };
 }
 
@@ -59,25 +59,13 @@ export interface BlockLevel3 extends Schema.Component {
 export interface BlockLocationCard extends Schema.Component {
   collectionName: 'components_block_location_cards';
   info: {
-    displayName: 'LocationCard';
+    displayName: 'Card';
     description: '';
   };
   attributes: {
     image: Attribute.Media & Attribute.Required;
-    badge: Attribute.Text;
+    badge: Attribute.String;
     url: Attribute.String & Attribute.Required;
-  };
-}
-
-export interface BlockProviderType extends Schema.Component {
-  collectionName: 'components_block_provider_types';
-  info: {
-    displayName: 'EscortType';
-    description: '';
-  };
-  attributes: {
-    text: Attribute.String & Attribute.Required & Attribute.DefaultTo<'Type'>;
-    link: Attribute.String & Attribute.Required;
   };
 }
 
@@ -89,21 +77,6 @@ export interface BlockRichText extends Schema.Component {
   attributes: {
     heading: Attribute.String;
     text: Attribute.Blocks;
-  };
-}
-
-export interface BlockServiceProviderCard extends Schema.Component {
-  collectionName: 'components_block_service_provider_cards';
-  info: {
-    displayName: 'EscortCard';
-    description: '';
-  };
-  attributes: {
-    badge: Attribute.String;
-    image: Attribute.Media & Attribute.Required;
-    name: Attribute.String;
-    location: Attribute.String;
-    cost: Attribute.String;
   };
 }
 
@@ -244,9 +217,11 @@ export interface SectionBanner extends Schema.Component {
     description: '';
   };
   attributes: {
-    title: Attribute.String;
-    description: Attribute.Text;
-    image: Attribute.Media;
+    heading: Attribute.Text;
+    image_for_mobile: Attribute.Media;
+    Button: Attribute.Component<'elements.button-link'>;
+    image_for_desktop: Attribute.Media;
+    link: Attribute.String;
   };
 }
 
@@ -259,21 +234,26 @@ export interface SectionFindByLocation extends Schema.Component {
   attributes: {
     heading: Attribute.String;
     card: Attribute.Component<'block.location-card', true> & Attribute.Required;
-    activateBlackMode: Attribute.Boolean & Attribute.DefaultTo<false>;
   };
 }
 
 export interface SectionFindByType extends Schema.Component {
   collectionName: 'components_section_find_by_types';
   info: {
-    displayName: 'FindByType';
+    displayName: 'Find_By_Type';
     description: '';
   };
   attributes: {
-    title: Attribute.String & Attribute.DefaultTo<'Section title'>;
-    type: Attribute.Component<'block.provider-type', true>;
-    card: Attribute.Component<'block.service-provider-card', true>;
-    activateBlackMode: Attribute.Boolean & Attribute.DefaultTo<false>;
+    heading: Attribute.String;
+    providers: Attribute.Relation<
+      'section.find-by-type',
+      'oneToMany',
+      'plugin::users-permissions.user'
+    >;
+    categories: Attribute.Component<'block.category', true>;
+    show_categories_in_the_center: Attribute.Boolean &
+      Attribute.DefaultTo<false>;
+    Button: Attribute.Component<'elements.link'>;
   };
 }
 
@@ -323,22 +303,19 @@ export interface SectionList extends Schema.Component {
   };
 }
 
-export interface SectionSlider extends Schema.Component {
-  collectionName: 'components_section_sliders';
+export interface SectionTopProviders extends Schema.Component {
+  collectionName: 'components_section_top_providers';
   info: {
-    displayName: 'Section';
+    displayName: 'Providers';
     description: '';
   };
   attributes: {
-    title: Attribute.String & Attribute.DefaultTo<'Section title'>;
-    card: Attribute.Component<'block.service-provider-card', true> &
-      Attribute.SetMinMax<
-        {
-          min: 1;
-        },
-        number
-      >;
-    activateBlackMode: Attribute.Boolean & Attribute.DefaultTo<false>;
+    heading: Attribute.String;
+    providers: Attribute.Relation<
+      'section.top-providers',
+      'oneToMany',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -351,9 +328,7 @@ declare module '@strapi/types' {
       'block.level-2': BlockLevel2;
       'block.level-3': BlockLevel3;
       'block.location-card': BlockLocationCard;
-      'block.provider-type': BlockProviderType;
       'block.rich-text': BlockRichText;
-      'block.service-provider-card': BlockServiceProviderCard;
       'block.skill': BlockSkill;
       'elements.button-link': ElementsButtonLink;
       'elements.collection': ElementsCollection;
@@ -372,7 +347,7 @@ declare module '@strapi/types' {
       'section.image-banner': SectionImageBanner;
       'section.info': SectionInfo;
       'section.list': SectionList;
-      'section.slider': SectionSlider;
+      'section.top-providers': SectionTopProviders;
     }
   }
 }

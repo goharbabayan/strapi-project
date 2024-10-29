@@ -1,30 +1,32 @@
 {
   "collectionName": "components_section_find_by_types",
   "info": {
-    "displayName": "FindByType",
+    "displayName": "Find_By_Type",
     "description": ""
   },
   "options": {},
   "attributes": {
-    "title": {
-      "type": "string",
-      "required": false,
-      "default": "Section title"
+    "heading": {
+      "type": "string"
     },
-    "type": {
-      "displayName": "ProviderType",
+    "providers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::users-permissions.user"
+    },
+    "categories": {
       "type": "component",
       "repeatable": true,
-      "component": "block.provider-type"
+      "component": "block.category"
     },
-    "card": {
-      "type": "component",
-      "repeatable": true,
-      "component": "block.service-provider-card"
-    },
-    "activateBlackMode": {
+    "show_categories_in_the_center": {
       "type": "boolean",
       "default": false
+    },
+    "Button": {
+      "type": "component",
+      "repeatable": false,
+      "component": "elements.link"
     }
   }
 }

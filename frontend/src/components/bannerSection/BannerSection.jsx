@@ -1,5 +1,6 @@
 import styles from './bannerSection.module.css';
 
+// ToDo: sould be merged with Banner component
 export default function BannerSection({data, className}) {
   const {alternativeText, height, width, url} = data;
 

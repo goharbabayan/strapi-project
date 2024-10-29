@@ -17,6 +17,7 @@ export default function Header() {
   const [logo, setLogo] = useState(null);
   const [isMobileLayout, setIsMobileLayout] = useState(false);
   const [showMobileNavigation, setShowMobileNavigation] = useState(false);
+  const [navigationClassName, setNavigationClassName] = useState(false);
   const {loading, error, data} = useQuery(GET_HEADER_QUERIES);
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
@@ -42,9 +43,10 @@ export default function Header() {
 
   const handleBurgerButtonClick = () => {
     setShowMobileNavigation(!showMobileNavigation);
+    setNavigationClassName(!navigationClassName);
   };
 
-  const menuItesmHasAtLeastOneItem = menuItems && menuItems.length > 0;
+  const menuItemsHasAtLeastOneItem = menuItems && menuItems.length > 0;
   const atLeastOneButtonExists = buttons && buttons.length > 0;
 
   return (
@@ -53,8 +55,8 @@ export default function Header() {
         <header className={styles.emptyHeader}></header>
       }
       {data &&
-        <header className={`${styles.header} ${menuItesmHasAtLeastOneItem === false ? styles.menuItemsAreEmpty : ''}`}>
-          {menuItesmHasAtLeastOneItem && !isMobileLayout &&
+        <header className={`${styles.header} ${menuItemsHasAtLeastOneItem === false ? styles.menuItemsAreEmpty : ''}`}>
+          {menuItemsHasAtLeastOneItem && !isMobileLayout &&
             <ListItems items={menuItems}/>
           }
           {logo &&
@@ -62,7 +64,12 @@ export default function Header() {
             <section>
               <div className="page-width">
                 <div className={`${styles.headerSection}`}>
-                  {!isMobileLayout && <Navigation className={styles.navigation}/>}
+                  {!isMobileLayout &&
+                    <Navigation
+                      className={styles.navigation}
+                      menuItemsHasAtLeastOneItem={menuItemsHasAtLeastOneItem}
+                    />
+                  }
                   <div className={styles.container}>
                     {logo &&
                       <a className={styles.logo} href="/">
@@ -102,11 +109,10 @@ export default function Header() {
                 </div>
               </div>
               {isMobileLayout &&
-                <div className={`${styles.mobileNavigation} ${showMobileNavigation ? styles.show : ''}`}>
+                <div className={`${styles.mobileNavigation} ${showMobileNavigation ? styles.show : ''} ${navigationClassName ? 'navigation_is_open' : ''}`}>
                   <Navigation
                     isMobileLayout={isMobileLayout}
                     atLeastOneButtonExists={atLeastOneButtonExists}
-                    menuItesmHasAtLeastOneItem={menuItesmHasAtLeastOneItem}
                     buttons={buttons}
                   />
                 </div>
