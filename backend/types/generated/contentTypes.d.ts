@@ -773,10 +773,10 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.role'
     >;
-    ressidentialAddress: Attribute.String;
     photos: Attribute.Media;
     name: Attribute.String;
     lastName: Attribute.String;
+    gender: Attribute.String;
     country: Attribute.String;
     city: Attribute.String;
     suburbs: Attribute.Component<'entry.suburb', true>;
@@ -797,22 +797,17 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     onlyFansLink: Attribute.String;
     websiteLink: Attribute.String;
     aboutMe: Attribute.RichText;
-    interests: Attribute.Component<'elements.text', true>;
-    wishlist: Attribute.Component<'elements.text', true>;
     outfits: Attribute.Component<'elements.text', true>;
     makeup: Attribute.Component<'elements.text', true>;
     costume: Attribute.Component<'elements.text', true>;
     extras: Attribute.Component<'elements.text', true>;
-    digitalServices: Attribute.Component<'elements.text', true>;
     incallRates: Attribute.Component<'elements.data', true>;
     outcallRates: Attribute.Component<'elements.data', true>;
     services: Attribute.Component<'elements.text', true>;
     schedule: Attribute.Component<'elements.working-time', true>;
     additionalInfo: Attribute.Component<'elements.text', true>;
     reviews: Attribute.Component<'elements.review', true>;
-    digitalService: Attribute.Boolean & Attribute.DefaultTo<false>;
     favoriteProvidersIds: Attribute.Component<'elements.text', true>;
-    gender: Attribute.String;
     badge: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;

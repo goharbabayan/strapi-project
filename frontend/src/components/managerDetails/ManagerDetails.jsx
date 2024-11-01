@@ -5,7 +5,7 @@ import AccountDetails from '../accountDetails/AccountDetails';
 import { MANAGER } from '@/app/utils/constants/userRoles';
 
 export default function ManagerDetails ({ user, onChanges, onSubmit, errorMessage }) {
-  const {username, ressidentialAddress, email, password, id} = user;
+  const {username, email, password, id} = user;
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [formData, setFormData] = useState({
     username: username,
@@ -41,7 +41,6 @@ export default function ManagerDetails ({ user, onChanges, onSubmit, errorMessag
         />
         <AccountDetails 
           username={formData.username}
-          ressidentialAddress={ressidentialAddress}
           password={password}
           email={email}
           id={id}

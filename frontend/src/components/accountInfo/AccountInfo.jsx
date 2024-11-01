@@ -2,9 +2,8 @@ import styles from './accountInfo.module.css';
 import { forwardRef } from 'react';
 import Text from '../text/Text';
 import InputField from '../inputField/InputField';
-import EditIcon from '../icons/Edit';
-import Image from '../image/Image';
 import { GENDER_OPTIONS } from '@/app/utils/constants/userPhisicalDetails';
+import ProfilePageImage from '../profilePageImage/ProfilePageImage';
 
 const AccountInfo = forwardRef(({gender, email, formData, onChange, onMouseDown, onChildFormDataChange, errorMessage}, ref) => {
   return (
@@ -15,7 +14,7 @@ const AccountInfo = forwardRef(({gender, email, formData, onChange, onMouseDown,
         children={'Account Details'}
       />
       <div className={styles.mainWrap}>
-        <Image
+        <ProfilePageImage
           type='profilePicture'
           formData={formData}
           onChildFormDataChange={onChildFormDataChange}

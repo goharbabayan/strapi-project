@@ -4,7 +4,6 @@ import { useState, useRef } from 'react';
 import styles from './new-member.module.css';
 import Text from '@/components/text/Text';
 import NotificationBar from '@/components/notificationBar/NotificationBar';
-import Image from '@/components/image/Image';
 import GalleryImages from '@/components/galleryImages/GalleryImages';
 import MenuBar from '@/components/menuBar/MenuBar';
 import AboutMe from '@/components/aboutMe/AboutMe';
@@ -18,6 +17,7 @@ import { navigate } from '@/app/actions';
 import { validateForm } from '@/app/utils/validation';
 import { CREATE_MENU_BAR } from '@/app/utils/constants/menuBar';
 import { USER_FORM_NEW_MEMBER} from '@/app/utils/constants/userForm';
+import ProfilePageImage from '@/components/profilePageImage/ProfilePageImage';
 
 export default function NewMember({params, searchParams}) {
   const { user } = params;
@@ -25,12 +25,10 @@ export default function NewMember({params, searchParams}) {
   const strapiBaseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
   const memberToken = process.env.NEXT_PUBLIC_API_TOKEN_MEMBER;
 
-  const [showPopup, setShowPopup] = useState(false);
   const [userSelectedSuburbs, setUserSelectedSuburbs] = useState([]);
   const [selectedCity, setSelectedCity] = useState('');
   const [isCityDataChanged, setIsCityDataChanged] = useState(false);
   const [globalErrorText, setGlobalErrorText] = useState('');
-  const [showGlobalError, setShowGlobalError] = useState(false);
   const [errorMessage, setErrorMessage] = useState({});
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
@@ -53,7 +51,6 @@ export default function NewMember({params, searchParams}) {
 // ToDo: can be merged in one function
   const handleChange = (event) => {
     setGlobalErrorText('');
-    setShowGlobalError(false);
     setErrorMessage('');
     setShowSuccessMessage(false);
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -62,7 +59,6 @@ export default function NewMember({params, searchParams}) {
 
   const handleScheduleChange = (childFormData) => {
     setGlobalErrorText('');
-    setShowGlobalError(false);
     setErrorMessage('');
     setShowSuccessMessage(false);
     setFormData({...formData, schedule: childFormData});
@@ -72,14 +68,12 @@ export default function NewMember({params, searchParams}) {
 
   const handleMemberFormSubmit = async (event) => {
     event.preventDefault();
-
+    let userId;
     if (!formData.profilePicture) {
-      setShowGlobalError(true);
       setGlobalErrorText(`Please, add member's profile picture.`);
       return;
     }
     if (!formData.coverPhoto) {
-      setShowGlobalError(true);
       setGlobalErrorText(`Please, add member's cover photo.`);
       return;
     }
@@ -89,16 +83,14 @@ export default function NewMember({params, searchParams}) {
 
     if (hasErrors) {
       setErrorMessage(errors);
-      setShowGlobalError(true);
       setGlobalErrorText('Please correct the errors and try again.');
       return;
     } else {
       setErrorMessage('');
-      setShowGlobalError(false);
       setGlobalErrorText('');
     }
 
-    await fetch(`${strapiBaseUrl}/api/auth/local/registerMember?populate[profilePicture][fields]&populate[coverPhoto][fields]&populate[photos][fields]&populate[selfies][fields]&populate[interests][fields]&populate[wishlist][fields]&populate[favouriteThings][fields]&populate[digitalServices][fields]&populate[incallRates][fields]&populate[outcallRates][fields]&populate[services][fields]&populate[schedule][fields]&populate[additionalInfo][fields]&populate[reviews][fields]`, {
+    await fetch(`${strapiBaseUrl}/api/auth/local/registerMember`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -111,12 +103,11 @@ export default function NewMember({params, searchParams}) {
       })
       .then(response => response.json())
       .then(json => {
-        const {data, error, user, jwt} = json;
+        const {error, user} = json;
         if (error) {
           const errorMessage = error.message;
           const notUniqueUserNameMessage = errorMessage.includes('This attribute must be unique');
           const userNameInvalidMessage = errorMessage.includes('username must be at least 3 characters');
-          setShowGlobalError(true);
           if (notUniqueUserNameMessage) {
             setGlobalErrorText('This username is already in use.');
           } else if (userNameInvalidMessage) {
@@ -127,15 +118,11 @@ export default function NewMember({params, searchParams}) {
         } else if (user) {
           setHasUnsavedChanges(true);
           setShowSuccessMessage(true);
+          userId = user.id;
 
           setTimeout(() => {
             setShowSuccessMessage(false);
             setHasUnsavedChanges(false);
-            // setFormData(USER_FORM_NEW_MEMBER(email, id));
-            // setUserSelectedSuburbs([]);
-            // setSelectedCity('');
-            // setIsCityDataChanged(false);
-            // setHasUnsavedChanges(false);
           }, 5000);
         }
       })
@@ -143,22 +130,22 @@ export default function NewMember({params, searchParams}) {
         console.error('Error sending email confirmation:', err);
       });
 
-      // await handleRequestReview(customerToken);
+      await handleRequestReview(userId);
   }
 
-  const handleRequestReview = async (customerToken) => {
+  const handleRequestReview = async (userId) => {
     if (!user.isApprovedByAdmin) {
-      console.log('customerToken: ', customerToken);
-
-        await fetch(`${strapiBaseUrl}/api/profile-review/${customerToken}`,{
+        await fetch(`${strapiBaseUrl}/api/profile-review/${process.env.NEXT_PUBLIC_API_TOKEN_MEMBER}`,{
           method: 'POST',
           headers: {
             'Content-type': 'application/json',
-            'authorization': `Bearer ${customerToken}`
+            'authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN_MEMBER}`
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({
+            ...formData,
+            id: userId
+          }),
         })
-        .then(res => res.json())
     }
   }
 
@@ -175,7 +162,7 @@ export default function NewMember({params, searchParams}) {
   };
 
   const setChanges = (showChange, childFormData) => {
-    setShowGlobalError(false);
+    setGlobalErrorText('');
     setShowSuccessMessage(false);
     setErrorMessage('');
     setHasUnsavedChanges(showChange);
@@ -195,25 +182,8 @@ export default function NewMember({params, searchParams}) {
     };
   };
 
-  const handleSettingIconClick = (e) => {
-    setShowPopup(!showPopup);
-    document.body.classList.add('overflow-hidden');
-  };
-
-  const handleModalClose = () => {
-    setShowPopup(false);
-    document.body.classList.remove('overflow-hidden');
-  };
-
-  const handleEditIconClick = (e, data) => {
-    const input = (e.currentTarget).closest(`[${data}]`).querySelector('input');
-    input.focus();
-    setFormData({...formData, [input.name]: input.value})
-  };
-
   const handleChildFormDataChange = (field, value) => {
     setGlobalErrorText('');
-    setShowGlobalError(false);
     setErrorMessage('');
     setShowSuccessMessage(false);
     setHasUnsavedChanges(true);
@@ -232,26 +202,56 @@ export default function NewMember({params, searchParams}) {
     navigate(`members?id=${id}&email=${email}`);
   }
 
+  // ToDo: should be one function with register member
   const handleSaveButtonClick = async() => {
-    // const unsavedUserData = {
-    //   ...formData,
-    //   isApprovedByAdmin: false
-    // }
+    const unsavedUserData = {
+      ...formData,
+      isApprovedByAdmin: false
+    }
 
-    // memberToken &&
-    //   await fetch(`${strapiBaseUrl}/api/members/${id}`, {
-    //     method: 'PUT',
-    //     headers: {
-    //       'Content-type': 'application/json',
-    //       'Authorization': `Bearer ${memberToken}`
-    //     },
-    //     body: JSON.stringify(unsavedUserData),
-    //   })
-    //   .then(res => res.json());
+    if (!formData.profilePicture || !formData.coverPhoto || !formData.username) {
+      setGlobalErrorText('The profile picture, cover photo and Username are requerd to fill');
+      return;
+    }
 
-    // setHasUnsavedChanges(false);
-    console.log('Save button click');
-    
+    await fetch(`${strapiBaseUrl}/api/auth/local/registerMember`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${memberToken}`
+      },
+      body: JSON.stringify({
+        ...unsavedUserData,
+        confirmed: true
+      }),
+      })
+      .then(response => response.json())
+      .then(json => {
+        const {error, user} = json;
+        if (error) {
+          const errorMessage = error.message;
+          const notUniqueUserNameMessage = errorMessage.includes('This attribute must be unique');
+          const userNameInvalidMessage = errorMessage.includes('username must be at least 3 characters');
+          if (notUniqueUserNameMessage) {
+            setGlobalErrorText('This username is already in use.');
+          } else if (userNameInvalidMessage) {
+            setGlobalErrorText('Username must be at least 3 characters.');
+          } else {
+            setGlobalErrorText(errorMessage);
+          }
+        } else if (user) {
+          setHasUnsavedChanges(true);
+          setShowSuccessMessage(true);
+
+          setTimeout(() => {
+            setShowSuccessMessage(false);
+            setHasUnsavedChanges(false);
+          }, 5000);
+        }
+      })
+      .catch(err => {
+        console.error('Error sending email confirmation:', err);
+      });
   }
 
   return (
@@ -261,10 +261,10 @@ export default function NewMember({params, searchParams}) {
           <NotificationBar
             isApprovedByAdmin={formData.isApprovedByAdmin}
             onCancelButtonClick={handleCancelChangesButtonClick}
+            isRegisteringANewMember={true}
             onSaveButtonClick={handleSaveButtonClick}
             showSuccessfullMessage={showSuccessMessage}
             successfullMessageText={'All changes have been applied successfully.'}
-            showErrorMessage={showGlobalError}
             errorMessageText={globalErrorText}
             userRole={'service provider'}
           />
@@ -281,14 +281,14 @@ export default function NewMember({params, searchParams}) {
           />
         </section>
         <section className='page-width'>
-          <Image
+          <ProfilePageImage
             type='coverPhoto'
             formData={formData}
             onChildFormDataChange={handleChildFormDataChange}
           />
         </section>
         <section className='profileInfo page-width'>
-          <Image
+          <ProfilePageImage
             type='profilePicture'
             formData={formData}
             onChildFormDataChange={handleChildFormDataChange}
@@ -327,16 +327,6 @@ export default function NewMember({params, searchParams}) {
             errorMessage={errorMessage}
           />
         </section>
-        {/* {showPopup &&
-          <AccountInfoPopup
-            onClose={handleModalClose}
-            onEditIconClick={handleEditIconClick}
-            onChange={handleChange}
-            username={formData.username}
-            password={formData.password}
-            ressidentialAddress={formData.ressidentialAddress}
-          />
-        } */}
         <MenuBar
           isNotificationBarOpen={hasUnsavedChanges}
           onScrollToSection={handleScrollToSection}

@@ -1,0 +1,2 @@
+export const PROVIDER_URL_PARAMS = `
+populate[role][fields]&populate[profilePicture][fields]&populate[coverPhoto][fields]&populate[photos][fields]&populate[selfies][fields]&populate[country][fields]&populate[state][fields]&populate[suburbs][fields]&populate[incallRates][fields]&populate[outcallRates][fields]&populate[services][fields]&populate[schedule][fields]&populate[additionalInfo][fields]&populate[reviews][fields]&populate[outfits][fields]&populate[makeup][fields]&populate[costume][fields]&populate[extras][fields]`;

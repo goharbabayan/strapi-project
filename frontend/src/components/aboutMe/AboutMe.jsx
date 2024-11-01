@@ -1,10 +1,8 @@
 import { forwardRef } from 'react';
 import styles from './aboutMe.module.css';
 import Text from '../text/Text';
-import Preferences from '../prerferences/Preferences';
 import Favourites from '../favourites/Favourites';
 import { COSTUME, EXTRAS, MAKEUP, POSSIBLE_OUTFITS_OPTIONS } from '@/app/utils/constants/userPossibleOutfits';
-import { WISHLIST_OPTIONS } from '@/app/utils/constants/userWishlist';
 
 const AboutMe = forwardRef(({formData, onChildFormDataChange, error}, ref) => {
   const handleChangeAboutMeText = (e) => {

@@ -73,9 +73,6 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "ressidentialAddress": {
-      "type": "string"
-    },
     "photos": {
       "type": "media",
       "multiple": true,
@@ -162,16 +159,6 @@
     "aboutMe": {
       "type": "richtext"
     },
-    "interests": {
-      "type": "component",
-      "repeatable": true,
-      "component": "elements.text"
-    },
-    "wishlist": {
-      "type": "component",
-      "repeatable": true,
-      "component": "elements.text"
-    },
     "outfits": {
       "type": "component",
       "repeatable": true,
@@ -188,11 +175,6 @@
       "component": "elements.text"
     },
     "extras": {
-      "type": "component",
-      "repeatable": true,
-      "component": "elements.text"
-    },
-    "digitalServices": {
       "type": "component",
       "repeatable": true,
       "component": "elements.text"
@@ -228,10 +210,6 @@
       "type": "component",
       "repeatable": true,
       "component": "elements.review"
-    },
-    "digitalService": {
-      "type": "boolean",
-      "default": false
     },
     "favoriteProvidersIds": {
       "type": "component",

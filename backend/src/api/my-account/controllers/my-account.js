@@ -11,6 +11,8 @@ module.exports = createCoreController('api::my-account.my-account',
     async generateReviewLink(ctx) {
       let token;
       const parts = ctx.headers.authorization.split(' ');
+      const { id } = ctx.request.body;
+
       if (parts.length === 2 && parts[0] === 'Bearer') {
         token = parts[1];
       } else {
@@ -20,7 +22,7 @@ module.exports = createCoreController('api::my-account.my-account',
         if (token) {
           const environment = strapi.config.environment;
           const url = environment === 'development' ? 'http://localhost:3000' : process.env.BASE_FRONT_URL;
-          const reviewLink = `${url}/profile-review?token=${token}`;
+          const reviewLink = ctx.request.body ? `${url}/profile-review?token=${token}&userId=${id}` :`${url}/profile-review?token=${token}`;
           // Send email to admin with the review link
           // ToDo: The email template should not be static
           await strapi.plugins['email'].services.email.send({

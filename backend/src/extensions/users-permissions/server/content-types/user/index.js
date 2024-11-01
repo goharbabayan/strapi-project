@@ -76,9 +76,6 @@ module.exports = {
       inversedBy: 'users',
       configurable: false,
     },
-    ressidentialAddress: {
-      type: "string"
-    },
     photos: {
       type: "media",
       multiple: true,
@@ -91,6 +88,9 @@ module.exports = {
       type: "string"
     },
     lastName: {
+      type: "string"
+    },
+    gender: {
       type: "string"
     },
     country: {
@@ -170,16 +170,6 @@ module.exports = {
     aboutMe: {
       type: 'richtext'
     },
-    interests: {
-      type: "component",
-      repeatable: true,
-      component: "elements.text"
-    },
-    wishlist: {
-      type: "component",
-      repeatable: true,
-      component: "elements.text"
-    },
     outfits: {
       type: "component",
       repeatable: true,
@@ -196,11 +186,6 @@ module.exports = {
       component: "elements.text"
     },
     extras: {
-      type: "component",
-      repeatable: true,
-      component: "elements.text"
-    },
-    digitalServices: {
       type: "component",
       repeatable: true,
       component: "elements.text"
@@ -237,17 +222,10 @@ module.exports = {
       repeatable: true,
       component: "elements.review"
     },
-    digitalService: {
-      type: "boolean",
-      default: false
-    },
     favoriteProvidersIds: {
       type: "component",
       repeatable: true,
       component: "elements.text"
-    },
-    gender: {
-      type: "string"
     },
     badge: {
       type: "string"

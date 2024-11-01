@@ -1,7 +1,7 @@
 import styles from './notificationBar.module.css';
 import Text from '../text/Text';
 import Button from '../button/Button';
-import { SERVICE_PROVIDER } from '@/app/utils/constants/userRoles';
+import { CLIENT, SERVICE_PROVIDER } from '@/app/utils/constants/userRoles';
 
 export default function NotificationBar({
   isApprovedByAdmin,
@@ -9,10 +9,11 @@ export default function NotificationBar({
   onSaveButtonClick,
   showSuccessfullMessage,
   successfullMessageText,
-  showErrorMessage,
   errorMessageText,
-  userRole
+  userRole,
+  isRegisteringANewMember
 }) {
+console.log('userRole: ', userRole);
 
   return (
     <div className={styles.notificationBar}>
@@ -23,14 +24,14 @@ export default function NotificationBar({
           children={successfullMessageText}
         />
       }
-      {showErrorMessage && errorMessageText &&
+      {errorMessageText &&
         <Text
           tag={'h4'}
           className={`${styles.notificationText} text-middle white`}
           children={errorMessageText}
         />
       }
-      {!(showErrorMessage || showSuccessfullMessage) &&
+      {!(errorMessageText || showSuccessfullMessage) &&
         <>
           <Text
             tag={'h4'}
@@ -44,20 +45,22 @@ export default function NotificationBar({
               onClick={onCancelButtonClick}
               children={'Cancel'}
             />
-            {userRole === SERVICE_PROVIDER &&
+            {
               <Button
                 type='button'
                 className={`btn btn_SECONDARY ${styles.submitButton}`}
                 onClick={onSaveButtonClick}
-                children={'Save'}
+                children={isRegisteringANewMember ? 'Save as a draft' : 'Save'}
               />
             }
           </div>
-          <Button
-            type='submit'
-            className={`btn btn_SECONDARY ${styles.submitButton}`}
-            children={!isApprovedByAdmin ? 'Request to review' : 'Submit for review'}
-          />
+          {!isRegisteringANewMember && userRole !== CLIENT &&
+            <Button
+              type='submit'
+              className={`btn btn_SECONDARY ${styles.submitButton}`}
+              children={'Request to review'}
+            />
+          }
         </>
       }
     </div>

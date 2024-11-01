@@ -5,9 +5,6 @@ import Button from '../button/Button';
 
 export default function Preferences({field, subtitle, data, onPreferencesChange, error}) {
   const [currentItem, setCurrentItem] = useState({
-    interests: {item: ''},
-    wishlist: {item: ''},
-    favouriteThings: {item: ''},
     services: {item: ''},
     additionalInfo: {item: ''},
   })

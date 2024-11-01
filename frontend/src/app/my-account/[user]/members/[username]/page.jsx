@@ -6,7 +6,6 @@ import styles from './member.module.css';
 import { navigate } from '@/app/actions';
 import Text from '@/components/text/Text';
 import NotificationBar from '@/components/notificationBar/NotificationBar';
-import Image from '@/components/image/Image';
 import GalleryImages from '@/components/galleryImages/GalleryImages';
 import MenuBar from '@/components/menuBar/MenuBar';
 import AboutMe from '@/components/aboutMe/AboutMe';
@@ -18,22 +17,23 @@ import LocationDetails from '@/components/locationDetails/LocationDetails';
 import ContactDetails from '@/components/contactDetails/ContactDetails';
 import { validateForm } from '@/app/utils/validation';
 import { CREATE_MENU_BAR } from '@/app/utils/constants/menuBar';
-import AccountInfoPopup from '@/components/accountInfoPopup/AccountInfoPopup';
 import Reviews from '@/components/reviews/Reviews';
+import ProfilePageImage from '@/components/profilePageImage/ProfilePageImage';
+import { PROVIDER_URL_PARAMS } from '@/app/utils/constants/fetchURLparams';
+import { useFetchData } from '@/app/utils/hooks/useFetch';
 
 export default function Member ({params}) {
   const { user, username } = params;
   const { replace } = useRouter();
+  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
-  const [role, setRole] = useState();
-  const [showPopup, setShowPopup] = useState(false);
   const [globalErrorText, setGlobalErrorText] = useState('');
   const [errorMessage, setErrorMessage] = useState({});
-  const [showGlobalError, setShowGlobalError] = useState(false);
+
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [userSelectedSuburbs, setUserSelectedSuburbs] = useState([]);
-  const [selectedCity, setSelectedCity] = useState(user.city);
+  const [selectedCity, setSelectedCity] = useState('');
   const [isCityDataChanged, setIsCityDataChanged] = useState(false);
   const [formData, setFormData] = useState({});
   const photosSectionRef = useRef(null);
@@ -42,7 +42,7 @@ export default function Member ({params}) {
   const whenCanWeMetSectionRef = useRef(null);
   const selfiesSectionRef = useRef(null);
   const reviewsSectionRef = useRef(null);
-  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
+
   const menuItems = [
     { name: 'Photos', sectionRef: photosSectionRef },
     { name: 'About Me', sectionRef: aboutSectionRef },
@@ -54,8 +54,8 @@ export default function Member ({params}) {
   const memberToken = process.env.NEXT_PUBLIC_API_TOKEN_MEMBER;
 
   useEffect(() => {
-    const token = JSON.parse(window.localStorage.getItem('token'));
-    user && fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users?filters[username][$eq]=${username}&populate[role][fields]&populate[profilePicture][fields]&populate[coverPhoto][fields]&populate[photos][fields]&populate[selfies][fields]&populate[interests][fields]&populate[wishlist][fields]&populate[favouriteThings][fields]&populate[country][fields]&populate[state][fields]&populate[suburbs][fields]&populate[phoneNumber][fields]&populate[incallRates][fields]&populate[outcallRates][fields]&populate[services][fields]&populate[schedule][fields]&populate[additionalInfo][fields]&populate[reviews][fields]&populate[outfits][fields]&populate[makeup][fields]&populate[costume][fields]&populate[extras][fields]`, {
+    const token = JSON.parse(localStorage.getItem('token'));
+    user && fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users?filters[username][$eq]=${username}&${PROVIDER_URL_PARAMS}`, {
       method: 'GET',
       headers: {
         authorization: `Bearer ${token}`
@@ -66,8 +66,6 @@ export default function Member ({params}) {
         setFormData(data[0]);
         setUserSelectedSuburbs(data[0].suburbs);
         setSelectedCity(data[0].city);
-        setSelectedCity(data[0].city);
-        setRole(data[0].role.name.toLowerCase());
       });
   }, []);
 
@@ -75,11 +73,9 @@ export default function Member ({params}) {
     setErrorMessage('');
     const isUsernameEreased = event.target.name === 'username' && event.target.value === '';
     if (isUsernameEreased) {
-      setShowGlobalError(true);
       setGlobalErrorText('Username must be at least 3 characters');
       return;
     }
-    setShowGlobalError(false);
     setGlobalErrorText('');
     setFormData({ ...formData, [event.target.name]: event.target.value });
     setHasUnsavedChanges(true);
@@ -92,52 +88,23 @@ export default function Member ({params}) {
       setUserSelectedSuburbs([]);
       setIsCityDataChanged(true);
     }
-      setFormData({ ...formData, [name]: value });
-      setChanges(true, { ...formData, [name]: value });
+
+    setFormData({ ...formData, [name]: value });
+    setShowSuccessMessage(false);
+    setHasUnsavedChanges(true);
   };
 
-  const setChanges = (childState, childFormData) => {
-    setShowGlobalError(false);
-    setShowSuccessMessage(false);
-    setErrorMessage('');
-    setHasUnsavedChanges(childState);
-    setFormData(childFormData);
-  }
-
   const handleScheduleChange = (childFormData) => {
-    setShowGlobalError(false);
     setGlobalErrorText('');
     setFormData({...formData, schedule: childFormData});
     setHasUnsavedChanges(true);
   };
 
-  const handleSettingIconClick = (e) => {
-    setShowPopup(!showPopup);
-    document.body.classList.add('overflow-hidden');
-  };
-
-  const handleModalClose = () => {
-    setShowPopup(false);
-    document.body.classList.remove('overflow-hidden');
-  };
-
-  const handleEditIconClick = (e, data) => {
-    const input = (e.currentTarget).closest(`[${data}]`).querySelector('input');
-    input.focus();
-    setFormData({...formData, [input.name]: input.value})
-  };
-
   const handleMemberFormSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.profilePicture) {
-      setShowGlobalError(true);
-      setGlobalErrorText(`Please, add member's profile picture.`);
-      return;
-    }
-    if (!formData.coverPhoto) {
-      setShowGlobalError(true);
-      setGlobalErrorText(`Please, add member's cover photo.`);
+    if (!formData.profilePicture || !formData.coverPhoto) {
+      setGlobalErrorText(`Cover picture and Profile picture are required fields.`);
       return;
     }
 
@@ -146,51 +113,44 @@ export default function Member ({params}) {
 
     if (hasErrors) {
       setErrorMessage(errors);
-      setShowGlobalError(true);
       setGlobalErrorText('Please correct the errors and try again.');
       return;
     } else {
       setErrorMessage('');
-      setShowGlobalError(false);
       setGlobalErrorText('');
     }
 
     memberToken && formData.id &&
-      await fetch(`${baseUrl}/api/members/${formData.id}`, {
-          method: 'PUT',
-          body: JSON.stringify(formData),
-          headers: {
-            'Content-type': 'application/json',
-            'authorization': `Bearer ${memberToken}`
-          }
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (data.error || data.errors) {
-            const errorMessage = data.error.message;
-            setShowGlobalError(true);
-            setGlobalErrorText(errorMessage);
-          } else {
-            setShowSuccessMessage(true);
-            console.log('data: ', data);
-            
-            setTimeout(() => {
-              setShowSuccessMessage(false);
-              setHasUnsavedChanges(false);
-              // if changed username the url params should be changed
-              replace(`/my-account/${user}/members/${formData.username}`);
-            }, 5000)
-          }
-        });
-console.log('user.isApprovedByAdmin: ', formData.isApprovedByAdmin);
+      useFetchData(`${baseUrl}/api/members/${formData.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(formData),
+        headers: {
+          'Content-type': 'application/json',
+          'authorization': `Bearer ${memberToken}`
+        }
+      }).then(data => {
+        if (data.error || data.errors) {
+          const errorMessage = data.error.message;
+          setGlobalErrorText(errorMessage);
+        } else {
+          setShowSuccessMessage(true);
+
+          setTimeout(() => {
+            setShowSuccessMessage(false);
+            setHasUnsavedChanges(false);
+            // if changed username the url params should be changed
+            replace(`/my-account/${user}/members/${formData.username}`);
+          }, 5000)
+        }
+      });
 
       if (!formData.isApprovedByAdmin) {
         user &&
-          await fetch(`${baseUrl}/api/profile-review/${memberToken}`, {
+          useFetchData(`${baseUrl}/api/profile-review/${process.env.NEXT_PUBLIC_API_TOKEN_MEMBER}`, {
             method: 'POST',
             headers: {
               'Content-type': 'application/json',
-              'authorization': `Bearer ${memberToken}`
+              'authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN_MEMBER}`
             },
             body: JSON.stringify(formData),
           })
@@ -198,7 +158,6 @@ console.log('user.isApprovedByAdmin: ', formData.isApprovedByAdmin);
   };
 
   const handleChildFormDataChange = (field, value) => {
-    setShowGlobalError(false);
     setGlobalErrorText('');
     setHasUnsavedChanges(true);
     setFormData({...formData, [field]: value});
@@ -236,7 +195,7 @@ console.log('user.isApprovedByAdmin: ', formData.isApprovedByAdmin);
     }
 
     memberToken &&
-      await fetch(`${baseUrl}/api/members/${formData.id}`, {
+      useFetchData(`${baseUrl}/api/members/${formData.id}`, {
         method: 'PUT',
         headers: {
           'Content-type': 'application/json',
@@ -244,7 +203,6 @@ console.log('user.isApprovedByAdmin: ', formData.isApprovedByAdmin);
         },
         body: JSON.stringify(unsavedUserData),
       })
-      .then(res => res.json());
 
     setHasUnsavedChanges(false);
   }
@@ -259,9 +217,8 @@ console.log('user.isApprovedByAdmin: ', formData.isApprovedByAdmin);
             onSaveButtonClick={handleSaveButtonClick}
             showSuccessfullMessage={showSuccessMessage}
             successfullMessageText={'All changes have been applied successfully.'}
-            showErrorMessage={showGlobalError}
             errorMessageText={globalErrorText}
-            userRole={role}
+            userRole={formData?.role?.type}
           />
         )}
         <section className={`${styles.section} page-width`}>
@@ -285,14 +242,14 @@ console.log('user.isApprovedByAdmin: ', formData.isApprovedByAdmin);
                   {formData && formData.username &&
                     <>
                       <section className='page-width'>
-                        <Image
+                        <ProfilePageImage
                           type='coverPhoto'
                           formData={formData}
                           onChildFormDataChange={handleChildFormDataChange}
                         />
                       </section>
                       <section className='profileInfo page-width'>
-                        <Image
+                        <ProfilePageImage
                           type='profilePicture'
                           formData={formData}
                           onChildFormDataChange={handleChildFormDataChange}
@@ -331,16 +288,6 @@ console.log('user.isApprovedByAdmin: ', formData.isApprovedByAdmin);
                           errorMessage={errorMessage}
                         />
                       </section>
-                      {showPopup &&
-                        <AccountInfoPopup
-                          onClose={handleModalClose}
-                          onEditIconClick={handleEditIconClick}
-                          onChange={handleChange}
-                          username={formData.username}
-                          password={formData.password}
-                          ressidentialAddress={formData.ressidentialAddress}
-                        />
-                      }
                       <MenuBar
                         isNotificationBarOpen={hasUnsavedChanges}
                         onScrollToSection={handleScrollToSection}

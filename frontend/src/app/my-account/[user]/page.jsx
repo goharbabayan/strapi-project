@@ -10,9 +10,10 @@ import ServiceProviderDetails from '@/components/serviceProviderDetails/ServiceP
 import { navigate } from '../../actions.js';
 import { CLIENT, SERVICE_PROVIDER, MANAGER } from '../../utils/constants/userRoles.js';
 import { validateForm } from '@/app/utils/validation.js';
+import { useFetchData } from '@/app/utils/hooks/useFetch.jsx';
 
 export default function MyAccountPage() {
-  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
+  const strapiBaseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
   const [user, setUser] = useState([]);
   const [userId, setUserId] = useState('');
   const [role, setRole] = useState('');
@@ -21,29 +22,26 @@ export default function MyAccountPage() {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [globalErrorText, setGlobalErrorText] = useState('');
   const [errorMessage, setErrorMessage] = useState({});
-  const [showGlobalError, setShowGlobalError] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   useEffect(() => {
-    const token = JSON.parse(window.localStorage.getItem('token'));
+    const token = JSON.parse(localStorage.getItem('token'));
     token && setToken(token);
     token
       ?
-        fetch(`${baseUrl}/api/users/me?populate=*`, {
+        useFetchData(`${strapiBaseUrl}/api/users/me?populate=*`, {
           method: 'GET',
           headers: {
             'authorization': `Bearer ${token}`
-          }
-        })
-        .then(res => res.json())
-        .then(data => {
+          } 
+        }).then(data => {
           if (data.error) {
             // the token is expired, need to login again to update existing token;
             navigate('/login');
           } else {
             setUser(data);
             setUserId(data.id);
-            setRole(data.role.name.toLowerCase());
+            setRole(data.role.type.toLowerCase());
           }
         })
         .catch(err => console.log('err', err))
@@ -56,12 +54,10 @@ export default function MyAccountPage() {
 
     if (role !== MANAGER) {
       if (!userUpdatedFormData.profilePicture) {
-        setShowGlobalError(true);
         setGlobalErrorText(`Please, add member's profile picture.`);
         return;
       }
       if (!userUpdatedFormData.coverPhoto && role !== CLIENT) {
-        setShowGlobalError(true);
         setGlobalErrorText(`Please, add member's cover photo.`);
         return;
       }
@@ -77,17 +73,15 @@ export default function MyAccountPage() {
 
     if (hasErrors) {
       setErrorMessage(errors);
-      setShowGlobalError(true);
       setGlobalErrorText('Please correct the errors and try again.');
       return;
     } else {
       setErrorMessage('');
-      setShowGlobalError(false);
       setGlobalErrorText('');
     }
 
     token && userId && user &&
-      fetch(`${baseUrl}/api/users/${userId}`, {
+      fetch(`${strapiBaseUrl}/api/users/${userId}`, {
         method: 'PUT',
         body: JSON.stringify(userUpdatedFormData),
         headers: {
@@ -102,11 +96,9 @@ export default function MyAccountPage() {
           if (hasMoreThanOneError) {
             data.error.errors.map(error => {
               setGlobalErrorText(error.message);
-              setShowGlobalError(true);
             })
           }
           setGlobalErrorText(data.error.message);
-          setShowGlobalError(true);
         } else {
           setShowSuccessMessage(true);
           setTimeout(() => {
@@ -118,7 +110,7 @@ export default function MyAccountPage() {
 
     if (!user.isApprovedByAdmin) {
       token && userId && user &&
-        fetch(`${baseUrl}/api/profile-review/${token}`,{
+        fetch(`${strapiBaseUrl}/api/profile-review/${token}`,{
           method: 'POST',
           headers: {
             'Content-type': 'application/json',
@@ -137,7 +129,7 @@ export default function MyAccountPage() {
     }
 
     token && userId && user &&
-      fetch(`${baseUrl}/api/users/${userId}`, {
+      useFetchData(`${strapiBaseUrl}/api/users/${userId}`, {
         method: 'PUT',
         headers: {
           'Content-type': 'application/json',
@@ -145,8 +137,6 @@ export default function MyAccountPage() {
         },
         body: JSON.stringify(unsavedUserData),
       })
-      .then(res => res.json());
-
     setHasUnsavedChanges(false);
   }
 
@@ -155,7 +145,7 @@ export default function MyAccountPage() {
   };
 
   const handleSetChanges = (childState, childFormData) => {
-    setShowGlobalError(false);
+    setGlobalErrorText('');
     setShowSuccessMessage(false);
     setErrorMessage('');
     setHasUnsavedChanges(childState);
@@ -174,7 +164,6 @@ export default function MyAccountPage() {
                 onSaveButtonClick={handleSaveButtonClick}
                 showSuccessfullMessage={showSuccessMessage}
                 successfullMessageText={user.isApprovedByAdmin ? 'All changes have been applied successfully.' : 'Your request has been sent successfully.'}
-                showErrorMessage={showGlobalError}
                 errorMessageText={globalErrorText}
                 userRole={role}
               />

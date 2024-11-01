@@ -73,6 +73,15 @@
   display: flex;
 }
 
+.isNotApproved {
+  color: var(--red-r5);
+}
+
+.approvedStatus {
+  display: flex;
+  align-items: center;
+}
+
 @media screen and (max-width: 749px) {
   .container {
     margin-bottom: 20px;

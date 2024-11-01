@@ -5,7 +5,6 @@ import Schedule from '../../components/schedule/Schedule';
 import Reviews from '../reviews/Reviews';
 import MenuBar from '../menuBar/MenuBar';
 import AccountInfoPopup from '../accountInfoPopup/AccountInfoPopup';
-import Image from '../image/Image';
 import Text from '../text/Text';
 import GalleryImages from '../galleryImages/GalleryImages';
 import AboutMe from '../aboutMe/AboutMe';
@@ -15,6 +14,7 @@ import LocationDetails from '../locationDetails/LocationDetails';
 import ContactDetails from '../contactDetails/ContactDetails';
 import { CREATE_MENU_BAR } from '@/app/utils/constants/menuBar';
 import { USER_FORM, USER_FORM_WITH_DATA } from '@/app/utils/constants/userForm';
+import ProfilePageImage from '../profilePageImage/ProfilePageImage';
 
 function ServiceProviderDetails ({user, onChanges, hasUnsavedChanges, errorMessage}) {
   const [showPopup, setShowPopup] = useState(false);
@@ -90,14 +90,14 @@ function ServiceProviderDetails ({user, onChanges, hasUnsavedChanges, errorMessa
   return (
     <>
       <section className='page-width'>
-        <Image
+        <ProfilePageImage
           type='coverPhoto'
           formData={formData}
           onChildFormDataChange={handleChildFormDataChange}
         />
       </section>
       <section className={`profileInfo page-width`}>
-        <Image
+        <ProfilePageImage
           type='profilePicture'
           formData={formData}
           onChildFormDataChange={handleChildFormDataChange}
@@ -108,6 +108,9 @@ function ServiceProviderDetails ({user, onChanges, hasUnsavedChanges, errorMessa
             className={styles.title}
             children={'Personal details'}
           />
+          <span className='text-middle'>
+            {formData.isApprovedByAdmin ? 'Your account is approved by admin' : 'Your account has not been approved by admin yet'}
+          </span>
           <div className={styles.settingIconWrap}>
             <Text
               tag={'span'}
@@ -153,7 +156,6 @@ function ServiceProviderDetails ({user, onChanges, hasUnsavedChanges, errorMessa
           onChange={handleChange}
           username={formData.username}
           password={formData.password}
-          ressidentialAddress={formData.ressidentialAddress}
         />
       }
       <MenuBar

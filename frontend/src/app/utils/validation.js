@@ -73,7 +73,7 @@ export const validateForm = (formData, isClientDashboardPage) => {
       //   if (isSelfiesEmpty) {
       //     errors[fieldName] = 'Please add selfy images';
       //   }
-        break;
+      // break;
       // case 'interests':
       //   const isInterestsEmpty = fieldValue && fieldValue.length === 0;
       //   if (isInterestsEmpty) {

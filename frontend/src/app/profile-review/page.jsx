@@ -16,10 +16,11 @@ export default function ProfileReview({searchParams}) {
 
   useEffect(() => {
     const token = searchParams.token;
+    const userId = searchParams.userId;
     setToken(token);
     token
       ?
-        fetch(`${baseUrl}/api/users/me?populate=*`, {
+        fetch(`${baseUrl}/api/users?filters[id][$eq]=${userId}&populate=*`, {
           method: 'GET',
           headers: {
             'authorization': `Bearer ${token}`
@@ -31,7 +32,7 @@ export default function ProfileReview({searchParams}) {
             // the token is expired need to login again to update existing token;
             // navigate('/login');
           } else {
-            setUser(data);
+            Array.isArray(data) ? setUser(data[0]) : setUser(data)
           }
         })
         .catch(err => console.log('err', err))

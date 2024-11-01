@@ -8,35 +8,33 @@ import { navigate } from '@/app/actions';
 import EditIcon from '@/components/icons/Edit';
 import RemoveIcon from '@/components/icons/RemoveIcon';
 import Loading from '@/app/loading';
+import { useFetchData } from '@/app/utils/hooks/useFetch';
+import { memberURLParams } from '@/app/utils/constants/fetchURLparams';
 
 export default function Members ({params, searchParams}) {
-  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
+  const starpiBaseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
   const { user } = params;
   const { email, id } = searchParams;
   const [members, setMembers] = useState(null);
   const [showSuccessfullRemoveMessage, setShowSuccessfullRemoveMessage] = useState(false);
   const [removeMemberText, setRemoveMemberText] = useState({text: ''});
-  
+
   useEffect(() => {
-    const token = JSON.parse(window.localStorage.getItem('token'));
-    // todo: change
-    user && fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users?filters[managerID][$eq]=${id}&populate[role][fields]&populate[profilePicture][fields]&populate[coverPhoto][fields]&populate[photos][fields]&populate[selfies][fields]&populate[interests][fields]&populate[wishlist][fields]&populate[favouriteThings][fields]&populate[digitalServices][fields]&populate[incallRates][fields]&populate[outcallRates][fields]&populate[services][fields]&populate[schedule][fields]&populate[additionalInfo][fields]&populate[reviews][fields]&populate[outfits][fields]&populate[makeup][fields]&populate[costume][fields]&populate[extras][fields]`, {
+    const managerToken = JSON.parse(localStorage.getItem('token'));
+    const fetchURL = `${starpiBaseUrl}/api/users?filters[managerID][$eq]=${id}`;
+    user && useFetchData(fetchURL, {
       method: 'GET',
       headers: {
-        authorization: `Bearer ${token}`
+        authorization: `Bearer ${managerToken}`
       }
-    })
-      .then(response => response.json())
-      .then(data => {
-        setMembers(data);
-      });
+    }).then(data => setMembers(data));
   }, [showSuccessfullRemoveMessage])
 
   const navigateToDashboard = () => {
     navigate(`/my-account/${user}`);
   }
 
-  const navigateToNewmber = () => {
+  const navigateToNewMember = () => {
     navigate(`/my-account/${user}/new-member?email=${email}&id=${id}`);
   }
 
@@ -47,22 +45,19 @@ export default function Members ({params, searchParams}) {
   const handleRemoveMember = async (index) => {
     const memberToken = process.env.NEXT_PUBLIC_API_TOKEN_MEMBER;
     const id = members[index].id;
-    // const updatedMembersListFormData = membersList.filter((member, index) => index != formDataIndex);
+
     memberToken && id &&
-      await fetch(`${baseUrl}/api/members/${id}`, {
-          method: 'DELETE',
-          body: JSON.stringify(id),
-          headers: {
-            'Content-type': 'application/json',
-            'authorization': `Bearer ${memberToken}`
-          }
-        })
-        .then(res => {
-          return res.json();
-        })
-        .then(data => {
+      useFetchData(`${starpiBaseUrl}/api/members/${id}`, {
+        method: 'DELETE',
+        body: JSON.stringify(id),
+        headers: {
+          'Content-type': 'application/json',
+          'authorization': `Bearer ${memberToken}`
+        }
+      }).then(data => {
           if (data.error || data.errors) {
             const errorMessage = data.error.message;
+            console.error(errorMessage);
           } else {
             setShowSuccessfullRemoveMessage(true);
             setRemoveMemberText({text: `${members[index].username} was successfully removed from your members list.`});
@@ -71,7 +66,6 @@ export default function Members ({params, searchParams}) {
             }, 5000)
           }
         });
-
   }
 
   return (
@@ -79,7 +73,7 @@ export default function Members ({params, searchParams}) {
       <section className={`${styles.section} page-width`}>
         <div className={`${styles.container} ${styles.buttonsWrap}`}>
           <Button children={'Back to dashboard'} onClick={navigateToDashboard} className='btn button'/>
-          <Button children={'Create new member'} onClick={navigateToNewmber} className='btn button'/>
+          <Button children={'Create new member'} onClick={navigateToNewMember} className='btn button'/>
         </div>
       </section>
       <section className={`page-width`}>
@@ -89,14 +83,11 @@ export default function Members ({params, searchParams}) {
             className={'title'}
             children={'My members'}
           />
-                    
-          {!members &&
-           <Loading className={styles.loading}/>
-          }
+          {!members && <Loading className={styles.loading} />}
           {members && members.length > 0 &&
             <ul className={`${styles.list} unstyled-list`}>
               {members.map((member, index) => {
-                const isAproved = member.isApprovedByAdmin;
+                const isApproved = member.isApprovedByAdmin;
                 return (
                 <li key={index} className={styles.membersList}>
                   <div className={styles.memberName}>
@@ -117,11 +108,8 @@ export default function Members ({params, searchParams}) {
                       className='unstyled-anchor'
                   />
                   </div>
-                  <div>
-                    <h3 className={'text-middle'}>Is approved by Admin:</h3>
-                    <span className={'text-middle'}>{isAproved.toString()}</span>
-                  </div>
                   <div className={styles.editButtons}>
+                    <span className={`text-middle ${styles.approvedStatus} ${!isApproved ? styles.isNotApproved : ''}`}>{`Is ${!isApproved ? 'not ': ' '}approved`}</span>
                     <div className={styles.editButton} onClick={() => handleEditIconClick(member.username)}>
                       <EditIcon className={styles.editIcon} />
                     </div>
