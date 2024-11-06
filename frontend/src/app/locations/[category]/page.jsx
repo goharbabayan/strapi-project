@@ -3,7 +3,7 @@
 import {useState, useEffect} from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_LOCATION_PAGE_QUERIES } from '@/app/graphql/locationPageQueriess';
-import { SEARCH_AND_FILTER_POPULATE_FIELDS } from '@/app/utils/constants/fetchURLParams';
+import { SEARCH_AND_FILTER_POPULATE_FIELDS } from '@/app/utils/constants/fetchURLparams';
 import { FILTER_CATEGORIES } from '@/app/utils/constants/filterCategories';
 import styles from './category.module.css';
 import ImageBanner from '@/components/imageBanner/ImageBanner';

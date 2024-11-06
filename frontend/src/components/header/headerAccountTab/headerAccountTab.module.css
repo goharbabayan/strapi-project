@@ -1,0 +1,57 @@
+.userName {
+  font-size: 16px;
+  font-family: var(--primary-font);
+  font-weight: normal;
+  margin: 0;
+}
+
+.headerAccountTabWrapper {
+  position: relative;
+}
+
+.headerAccountTabContainer {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.image {
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.headerAccountTabDetails {
+  position: absolute;
+  z-index: 8;
+  background-color: var(--neutral-white-n10);
+  padding: 12px 20px;
+  border-radius: 10px;
+  gap: 24px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.mobileHeaderAccountTabDetails {
+  min-width: 200px;
+}
+
+.mobileImage {
+  width: 40px;
+  height: 40px;
+}
+
+.headerAccountTabItem {
+  text-decoration: none;
+  margin: 0;
+  font-size: 16px;
+  font-family: var(--primary-font);
+  font-weight: normal;
+  cursor: pointer;
+  color: var(--neutral-black);
+}
+
+.headerAccountTabItem:hover {
+  text-decoration: underline;
+}

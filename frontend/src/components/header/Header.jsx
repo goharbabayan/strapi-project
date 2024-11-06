@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_HEADER_QUERIES } from '../../app/graphql/headerQueries';
 import { navigate } from '../../app/utils/actions';
@@ -10,8 +10,12 @@ import SearchIcon from '../icons/SearchIcon';
 import Button from '../button/Button';
 import BurgerButton from '../icons/burgerButton/BurgerButton';
 import Navigation from '../navigation/Navigation';
+import { AuthContext } from '@/app/Context';
+import { useFetchData } from '@/app/utils/hooks/useFetch';
+import HeaderAccountTab from './headerAccountTab/HeaderAccountTab';
 
 export default function Header() {
+  const {customerToken} = useContext(AuthContext);
   const [menuItems, setMenuItems] = useState([]);
   const [menuItemsTitle, setMenuItemsTitle] = useState(null);
   const [buttons, setButtons] = useState([]);
@@ -22,15 +26,35 @@ export default function Header() {
   const [isOneOfTheMobileMenuItemsOpened, setIsOneOfTheMobileMenuItemsOpened] = useState(false);
   const [openedFirstLevelMobileItemId, setOpenedFirstLevelMobileItemId] = useState(null);
   const [navigationClassName, setNavigationClassName] = useState(false);
+  const [loggedInCustomerData, setLoggedInCustomerData] = useState(null);
   const {loading, error, data} = useQuery(GET_HEADER_QUERIES);
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
   useEffect(() => {
-    data !== undefined && setMenuItems(data?.header?.data?.attributes?.locations?.locations);
-    data !== undefined && setMenuItemsTitle(data?.header?.data?.attributes?.locations?.title);
+    data !== undefined && setMenuItems(data?.header?.data?.attributes?.categories?.categories);
+    data !== undefined && setMenuItemsTitle(data?.header?.data?.attributes?.categories?.categories_title);
     data !== undefined && setLogo(data?.header?.data?.attributes?.logo?.data?.attributes);
     data !== undefined && setButtons(data?.header?.data?.attributes?.buttons);
   }, [data]);
+
+  useEffect(() => {
+    if (customerToken) {
+      useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/me?populate=*`, {
+        method: 'GET',
+        headers: {
+          'authorization': `Bearer ${customerToken}`
+        }
+      }).then((data) => {
+        setLoggedInCustomerData({
+          username: data?.username,
+          profilePicture: data?.profilePicture?.url,
+          name: data?.name,
+          lastname: data?.lastName,
+          role: data?.role.type
+        })
+      })
+    }
+  }, [customerToken]);
 
   useEffect(() => {
     checkWidth();
@@ -98,15 +122,24 @@ export default function Header() {
                           className={styles.searchIcon}
                           onClick={handleSearchIconClick}
                         />
-                        {atLeastOneButtonExists && !isMobileLayout &&
-                          buttons.map((button, index) =>
-                            <Button
-                              children={button.title}
-                              href={button.link || ''}
-                              className={index % 2 === 0 ? `${styles.button} button_general` : `${styles.button} button_main`}
-                              key={index}
-                            />
-                          )
+                        {customerToken && loggedInCustomerData ?
+                          <HeaderAccountTab
+                            loggedInCustomerData={loggedInCustomerData}
+                            isMobileLayout={isMobileLayout}
+                          />
+                            :
+                          <>
+                            {atLeastOneButtonExists && !isMobileLayout &&
+                              buttons.map((button, index) =>
+                                <Button
+                                  children={button.title}
+                                  href={button.link || ''}
+                                  className={index % 2 === 0 ? `${styles.button} button_general` : `${styles.button} button_main`}
+                                  key={index}
+                                />
+                              )
+                            }
+                          </>
                         }
                       </div>
                     }
@@ -135,6 +168,7 @@ export default function Header() {
                     openedFirstLevelMobileItemId={openedFirstLevelMobileItemId}
                     setOpenedFirstLevelMobileItemId={setOpenedFirstLevelMobileItemId}
                     listItemsAreOpened={listItemsAreOpened}
+                    loggedInCustomerData={loggedInCustomerData}
                   />
                 </div>
               }

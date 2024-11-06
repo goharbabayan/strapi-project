@@ -15,10 +15,10 @@ const GET_HEADER_QUERIES = gql`
               }
             }
           }
-          locations {
+          categories {
             id
-            title
-            locations {
+            categories_title
+            categories {
               id
               name
               link

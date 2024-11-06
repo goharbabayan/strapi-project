@@ -37,7 +37,7 @@
 
 .headerMenu {
   display: flex;
-  gap: 16px;
+  gap: 24px;
 }
 
 .searchIcon {
@@ -75,6 +75,9 @@
     order: 2;
     width: 124px;
     height: 36px;
+    position: absolute;
+    transform: translateX(-50%);
+    left: 50%;
   }
 
   .navigationButton {

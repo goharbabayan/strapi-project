@@ -14,7 +14,7 @@ export interface BlockAccordion extends Schema.Component {
 export interface BlockCategory extends Schema.Component {
   collectionName: 'components_block_categories';
   info: {
-    displayName: 'location';
+    displayName: 'category';
     description: '';
   };
   attributes: {
@@ -109,8 +109,8 @@ export interface ElementsCollection extends Schema.Component {
     description: '';
   };
   attributes: {
-    title: Attribute.String;
-    locations: Attribute.Component<'block.category', true>;
+    categories_title: Attribute.String;
+    categories: Attribute.Component<'block.category', true>;
   };
 }
 

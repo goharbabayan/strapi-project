@@ -17,7 +17,8 @@ export default function Navigation ({
   setIsOneOfTheMobileMenuItemsOpened,
   openedFirstLevelMobileItemId,
   setOpenedFirstLevelMobileItemId,
-  listItemsAreOpened
+  listItemsAreOpened,
+  loggedInCustomerData
 }) {
   const [navigationItems, setNavigationItems] = useState([]);
   const {loading, error, data} = useQuery(GET_NAVIGATION_QUERIES);
@@ -45,8 +46,8 @@ export default function Navigation ({
               setOpenedFirstLevelMobileItemId={setOpenedFirstLevelMobileItemId}
               listItemsAreOpened={listItemsAreOpened}
             />
-            {atLeastOneButtonExists && isMobileLayout &&
-              <div className={styles.buttonsWrapper}>
+            {atLeastOneButtonExists && isMobileLayout && !loggedInCustomerData &&
+              (<div className={styles.buttonsWrapper}>
                 {buttons.map((button, index) =>
                   <Button
                     children={button.title}
@@ -55,7 +56,7 @@ export default function Navigation ({
                     key={index}
                   />
                 )}
-              </div>
+              </div>)
             }
           </div>
         </nav>

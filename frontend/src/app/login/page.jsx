@@ -1,15 +1,17 @@
 'use client'
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { navigate } from '../../app/actions';
 import Loading from '../loading';
 import Layout from './layuot.jsx';
 import styles from './login.module.css';
 import FormInput from '@/components/form/FormInput';
 import FormSubmitButton from '@/components/form/FormSubmitButton';
+import { AuthContext } from '../Context';
 
 export default function LoginPage() {
+  const {setCustomerToken} = useContext(AuthContext);
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
   const [ isLoading, setIsLoading ] = useState(false);
   const formFields = [
@@ -90,6 +92,7 @@ export default function LoginPage() {
         if (isLoggedinSuccesfully && token) {
           const userName = data.user.username;
           localStorage.setItem('token', JSON.stringify(token));
+          setCustomerToken(JSON.stringify(token));
           navigate(`/my-account/${userName}`);
           setIsLoading(false);
         }

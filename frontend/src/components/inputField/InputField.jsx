@@ -22,7 +22,6 @@ export default function InputField ({
   selectClassName,
   errorMessageClassName,
   onMouseDown,
-  isFocused,
   ...other
 }) {
   const [showOptions, setShowOptions] = useState(false);
@@ -30,27 +29,17 @@ export default function InputField ({
     id: '',
     showPassword: false
   });
-  const inputRef = useRef(null);
+
   const selectRef = useRef(null);
   const arrowRef = useRef(null);
   const labelRef = useRef(null);
   const suburbRef = useRef(null);
 
   useEffect(() => {
-    handleInputFocused();
-  }, [isFocused]);
-
-  useEffect(() => {
     if (!type === 'select') return;
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  const handleInputFocused = () => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    };
-  };
 
   const handleClickOutside = (e) => {
     const isOutsideSelectTag = !(e.target.matches(`.${selectClassName}`) && e.target.matches('.arrow')) && !(selectRef.current && selectRef.current.contains(e.target) || arrowRef.current && arrowRef.current.contains(e.target));
@@ -128,7 +117,6 @@ export default function InputField ({
             type={inputType.id === id && inputType.showPassword ? 'text' : type}
             name={name}
             id={id}
-            ref={inputRef}
             className={`${styles.input} ${inputClassName ? inputClassName : ''} ${errorMessage && errorMessage[name] && styles.invalid}`}
             value={value}
             onChange={onChange}

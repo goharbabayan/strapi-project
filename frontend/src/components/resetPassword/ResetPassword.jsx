@@ -1,12 +1,14 @@
-import { forwardRef, useState } from 'react';
+import { forwardRef, useContext, useState } from 'react';
 import styles from './resetPassword.module.css';
 import InputField from '../inputField/InputField';
 import Text from '../text/Text';
 import Button from '../button/Button';
+import { AuthContext } from '@/app/Context';
 
 const ResetPassword = forwardRef(({password}, ref) => {
 // ToDo: please check if the password and ref params are used in this component
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
+  const {setCustomerToken} = useContext(AuthContext);
   const [error, setError] = useState('');
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -53,6 +55,7 @@ const ResetPassword = forwardRef(({password}, ref) => {
         } else if (data.user) {
           const token = data.jwt;
           localStorage.setItem('token', JSON.stringify(token));
+          setCustomerToken(JSON.stringify(token));
           setShowSuccessMessage(true);
           setTimeout(() => {
             setShowSuccessMessage(false);
