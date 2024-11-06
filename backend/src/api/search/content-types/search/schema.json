@@ -1,0 +1,31 @@
+{
+  "kind": "singleType",
+  "collectionName": "searches",
+  "info": {
+    "singularName": "search",
+    "pluralName": "searches",
+    "displayName": "Search",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "image_banner_landscape_for_desktop": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "image_banner_portrait_for_mobile": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}

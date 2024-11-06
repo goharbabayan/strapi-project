@@ -26,8 +26,8 @@ export default function Header() {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
   useEffect(() => {
-    data !== undefined && setMenuItems(data?.header?.data?.attributes?.categories?.categories);
-    data !== undefined && setMenuItemsTitle(data?.header?.data?.attributes?.categories?.categories_title);
+    data !== undefined && setMenuItems(data?.header?.data?.attributes?.locations?.locations);
+    data !== undefined && setMenuItemsTitle(data?.header?.data?.attributes?.locations?.title);
     data !== undefined && setLogo(data?.header?.data?.attributes?.logo?.data?.attributes);
     data !== undefined && setButtons(data?.header?.data?.attributes?.buttons);
   }, [data]);

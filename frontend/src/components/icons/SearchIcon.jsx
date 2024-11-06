@@ -7,4 +7,3 @@ export default function SearchIcon(props) {
     </div>
   )
 }
-

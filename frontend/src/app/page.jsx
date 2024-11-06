@@ -13,6 +13,7 @@ import {
 } from './utils/constants/homePageSectionTitles';
 import Loading from './loading';
 import { GET_POPULAR_PROVIDERS_QUERIES, GET_PROVIDERS_BY_TYPE_QUERIES, GET_TOP_PROVIDERS_QUERIES } from './graphql/providersSectionQueries';
+import Text from '@/components/text/Text';
 
 export default function HomePage() {
   const [bannerLink, setBannerLink] = useState(null);

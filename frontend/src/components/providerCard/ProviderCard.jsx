@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Text from '../text/Text';
 
 const ProviderCard = ({provider, showBadge, badge, count}) => {
+  if (!provider) return;
   const [hourlyRate, setHourlyRate] = useState(null);
   const {
     username,
@@ -26,7 +27,7 @@ const ProviderCard = ({provider, showBadge, badge, count}) => {
     height: imageHeight,
     width: imageWidth,
     url
-  } = profilePicture?.data !== null ? profilePicture?.data?.attributes : {};
+  } = profilePicture?.data ? profilePicture?.data?.attributes : profilePicture;
   const cardWidth = count && count === 3 ? '33.3%' : count && count === 4 ? '25%' : '100%';
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 

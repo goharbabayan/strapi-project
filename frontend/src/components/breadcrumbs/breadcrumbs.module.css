@@ -1,0 +1,16 @@
+.title { 
+  display: flex;
+  margin: 0;
+  color: var(--neutral-white-n10);
+  font-family: var(--headings-font);
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+@media screen and (max-width: 749px) {
+  .title {
+    font-size: 26px;
+  }
+}

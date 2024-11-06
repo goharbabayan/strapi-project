@@ -112,7 +112,7 @@ export default function Favourites ({
     
     setSelectedOptions(updatedOptions);
     onMouseDown(name, updatedOptions);
-  }
+  };
 
   return (
     <div className={styles.container}>

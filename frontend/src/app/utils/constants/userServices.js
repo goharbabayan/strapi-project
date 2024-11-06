@@ -6,7 +6,7 @@ export const SERVICES_OPTIONS = [
   { value: 'Anal play - On you', label: 'Anal play - On you'},
   { value: 'ATM - Ass to mouth', label: 'ATM - Ass to mouth'},
   { value: 'BBBJ - bare black', label: 'BBBJ - bare black'},
-  { value: 'B + D - bondage + discipline', label: 'B + D - bondage + discipline'},
+  { value: 'B and D - bondage and discipline', label: 'B and D - bondage and discipline'},
   { value: 'BDSM', label: 'BDSM'},
   { value: 'BJ - blow job', label: 'BJ - blow job'},
   { value: 'BS - body slide', label: 'BS - body slide'},

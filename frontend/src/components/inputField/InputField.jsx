@@ -22,6 +22,7 @@ export default function InputField ({
   selectClassName,
   errorMessageClassName,
   onMouseDown,
+  isFocused,
   ...other
 }) {
   const [showOptions, setShowOptions] = useState(false);
@@ -30,9 +31,14 @@ export default function InputField ({
     showPassword: false
   });
   const inputRef = useRef(null);
+  const selectRef = useRef(null);
   const arrowRef = useRef(null);
   const labelRef = useRef(null);
   const suburbRef = useRef(null);
+
+  useEffect(() => {
+    handleInputFocused();
+  }, [isFocused]);
 
   useEffect(() => {
     if (!type === 'select') return;
@@ -40,16 +46,22 @@ export default function InputField ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const handleInputFocused = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    };
+  };
+
   const handleClickOutside = (e) => {
-    const isOutsideSelectTag = !(e.target.matches(`.${selectClassName}`) && e.target.matches('.arrow')) && !(inputRef.current && inputRef.current.contains(e.target) || arrowRef.current && arrowRef.current.contains(e.target));
+    const isOutsideSelectTag = !(e.target.matches(`.${selectClassName}`) && e.target.matches('.arrow')) && !(selectRef.current && selectRef.current.contains(e.target) || arrowRef.current && arrowRef.current.contains(e.target));
     if (isOutsideSelectTag) {
       setShowOptions(false);
-    }
+    };
   };
 
   const handleClick = (e) => {
     e.preventDefault();
-    if (inputRef.current && inputRef.current.contains(e.target) || arrowRef.current && arrowRef.current.contains(e.target)) {
+    if (selectRef.current && selectRef.current.contains(e.target) || arrowRef.current && arrowRef.current.contains(e.target)) {
       setShowOptions(!showOptions);
     };
   };
@@ -69,7 +81,7 @@ export default function InputField ({
     setInputType({
       id: closestInputId,
       showPassword: !inputType.showPassword
-    })
+    });
   }
 
   return (
@@ -80,7 +92,7 @@ export default function InputField ({
             <select
               name={name}
               id={id}
-              ref={inputRef} 
+              ref={selectRef} 
               className={`${styles.selectClassName} ${selectClassName ? selectClassName : ''}`}
               value={value}
               required={isRequired}
@@ -116,6 +128,7 @@ export default function InputField ({
             type={inputType.id === id && inputType.showPassword ? 'text' : type}
             name={name}
             id={id}
+            ref={inputRef}
             className={`${styles.input} ${inputClassName ? inputClassName : ''} ${errorMessage && errorMessage[name] && styles.invalid}`}
             value={value}
             onChange={onChange}

@@ -1,0 +1,28 @@
+.button {
+  display: flex;
+  padding: 12px;
+  gap: 8px;
+  border-radius: 10px;
+  border: 1px solid var(--neutral-n50);
+  background: var(--neutral-white-n10);
+  cursor: pointer;
+}
+
+.button:hover {
+  color: var(--color-hover);
+  opacity: 90%;
+}
+
+.text {
+  color: var(--neutral-black);
+  font-family: var(--primary-bold-font);
+  font-size: 16px;
+  font-style: normal;
+  line-height: 24px;
+}
+
+@media screen and (max-width: 749px) {
+  .text {
+    display: none;
+  }
+}

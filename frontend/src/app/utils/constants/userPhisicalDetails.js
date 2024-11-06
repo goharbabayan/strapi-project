@@ -72,7 +72,7 @@ export const EYE_COLOR_OPTIONS = [
 export const HAIR_COLOR_OPTIONS = [
   {value: 'blonde', label: 'blonde'},
   {value: 'red', label: 'red'},
-  {value: 'black', label: 'brublacknette'},
+  {value: 'black', label: 'black'},
   {value: 'brunette', label: 'brunette'},
   {value: 'auburn', label: 'auburn'},
   {value: 'platinum blonde', label: 'platinum blonde'},

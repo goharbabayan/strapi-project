@@ -41,12 +41,12 @@ export default function Menu({
   };
 
   const toggleMenu = (id, hasNextLevel, level) => {
-    if (level === 1) {
+    if (isMobileLayout && level === 1) {
       setOpenedFirstLevelMobileItemId(id);
       id === openedFirstLevelMobileItemId
         ? setIsOneOfTheMobileMenuItemsOpened(!isOneOfTheMobileMenuItemsOpened)
         : setIsOneOfTheMobileMenuItemsOpened(true);
-    } else if (level === 2) {
+    } else if (isMobileLayout && level === 2) {
       setIsOneOfTheMobileMenuItemsOpened(true);
     };
 
