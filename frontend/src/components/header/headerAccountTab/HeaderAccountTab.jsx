@@ -3,6 +3,8 @@ import styles from './headerAccountTab.module.css';
 import ArrowDown from '@/components/icons/arrowDown/ArrowDown';
 import { useContext, useState } from 'react';
 import { AuthContext } from '@/app/Context';
+import { navigate } from '@/app/actions';
+import profileAvatarPlaceholder from '../../../../public/assets/profile_avatar_placeholder.png'
 
 export default function HeaderAccountTab({loggedInCustomerData, isMobileLayout}) {
   const [showLoggedInTabs, setShowLoggedInTabs] = useState(false);
@@ -12,6 +14,7 @@ export default function HeaderAccountTab({loggedInCustomerData, isMobileLayout})
     localStorage.removeItem('token');
     localStorage.removeItem('loggedInUserdata');
     setCustomerToken('');
+    navigate(`/`);
     setLoggedInUserData(null);
   }
 
@@ -24,21 +27,33 @@ export default function HeaderAccountTab({loggedInCustomerData, isMobileLayout})
       <div className={styles.headerAccountTabContainer}>
         {!isMobileLayout && (
           <>
-            <Text
-              tag={'h3'}
-              className={styles.userName}
-              children={`${loggedInCustomerData?.name} ${loggedInCustomerData?.lastname}`}
-            />
+            {loggedInCustomerData?.name && loggedInCustomerData?.lastname && (
+              <Text
+                tag={'h3'}
+                className={styles.userName}
+                children={`${loggedInCustomerData?.name} ${loggedInCustomerData?.lastname}`}
+              />
+            )}
             <ArrowDown />
           </>
         )}
-        <img
-          src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${loggedInCustomerData?.profilePicture}`}
-          alt={'profile picture'}
-          width={50}
-          height={50}
-          className={`${styles.image} ${isMobileLayout ? styles.mobileImage : ''}`}
-        />
+        {loggedInCustomerData?.profilePicture ?
+          <img
+            src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${loggedInCustomerData?.profilePicture}`}
+            alt={'profile picture'}
+            width={50}
+            height={50}
+            className={`${styles.image} ${isMobileLayout ? styles.mobileImage : ''}`}
+          />
+          :
+          <img
+            src={`${profileAvatarPlaceholder.src}`}
+            alt={'profile picture'}
+            width={50}
+            height={50}
+            className={`${styles.image} ${isMobileLayout ? styles.mobileImage : ''}`}
+          />
+        }
       </div>
       
       {showLoggedInTabs && (

@@ -9,6 +9,7 @@ import Button from '../button/Button';
 import TextareaField from '../textareaField/TextAreaField';
 import { validateFormData } from '@/app/utils/validation';
 import { useFetchData } from '@/app/utils/hooks/useFetch';
+import PopUpCloseIcon from '../icons/PopUpCloseIcon';
 
 export default function ProfileReviewPopup({setShowReviewPopup}) {
   const [formData, setFormData] = useState({
@@ -84,7 +85,7 @@ export default function ProfileReviewPopup({setShowReviewPopup}) {
           className={styles.title}
           children={'Add review'}
         />
-        <CloseIcon
+        <PopUpCloseIcon
           className={styles.closeIcon}
           onClick={(e) => handleModalClose(e)}
         />

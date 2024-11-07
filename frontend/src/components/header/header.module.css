@@ -1,5 +1,9 @@
 .header, .emptyHeader {
   height: var(--header-height);
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  background-color: #fff;
 }
 
 .headerSection {

@@ -12,8 +12,8 @@ import Text from '@/components/text/Text';
 import Button from '@/components/button/Button';
 import Loading from '../loading';
 import FilterCategories from '@/components/filterCategories/FilterCategories';
-import { SEARCH_AND_FILTER_POPULATE_FIELDS } from '../utils/constants/fetchURLparams';
 import { buildQueriesForFilteredOptions } from '../utils/helpers';
+import { SERVICE_PROVIDER } from '../utils/constants/userRoles';
 
 export default function Search() {
   const [desktopImage, setDesktopImage] = useState(null);
@@ -98,11 +98,13 @@ export default function Search() {
 
     try {
       const response = await fetch(
-        `${baseUrl}/api/users?filters${query}&${SEARCH_AND_FILTER_POPULATE_FIELDS}`
+        `${baseUrl}/api/users?filters${query}&populate=*`
       );
       const results = await response.json();
       setSearchResults(results);
-      if (results.length === 0) {
+      const isAllMemebersDontProvidersOrNotApprovedYet = results.every(result => result.role.type !== SERVICE_PROVIDER || !result.isApprovedByAdmin)
+
+      if (results.length === 0 || isAllMemebersDontProvidersOrNotApprovedYet) {
         setNoResults(true);
       } else {
         setNoResults(false);
@@ -154,6 +156,7 @@ export default function Search() {
                     key={result.id}
                     provider={result}
                     count={4}
+                    roleType={result.role.type}
                   />
                 ))}
               {showLoadMore && (

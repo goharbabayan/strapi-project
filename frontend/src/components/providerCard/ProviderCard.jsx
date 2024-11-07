@@ -5,8 +5,9 @@ import DollarIcon from '../icons/DollarIcon';
 import Link from 'next/link';
 import Text from '../text/Text';
 import Image from '../image/Image';
+import { SERVICE_PROVIDER } from '@/app/utils/constants/userRoles';
 
-const ProviderCard = ({provider, showBadge, badge, count}) => {
+const ProviderCard = ({provider, showBadge, badge, count, roleType}) => {
   if (!provider) return;
   const [hourlyRate, setHourlyRate] = useState(null);
   const {
@@ -19,7 +20,8 @@ const ProviderCard = ({provider, showBadge, badge, count}) => {
     age,
     dressSize,
     incallRates,
-    outcallRates
+    outcallRates,
+    isApprovedByAdmin,
   } = provider;
 
   const {
@@ -48,90 +50,94 @@ const ProviderCard = ({provider, showBadge, badge, count}) => {
   }
 
   return (
-    <div
-      className={`${styles.card} ${count ? styles.hasCount : ''}`}
-      style={{ '--provider-card-width': `${cardWidth}`}}
-    >
-      {profilePicture && url &&
-        <Link
-          className={styles.link}
-          href={`/provider/${username}?id=${id}`}
-        >
-          <div className={styles.mainWrap}>
-            {showBadge && badge &&
-              <div className={styles.badgeContainer}>
-                <span className={styles.badge}>{badge}</span>
-              </div>
-            }
-           {url &&
-              <Image
-                src={`${baseUrl}${url}`}
-                alt={alternativeText || imageName}
-                width={imageWidth}
-                height={imageHeight}
-                providerCartAspectRatio={0.70}
-                className={styles.image}
-              />
-            }
-            <div className={styles.info}>
-              <div className={styles.data}>
-                {name &&
-                  <Text
-                    tag={'h4'}
-                    className={`${styles.user}`}
-                    children={`${name} ${lastName}`}
-                  />
-                }
-                {hourlyRate ?
-                  <div className={`${styles.cost}`}>
-                    <DollarIcon/>
-                    <Text
-                      tag={'span'}
-                      className={`${styles.text}`}
-                      children={`From $ ${hourlyRate} / 1h`}
-                    />
-                  </div>
-                :
-                  <div className={`${styles.cost}`}>
-                    <Text
-                      tag={'span'}
-                      className={`${styles.text}`}
-                      children={'visit profile for rates'}
-                    />
-                  </div>
-                }
-              </div>
-              {placeOfService &&
-                <div className={styles.services}>
-                  <LocationIcon />
-                  <Text
-                    tag={'span'}
-                    className={`${styles.text}`}
-                    children={placeOfService}
-                  />
+    <>
+    {roleType === SERVICE_PROVIDER && isApprovedByAdmin &&
+      <div
+        className={`${styles.card} ${count ? styles.hasCount : ''}`}
+        style={{ '--provider-card-width': `${cardWidth}`}}
+      >
+        {profilePicture && url &&
+          <Link
+            className={styles.link}
+            href={`/provider/${username}?id=${id}`}
+          >
+            <div className={styles.mainWrap}>
+              {showBadge && badge &&
+                <div className={styles.badgeContainer}>
+                  <span className={styles.badge}>{badge}</span>
                 </div>
               }
-              <div className={styles.otherInfo}>
-                {age &&
-                  <Text
-                    tag={'span'}
-                    className={`${styles.text}`}
-                    children={`Age ${age}`}
-                  />
+            {url &&
+                <Image
+                  src={`${baseUrl}${url}`}
+                  alt={alternativeText || imageName}
+                  width={imageWidth}
+                  height={imageHeight}
+                  providerCartAspectRatio={0.70}
+                  className={styles.image}
+                />
+              }
+              <div className={styles.info}>
+                <div className={styles.data}>
+                  {name &&
+                    <Text
+                      tag={'h4'}
+                      className={`${styles.user}`}
+                      children={`${name} ${lastName}`}
+                    />
+                  }
+                  {hourlyRate ?
+                    <div className={`${styles.cost}`}>
+                      <DollarIcon/>
+                      <Text
+                        tag={'span'}
+                        className={`${styles.text}`}
+                        children={`From $ ${hourlyRate} / 1h`}
+                      />
+                    </div>
+                  :
+                    <div className={`${styles.cost}`}>
+                      <Text
+                        tag={'span'}
+                        className={`${styles.text}`}
+                        children={'visit profile for rates'}
+                      />
+                    </div>
+                  }
+                </div>
+                {placeOfService &&
+                  <div className={styles.services}>
+                    <LocationIcon />
+                    <Text
+                      tag={'span'}
+                      className={`${styles.text}`}
+                      children={placeOfService}
+                    />
+                  </div>
                 }
-                {dressSize &&
-                  <Text
-                    tag={'span'}
-                    className={`${styles.text}`}
-                    children={`Dress Size ${dressSize}`}
-                  />
-                }
+                <div className={styles.otherInfo}>
+                  {age &&
+                    <Text
+                      tag={'span'}
+                      className={`${styles.text}`}
+                      children={`Age ${age}`}
+                    />
+                  }
+                  {dressSize &&
+                    <Text
+                      tag={'span'}
+                      className={`${styles.text}`}
+                      children={`Dress Size ${dressSize}`}
+                    />
+                  }
+                </div>
               </div>
             </div>
-          </div>
-        </Link>
+          </Link>
+        }
+      </div>
       }
-    </div>
+    </>
   )
 };
 

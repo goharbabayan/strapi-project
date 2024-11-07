@@ -11,6 +11,7 @@ import { providersSectionOneTitle, providersSectionTwoTitle, providersSectionThr
 import ProviderCard from '../providerCard/ProviderCard';
 import Text from '../text/Text';
 import Button from '../button/Button';
+import { SERVICE_PROVIDER } from '@/app/utils/constants/userRoles';
 
 export default function Providers ({
   sectionName,
@@ -58,6 +59,8 @@ export default function Providers ({
   };
 
   const atLeastOneCardExists = providers && providers.length > 0;
+  console.log('providers: ', providers);
+  
   const contentIsNotEmpty = heading || atLeastOneCardExists;
   return (
     <>
@@ -96,26 +99,31 @@ export default function Providers ({
             >
             {showSlider ?
               <Swiper
-                  modules={[Navigation, A11y]}
-                  spaceBetween={22}
-                  slidesPerView={4}
-                  navigation={{
-                    prevEl: '.swiper-button-prev',
-                    nextEl: '.swiper-button-next',
-                  }}
-                  breakpoints={myBreakpoints}
-                  data-slides={4}
-                >
+                modules={[Navigation, A11y]}
+                spaceBetween={22}
+                slidesPerView={4}
+                navigation={{
+                  prevEl: '.swiper-button-prev',
+                  nextEl: '.swiper-button-next',
+                }}
+                breakpoints={myBreakpoints}
+                data-slides={4}
+              >
                 {atLeastOneCardExists &&
-                  providers.map((provider, index) => (
-                    <SwiperSlide key={index} virtualIndex={index}>
-                      <ProviderCard
-                        provider={provider}
-                        showBadge={showBadge}
-                        badge={provider.badge}
-                      />
-                    </SwiperSlide>
-                  ))
+                  providers.map((provider, index) => {
+                    const { role: { data: { attributes: { type } } }, isApprovedByAdmin } = provider;
+                    if (type !== SERVICE_PROVIDER || !isApprovedByAdmin) return;
+
+                    return (
+                      <SwiperSlide key={index} virtualIndex={index}>
+                        <ProviderCard
+                          provider={provider}
+                          showBadge={showBadge}
+                          badge={provider.badge}
+                          roleType={type}
+                        />
+                      </SwiperSlide>
+                  )})
                 }
                 <SwiperNavButtons />
               </Swiper>
@@ -123,6 +131,8 @@ export default function Providers ({
               <>
                 {atLeastOneCardExists &&
                   providers.map((card, index) => {
+                    const { role: { data: { attributes: { type } } } } = card;
+
                     return (
                       <ProviderCard
                         key={index}
@@ -130,6 +140,7 @@ export default function Providers ({
                         showBadge={showBadge}
                         badge={card.badge}
                         count={providerCardCountPerRow}
+                        roleType={type}
                       />
                   )})
                 }

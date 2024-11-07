@@ -6,6 +6,8 @@ import { GET_NAVIGATION_QUERIES } from '@/app/graphql/navigationQueries';
 import styles from './navigation.module.css';
 import Menu from '../menu/Menu';
 import Button from '../button/Button';
+import { useContext } from 'react';
+import { AuthContext } from '@/app/Context';
 
 export default function Navigation ({
   className,
@@ -17,11 +19,12 @@ export default function Navigation ({
   setIsOneOfTheMobileMenuItemsOpened,
   openedFirstLevelMobileItemId,
   setOpenedFirstLevelMobileItemId,
-  listItemsAreOpened,
-  loggedInCustomerData
+  listItemsAreOpened
 }) {
   const [navigationItems, setNavigationItems] = useState([]);
   const {loading, error, data} = useQuery(GET_NAVIGATION_QUERIES);
+  const {customerToken} = useContext(AuthContext);
+
   useEffect(() => {
     if (data !== undefined) {
       const navigationData = data?.header?.data?.attributes?.navigation?.navigation_items?.data;
@@ -46,7 +49,7 @@ export default function Navigation ({
               setOpenedFirstLevelMobileItemId={setOpenedFirstLevelMobileItemId}
               listItemsAreOpened={listItemsAreOpened}
             />
-            {atLeastOneButtonExists && isMobileLayout && !loggedInCustomerData &&
+            {atLeastOneButtonExists && isMobileLayout && !customerToken &&
               (<div className={styles.buttonsWrapper}>
                 {buttons.map((button, index) =>
                   <Button

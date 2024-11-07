@@ -150,6 +150,13 @@ div[hidden] {
   height: fit-content;
 }
 
+@media screen and (min-width: 750px) {
+  .popular_providers .swiper-wrapper {
+    height: fit-content;
+    max-width: 277px !important;
+  }
+}
+
 /* Swipper styles end*/
 
 @font-face {

@@ -55,7 +55,7 @@ const ResetPassword = forwardRef(({password}, ref) => {
         } else if (data.user) {
           const token = data.jwt;
           localStorage.setItem('token', JSON.stringify(token));
-          setCustomerToken(JSON.stringify(token));
+          setCustomerToken(token);
           setShowSuccessMessage(true);
           setTimeout(() => {
             setShowSuccessMessage(false);

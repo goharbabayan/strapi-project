@@ -3,7 +3,6 @@
 import {useState, useEffect} from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_LOCATION_PAGE_QUERIES } from '@/app/graphql/locationPageQueriess';
-import { SEARCH_AND_FILTER_POPULATE_FIELDS } from '@/app/utils/constants/fetchURLparams';
 import { FILTER_CATEGORIES } from '@/app/utils/constants/filterCategories';
 import styles from './category.module.css';
 import ImageBanner from '@/components/imageBanner/ImageBanner';
@@ -98,7 +97,7 @@ export default function LocationCategoryPage({params}) {
     const city = category && category.replaceAll('-', ' ');
     try {
       const response = await fetch(
-        `${baseUrl}/api/users?filters[city][$eq]=${city}&${SEARCH_AND_FILTER_POPULATE_FIELDS}`
+        `${baseUrl}/api/users?filters[city][$eq]=${city}&populate=*`
       );
       const results = await response.json();
       results && setProvidersList(results);
@@ -112,7 +111,7 @@ export default function LocationCategoryPage({params}) {
     const city = category && category.replaceAll('-', ' ');
     try {
       const response = await fetch(
-        `${baseUrl}/api/users?filters[city][$eq]=${city}&filters${query}&${SEARCH_AND_FILTER_POPULATE_FIELDS}`
+        `${baseUrl}/api/users?filters[city][$eq]=${city}&filters${query}&populate=*`
       );
       const results = await response.json();
       results && setProvidersList(results);
@@ -176,13 +175,18 @@ export default function LocationCategoryPage({params}) {
           <div className="page-width">
             {providersList && providersList.length > 0 &&
               <section className={`${styles.results}`}>
-                {displayedItems && displayedItems.map((result, index) => (
-                  <ProviderCard
-                    key={index}
-                    provider={result}
-                    count={4}
-                  />
-                ))}
+                {displayedItems && displayedItems.map((result, index) => {
+
+                    return (
+                      <ProviderCard
+                        key={index}
+                        provider={result}
+                        count={4}
+                        roleType={result.role.type}
+                      />
+                    )
+                  }
+                )}
                 {showLoadMore && (
                   <div className={styles.button}>
                     <Button

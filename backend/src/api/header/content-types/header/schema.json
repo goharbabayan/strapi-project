@@ -23,7 +23,7 @@
         "audios"
       ]
     },
-    "locations": {
+    "categories": {
       "type": "component",
       "repeatable": false,
       "component": "elements.collection"

@@ -71,10 +71,9 @@
   padding: 8px;
   border-radius: 10px;
   cursor: pointer;
+  display: flex;
 }
 
-/* min- 980 */
-/* min- 750 */
 @media screen and (max-width: 979px) {
   .profileInfoContainer {
     display: block;

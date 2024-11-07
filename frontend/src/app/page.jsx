@@ -65,6 +65,10 @@ export default function HomePage() {
     />
   )
 
+  const showProvidersList = topProvidersSectionData && Array.isArray(topProvidersSectionData?.[providersSectionOneTitle]?.providers?.data) && topProvidersSectionData?.[providersSectionOneTitle]?.providers?.data.length;
+  const showPopulatProvidersList = popularProvidersSectionData && Array.isArray(popularProvidersSectionData?.[providersSectionTwoTitle]?.providers?.data) && popularProvidersSectionData?.[providersSectionTwoTitle]?.providers?.data.length;
+  const showTypeProvidersList = byTypeProvidersSectionData && Array.isArray(byTypeProvidersSectionData?.[providersSectionThreeTitle]?.providers?.data) && byTypeProvidersSectionData?.[providersSectionThreeTitle]?.providers?.data.length;
+
   return (
     <>
       {loading
@@ -79,7 +83,7 @@ export default function HomePage() {
             text={text}
             button={button}
           />
-          {topProvidersSectionData &&
+          {!!showProvidersList &&
             <Providers
               sectionName={providersSectionOneTitle}
               showLoading={true}
@@ -88,14 +92,14 @@ export default function HomePage() {
               resData={topProvidersSectionData}
             />
           }
-          {popularProvidersSectionData &&
+          {!!showPopulatProvidersList &&
             <Providers
               sectionName={providersSectionTwoTitle}
               showSlider={true}
               resData={popularProvidersSectionData}
             />
           }
-          {byTypeProvidersSectionData &&
+          {!!showTypeProvidersList &&
             <Providers
               sectionName={providersSectionThreeTitle}
               showCategories={true}

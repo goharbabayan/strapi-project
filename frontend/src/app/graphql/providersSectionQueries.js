@@ -18,7 +18,15 @@ const GET_POPULAR_PROVIDERS_QUERIES = gql`
                   placeOfService
                   dressSize
                   hairColor
+                  isApprovedByAdmin
                   badge
+                  role {
+                    data {
+                      attributes {
+                        type
+                      }
+                    }
+                  }
                   incallRates {
                     id
                     duration
@@ -71,6 +79,14 @@ const GET_TOP_PROVIDERS_QUERIES = gql`
                   dressSize
                   hairColor
                   badge
+                  isApprovedByAdmin
+                  role {
+                    data {
+                      attributes {
+                        type
+                      }
+                    }
+                  }
                   incallRates {
                     id
                     duration
@@ -129,6 +145,14 @@ const GET_PROVIDERS_BY_TYPE_QUERIES = gql`
                   dressSize
                   hairColor
                   badge
+                  isApprovedByAdmin
+                  role {
+                    data {
+                      attributes {
+                        type
+                      }
+                    }
+                  }
                   incallRates {
                     id
                     duration

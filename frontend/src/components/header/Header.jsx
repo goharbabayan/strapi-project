@@ -80,9 +80,7 @@ export default function Header() {
 
   return (
     <>
-      {loading &&
-        <header className={styles.emptyHeader}></header>
-      }
+      {loading && <header className={styles.emptyHeader}></header>}
       {data &&
         <header className={`${styles.header} ${menuItemsHasAtLeastOneItem === false ? styles.menuItemsAreEmpty : ''}`}>
           {menuItemsHasAtLeastOneItem && !isMobileLayout &&
@@ -168,7 +166,6 @@ export default function Header() {
                     openedFirstLevelMobileItemId={openedFirstLevelMobileItemId}
                     setOpenedFirstLevelMobileItemId={setOpenedFirstLevelMobileItemId}
                     listItemsAreOpened={listItemsAreOpened}
-                    loggedInCustomerData={loggedInCustomerData}
                   />
                 </div>
               }

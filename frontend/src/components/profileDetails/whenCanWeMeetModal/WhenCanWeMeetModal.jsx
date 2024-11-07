@@ -7,11 +7,7 @@ export default function WhenCanWeMeetModal({username, schedule}) {
   const [modalShow, setModalShow] = useState(false);
 
   useEffect(() => {
-    if (modalShow) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
+    document.body.classList.toggle('overflow_hidden');
   }, [modalShow])
 
   return (

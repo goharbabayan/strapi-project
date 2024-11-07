@@ -6,10 +6,10 @@
   },
   "options": {},
   "attributes": {
-    "title": {
+    "categories_title": {
       "type": "string"
     },
-    "locations": {
+    "categories": {
       "displayName": "category",
       "type": "component",
       "repeatable": true,

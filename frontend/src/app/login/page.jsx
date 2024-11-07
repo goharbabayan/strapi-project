@@ -97,7 +97,7 @@ export default function LoginPage() {
           id: data?.user?.id,
           role: data?.user?.role?.type
         }));
-        setCustomerToken(JSON.stringify(token));
+        setCustomerToken(token);
         setLoggedInUserData({
           id: data?.user?.id,
           role: data?.user?.role?.type
