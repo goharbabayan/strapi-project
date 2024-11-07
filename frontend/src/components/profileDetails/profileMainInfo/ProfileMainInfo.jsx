@@ -10,6 +10,7 @@ import { useFetchData } from '@/app/utils/hooks/useFetch';
 import StarIcon from '@/components/icons/StarIcon';
 import { useContext } from 'react';
 import { AuthContext } from '@/app/Context';
+import { CLIENT } from '@/app/utils/constants/userRoles';
 
 export default function ProfileMainInfo(props) {
   const {loggedInUserData} = useContext(AuthContext);
@@ -23,13 +24,14 @@ export default function ProfileMainInfo(props) {
     providerContactInfo,
     provierSocialLinks,
     providerWebsiteLink,
-    providerId
+    providerId,
+    hideStarIcon
   } = props;
 
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
   useEffect(() => {
-    loggedInUserData && loggedInUserData.role === 'client' && isProviderExistingInClientsFavorites();
+    loggedInUserData?.role === CLIENT && isProviderExistingInClientsFavorites();
   }, []);
 
   const fetchData = async (endpoint, setState) => {
@@ -61,16 +63,20 @@ export default function ProfileMainInfo(props) {
       <div className='page-width'>
         <div className={styles.profileInfoContainer}>
           <div className={styles.profilePhotoContainer}>
-            {isUserExistingInFavorites
-              ?
-                <StarIcon
-                  className={styles.providerFavoriteIcon}
-                />
-              :
-                <EmptyStarIcon
-                  className={styles.providerFavoriteIcon}
-                  onClick={handleAddToFavorites}
-                />
+            {loggedInUserData?.role === CLIENT && !hideStarIcon &&
+              <>
+                {isUserExistingInFavorites
+                  ?
+                    <StarIcon
+                      className={styles.providerFavoriteIcon}
+                    />
+                  :
+                    <EmptyStarIcon
+                      className={styles.providerFavoriteIcon}
+                      onClick={handleAddToFavorites}
+                    />
+                }
+              </>
             }
             <Image
               src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${profilePhoto}`}

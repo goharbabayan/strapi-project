@@ -21,6 +21,12 @@
   visibility: visible;
 }
 
+.info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
 @media screen and (max-width: 949px) {
   .mainWrap {
     padding-block: 0;

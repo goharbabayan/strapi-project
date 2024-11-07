@@ -68,8 +68,6 @@ export default function ClientDetails({ user, onChanges, hasUnsavedChanges, erro
   };
 
   const handleMouseDown = async (name, value) => {
-    console.log('name, value', name, value);
-    
     setFormData({ ...formData, [name]: value });
     onChanges(true, { ...formData, [name]: value });
   };

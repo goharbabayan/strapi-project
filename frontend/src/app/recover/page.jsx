@@ -46,7 +46,6 @@ export default function RecoverPage() {
         email = field.value;
       }
     }
-console.log('userData.email: ', userData.email);
 
     await forgotPassword({
       variables: {

@@ -18,6 +18,12 @@
   column-gap: 15px;
 }
 
+.button {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .details {
   width: calc(100% - 33% - 12px);
   display: inline-block;

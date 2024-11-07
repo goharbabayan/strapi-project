@@ -25,6 +25,12 @@
   line-height: 32px;
 }
 
+.buttonWrap {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
 @media screen and (max-width: 749px) {
   .details {
     width: 100%;

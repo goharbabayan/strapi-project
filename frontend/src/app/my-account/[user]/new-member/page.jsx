@@ -25,6 +25,7 @@ export default function NewMember({params, searchParams}) {
   const strapiBaseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
   const memberToken = process.env.NEXT_PUBLIC_API_TOKEN_MEMBER;
 
+  const [isMemberRegistered, setIsMemberRegistered] = useState(false);
   const [userSelectedSuburbs, setUserSelectedSuburbs] = useState([]);
   const [selectedCity, setSelectedCity] = useState('');
   const [isCityDataChanged, setIsCityDataChanged] = useState(false);
@@ -252,6 +253,8 @@ export default function NewMember({params, searchParams}) {
       .catch(err => {
         console.error('Error sending email confirmation:', err);
       });
+
+    !isMemberRegistered && setIsMemberRegistered(true);
   }
 
   return (
@@ -261,7 +264,6 @@ export default function NewMember({params, searchParams}) {
           <NotificationBar
             isApprovedByAdmin={formData.isApprovedByAdmin}
             onCancelButtonClick={handleCancelChangesButtonClick}
-            isRegisteringANewMember={true}
             onSaveButtonClick={handleSaveButtonClick}
             showSuccessfullMessage={showSuccessMessage}
             successfullMessageText={'All changes have been applied successfully.'}
@@ -271,8 +273,17 @@ export default function NewMember({params, searchParams}) {
         )}
         <section className='section page-width'>
           <div className='container buttonsWrap'>
-            <Button children={'Back to dashboard'} onClick={navigateToDashboard} className='btn button'/>
-            <Button children={'My members list'} onClick={navigateToMembers} className='btn button'/>
+            <Button children={'Back to dashboard'} onClick={navigateToDashboard} className='button_general'/>
+            <Button children={'My members list'} onClick={navigateToMembers} className='button_general'/>
+            {isMemberRegistered &&
+              <div className={styles.buttonWrap}>
+                <Button
+                  type='submit'
+                  className={`button_main ${styles.submitButton}`}
+                  children={'Request to review'}
+                />
+              </div>
+            }
           </div>
           <Text
             tag={'h2'}

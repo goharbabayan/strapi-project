@@ -9,7 +9,6 @@ import EditIcon from '@/components/icons/Edit';
 import RemoveIcon from '@/components/icons/RemoveIcon';
 import Loading from '@/app/loading';
 import { useFetchData } from '@/app/utils/hooks/useFetch';
-import { memberURLParams } from '@/app/utils/constants/fetchURLparams';
 
 export default function Members ({params, searchParams}) {
   const starpiBaseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
@@ -72,8 +71,8 @@ export default function Members ({params, searchParams}) {
     <div>
       <section className={`${styles.section} page-width`}>
         <div className={`${styles.container} ${styles.buttonsWrap}`}>
-          <Button children={'Back to dashboard'} onClick={navigateToDashboard} className='btn button'/>
-          <Button children={'Create new member'} onClick={navigateToNewMember} className='btn button'/>
+          <Button children={'Back to dashboard'} onClick={navigateToDashboard} className='button_general'/>
+          <Button children={'Create new member'} onClick={navigateToNewMember} className='button_general'/>
         </div>
       </section>
       <section className={`page-width`}>

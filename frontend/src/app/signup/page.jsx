@@ -51,7 +51,7 @@ export default function SignupPage() {
       setIsApproved(true);
     } else if (selectedRole === 'manager') {
       setRole(6);
-      setIsApproved(false);
+      setIsApproved(true);
     } else if (selectedRole === 'service_provider') {
       setRole(8);
       setIsApproved(false);

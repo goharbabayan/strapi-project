@@ -108,9 +108,6 @@ function ServiceProviderDetails ({user, onChanges, hasUnsavedChanges, errorMessa
             className={styles.title}
             children={'Personal details'}
           />
-          <span className='text-middle'>
-            {formData.isApprovedByAdmin ? 'Your account is approved by admin' : 'Your account has not been approved by admin yet'}
-          </span>
           <div className={styles.settingIconWrap}>
             <Text
               tag={'span'}

@@ -16,6 +16,7 @@ export default function RootLayout({ children }) {
   const [loggedInUserData, setLoggedInUserData] = useState(null);
   const pathname = usePathname();
   const isHomePage = pathname === '/';
+  const isProfileReviewPage = pathname === '/profile-review';
 
   useEffect(() => {
     const customerTokenFromLocalStorage = JSON.parse(localStorage.getItem('token'));
@@ -33,7 +34,7 @@ export default function RootLayout({ children }) {
         <ApolloProvider client={Client}>
           {/* <AnnouncementBar/> */}
           <AuthContext.Provider value={{customerToken, setCustomerToken, loggedInUserData, setLoggedInUserData}}>
-            <Header />
+            {!isProfileReviewPage && <Header />}
             <main className="main-wrapper">{children}</main>
             <Footer />
           </AuthContext.Provider>

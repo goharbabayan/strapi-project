@@ -11,11 +11,14 @@ import { navigate } from '../../actions.js';
 import { CLIENT, SERVICE_PROVIDER, MANAGER } from '../../utils/constants/userRoles.js';
 import { validateForm } from '@/app/utils/validation.js';
 import { useFetchData } from '@/app/utils/hooks/useFetch.jsx';
+import Button from '@/components/button/Button.jsx';
+import Text from '@/components/text/Text.jsx';
 
 export default function MyAccountPage() {
   const strapiBaseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
   const [user, setUser] = useState([]);
   const [userId, setUserId] = useState('');
+  const [isApprovedByAdmin, setIsApprovedByAdmin] = useState(false);
   const [role, setRole] = useState('');
   const [token, setToken] = useState('');
   const [userUpdatedFormData, setUserUpdatedFormData] = useState({});
@@ -42,6 +45,7 @@ export default function MyAccountPage() {
             setUser(data);
             setUserId(data.id);
             setRole(data.role.type.toLowerCase());
+            setIsApprovedByAdmin(data?.isApprovedByAdmin);
           }
         })
         .catch(err => console.log('err', err))
@@ -138,6 +142,7 @@ export default function MyAccountPage() {
         body: JSON.stringify(unsavedUserData),
       })
     setHasUnsavedChanges(false);
+    setIsApprovedByAdmin(false);
   }
 
   const handleCancelChangesButtonClick = () => {
@@ -168,6 +173,22 @@ export default function MyAccountPage() {
                 userRole={role}
               />
             )}
+            {role === SERVICE_PROVIDER &&
+              <div className={`${styles.info} page-width`}>
+                <Text
+                  className='text-middle'
+                  tag={'span'}
+                  children={isApprovedByAdmin ? 'Your account is approved by admin.' : 'Your account has not been approved by admin yet.'}
+                />
+                {!isApprovedByAdmin &&
+                  <Button
+                    type='submit'
+                    className={`button_main ${styles.submitButton}`}
+                    children={'Request to review'}
+                  />
+                }
+              </div>
+            }
             {user && role === SERVICE_PROVIDER &&
               <>
                 <ServiceProviderDetails

@@ -72,6 +72,7 @@ export default function AccountDetails({
     // end check validation
 
     const token = JSON.parse(localStorage.getItem('token'))
+    
     if (!token) navigate('/login');
     try {
       fetch(`${baseUrl}/api/auth/change-password?`, {
@@ -111,6 +112,12 @@ export default function AccountDetails({
 
   return (
     <section className={`${styles.infoWrap} ${(isManagerDashboard || isClientDashboard) ? styles.row : ''}`}>
+      {isManagerDashboard &&
+        <div className='buttonsWrap'>
+          <Button children={'Create new member'} onClick={handleAddNewMember} className='button_general'/>
+          <Button children={'My members list'} onClick={handleShowMembers} className='button_general'/>
+        </div>
+      }
       {!(isManagerDashboard || isClientDashboard) &&
         <Text
           tag={'h2'}
@@ -162,20 +169,6 @@ export default function AccountDetails({
               />
             }
           </div>
-        }
-        {isManagerDashboard ?
-          isApprovedByAdmin
-            ?
-              <div className='buttonsWrap'>
-                <Button children={'Create new member'} onClick={handleAddNewMember} className='btn button'/>
-                <Button children={'My members list'} onClick={handleShowMembers} className='btn button'/>
-              </div>
-            :
-              <div className={`buttonsWrap ${styles.buttons}`}>
-                <Button children={'Request to review profile'} onClick={(e) => handleReviewButtonClick(e)} className={`btn button`}/>
-              </div>
-          :
-          <></>
         }
       </div>
       <div className={`${isManagerDashboard ? styles.column : '' } ${isClientDashboard ? styles.clientDashboard : ''} `}>

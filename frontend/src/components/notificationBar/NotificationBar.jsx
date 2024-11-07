@@ -1,7 +1,6 @@
 import styles from './notificationBar.module.css';
 import Text from '../text/Text';
 import Button from '../button/Button';
-import { CLIENT, SERVICE_PROVIDER } from '@/app/utils/constants/userRoles';
 
 export default function NotificationBar({
   isApprovedByAdmin,
@@ -10,10 +9,8 @@ export default function NotificationBar({
   showSuccessfullMessage,
   successfullMessageText,
   errorMessageText,
-  userRole,
   isRegisteringANewMember
 }) {
-console.log('userRole: ', userRole);
 
   return (
     <div className={styles.notificationBar}>
@@ -54,13 +51,6 @@ console.log('userRole: ', userRole);
               />
             }
           </div>
-          {!isRegisteringANewMember && userRole !== CLIENT &&
-            <Button
-              type='submit'
-              className={`btn btn_SECONDARY ${styles.submitButton}`}
-              children={'Request to review'}
-            />
-          }
         </>
       }
     </div>

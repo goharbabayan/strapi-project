@@ -19,7 +19,6 @@ import { validateForm } from '@/app/utils/validation';
 import { CREATE_MENU_BAR } from '@/app/utils/constants/menuBar';
 import Reviews from '@/components/reviews/Reviews';
 import ProfilePageImage from '@/components/profilePageImage/ProfilePageImage';
-import { PROVIDER_URL_PARAMS } from '@/app/utils/constants/fetchURLparams';
 import { useFetchData } from '@/app/utils/hooks/useFetch';
 
 export default function Member ({params}) {
@@ -36,6 +35,7 @@ export default function Member ({params}) {
   const [selectedCity, setSelectedCity] = useState('');
   const [isCityDataChanged, setIsCityDataChanged] = useState(false);
   const [formData, setFormData] = useState({});
+  const [isApprovedByAdmin, setIsApprovedByAdmin] = useState(false);
   const photosSectionRef = useRef(null);
   const aboutSectionRef = useRef(null);
   const ratesAndServicesSectionRef = useRef(null);
@@ -55,7 +55,7 @@ export default function Member ({params}) {
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem('token'));
-    user && fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users?filters[username][$eq]=${username}&${PROVIDER_URL_PARAMS}`, {
+    user && fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users?filters[username][$eq]=${username}&populate=*`, {
       method: 'GET',
       headers: {
         authorization: `Bearer ${token}`
@@ -66,6 +66,7 @@ export default function Member ({params}) {
         setFormData(data[0]);
         setUserSelectedSuburbs(data[0].suburbs);
         setSelectedCity(data[0].city);
+        setIsApprovedByAdmin(data[0]?.isApprovedByAdmin);
       });
   }, []);
 
@@ -75,7 +76,7 @@ export default function Member ({params}) {
     if (isUsernameEreased) {
       setGlobalErrorText('Username must be at least 3 characters');
       return;
-    }
+    };
     setGlobalErrorText('');
     setFormData({ ...formData, [event.target.name]: event.target.value });
     setHasUnsavedChanges(true);
@@ -87,7 +88,7 @@ export default function Member ({params}) {
       setSelectedCity(value);
       setUserSelectedSuburbs([]);
       setIsCityDataChanged(true);
-    }
+    };
 
     setFormData({ ...formData, [name]: value });
     setShowSuccessMessage(false);
@@ -106,7 +107,7 @@ export default function Member ({params}) {
     if (!formData.profilePicture || !formData.coverPhoto) {
       setGlobalErrorText(`Cover picture and Profile picture are required fields.`);
       return;
-    }
+    };
 
     const errors = validateForm(formData, false);
     const hasErrors = Object.keys(errors).length > 0;
@@ -118,7 +119,7 @@ export default function Member ({params}) {
     } else {
       setErrorMessage('');
       setGlobalErrorText('');
-    }
+    };
 
     memberToken && formData.id &&
       useFetchData(`${baseUrl}/api/members/${formData.id}`, {
@@ -205,7 +206,8 @@ export default function Member ({params}) {
       })
 
     setHasUnsavedChanges(false);
-  }
+    setIsApprovedByAdmin(false);
+  };
 
   return (
     <div>
@@ -223,8 +225,17 @@ export default function Member ({params}) {
         )}
         <section className={`${styles.section} page-width`}>
           <div className={`${styles.container} ${styles.buttonsWrap}`}>
-            <Button children={'Back to dashboard'} onClick={navigateToDashboard} className='btn button'/>
-            <Button children={'My members list'} onClick={navigateToMembers} className='btn button'/>
+            <Button children={'Back to dashboard'} onClick={navigateToDashboard} className='button_general'/>
+            <Button children={'My members list'} onClick={navigateToMembers} className='button_general'/>
+            {!isApprovedByAdmin &&
+              <div className={styles.button}>
+                <Button
+                  type='submit'
+                  className={`button_main ${styles.submitButton}`}
+                  children={'Request to review'}
+                />
+              </div>
+            }
           </div>
         </section>
         <section>

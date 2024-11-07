@@ -30,6 +30,7 @@ export default function Rates ({title, type, memberFormData, memberIndex, onChil
   };
 
   const handleMouseDown = (field, fieldValue, index, type) => {
+    if (!Array.isArray(memberFormData[type]) && !memberFormData[type].length > 0) return;
     const updatedRates = memberFormData[type].map((rate, i) => {
       if (i === index) {
         return { ...rate, [field]: fieldValue };
