@@ -81,4 +81,28 @@ module.exports = [
       prefix: '',
     },
   },
+  {
+    method: 'POST',
+    path: '/user/addToFavorites',
+    handler: 'user.addToFavorites',
+    config: {
+      prefix: '',
+    },
+  },
+  {
+    method: 'POST',
+    path: '/user/findFromFavorites',
+    handler: 'user.findFromFavorites',
+    config: {
+      prefix: '',
+    },
+  },
+  {
+    method: 'POST',
+    path: '/user/addReview/:id',
+    handler: 'user.createReview',
+    config: {
+      prefix: '',
+    },
+  },
 ];

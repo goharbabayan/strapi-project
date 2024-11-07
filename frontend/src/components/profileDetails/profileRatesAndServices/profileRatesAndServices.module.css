@@ -1,0 +1,8 @@
+.ratesContainer {
+  display: grid;
+  flex-wrap: wrap;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 24px;
+  padding-bottom: 24px;
+  margin-top: 24px;
+}

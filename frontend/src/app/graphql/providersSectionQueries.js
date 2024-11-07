@@ -9,6 +9,7 @@ const GET_POPULAR_PROVIDERS_QUERIES = gql`
             heading
             providers {
               data {
+                id
                 attributes {
                   username
                   name
@@ -60,6 +61,7 @@ const GET_TOP_PROVIDERS_QUERIES = gql`
             heading
             providers {
               data {
+                id
                 attributes {
                   username
                   name

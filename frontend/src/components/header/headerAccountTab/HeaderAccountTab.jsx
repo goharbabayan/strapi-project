@@ -6,11 +6,13 @@ import { AuthContext } from '@/app/Context';
 
 export default function HeaderAccountTab({loggedInCustomerData, isMobileLayout}) {
   const [showLoggedInTabs, setShowLoggedInTabs] = useState(false);
-  const {setCustomerToken} = useContext(AuthContext);
+  const {setCustomerToken, setLoggedInUserData} = useContext(AuthContext);
 
   const handleUserLogOut = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('loggedInUserdata');
     setCustomerToken('');
+    setLoggedInUserData(null);
   }
 
   return (

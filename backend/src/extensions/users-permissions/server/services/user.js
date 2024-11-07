@@ -53,6 +53,31 @@ module.exports = ({ strapi }) => ({
       populate: ['role'],
     });
   },
+ /**
+   * Promise to edit a/an user.
+   * @param {string} userId
+   * @param {object} params
+   * @return {Promise}
+   */
+  async editReviews(userId, params = {}) {
+    return strapi.entityService.update('plugin::users-permissions.user', userId, {
+      data: params,
+      populate: ['reviews'],
+    });
+  },
+
+   /**
+   * Promise to edit a/an user.
+   * @param {string} userId
+   * @param {object} params
+   * @return {Promise}
+   */
+   async editFavoriteProvidersIds(userId, params = {}) {
+    return strapi.entityService.update('plugin::users-permissions.user', userId, {
+      data: params,
+      populate: ['favoriteProvidersIds'],
+    });
+  },
 
   /**
    * Promise to fetch a/an user.

@@ -17,6 +17,7 @@
 .link {
   position: relative;
   padding-top: var(--ratio-percent);
+  width: 100%;
 }
 
 @media screen and (max-width: 749px) {

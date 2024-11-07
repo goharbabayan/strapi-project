@@ -1,0 +1,47 @@
+.providerContactInfoItem {
+  background-color: var(--neutral-n20);
+  padding: 12px;
+  border-radius: 6px;
+  max-width: 195px;
+  width: 100%;
+  gap: 10px;
+}
+
+.providerContactWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.providerInfoLabel {
+  font-family: var(--primary-font);
+  color: var(--neutral-n90);
+  font-size: 14px;
+  font-weight: normal;
+  margin: 0;
+  display: block;
+  padding-bottom: 5px;
+}
+
+.providerInfoData {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--primary-bold-font);
+  color: var(--neutral-black);
+  font-size: 16px;
+  margin: 0;
+  display: block;
+}
+
+.providerInfoDataContainer {
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 140px;
+}
+
+
+@media screen and (max-width: 749px) {
+  .providerContactInfoItem,
+  .providerInfoDataContainer {
+   max-width: 100%; 
+  }
+}

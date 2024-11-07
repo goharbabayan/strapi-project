@@ -1,0 +1,104 @@
+.subscribeModalBackground {
+  background-color: rgba(0, 0, 0, 0.60);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 9;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.subscribeModalClose {
+  cursor: pointer;
+}
+
+.subscribeModal {
+  background-color: var(--neutral-white-n10);
+  border-radius: 26px;
+  margin: 0 auto;
+  max-width: 600px;
+  transform: translateY(50%);
+}
+
+.subscribeModalHeader {
+  padding: 13px 23px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.subscribeModalBody {
+  padding: 32px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.subscribeModalTitle {
+  font-size: 24px;
+  font-family: var(--headings-font);
+  font-weight: normal;
+  margin: 0;
+  color: var(--neutral-black);
+}
+
+.subscribeModalDesc {
+  font-size: 16px;
+  font-family: var(--primary-bold-font);
+  color: var(--neutral-n90);
+  margin: 0;
+  padding-bottom: 32px;
+  padding-top: 16px;
+}
+
+.subscribeModalError {
+  font-family: var(--primary-font);
+  color: var(--red-r5);
+  text-align: left;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.subscribeModalSuccess {
+  font-family: var(--primary-font);
+  text-align: left;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.subscribeModalInput {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--neutral-n30);
+  font-family: var(--primary-font);
+  width: 100%;
+}
+
+.subscribeModalButton {
+  font-family: var(--primary-bold-font);
+  margin: 32px auto 0 auto;
+  display: block;
+  border-radius: 10px;
+  background-color: var(--color-main);
+  padding: 10px 16px;
+  border: none;
+  color: var(--neutral-white-n10);
+  cursor: pointer;
+}
+
+@media screen and (max-width: 749px) {
+  .subscribeModalTitle {
+    font-size: 22px;
+  }
+
+  .subscribeModal {
+    margin: 0 18px;
+  }
+
+  .subscribeModalBody {
+    padding: 24px;
+  }
+}

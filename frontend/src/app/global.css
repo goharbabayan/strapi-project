@@ -43,6 +43,7 @@ body {
   min-height: 100vh;
 }
 
+body.overflow_hidden,
 body:has(.navigation_is_open),
 body:has(.navigation_is_hovered) {
   overflow: hidden;

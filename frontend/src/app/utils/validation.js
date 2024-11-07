@@ -1,4 +1,16 @@
-import { USER_REQUIRED_FIELDS, USER_REQUIRED_FIELDS_FOR_CLIENT_ROLE } from './constants/userForm';
+import { USER_REQUIRED_FIELDS, USER_REQUIRED_FIELDS_FOR_CLIENT_ROLE, USER_REQUIRED_FIELDS_FOR_ADDING_REVIEW } from './constants/userForm';
+
+export const validateFormData = (formData) => {
+  const errors = {};
+  for (const fieldName in formData) {
+    const fieldValue = formData[fieldName];
+    const isRequired = USER_REQUIRED_FIELDS_FOR_ADDING_REVIEW.includes(fieldName);
+    if (isRequired && fieldValue === '') {
+      errors[fieldName] = 'This field is required';
+    };
+  };
+  return errors;
+};
 
 export const validateForm = (formData, isClientDashboardPage) => {
   const errors = {};
@@ -103,3 +115,9 @@ export const validateForm = (formData, isClientDashboardPage) => {
   }
   return errors;
 };
+
+
+export const validateEmail = (email) => {
+  const emailRegex = /^\w+([\.-]?\w+)*@[a-z A-Z . 0-9]+([\.-]?\w+)$/;
+  return emailRegex.test(email);
+}

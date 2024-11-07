@@ -178,3 +178,9 @@ export const USER_REQUIRED_FIELDS_FOR_CLIENT_ROLE = [
   'gender',
   'profilePicture',
 ]
+
+export const USER_REQUIRED_FIELDS_FOR_ADDING_REVIEW = [
+  'author',
+  'text',
+  'date',
+]

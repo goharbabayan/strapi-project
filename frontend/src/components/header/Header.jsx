@@ -50,7 +50,7 @@ export default function Header() {
           profilePicture: data?.profilePicture?.url,
           name: data?.name,
           lastname: data?.lastName,
-          role: data?.role.type
+          role: data?.role?.type
         })
       })
     }

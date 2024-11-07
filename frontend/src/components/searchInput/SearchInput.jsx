@@ -3,7 +3,7 @@
 import {useState, useEffect, useRef } from 'react';
 import SearchIcon from '../icons/SearchIcon';
 import InputField from '../inputField/InputField';
-import IconClose from '../icons/CloseIcon';
+import CloseIcon from '../icons/CloseIcon';
 import styles from './searchInput.module.css';
 
 export default function SearchInput({searchQueries, setSearchQueries, setSearchResults, setNoResults}) {
@@ -70,7 +70,7 @@ export default function SearchInput({searchQueries, setSearchQueries, setSearchR
           placeholder={'Search escorts'}
         />
       </div>
-      <IconClose
+      <CloseIcon
         className={styles.closeIcon}
         onClick={handleRemoveIconClick}
       />

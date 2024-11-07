@@ -1,0 +1,113 @@
+.profileInfoContainer {
+  display: flex;
+  background-color: var(--neutral-white-n10);
+  padding: 30px;
+  border-radius: 10px;
+  margin-top: -100px;
+  position: relative;
+  gap: 24px;
+}
+
+.profilePhotoContainer { 
+  max-width: 320px;
+  width: 100%;
+  position: relative;
+}
+
+.profileInfoWrapper {
+  width: 100%;
+}
+
+.profileFullName {
+  font-family: var(--headings-font);
+  font-size: 32px;
+  font-style: normal;
+  font-weight: normal;
+  margin: 0 0 32px 0;
+}
+
+.profileInfoTextContainer {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(5, 1fr);
+  row-gap: 30px;
+  column-gap: 24px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--neutral-n30);
+}
+
+.profileInfoLabel { 
+  font-family: var(--primary-font);
+  font-size: 14;
+  display: block;
+  text-transform: uppercase;
+  line-height: 18px;
+  margin-bottom: 5px;
+}
+
+.profileInfoData {
+  font-family: var(--primary-bold-font);
+  font-size: 16px;
+  line-height: 20px;
+  margin: 0;
+}
+
+.providerContactInfo {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 32px;
+  margin-bottom: 32px;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.providerFavoriteIcon {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  z-index: 1;
+  background-color: var(--neutral-white-n10);
+  padding: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* min- 980 */
+/* min- 750 */
+@media screen and (max-width: 979px) {
+  .profileInfoContainer {
+    display: block;
+    margin-top: -10px;
+    padding: 16px;
+  }
+  
+  .profileInfoTextContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .profilePhotoContainer {
+    max-width: 100%;
+  }
+
+  .profileFullName {
+    font-size: 26px;
+    margin-top: 24px;
+    margin-bottom: 18px;
+  }
+
+  .profileInfoLabel {
+    font-size: 14px;
+  }
+
+  .profileInfoTextContainer {
+    row-gap: 24px;
+    padding-bottom: 16px;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .providerContactInfo {
+    margin-top: 16px;
+  }
+}

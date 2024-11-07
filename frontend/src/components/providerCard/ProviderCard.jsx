@@ -2,14 +2,15 @@ import {useState, useEffect } from 'react';
 import styles from './providerCard.module.css';
 import LocationIcon from  '../icons/LocationIcon';
 import DollarIcon from '../icons/DollarIcon';
-import ProviderImage from '../providerImage/ProviderImage';
 import Link from 'next/link';
 import Text from '../text/Text';
+import Image from '../image/Image';
 
 const ProviderCard = ({provider, showBadge, badge, count}) => {
   if (!provider) return;
   const [hourlyRate, setHourlyRate] = useState(null);
   const {
+    id,
     username,
     name,
     lastName,
@@ -54,7 +55,7 @@ const ProviderCard = ({provider, showBadge, badge, count}) => {
       {profilePicture && url &&
         <Link
           className={styles.link}
-          href={`/provider/${username}`}
+          href={`/provider/${username}?id=${id}`}
         >
           <div className={styles.mainWrap}>
             {showBadge && badge &&
@@ -63,15 +64,14 @@ const ProviderCard = ({provider, showBadge, badge, count}) => {
               </div>
             }
            {url &&
-              <div className={styles.imageWrapper} style={{'--image-aspect-ratio': `${1 / 0.70 * 100}%`}}>
-                <ProviderImage
-                  src={`${baseUrl}${url}`}
-                  alt={alternativeText || imageName}
-                  width={imageWidth}
-                  height={imageHeight}
-                  className={styles.image}
-                />
-              </div>
+              <Image
+                src={`${baseUrl}${url}`}
+                alt={alternativeText || imageName}
+                width={imageWidth}
+                height={imageHeight}
+                providerCartAspectRatio={0.70}
+                className={styles.image}
+              />
             }
             <div className={styles.info}>
               <div className={styles.data}>

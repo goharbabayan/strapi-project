@@ -227,6 +227,79 @@ module.exports = {
     }
   },
 
+   /** Custom endpoint to filter favorite service providers
+   * Retrieve user records.
+   * @return {Object|Array}
+   */
+  async addToFavorites(ctx) {
+    const { providerId, clientId } = JSON.parse(ctx.request.body);
+    if (!providerId || !clientId) {
+      return ctx.badRequest('Missing or invalid ID');
+    };
+
+    try {
+      const user = await getService('user').editFavoriteProvidersIds(clientId);
+      const { createdBy, updatedBy, ...data } = user;
+      let isIdAlreadyIncludedInFavorites = false;
+      user.favoriteProvidersIds.forEach(element => {
+        if (element.item == providerId) {
+          isIdAlreadyIncludedInFavorites = true;
+          return;
+        };
+      });
+      if (isIdAlreadyIncludedInFavorites) {
+        return ctx.badRequest(`Provider already existing in client's favorites list.`);
+      }
+      const updateData = {...data, favoriteProvidersIds: [...user.favoriteProvidersIds, { item:`${providerId}`}]};
+      const updatedUser = await getService('user').editFavoriteProvidersIds(clientId, updateData);
+      ctx.send(true);
+    } catch (error) {
+      ctx.send(error);
+    }
+  },
+
+  async findFromFavorites(ctx) {
+    const { providerId, clientId } = JSON.parse(ctx.request.body);
+    if (!providerId || !clientId) {
+      return ctx.badRequest('Missing or invalid ID');
+    };
+
+    try {
+      const user = await getService('user').editFavoriteProvidersIds(clientId);
+      const { createdBy, updatedBy, ...data } = user;
+      let isProviderExistingInClientFavorites = false;
+      isProviderExistingInClientFavorites = user.favoriteProvidersIds.filter(favoriteProviderId => Number(favoriteProviderId?.item) === Number(providerId)).length > 0;
+      ctx.send(isProviderExistingInClientFavorites);
+    } catch (error) {
+      ctx.send(error);
+    }
+  },
+  /** Custom endpoint to add a review by client to custom service provider
+   * Retrieve user records.
+   * @return {Object|Array}
+   */
+  async createReview(ctx) {
+    const { id } = ctx.params;
+    if (!id) {
+      return ctx.badRequest('Missing ID');
+    };
+    const reviewData = JSON.parse(ctx.request.body);
+    for (const [key, value] of Object.entries(reviewData)) {
+      if(key !== 'show' && value.trim() === '') {
+        return ctx.badRequest(`Missing ${key} parametr for review`);
+      };
+    }
+    try {
+      const user = await getService('user').editReviews(id);
+      const { createdBy, updatedBy, ...data } = user;
+      const updateData = {...data, reviews: [...user.reviews, { ...JSON.parse(ctx.request.body)}]};
+      const updatedUser = await getService('user').editReviews(id, updateData);
+      ctx.send(updatedUser);
+    } catch (error) {
+      ctx.send(error);
+    }
+  },
+
   /**
    * Retrieve a user record.
    * @return {Object}

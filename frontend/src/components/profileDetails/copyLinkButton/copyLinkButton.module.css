@@ -1,0 +1,12 @@
+.copyButton {
+  background-color: transparent;
+  border: 1px solid var(--color-main);
+  border-radius: 10px;
+  font-family: var(--primary-bold-font);
+  color: var(--color-main);
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  gap: 8px;
+  cursor: pointer;
+}

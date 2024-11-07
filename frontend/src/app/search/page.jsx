@@ -12,7 +12,7 @@ import Text from '@/components/text/Text';
 import Button from '@/components/button/Button';
 import Loading from '../loading';
 import FilterCategories from '@/components/filterCategories/FilterCategories';
-import { SEARCH_AND_FILTER_POPULATE_FIELDS } from '../utils/constants/fetchURLParams';
+import { SEARCH_AND_FILTER_POPULATE_FIELDS } from '../utils/constants/fetchURLparams';
 import { buildQueriesForFilteredOptions } from '../utils/helpers';
 
 export default function Search() {

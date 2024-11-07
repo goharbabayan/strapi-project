@@ -1,13 +1,13 @@
 import { calculateImageAspectRatio } from '@/app/utils/helpers';
 import styles from './image.module.css';
 
-export default function Image({src, alt, width, height, link, className}) {
-  const imageAspectRatio = calculateImageAspectRatio(width, height);
+export default function Image({src, alt, width, height, link, className, providerCartAspectRatio}) {
+  const imageAspectRatio = providerCartAspectRatio ? providerCartAspectRatio : calculateImageAspectRatio(width, height);
 
   return (
     <>
     {link ? (
-      <a style={{ '--ratio-percent': `${1 / imageAspectRatio * 100}%` }} href={link || ''} className={`${styles.link} ${styles[className]}`}>
+      <a style={{ '--ratio-percent': `${1 / imageAspectRatio * 100}%` }} href={link || ''} className={`${styles.link} ${className ? styles[className] : ''}`}>
         <img
           src={src}
           alt={alt}
@@ -17,13 +17,13 @@ export default function Image({src, alt, width, height, link, className}) {
         />
       </a>
     ) : (
-      <div style={{ '--ratio-percent': `${1 / imageAspectRatio * 100}%` }} className={`${styles.link} ${styles[className]}`}>
+      <div style={{ '--ratio-percent': `${1 / imageAspectRatio * 100}%` }} className={`${styles.link} ${className ? styles[className] : ''}`}>
         <img
           src={src}
           alt={alt}
           width={width}
           height={height}
-          className={`${styles.image} ${styles[className]}`}
+          className={`${styles.image} ${className ? styles[className] : ''}`}
         />
       </div>
     )}

@@ -33,7 +33,12 @@ export default function Providers ({
       setShowCategoriesInTheCenter(resData[`${sectionName}`]?.show_categories_in_the_center);
       setButton(resData[`${sectionName}`]?.Button);
       const providersArray = resData[`${sectionName}`]?.providers !== null ? resData[`${sectionName}`]?.providers?.data : [];
-      setProviders(providersArray && [...providersArray.map(provider => provider?.attributes)]);
+      setProviders(providersArray && [...providersArray.map(provider => {
+        return {
+          id: provider?.id,
+          ...provider?.attributes
+        }
+      })]);
     }
   }, [resData]);
 

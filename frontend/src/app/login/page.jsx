@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { navigate } from '../../app/actions';
 import Loading from '../loading';
 import Layout from './layuot.jsx';
@@ -11,9 +11,9 @@ import FormSubmitButton from '@/components/form/FormSubmitButton';
 import { AuthContext } from '../Context';
 
 export default function LoginPage() {
-  const {setCustomerToken} = useContext(AuthContext);
+  const {setCustomerToken, setLoggedInUserData} = useContext(AuthContext);
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
-  const [ isLoading, setIsLoading ] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const formFields = [
     {id: 'email', type: 'email', placeholder: 'Email', name: 'Email', value: ''},
     {id: 'password', type: 'password', placeholder: 'Password', name: 'Password', value: ''},
@@ -45,59 +45,68 @@ export default function LoginPage() {
       throw new Error('Missing user data');
     };
 
-      const userNameValue = userData.username;
-      const passwordValue = userData.password;
-      const confirmedPasswordValue = userData.confirm_password;
-      const emailValue = userData.email;
-      const emailRegex = /^[a-zA-Z0-9._%±]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/;
-      const isEmailValueValid = emailRegex.test(emailValue);
-      const isUsernameAtLeastThreeCharacters = userData.username && userData.username.length < 3;
-      const isPasswordAtLeastSixCharacters = userData.password && userData.password.length < 6;
+    const userNameValue = userData.username;
+    const passwordValue = userData.password;
+    const confirmedPasswordValue = userData.confirm_password;
+    const emailValue = userData.email;
+    const emailRegex = /^[a-zA-Z0-9._%±]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/;
+    const isEmailValueValid = emailRegex.test(emailValue);
+    const isUsernameAtLeastThreeCharacters = userData.username && userData.username.length < 3;
+    const isPasswordAtLeastSixCharacters = userData.password && userData.password.length < 6;
 
-      if (confirmedPasswordValue && passwordValue != confirmedPasswordValue) {
-        setErrorMessage({type: 'confirm_password', text: 'Passwords do not match.'});
-        return;
-      } else if (emailValue && !isEmailValueValid) {
-        setErrorMessage({type: 'email', text: 'Please enter a valid email address.'});
-        return;
-      } else if (isUsernameAtLeastThreeCharacters) {
-        setErrorMessage({type: 'username', text: 'Username must be at least 3 characters.'});
-        return;
-      } else if (isPasswordAtLeastSixCharacters) {
-        setErrorMessage({type: 'password', text: 'Password must be at least 6 characters.'});
-        return;
+    if (confirmedPasswordValue && passwordValue != confirmedPasswordValue) {
+      setErrorMessage({type: 'confirm_password', text: 'Passwords do not match.'});
+      return;
+    } else if (emailValue && !isEmailValueValid) {
+      setErrorMessage({type: 'email', text: 'Please enter a valid email address.'});
+      return;
+    } else if (isUsernameAtLeastThreeCharacters) {
+      setErrorMessage({type: 'username', text: 'Username must be at least 3 characters.'});
+      return;
+    } else if (isPasswordAtLeastSixCharacters) {
+      setErrorMessage({type: 'password', text: 'Password must be at least 6 characters.'});
+      return;
+    }
+    setIsLoading(true)
+
+    await fetch(`${baseUrl}/api/auth/local`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({'identifier': emailValue, 'password': passwordValue })
+    })
+    .then(resp => {
+      if (resp.status !== 200) {
+        const errorData = resp.json();
+        errorData.then(error => {
+          const errorMessage = error?.error?.message;
+          setErrorMessage({type: 'password', text: errorMessage ? errorMessage : 'Login failed.'});
+        });
+      } else {
+        return resp.json();
       }
-      setIsLoading(true)
-      await fetch(`${baseUrl}/api/auth/local`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({'identifier': emailValue, 'password': passwordValue })
-      })
-      .then(resp => {
-        if (resp.status !== 200) {
-          const errorData = resp.json();
-          errorData.then(error => {
-            const errorMessage = error?.error?.message;
-            setErrorMessage({type: 'password', text: errorMessage ? errorMessage : 'Login failed.'});
-          });
-        } else {
-          return resp.json();
-        }
-      })
-      .then(data => {
-        const isLoggedinSuccesfully = data != undefined;
-        const token = isLoggedinSuccesfully && data.jwt;
-        if (isLoggedinSuccesfully && token) {
-          const userName = data.user.username;
-          localStorage.setItem('token', JSON.stringify(token));
-          setCustomerToken(JSON.stringify(token));
-          navigate(`/my-account/${userName}`);
-          setIsLoading(false);
-        }
-      })
-      .catch(err => console.error(err));
+    })
+    .then(data => {
+      const isLoggedinSuccesfully = data != undefined;
+      const token = isLoggedinSuccesfully && data.jwt;
+      if (isLoggedinSuccesfully && token) {
+        const userName = data.user.username;
+        localStorage.setItem('token', JSON.stringify(token));
+        localStorage.setItem('loggedInUserdata', JSON.stringify({
+          id: data?.user?.id,
+          role: data?.user?.role?.type
+        }));
+        setCustomerToken(JSON.stringify(token));
+        setLoggedInUserData({
+          id: data?.user?.id,
+          role: data?.user?.role?.type
+        })
+        navigate(`/my-account/${userName}`);
+        setIsLoading(false);
+      }
+    })
+    .catch(err => console.error(err));
   };
 
   return (

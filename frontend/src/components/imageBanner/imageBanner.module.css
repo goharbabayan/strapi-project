@@ -1,6 +1,5 @@
 .imageWrapper {
   width: 100%;
-  height: 259px;
   position: relative;
 }
 
@@ -13,14 +12,10 @@
 }
 
 @media screen and (max-width: 749px) {
-  .imageWrapper {
-    height: 321px;
-  }
-
   .desktop {
     display: none;
   }
-  
+
   .mobile {
     display: block;
   }

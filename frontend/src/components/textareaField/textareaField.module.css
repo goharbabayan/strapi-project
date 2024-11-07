@@ -1,0 +1,20 @@
+.textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 3px;
+  outline: none;
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  border-radius: 10px;
+  border: 1px solid var(--neutral-n30);
+  background: var(--neutral-white-n10);
+}
+
+.textarea.invalid {
+  border-color: #9b0a0a;
+}
+
+.errorText {
+  color: var(--red-r5);
+  margin-top: 8px;
+}

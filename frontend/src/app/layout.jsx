@@ -13,13 +13,18 @@ import { AuthContext } from './Context';
 
 export default function RootLayout({ children }) {
   const [customerToken, setCustomerToken] = useState('');
+  const [loggedInUserData, setLoggedInUserData] = useState(null);
   const pathname = usePathname();
   const isHomePage = pathname === '/';
 
   useEffect(() => {
     const customerTokenFromLocalStorage = JSON.parse(localStorage.getItem('token'));
+    const userLoggedInData = JSON.parse(localStorage.getItem('loggedInUserdata'));
 
-    if (customerTokenFromLocalStorage) setCustomerToken(customerTokenFromLocalStorage);
+    if (customerTokenFromLocalStorage) {
+      setCustomerToken(customerTokenFromLocalStorage);
+      setLoggedInUserData(userLoggedInData);
+    };
   }, []);
 
   return (
@@ -27,7 +32,7 @@ export default function RootLayout({ children }) {
       <body>
         <ApolloProvider client={Client}>
           {/* <AnnouncementBar/> */}
-          <AuthContext.Provider value={{customerToken, setCustomerToken}}>
+          <AuthContext.Provider value={{customerToken, setCustomerToken, loggedInUserData, setLoggedInUserData}}>
             <Header />
             <main className="main-wrapper">{children}</main>
             <Footer />
