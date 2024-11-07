@@ -30,6 +30,9 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
+        <head>
+          <meta name="robots" content="noindex" />
+        </head>
       <body>
         <ApolloProvider client={Client}>
           {/* <AnnouncementBar/> */}

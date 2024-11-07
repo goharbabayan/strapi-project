@@ -1,17 +1,4 @@
-export const SEARCH_AND_FILTER_POPULATE_FIELDS = `fields[0]=name&
-fields[1]=lastName&
-fields[2]=username&
-fields[3]=age&
-fields[4]=placeOfService&
-fields[5]=dressSize&
-fields[6]=hairColor&
-fields[7]=badge&
-fields[8]=hairColor&
-fields[9]=city&
-fields[10]=gender&
-fields[11]=role&
-populate[services][fields]&
-populate[incallRates][fields][1]=duration&populate[incallRates][fields][2]=price&populate[incallRates][fields][3]=additionalInfo&populate[outcallRates][fields][1]=duration&populate[outcallRates][fields][2]=price&populate[outcallRates][fields][3]=additionalInfo&populate[profilePicture][fields][1]=url&populate[profilePicture][fields][2]=name&populate[profilePicture][fields][3]=alternativeText&populate[profilePicture][fields][4]=width&populate[profilePicture][fields][5]=height
+export const SEARCH_AND_FILTER_POPULATE_FIELDS = `fields[0]=name&fields[1]=lastName&fields[2]=username&fields[3]=age&fields[4]=placeOfService&fields[5]=dressSize&fields[6]=hairColor&fields[7]=badge&fields[8]=hairColor&fields[9]=city&fields[10]=gender&populate[services][fields]&populate[incallRates][fields][1]=duration&populate[incallRates][fields][2]=price&populate[incallRates][fields][3]=additionalInfo&populate[outcallRates][fields][1]=duration&populate[outcallRates][fields][2]=price&populate[outcallRates][fields][3]=additionalInfo&populate[profilePicture][fields][1]=url&populate[profilePicture][fields][2]=name&populate[profilePicture][fields][3]=alternativeText&populate[profilePicture][fields][4]=width&populate[profilePicture][fields][5]=height
 `;
 
 export const  LOCATION_POPULATE_FIELDS = `populate[image_banner_landscape_for_desktop][fields]
