@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import styles from './clientDetails.module.css';
-  import { CREATE_MENU_BAR } from '@/app/utils/constants/menuBar';
+import { CREATE_MENU_BAR } from '@/app/utils/constants/menuBar';
 import FavoriteEscorts from '../favoriteEscorts/FavoriteEscorts';
 import MenuBar from '../menuBar/MenuBar';
 import ResetPassword from '../resetPassword/ResetPassword';

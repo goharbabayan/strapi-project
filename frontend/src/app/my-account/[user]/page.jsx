@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Layout from './layout.jsx';
 import styles from './my-account.module.css';
 import NotificationBar from '@/components/notificationBar/NotificationBar.jsx';
-import ClientDetails from '@/components/clientDetails/clientDetails.jsx';
+import ClientDetails from '@/components/clientDetails/ClientDetails.jsx';
 import ManagerDetails from '@/components/managerDetails/ManagerDetails.jsx';
 import ServiceProviderDetails from '@/components/serviceProviderDetails/ServiceProviderDetails.jsx';
 import { navigate } from '../../actions.js';
