@@ -14,9 +14,9 @@ import Button from '../button/Button';
 import { SwiperNavButtons } from '../swiperNavButtons/SwiperNavButtons';
 import ProfileReviewPopup from '../profileReviewPopup/ProfileReviewPopup';
 
-export default function ProfileReviews ({reviews}) {
+export default function ProfileReviews ({reviews, providerId}) {
   const [showReviewPopup, setShowReviewPopup] = useState(false);
-  const handleAddReview = () => {
+  const handleShowReviewPopup = () => {
     setShowReviewPopup(true);
     document.body.classList.add('overflow_hidden');
   };
@@ -46,13 +46,14 @@ export default function ProfileReviews ({reviews}) {
         />
         <Button
           children={'Add Review'}
-          onClick={handleAddReview}
+          onClick={handleShowReviewPopup}
           className={`${styles.button} button_general`}
         />
       </div>
       {showReviewPopup &&
         <ProfileReviewPopup
           setShowReviewPopup={setShowReviewPopup}
+          providerId={providerId}
         />
       }
       {reviews.length > 0 ? (

@@ -81,7 +81,12 @@ function ServiceProviderDetails ({user, onChanges, hasUnsavedChanges, errorMessa
   };
 
   const handleScrollToSection = (sectionRef) => {
-    const topPosition = hasUnsavedChanges ? sectionRef.current.offsetTop - 10 : sectionRef.current.offsetTop + 35;
+    let topPosition;
+    if (window.innerWidth > 750) {
+      topPosition = sectionRef.current.offsetTop - 20;
+    } else {
+      topPosition = sectionRef.current.offsetTop - 60;
+    };
     if (sectionRef.current) {
       window.scrollTo({ top: topPosition, behavior: 'smooth' });
     };
@@ -162,7 +167,7 @@ function ServiceProviderDetails ({user, onChanges, hasUnsavedChanges, errorMessa
       />
       <GalleryImages
         id={'photos'}
-        children={'Photos'}
+        children={'Photos*'}
         type='photos'
         images={formData.photos}
         onChildFormDataChange={handleChildFormDataChange}

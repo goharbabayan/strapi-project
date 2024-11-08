@@ -75,7 +75,11 @@ export default function Provider () {
     {
       label: 'Body type',
       data: providerData?.bodyType
-    }
+    },
+    {
+      label: 'Gender',
+      data: providerData?.gender
+    },
   ];
 
   const PROFILE_DETAILS_TABS = [
@@ -180,6 +184,7 @@ export default function Provider () {
           {activeTabId === 5 &&
             <ProfileReviews
               reviews={providerData?.reviews}
+              providerId={providerId}
             />
           }
         </div>

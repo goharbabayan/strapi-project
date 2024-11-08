@@ -2,6 +2,7 @@
 .mainWrap {
   padding-block: 50px;
   max-width: 1120px;
+  margin: auto;
 }
 
 .articlesWrapper {

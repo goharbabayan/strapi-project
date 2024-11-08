@@ -1,6 +1,6 @@
 .menuBar {
   position: sticky;
-  top: 0;
+  top: calc(var(--header-height) - 1px);
   background-color: var(--neutral-white-n10);
   margin-top: 80px;
   border-radius: 5px;
@@ -13,10 +13,6 @@
   margin-top: 0;
   border-bottom: 1px solid #DBDBDB;
   padding-block: 5px;
-}
-
-.menuBar.notificationBarOpened {
-  top: var(--notification-bar-height);
 }
 
 .menuBar.fixed {
@@ -84,6 +80,10 @@
 }
 
 @media screen and (max-width: 749px) {
+  .menuBar {
+    top: calc(var(--header-height-mobile) - 1px);
+  }
+
   .container, .mainWrap {
     max-width: unset;
     width: 100%;

@@ -38,17 +38,19 @@ export default function FaqPage() {
       }
       {contentIsNotEmpty &&
         <section className={styles.mainWrap}>
-          <div className={`${styles.container} page-width`}>
-            {infoSectionIsNotEmpty &&
-              <TextInfo
-                title={infoData?.title || ''}
-                text={infoData?.text || ''}
-                accordionSectionIsNotEmpty={isAtLeastOneAccordionItemExists}
-              />
-            }
-            {isAtLeastOneAccordionItemExists &&
-              <AccordionSection data={questionsData} infoSectionIsNotEmpty={infoSectionIsNotEmpty}/>
-            }
+          <div className="page-width">
+            <div className={`${styles.container}`}>
+              {infoSectionIsNotEmpty &&
+                <TextInfo
+                  title={infoData?.title || ''}
+                  text={infoData?.text || ''}
+                  accordionSectionIsNotEmpty={isAtLeastOneAccordionItemExists}
+                />
+              }
+              {isAtLeastOneAccordionItemExists &&
+                <AccordionSection data={questionsData} infoSectionIsNotEmpty={infoSectionIsNotEmpty}/>
+              }
+            </div>
           </div>
         </section>
       }

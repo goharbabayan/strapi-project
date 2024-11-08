@@ -1,10 +1,9 @@
 'use client'
 
 import Link from 'next/link';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { navigate } from '../../app/actions';
 import Loading from '../loading';
-import Layout from './layuot.jsx';
 import styles from './login.module.css';
 import FormInput from '@/components/form/FormInput';
 import FormSubmitButton from '@/components/form/FormSubmitButton';
@@ -67,8 +66,7 @@ export default function LoginPage() {
       setErrorMessage({type: 'password', text: 'Password must be at least 6 characters.'});
       return;
     }
-    setIsLoading(true)
-
+    setIsLoading(true);
     await fetch(`${baseUrl}/api/auth/local`, {
       method: 'POST',
       headers: {
@@ -103,7 +101,6 @@ export default function LoginPage() {
           role: data?.user?.role?.type
         })
         navigate(`/my-account/${userName}`);
-        setIsLoading(false);
       }
     })
     .catch(err => console.error(err));
@@ -111,37 +108,38 @@ export default function LoginPage() {
 
   return (
     <>
-    {isLoading ? <Loading className={styles.loading} /> :
-      <Layout>
-        <div className={styles.mainWrap}>
-          <div className={styles.formWrapper}>
-            <div className={styles.forgotPassword}>
-              <h2 className="subtitle">Login</h2>
-            </div>
-            <form onSubmit={handleSubmit} className={`${styles.form} ${showSuccessMessage ? styles.hidden : ''}`}>
-              {formData.map((input) => (
-                <FormInput
-                  key={input.id}
-                  id={input.id}
-                  type={input.type}
-                  placeholder={input.placeholder}
-                  name={input.name}
-                  formData={formData}
-                  errorMessage={errorMessage.text != '' && (errorMessage.type == input.id) ? errorMessage.text : ''}
-                  onChange={handleChange}
-                  value={input.value}
-                />
-              ))}
-              <FormSubmitButton buttonText={"Login"}/>
-              <Link href='/recover' className={`${styles.link} ${styles.forgotPassword}`}>Forgot password?</Link>
-              <div className={styles.loginText}>
-                <Link href='/signup' className={styles.link}>I don't have an account.</Link>
-                <Link href='/signup' className={styles.loginButton}>Sign up</Link>
+      {isLoading
+        ?
+          <Loading className={styles.loading}/>
+        :
+          <div className={styles.mainWrap}>
+            <div className={styles.formWrapper}>
+              <div className={styles.forgotPassword}>
+                <h2 className="subtitle">Login</h2>
               </div>
-            </form>
+              <form onSubmit={handleSubmit} className={`${styles.form} ${showSuccessMessage ? styles.hidden : ''}`}>
+                {formData.map((input) => (
+                  <FormInput
+                    key={input.id}
+                    id={input.id}
+                    type={input.type}
+                    placeholder={input.placeholder}
+                    name={input.name}
+                    formData={formData}
+                    errorMessage={errorMessage.text != '' && (errorMessage.type == input.id) ? errorMessage.text : ''}
+                    onChange={handleChange}
+                    value={input.value}
+                  />
+                ))}
+                <FormSubmitButton buttonText={"Login"}/>
+                <Link href='/recover' className={`${styles.link} ${styles.forgotPassword}`}>Forgot password?</Link>
+                <div className={styles.loginText}>
+                  <Link href='/signup' className={styles.link}>I don't have an account.</Link>
+                  <Link href='/signup' className={styles.loginButton}>Sign up</Link>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
-      </Layout>
       }
     </>
   );

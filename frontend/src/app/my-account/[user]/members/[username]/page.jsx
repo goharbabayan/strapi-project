@@ -179,10 +179,10 @@ export default function Member ({params}) {
   const handleScrollToSection = (sectionRef) => {
     let topPosition;
     if (window.innerWidth > 750) {
-      topPosition = hasUnsavedChanges ? sectionRef.current.offsetTop - 80 : sectionRef.current.offsetTop - 40;
+      topPosition = sectionRef.current.offsetTop - 140;
     } else {
-      topPosition = hasUnsavedChanges ? sectionRef.current.offsetTop - 100 : sectionRef.current.offsetTop - 55;
-    }
+      topPosition = sectionRef.current.offsetTop - 152;
+    };
 
     if (sectionRef.current) {
       window.scrollTo({ top: topPosition, behavior: 'smooth' });

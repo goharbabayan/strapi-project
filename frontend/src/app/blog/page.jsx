@@ -43,51 +43,53 @@ function Blog() {
   };
 
   return (
-    <section className={`${styles.mainWrap} page-width`}>
-      <div className={styles.articlesWrapper}>
-        {blog && blog.map((article, index) => {
-          const { content, heading, heroImage, createdAt, meta } = article.attributes;
-          const { url, alternativeText, height, width } = heroImage.data.attributes;
-          const date = new Date(createdAt);
-          const options = { day: 'numeric', month: 'long', year: 'numeric' };
-          const dateFormat = date.toLocaleDateString('en-US', options).replace(',', '');
-          const dateParts = dateFormat.split(' ');
-          const articleDate = `${dateParts[1]} ${dateParts[0]} ${dateParts[2]}`;
+    <section className="page-width">
+      <div className={`${styles.mainWrap}`}>
+        <div className={styles.articlesWrapper}>
+          {blog && blog.map((article, index) => {
+            const { content, heading, heroImage, createdAt, meta } = article.attributes;
+            const { url, alternativeText, height, width } = heroImage.data.attributes;
+            const date = new Date(createdAt);
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            const dateFormat = date.toLocaleDateString('en-US', options).replace(',', '');
+            const dateParts = dateFormat.split(' ');
+            const articleDate = `${dateParts[1]} ${dateParts[0]} ${dateParts[2]}`;
 
-          return (
-            <article key={article.id} className={styles.article}>
-              <div className={styles.articleWrap}>
-                {heroImage && url &&
-                  <a href={`/articles/${article.id}`} className={styles.imageWrap}>
-                    <img alt={alternativeText || `article-image-${index+1}`} height={height} width={width} src={`${baseUrl}${url}`} className={styles.heroImage}/>
-                  </a>
-                }
-                <div className={styles.mainInfo}>
-                  {heading &&
-                    <a href={`/articles/${article.id}`} className={`${styles.heading} link`}>
-                      <h2 className={styles.heading}>{heading}</h2>
-                    </a>}
-                  {content &&
-                    <div className={styles.wrapper}>
-                      <div className={styles.content}>
-                        <BlocksRenderer content={content} />
-                      </div>
-                    </div>
+            return (
+              <article key={article.id} className={styles.article}>
+                <div className={styles.articleWrap}>
+                  {heroImage && url &&
+                    <a href={`/articles/${article.id}`} className={styles.imageWrap}>
+                      <img alt={alternativeText || `article-image-${index+1}`} height={height} width={width} src={`${baseUrl}${url}`} className={styles.heroImage}/>
+                    </a>
                   }
-                  <Button href={`/articles/${article.id}`} className={`${styles.button} link`}>Read more »</Button>
+                  <div className={styles.mainInfo}>
+                    {heading &&
+                      <a href={`/articles/${article.id}`} className={`${styles.heading} link`}>
+                        <h2 className={styles.heading}>{heading}</h2>
+                      </a>}
+                    {content &&
+                      <div className={styles.wrapper}>
+                        <div className={styles.content}>
+                          <BlocksRenderer content={content} />
+                        </div>
+                      </div>
+                    }
+                    <Button href={`/articles/${article.id}`} className={`${styles.button} link`}>Read more »</Button>
+                  </div>
+                    <p className={styles.date}>{articleDate}</p>
                 </div>
-                  <p className={styles.date}>{articleDate}</p>
-              </div>
-            </article>
-          );
-        })}
+              </article>
+            );
+          })}
+        </div>
+        {currentPage < pagination.pageCount && (
+          <LoadMoreButton onClick={handleLoadMore} isLoading={isLoading}>Load More</LoadMoreButton>
+        )}
+        {error && (
+          <span>Something went wrong.</span>
+        )}
       </div>
-      {currentPage < pagination.pageCount && (
-        <LoadMoreButton onClick={handleLoadMore} isLoading={isLoading}>Load More</LoadMoreButton>
-      )}
-      {error && (
-        <span>Something went wrong.</span>
-      )}
     </section>
   )
 }

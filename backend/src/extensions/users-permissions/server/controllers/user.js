@@ -152,29 +152,18 @@ module.exports = {
    * @return {Object}
    */
   async updateMember(ctx) {
-    const advancedConfigs = await strapi
-      .store({ type: 'plugin', name: 'users-permissions', key: 'advanced' })
-      .get();
-
     const { id } = ctx.params;
-    const {username } = ctx.request.body;
+    const {username} = ctx.request.body;
 
     const user = await getService('user').fetch(id);
     if (!user) {
       throw new NotFoundError(`User not found`);
     }
 
-    // await validateUpdateUserBody(ctx.request.body);
-
-    // if (user.provider === 'local' && _.has(ctx.request.body, 'password') && !password) {
-    //   throw new ValidationError('password.notNull');
-    // }
-
     if (_.has(ctx.request.body, 'username')) {
       const userWithSameUsername = await strapi
         .query('plugin::users-permissions.user')
         .findOne({ where: { username } });
-
       if (userWithSameUsername && _.toString(userWithSameUsername.id) !== _.toString(id)) {
         throw new ApplicationError('Username already taken');
       }

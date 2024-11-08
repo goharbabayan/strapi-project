@@ -78,7 +78,8 @@ export default function ClientDetails({ user, onChanges, hasUnsavedChanges, erro
   };
 
   const handleScrollToSection = (sectionRef) => {
-    const topPosition = hasUnsavedChanges ? sectionRef.current.offsetTop - 20 : sectionRef.current.offsetTop + 35;
+    let topPosition;
+      topPosition = sectionRef.current.offsetTop - 20;
     if (sectionRef.current) {
       window.scrollTo({ top: topPosition, behavior: 'smooth' });
     };

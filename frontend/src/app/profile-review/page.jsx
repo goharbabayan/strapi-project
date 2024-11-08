@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import styles from './profile-review.module.css';
 import { navigate } from '../actions.js';
 import Button from '@/components/button/Button.jsx';
@@ -18,7 +19,7 @@ import RatesAndServicesIcon from '@/components/icons/RatesAndServicesIcon';
 import WhenCanWeMeetIcon from '@/components/icons/WhenCanWeMeetIcon';
 import SelfiesIcon from '@/components/icons/SelfiesIcon';
 
-export default function ProfileReview({searchParams}) {
+export default function ProfileReview() {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [showMessage, setShowMessage] = useState(false);
@@ -92,10 +93,11 @@ export default function ProfileReview({searchParams}) {
       icon: SelfiesIcon
     }
   ]
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    const token = searchParams?.token;
-    const userId = searchParams?.userId;
+    const token = searchParams.get('token');
+    const userId = searchParams.get('userId');
     setToken(token);
     token
       ?
@@ -116,7 +118,7 @@ export default function ProfileReview({searchParams}) {
         })
         .catch(err => console.log('err', err))
       :
-        navigate('/login');
+        navigate('/');
   }, [])
 
   const handleButtonClick = (action) => {

@@ -23,7 +23,7 @@
         "audios"
       ]
     },
-    "categories": {
+    "announcement_bar": {
       "type": "component",
       "repeatable": false,
       "component": "elements.collection"
@@ -31,7 +31,8 @@
     "buttons": {
       "type": "component",
       "repeatable": true,
-      "component": "elements.link"
+      "component": "elements.link",
+      "max": 2
     },
     "navigation": {
       "displayName": "navigation",

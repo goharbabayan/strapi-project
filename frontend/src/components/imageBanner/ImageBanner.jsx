@@ -5,22 +5,34 @@ import Image from '../image/Image';
 
 export default function ImageBanner({mobileImage, desktopImage}) {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
-  const {url: srcMobile, alternativeText: altMMobile, width: widthMobile, height: heightMobile} = mobileImage;
-  const {url: srcDesktop, alternativeText: altMDesktop, width: widthDesktop, height: heightDesktop} = desktopImage;
+  const {url: srcMobile, alternativeText: altMobile, width: widthMobile, height: heightMobile} = mobileImage;
+  const {url: srcDesktop, alternativeText: altDesktop, width: widthDesktop, height: heightDesktop} = desktopImage;
 
   return (
     <div className={styles.imageWrapper}>
-      <Image
-        src={`${baseUrl}${srcMobile}`}
-        alt={altMMobile}
-        width={widthMobile}
-        height={heightMobile}
-        link={null}
-        className={'mobile'}
-      />
+      {mobileImage?.srcMobile
+        ?
+          <Image
+            src={`${baseUrl}${srcMobile}`}
+            alt={altMobile}
+            width={widthMobile}
+            height={heightMobile}
+            link={null}
+            className={'mobile'}
+          />
+        :
+          <Image
+            src={`${baseUrl}${srcDesktop}`}
+            alt={altDesktop}
+            width={widthDesktop}
+            height={heightDesktop}
+            link={null}
+            className={'mobile'}
+          />
+      }
       <Image
         src={`${baseUrl}${srcDesktop}`}
-        alt={altMDesktop}
+        alt={altDesktop}
         width={widthDesktop}
         height={heightDesktop}
         link={null}

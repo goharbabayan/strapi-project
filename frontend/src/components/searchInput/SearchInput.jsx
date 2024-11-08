@@ -7,14 +7,8 @@ import CloseIcon from '../icons/CloseIcon';
 import styles from './searchInput.module.css';
 
 export default function SearchInput({searchQueries, setSearchQueries, setSearchResults, setNoResults}) {
-  const [isFocused, setIsFocused] = useState(true);
   const containerRef = useRef(null);
   const inputRef = useRef(null);
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   useEffect(() => {
     if (searchQueries.trim() === '') {
@@ -22,19 +16,10 @@ export default function SearchInput({searchQueries, setSearchQueries, setSearchR
     };
   }, [searchQueries]);
 
-  const handleSearchIconClick = () => {
-    setIsFocused(!isFocused);
-  };
-
   const handleRemoveIconClick = () => {
     inputRef.current ? inputRef.current.querySelector('input').value = '' : null;
-    setIsFocused(false);
     setSearchQueries('');
     setNoResults(false);
-  };
-
-  const handleClickOutside = () => {
-    setIsFocused(false);
   };
 
   const handleChange = (e) => {
@@ -59,13 +44,11 @@ export default function SearchInput({searchQueries, setSearchQueries, setSearchR
     <div className={styles.container} ref={containerRef}>
       <SearchIcon
         className={styles.searchIcon}
-        onClick={handleSearchIconClick}
       />
       <div ref={inputRef} className={styles.inputWrap}>
         <InputField
           inputClassName={styles.input}
           labelClassName={styles.label}
-          isFocused={isFocused}
           onChange={processChange}
           placeholder={'Search escorts'}
         />

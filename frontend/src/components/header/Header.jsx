@@ -16,10 +16,12 @@ import HeaderAccountTab from './headerAccountTab/HeaderAccountTab';
 
 export default function Header() {
   const {customerToken} = useContext(AuthContext);
-  const [menuItems, setMenuItems] = useState([]);
-  const [menuItemsTitle, setMenuItemsTitle] = useState(null);
-  const [buttons, setButtons] = useState([]);
-  const [logo, setLogo] = useState(null);
+  const [headerData, setHeaderData] = useState({
+    logo: null,
+    buttons: null,
+    menuItemsTitle: null,
+    menuItems: null,
+  });
   const [isMobileLayout, setIsMobileLayout] = useState(false);
   const [showMobileNavigation, setShowMobileNavigation] = useState(false);
   const [listItemsAreOpened, setListItemsAreOpened] = useState(false);
@@ -31,10 +33,14 @@ export default function Header() {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
   useEffect(() => {
-    data !== undefined && setMenuItems(data?.header?.data?.attributes?.categories?.categories);
-    data !== undefined && setMenuItemsTitle(data?.header?.data?.attributes?.categories?.categories_title);
-    data !== undefined && setLogo(data?.header?.data?.attributes?.logo?.data?.attributes);
-    data !== undefined && setButtons(data?.header?.data?.attributes?.buttons);
+    if (data !== undefined) {
+      setHeaderData({
+        logo: data?.header?.data?.attributes?.logo?.data?.attributes,
+        buttons: data?.header?.data?.attributes?.buttons,
+        menuItemsTitle: data?.header?.data?.attributes?.announcement_bar?.title,
+        menuItems: data?.header?.data?.attributes?.announcement_bar?.announcement_bar_links,
+      });
+    }
   }, [data]);
 
   useEffect(() => {
@@ -66,17 +72,13 @@ export default function Header() {
     setIsMobileLayout(isMobileLayout);
   };
 
-  const handleSearchIconClick = () => {
-    navigate('/search');
-  };
-
   const handleBurgerButtonClick = () => {
     setShowMobileNavigation(!showMobileNavigation);
     setNavigationClassName(!navigationClassName);
   };
 
-  const menuItemsHasAtLeastOneItem = menuItems && menuItems.length > 0;
-  const atLeastOneButtonExists = buttons && buttons.length > 0;
+  const menuItemsHasAtLeastOneItem = headerData.menuItems && headerData.menuItems.length > 0;
+  const atLeastOneButtonExists = headerData.buttons && headerData.buttons.length > 0;
 
   return (
     <>
@@ -84,94 +86,89 @@ export default function Header() {
       {data &&
         <header className={`${styles.header} ${menuItemsHasAtLeastOneItem === false ? styles.menuItemsAreEmpty : ''}`}>
           {menuItemsHasAtLeastOneItem && !isMobileLayout &&
-            <ListItems items={menuItems}/>
+            <ListItems items={headerData.menuItems}/>
           }
-          {logo &&
-          <>
-            <section>
-              <div className="page-width">
-                <div className={`${styles.headerSection}`}>
-                  {!isMobileLayout &&
-                    <Navigation
-                      className={styles.navigation}
-                      menuItemsHasAtLeastOneItem={menuItemsHasAtLeastOneItem}
+          <section>
+            <div className="page-width">
+              <div className={`${styles.headerSection}`}>
+                {!isMobileLayout &&
+                  <Navigation
+                    className={styles.navigation}
+                    menuItemsHasAtLeastOneItem={menuItemsHasAtLeastOneItem}
+                  />
+                }
+                <div className={styles.container}>
+                  {headerData?.logo &&
+                    <a className={styles.logo} href="/">
+                      <img
+                        src={`${baseUrl}${headerData?.logo?.url}`}
+                        alt={headerData?.logo?.alternativeText || 'logo'}
+                        width={238}
+                        height={68}
+                      />
+                    </a>
+                  }
+                  {isMobileLayout &&
+                    <BurgerButton
+                      className={styles.navigationButton}
+                      onBurgerButtonClick={handleBurgerButtonClick}
                     />
                   }
-                  <div className={styles.container}>
-                    {logo &&
-                      <a className={styles.logo} href="/">
-                        <img
-                          src={`${baseUrl}${logo.url}`}
-                          alt={logo.alternativeText || 'logo'}
-                          width={238}
-                          height={68}
-                        />
-                      </a>
-                    }
-                    {isMobileLayout &&
-                      <BurgerButton
-                        className={styles.navigationButton}
-                        onBurgerButtonClick={handleBurgerButtonClick}
+                  <div className={styles.headerMenu}>
+                    <a href="/search" className={styles.anchor}>
+                      <SearchIcon
+                        className={styles.searchIcon}
                       />
-                    }
-                    {logo &&
-                      <div className={styles.headerMenu}>
-                        <SearchIcon
-                          className={styles.searchIcon}
-                          onClick={handleSearchIconClick}
-                        />
-                        {customerToken && loggedInCustomerData ?
-                          <HeaderAccountTab
-                            loggedInCustomerData={loggedInCustomerData}
-                            isMobileLayout={isMobileLayout}
-                          />
-                            :
-                          <>
-                            {atLeastOneButtonExists && !isMobileLayout &&
-                              buttons.map((button, index) =>
-                                <Button
-                                  children={button.title}
-                                  href={button.link || ''}
-                                  className={index % 2 === 0 ? `${styles.button} button_general` : `${styles.button} button_main`}
-                                  key={index}
-                                />
-                              )
-                            }
-                          </>
+                    </a>
+                    {customerToken && loggedInCustomerData ?
+                      <HeaderAccountTab
+                        loggedInCustomerData={loggedInCustomerData}
+                        isMobileLayout={isMobileLayout}
+                      />
+                        :
+                      <>
+                        {atLeastOneButtonExists && !isMobileLayout &&
+                          headerData?.buttons.map((button, index) =>
+                            <Button
+                              children={button.title}
+                              href={button.link || ''}
+                              className={index % 2 === 0 ? `${styles.button} button_general` : `${styles.button} button_main`}
+                              key={index}
+                            />
+                          )
                         }
-                      </div>
+                      </>
                     }
                   </div>
                 </div>
               </div>
-              {isMobileLayout &&
-                <div className={`${styles.mobileNavigation} ${showMobileNavigation ? styles.show : ''} ${navigationClassName ? 'navigation_is_open' : ''}`}>
-                  {menuItemsHasAtLeastOneItem &&
-                    <ListItems
-                      items={menuItems}
-                      isMobile={true}
-                      title={menuItemsTitle}
-                      isOneOfTheMobileMenuItemsOpened={isOneOfTheMobileMenuItemsOpened}
-                      setIsOneOfTheMobileMenuItemsOpened={setIsOneOfTheMobileMenuItemsOpened}
-                      listItemsAreOpened={listItemsAreOpened}
-                      setListItemsAreOpened={setListItemsAreOpened}
-                    />
-                  }
-                  <Navigation
-                    isMobileLayout={isMobileLayout}
-                    atLeastOneButtonExists={atLeastOneButtonExists}
-                    buttons={buttons}
+            </div>
+            {isMobileLayout &&
+              <div className={`${styles.mobileNavigation} ${showMobileNavigation ? styles.show : ''} ${navigationClassName ? 'navigation_is_open' : ''}`}>
+                {menuItemsHasAtLeastOneItem &&
+                  <ListItems
+                    items={headerData?.menuItems}
+                    isMobile={true}
+                    title={headerData?.menuItemsTitle}
                     isOneOfTheMobileMenuItemsOpened={isOneOfTheMobileMenuItemsOpened}
                     setIsOneOfTheMobileMenuItemsOpened={setIsOneOfTheMobileMenuItemsOpened}
-                    openedFirstLevelMobileItemId={openedFirstLevelMobileItemId}
-                    setOpenedFirstLevelMobileItemId={setOpenedFirstLevelMobileItemId}
                     listItemsAreOpened={listItemsAreOpened}
+                    setListItemsAreOpened={setListItemsAreOpened}
                   />
-                </div>
-              }
-            </section>
-          </>
-          }
+                }
+                <Navigation
+                  isMobileLayout={isMobileLayout}
+                  atLeastOneButtonExists={atLeastOneButtonExists}
+                  buttons={headerData.buttons}
+                  isOneOfTheMobileMenuItemsOpened={isOneOfTheMobileMenuItemsOpened}
+                  setIsOneOfTheMobileMenuItemsOpened={setIsOneOfTheMobileMenuItemsOpened}
+                  openedFirstLevelMobileItemId={openedFirstLevelMobileItemId}
+                  setOpenedFirstLevelMobileItemId={setOpenedFirstLevelMobileItemId}
+                  listItemsAreOpened={listItemsAreOpened}
+                />
+              </div>
+            }
+          </section>
         </header>
       }
     </>

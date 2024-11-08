@@ -2,6 +2,12 @@
   position: relative;
 }
 
+.banner.empty {
+  height: 259px;
+  width: 100%;
+  background-color: var(--neutral-n100);
+}
+
 .searchButtonsWrapper {
   width: 62%;
   max-width: 849px;
@@ -60,6 +66,10 @@
 }
 
 @media screen and (max-width: 749px) {
+  .banner.empty {
+    height: 321px;
+  }
+
   .noResults {
     margin-block: 130px;
   }

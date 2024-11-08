@@ -11,7 +11,7 @@ import { validateFormData } from '@/app/utils/validation';
 import { useFetchData } from '@/app/utils/hooks/useFetch';
 import PopUpCloseIcon from '../icons/PopUpCloseIcon';
 
-export default function ProfileReviewPopup({setShowReviewPopup}) {
+export default function ProfileReviewPopup({setShowReviewPopup, providerId}) {
   const [formData, setFormData] = useState({
     author: '',
     text: '',
@@ -61,7 +61,7 @@ export default function ProfileReviewPopup({setShowReviewPopup}) {
       setErrors({...errors, ...validationErrors});
       return;
     };
-    const data = await useFetchData(`${baseUrl}/api/user/addReview/494`, {
+    const data = await useFetchData(`${baseUrl}/api/user/addReview/${providerId}`, {
       method: 'POST',
       body: JSON.stringify(formData),
     });

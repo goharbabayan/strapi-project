@@ -121,33 +121,33 @@ export default function Search() {
         <Loading/>
       :
         <>
-          {(mobileImage || desktopImage) &&
-            <div className={styles.mainWrap}>
-              <section className={styles.banner}>
+          <div className={styles.mainWrap}>
+            <section className={`${styles.banner} ${!desktopImage?.url ? styles.empty : ''}`}>
+              {desktopImage && desktopImage?.url &&
                 <ImageBanner
-                  mobileImage={mobileImage}
+                  mobileImage={mobileImage || {}}
                   desktopImage={desktopImage}
                 />
-                <div className={`${styles.searchButtonsWrapper} page-width`}>
-                  <SearchInput
-                    searchQueries={searchQueries}
-                    setSearchQueries={setSearchQueries}
-                    searchResults={searchResults}
-                    setSearchResults={setSearchResults}
-                    setNoResults={setNoResults}
-                  />
-                  <FilterButton onClick={handleFilterButtonClick}/>
-                </div>
-              </section>
-              <FilterCategories
-                showCategories={showCategories}
-                onApplyFilterButtonClick={handleApllyFilteredOptions}
-                onResetFilterButtonClick={handleClearFilterOptions}
-                filteredOptions={filteredOptions}
-                setFilteredOptions={setFilteredOptions}
-              />
-            </div>
-          }
+              }
+              <div className={`${styles.searchButtonsWrapper} page-width`}>
+                <SearchInput
+                  searchQueries={searchQueries}
+                  setSearchQueries={setSearchQueries}
+                  searchResults={searchResults}
+                  setSearchResults={setSearchResults}
+                  setNoResults={setNoResults}
+                />
+                <FilterButton onClick={handleFilterButtonClick}/>
+              </div>
+            </section>
+            <FilterCategories
+              showCategories={showCategories}
+              onApplyFilterButtonClick={handleApllyFilteredOptions}
+              onResetFilterButtonClick={handleClearFilterOptions}
+              filteredOptions={filteredOptions}
+              setFilteredOptions={setFilteredOptions}
+            />
+          </div>
           {searchResults && searchResults.length > 0 &&
             <>
               <section className={`${styles.results} page-width`}>

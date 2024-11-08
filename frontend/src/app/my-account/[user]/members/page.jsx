@@ -9,18 +9,22 @@ import EditIcon from '@/components/icons/Edit';
 import RemoveIcon from '@/components/icons/RemoveIcon';
 import Loading from '@/app/loading';
 import { useFetchData } from '@/app/utils/hooks/useFetch';
+import { useSearchParams } from 'next/navigation';
 
-export default function Members ({params, searchParams}) {
-  const starpiBaseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
+export default function Members ({params}) {
+  const searchParams = useSearchParams();
+  const strapiBaseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
   const { user } = params;
-  const { email, id } = searchParams;
+  const email = searchParams.get('email');
+  const id = searchParams.get('id');
+
   const [members, setMembers] = useState(null);
   const [showSuccessfullRemoveMessage, setShowSuccessfullRemoveMessage] = useState(false);
   const [removeMemberText, setRemoveMemberText] = useState({text: ''});
 
   useEffect(() => {
     const managerToken = JSON.parse(localStorage.getItem('token'));
-    const fetchURL = `${starpiBaseUrl}/api/users?filters[managerID][$eq]=${id}`;
+    const fetchURL = `${strapiBaseUrl}/api/users?filters[managerID][$eq]=${id}`;
     user && useFetchData(fetchURL, {
       method: 'GET',
       headers: {
@@ -46,7 +50,7 @@ export default function Members ({params, searchParams}) {
     const id = members[index].id;
 
     memberToken && id &&
-      useFetchData(`${starpiBaseUrl}/api/members/${id}`, {
+      useFetchData(`${strapiBaseUrl}/api/members/${id}`, {
         method: 'DELETE',
         body: JSON.stringify(id),
         headers: {

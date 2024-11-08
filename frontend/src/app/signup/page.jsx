@@ -188,7 +188,7 @@ export default function SignupPage() {
                 <option value='select' disabled className='text-small'>-- Select Role --</option>
                 <option value='client' className='text-small'>Client</option>
                 <option value='manager' className='text-small'>Manager</option>
-                <option value='service_provider' className='text-small'>Service Provider</option>
+                <option value='service_provider' className='text-small'>Escort</option>
               </select>
               <span className={styles.errorMessage}>{errorMessage.text != '' && (errorMessage.type == 'role') ? errorMessage.text : ''}</span>
             </div>
