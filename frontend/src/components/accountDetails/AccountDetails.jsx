@@ -1,179 +1,135 @@
-import { useState } from 'react';
 import styles from './accountDetails.module.css';
 import EditIcon from '../icons/Edit';
-import Button from '../button/Button';
 import InputField from '../inputField/InputField';
 import Text from '../text/Text';
-import { navigate } from '@/app/actions';
 import ResetPassword from '../resetPassword/ResetPassword';
+import ProfileDetailsTabs from '../profileDetails/profileDetailsTabs/ProfileDetailsTabs';
+import { useState } from 'react';
+import Members from '@/app/my-account/[user]/members/page';
 
 export default function AccountDetails({
   username,
+  name,
+  lastName,
   errorMessage,
-  password,
   email,
   id,
   onChange,
   onEditIconClick,
   isManagerDashboard,
-  isClientDashboard,
-  isApprovedByAdmin,
 }) {
+  const [activeTabId, setActiveTabId] = useState(0);
 
-  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
-  const [error, setError] = useState('');
-  const [showErrorMessage, setShowErrorMessage] = useState(false);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [showRequestMessage, setShowRequestMessage] = useState(false);
-  const [newPasswordData, setNewPasswordData] = useState({
-    currentPassword: '',
-    password: '',
-    passwordConfirmation: '',
-  })
-
-  const handlePasswordDataChange = (e) => {
-    setShowErrorMessage(false);
-    setError('');
-    setNewPasswordData({...newPasswordData, [e.target.name]:  e.target.value})
-  }
-
-  const handleReviewButtonClick = (e) => {
-    onChange(e, true);
-    setShowRequestMessage(true);
-    setTimeout(() => {
-      setShowRequestMessage(false);
-    }, 5000);
-  }
-
-  const handleChangePassword = (e) => {
-    e.preventDefault();
-    const password = newPasswordData.password;
-    const confirmPassword = newPasswordData.passwordConfirmation;
-    const currentPassword = newPasswordData.currentPassword;
-
-    // check validation
-    if (password === '') {
-      setShowErrorMessage(true);
-      setError('Please enter new password.');
-      return;
-    } else if (confirmPassword === '') {
-      setShowErrorMessage(true);
-      setError('Please enter password confirmation.');
-      return;
-    } else if (currentPassword === '') {
-      setShowErrorMessage(true);
-      setError('Please enter Your current password.');
-      return;
-    } else if (password != confirmPassword) {
-      setShowErrorMessage(true);
-      setError('Password and password confirmation do not match.');
-      return;
+  const MANAGER_PROFILE_DETAILS_TABS = [
+    {
+      id: 0,
+      label: 'My escorts',
+      icon: null
+    },
+    {
+      id: 1,
+      label: 'Account details',
+      icon: null,
+    },
+    {
+      id: 2,
+      label: 'Settings',
+      icon: null
     }
-    // end check validation
-
-    const token = JSON.parse(localStorage.getItem('token'))
-    
-    if (!token) navigate('/login');
-    try {
-      fetch(`${baseUrl}/api/auth/change-password?`, {
-        method: 'POST',
-        body: JSON.stringify(newPasswordData),
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-type': 'application/json',
-        }
-      })
-      .then(resp => resp.json())
-      .then(data => {
-        if (data.error) {
-          setShowErrorMessage(true);
-          setError(data.error.message);
-        } else if (data.user) {
-          const token = data.jwt;
-          localStorage.setItem("token", JSON.stringify(token));
-          setShowSuccessMessage(true);
-          setTimeout(() => {
-            setShowSuccessMessage(false);
-          }, 5000);
-        }
-      })
-    } catch (err) {
-      console.log('error', err);
-    }
-  }
-
-  const handleAddNewMember = (e) => {
-    navigate(`/my-account/${username}/new-member?email=${email}&id=${id}`);
-  }
-
-  const handleShowMembers = (e) => {
-    navigate(`/my-account/${username}/members?id=${id}&email=${email}`);
-  }
+  ];
 
   return (
-    <section className={`${styles.infoWrap} ${(isManagerDashboard || isClientDashboard) ? styles.row : ''}`}>
+    <section className={`${styles.infoWrap} ${styles.row}`}>
       {isManagerDashboard &&
-        <div className='buttonsWrap'>
-          <Button children={'Create new member'} onClick={handleAddNewMember} className='button_general'/>
-          <Button children={'My members list'} onClick={handleShowMembers} className='button_general'/>
-        </div>
+        <ProfileDetailsTabs
+          profileDetailsTabsData={MANAGER_PROFILE_DETAILS_TABS}
+          activeTabId={activeTabId}
+          setActiveTabId={setActiveTabId}
+        />
       }
-      {!(isManagerDashboard || isClientDashboard) &&
+      {!isManagerDashboard &&
         <Text
           tag={'h2'}
           className={styles.heading}
           children={'Account Details'}
         />
       }
-      <div className={`${isClientDashboard ? styles.clientDashboard : styles.centered} ${isManagerDashboard ? styles.column : ''}`}>
-        {(isManagerDashboard  || isClientDashboard )&&
-          <Text
-            tag={'h3'}
-            className={styles.subtitle}
-            children={'Account Details'}
-          />
-        }
-        <div className={`${(isManagerDashboard || isClientDashboard) ? styles.manager : ''} ${styles.profileName}`} data-username>
-          <InputField 
-            label='Username*'
-            type='text'
-            name='username'
-            id='username'
-            className={styles.input}
-            value={username}
-            onChange={onChange}
-            isRequired={true}
-            errorMessage={errorMessage}
-          />
-          <EditIcon className={styles.editIcon} onClick={(e) => onEditIconClick(e, 'data-username')}/>
-        </div>
-        {(isManagerDashboard || isClientDashboard )&&
-          <div className={`${styles.emailWrapper}`}>
-            <div className={`${styles.email} ${styles.manager}`} data-address>
+      {isManagerDashboard && activeTabId === 0 &&
+        <Members
+          id={id}
+          email={email}
+          user={username}
+        />
+      }
+      <div className="page-width">
+        {(activeTabId === 1 || !isManagerDashboard) &&
+          <>
+            <div className={`${styles.profileName}`} data-username>
               <InputField 
-                label='Email address:'
+                label='Username*'
                 type='text'
-                name='email'
-                id='email'
+                name='username'
+                id='username'
                 className={styles.input}
-                value={email}
-                disabled
+                value={username}
+                onChange={onChange}
+                isRequired={true}
                 errorMessage={errorMessage}
               />
+              {/* ToDo: remove the data */}
+              <EditIcon className={styles.editIcon} onClick={(e) => onEditIconClick(e, 'data-username')}/>
             </div>
-            {showRequestMessage &&
-              <Text
-                tag={'span'}
-                className={`text-small ${styles.successMessage} ${styles.show} ${styles.requestMessage}`}
-                children={'Your request was successfully sent.'}
-              />
+            {/* ToDo: move to separate component and render in the map */}
+            {isManagerDashboard &&
+              <>
+                <div className={`${styles.nameInputsContainer}`}>
+                  <div className={`${styles.profileName}`} data-name>
+                    <InputField
+                      label='Name'
+                      type='text'
+                      name='name'
+                      id='name'
+                      className={styles.input}
+                      value={name}
+                      onChange={onChange}
+                      errorMessage={errorMessage}
+                    />
+                    <EditIcon className={styles.editIcon} onClick={(e) => onEditIconClick(e, 'data-name')}/>
+                  </div>
+                  <div className={`${styles.profileName}`} data-lastName>
+                    <InputField
+                      label='Lastname'
+                      type='text'
+                      name='lastName'
+                      id='lastName'
+                      className={styles.input}
+                      value={lastName}
+                      onChange={onChange}
+                      errorMessage={errorMessage}
+                    />
+                    <EditIcon className={styles.editIcon} onClick={(e) => onEditIconClick(e, 'data-lastName')}/>
+                  </div>
+                </div>
+                <div className={`${styles.emailWrapper}`}>
+                  <div className={`${styles.address} ${styles.manager}`} data-address>
+                    <InputField 
+                      label='Email address'
+                      type='text'
+                      name='email'
+                      id='email'
+                      className={styles.input}
+                      value={email}
+                      disabled
+                      errorMessage={errorMessage}
+                    />
+                  </div>
+                </div>
+              </>
             }
-          </div>
+          </>
         }
       </div>
-      <div className={`${isManagerDashboard ? styles.column : '' } ${isClientDashboard ? styles.clientDashboard : ''} `}>
-        <ResetPassword />
-      </div>
+      {(activeTabId === 2 || !isManagerDashboard) && <ResetPassword />}
     </section>
   )
 }

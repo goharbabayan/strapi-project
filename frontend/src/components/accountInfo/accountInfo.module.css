@@ -1,54 +1,8 @@
 .mainWrap {
   display: flex;
-  align-items: center;
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
-}
-
-.modalOverlay {
-  display: flex;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--neutral-black);
-  justify-content: center;
-  align-items: center;
-  z-index: 9;
-}
-
-.modalOverlay.show {
-  display: flex;
-}
-
-.modalContent {
-  background-color: var(--neutral-white-n10);
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.modalContent > h2 {
-  width: 100%;
-  flex-basis: 100%;
-  text-align: center;
-}
-
-.modalClose {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-  font-size: 24px;
-  color: var(--neutral-n100);
-  background: none;
-  border: none;
 }
 
 .imageContainer {
@@ -57,25 +11,16 @@
   align-items: center;
 }
 
-.centered {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  width: 100%;
-}
-
 .profileName,
 .emailWrapper {
   width: 100%;
 }
 
-.profileName,
-.address {
+.profileName {
   margin-bottom: 22px;
 }
 
-.profileName .input,
-.address .input {
+.profileName .input, .input {
   padding-right: 25px;
 }
 
@@ -88,14 +33,6 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   outline: none;
-}
-
-.label {
-  display: block;
-  margin-bottom: 8px;
-}
-
-.label, .input {
   color: var(--neutral-black);
   font-family: var(--primary-font);
   font-size: 16px;
@@ -104,53 +41,7 @@
   line-height: normal;
 }
 
-.editIcon {
-  position: absolute;
-  top: 50%;
-  right: 18px;
-  cursor: pointer;
-}
-
-.subtitle {
-  color: var(--neutral-black);
-  font-family: var(--primary-font);
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  margin-block: 0 20px;
-  text-align: center;
-}
-
-.heading {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  color: var(--neutral-black);
-  font-family: var(--primary-font);
-  font-size: 32px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  margin-block: 0 45px;
-}
-
-.infoWrap {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.infoWrap.row {
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-start;
-  row-gap: 20px;
-}
-
-.address, .profileName, .passwordContainer, .email {
+.profileName, .email {
   position: relative;
   border-radius: 6px;
   border: 1px solid #F5F5F5;
@@ -158,96 +49,8 @@
   padding: 12px;
 }
 
-.email.manager, .profileName.manager {
-  margin-bottom: 50px;
-}
-
-.messages {
-  display: flex;
-  justify-content: center;
-}
-
-.newPassword {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px;
-  margin: 10px auto;
-}
-
-.error {
-  margin-top: 15px;
-}
-
-.successMessage {
-  display: none;
-  margin-top: 7px;
-  color: var(--neutral-black);
-  font-style: normal;
-  font-family: var(--primary-bold-font);
-  font-size: 14px;
-  text-align: center;
-}
-
-.successMessage.show {
-  display: block;
-}
-
-.column {
-  margin-top: 20px;
-  justify-content: space-between;
-  flex-direction: column;
-  width: 48%;
-  gap: 0;
-}
-
-.buttonWrap {
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-}
-
-.formGroup {
-  width: 100%;
-}
-
-.email {
-  position: relative;
-}
-
-.email .inputEmail {
-  padding-right: 20px;
-}
-
-.infoIcon {
-  position: absolute;
-  top: 57%;
-  right: 14px;
-  cursor: pointer;
-}
-
-.infoMessageWrapper {
-  visibility: hidden;
-  opacity: 0;
-  position: absolute;
-  transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out;
-  background-color: var(--neutral-white-n10);
-  border: 1px solid var(--neutral-n50);
-  padding: 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  top: 100%;
-  right: 0;
-}
-
 .emailWrapper {
   position: relative;
-}
-
-.requestMessage {
-  position: absolute;
-  bottom: 5px;
-  left: 6px;
 }
 
 @media screen and (min-width: 500px) {
@@ -256,49 +59,5 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-}
-
-@media screen and (min-width: 980px) {
-  .infoIcon:hover ~ .infoMessageWrapper {
-    visibility: visible;
-    opacity: 1;
-  }
-}
-
-@media screen and (max-width: 749px) {
-  .label,
-  .buttonChangePassword {
-    font-size: 14px;
-  }
-
-  .editIcon,
-  .infoIcon {
-    height: 15px;
-    width: 15px;
-  }
-
-  .subtitle {
-    font-size: 18px;
-  }
-
-  .infoWrap.row {
-    flex-direction: column;
-    margin-bottom: 40px;
-    align-items: center;
-  }
-
-  .column {
-    width: 100%;
-    max-width: 500px;
-  }
-
-  .buttons {
-    justify-content: center;
-  }
-
-  .heading {
-    margin-block: 5px 10px;
-    font-size: 24px;
   }
 }

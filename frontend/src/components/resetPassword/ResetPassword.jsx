@@ -74,56 +74,58 @@ const ResetPassword = forwardRef(({password}, ref) => {
   };
 
   return (
-    <section className={`${styles.container} section`} ref={ref}>
-      <h3 className={`subtitle ${styles.center}`}>Change password</h3>
-      <div className={`${styles.container}`}>
-        <div className={`${styles.passwordContainer} ${styles.newPassword}`}>
-          <InputField 
-            label='Current Password*'
-            type='password'
-            name='currentPassword'
-            id='current_password'
-            className={styles.input}
-            value={newPasswordData.currentPassword}
-            onChange={handleDataChange}
-            isPassword={true}
+    <div className="page-width">
+      <section className={`${styles.container}`} ref={ref}>
+        <h3 className={`subtitle ${styles.center}`}>Change password</h3>
+        <div className={`${styles.container}`}>
+          <div className={`${styles.passwordContainer} ${styles.newPassword}`}>
+            <InputField 
+              label='Current Password*'
+              type='password'
+              name='currentPassword'
+              id='current_password'
+              className={styles.input}
+              value={newPasswordData.currentPassword}
+              onChange={handleDataChange}
+              isPassword={true}
+            />
+            <InputField 
+              label='New Password*'
+              type='password'
+              name='password'
+              id='password'
+              className={styles.input}
+              value={password}
+              onChange={handleDataChange}
+              isPassword={true}
+            />
+            <InputField 
+              label='Confirm Password*'
+              type='password'
+              name='passwordConfirmation'
+              id='confirm_password'
+              className={styles.input}
+              value={password}
+              onChange={handleDataChange}
+              isPassword={true}
+            />
+          </div>
+          <Text
+            tag={'span'}
+            className={`errorMessage ${styles.error} ${showErrorMessage ? styles.show : ''} text-small`}
+            children={error}
           />
-          <InputField 
-            label='New Password*'
-            type='password'
-            name='password'
-            id='password'
-            className={styles.input}
-            value={password}
-            onChange={handleDataChange}
-            isPassword={true}
-          />
-          <InputField 
-            label='Confirm Password*'
-            type='password'
-            name='passwordConfirmation'
-            id='confirm_password'
-            className={styles.input}
-            value={password}
-            onChange={handleDataChange}
-            isPassword={true}
+          <Text
+            tag={'span'}
+            className={`${styles.successMessage} ${showSuccessMessage ? styles.show : ''} text-small`}
+            children={'Password succesfully changed.'}
           />
         </div>
-        <Text
-          tag={'span'}
-          className={`errorMessage ${styles.error} ${showErrorMessage ? styles.show : ''} text-small`}
-          children={error}
-        />
-        <Text
-          tag={'span'}
-          className={`${styles.successMessage} ${showSuccessMessage ? styles.show : ''} text-small`}
-          children={'Password succesfully changed.'}
-        />
-      </div>
-      <div className={`${styles.buttonWrap}`}>
-        <Button className={`btn button`} onClick={handleChangePassword}>Save new password</Button>
-      </div>
-    </section>
+        <div className={`${styles.buttonWrap}`}>
+          <Button className={`btn button`} onClick={handleChangePassword}>Save new password</Button>
+        </div>
+      </section>
+    </div>
   )
 });
 

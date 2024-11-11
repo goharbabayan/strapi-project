@@ -204,10 +204,6 @@ export default function NewMember({params}) {
     navigate(`/my-account/${user}`);
   }
 
-  const navigateToMembers = () => {
-    navigate(`members?id=${managerId}&email=${email}`);
-  }
-
   // ToDo: should be one function with register member
   const handleSaveButtonClick = async() => {
     const unsavedUserData = {
@@ -294,7 +290,6 @@ export default function NewMember({params}) {
         <section className='section page-width'>
           <div className='container buttonsWrap'>
             <Button children={'Back to dashboard'} onClick={navigateToDashboard} className='button_general'/>
-            <Button children={'My members list'} onClick={navigateToMembers} className='button_general'/>
             {isMemberRegistered &&
               <div className={styles.buttonWrap}>
                 <Button

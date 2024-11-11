@@ -226,7 +226,6 @@ export default function Member ({params}) {
         <section className={`${styles.section} page-width`}>
           <div className={`${styles.container} ${styles.buttonsWrap}`}>
             <Button children={'Back to dashboard'} onClick={navigateToDashboard} className='button_general'/>
-            <Button children={'My members list'} onClick={navigateToMembers} className='button_general'/>
             {!isApprovedByAdmin &&
               <div className={styles.button}>
                 <Button

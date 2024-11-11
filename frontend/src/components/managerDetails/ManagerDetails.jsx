@@ -1,19 +1,22 @@
 import { useState } from 'react';
 import styles from './managerDetails.module.css';
-import Text from '../text/Text';
 import AccountDetails from '../accountDetails/AccountDetails';
 import { MANAGER } from '@/app/utils/constants/userRoles';
 
 export default function ManagerDetails ({ user, onChanges, onSubmit, errorMessage }) {
-  const {username, email, password, id} = user;
+  const {username, name, lastName, email, password, id} = user;
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [formData, setFormData] = useState({
     username: username,
+    name: name,
+    lastName: lastName,
     email: email,
     isApprovedByAdmin: user.isApprovedByAdmin ? user.isApprovedByAdmin : false,
   })
 
   const handleChange = (event, noNeedToShowChanges) => {
+    console.log('event.target.value: ', event.target.value);
+    
     if (noNeedToShowChanges) {
       onSubmit(event, MANAGER);
     } else {
@@ -33,24 +36,18 @@ export default function ManagerDetails ({ user, onChanges, onSubmit, errorMessag
 
   return (
     <div className={styles.mainWrap}>
-      <div className={`page-width`}>
-        <Text
-          tag={'h2'}
-          className={styles.title}
-          children={`${user.username}'s dashboard`}
-        />
-        <AccountDetails 
-          username={formData.username}
-          password={password}
-          email={email}
-          id={id}
-          onChange={handleChange}
-          onEditIconClick={handleEditIconClick}
-          isManagerDashboard={true}
-          isApprovedByAdmin={formData.isApprovedByAdmin}
-          errorMessage={errorMessage}
-        />
-      </div>
+      <AccountDetails
+        username={formData.username}
+        password={password}
+        email={email}
+        name={formData.name}
+        lastName={formData.lastName}
+        id={id}
+        onChange={handleChange}
+        onEditIconClick={handleEditIconClick}
+        isManagerDashboard={true}
+        errorMessage={errorMessage}
+      />
     </div>
   )
 }

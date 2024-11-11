@@ -9,14 +9,9 @@ import EditIcon from '@/components/icons/Edit';
 import RemoveIcon from '@/components/icons/RemoveIcon';
 import Loading from '@/app/loading';
 import { useFetchData } from '@/app/utils/hooks/useFetch';
-import { useSearchParams } from 'next/navigation';
 
-export default function Members ({params}) {
-  const searchParams = useSearchParams();
+export default function Members ({email, id, user}) {
   const strapiBaseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
-  const { user } = params;
-  const email = searchParams.get('email');
-  const id = searchParams.get('id');
 
   const [members, setMembers] = useState(null);
   const [showSuccessfullRemoveMessage, setShowSuccessfullRemoveMessage] = useState(false);
@@ -33,16 +28,12 @@ export default function Members ({params}) {
     }).then(data => setMembers(data));
   }, [showSuccessfullRemoveMessage])
 
-  const navigateToDashboard = () => {
-    navigate(`/my-account/${user}`);
-  }
-
   const navigateToNewMember = () => {
     navigate(`/my-account/${user}/new-member?email=${email}&id=${id}`);
   }
 
   const handleEditIconClick = (username) => {
-    navigate(`members/${username}`);
+    navigate(`/my-account/${user}/members/${username}`);
   }
 
   const handleRemoveMember = async (index) => {
@@ -72,14 +63,13 @@ export default function Members ({params}) {
   }
 
   return (
-    <div>
-      <section className={`${styles.section} page-width`}>
+    <div className="page-width">
+      <section className={`${styles.section}`}>
         <div className={`${styles.container} ${styles.buttonsWrap}`}>
-          <Button children={'Back to dashboard'} onClick={navigateToDashboard} className='button_general'/>
           <Button children={'Create new member'} onClick={navigateToNewMember} className='button_general'/>
         </div>
       </section>
-      <section className={`page-width`}>
+      <section>
         <div className={`${styles.container}`}>
           <Text
             tag={'h2'}

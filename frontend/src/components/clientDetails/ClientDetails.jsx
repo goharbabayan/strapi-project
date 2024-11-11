@@ -1,17 +1,15 @@
 import { useState, useRef, useEffect } from 'react';
 import styles from './clientDetails.module.css';
-import { CREATE_MENU_BAR } from '@/app/utils/constants/menuBar';
 import FavoriteEscorts from '../favoriteEscorts/FavoriteEscorts';
-import MenuBar from '../menuBar/MenuBar';
 import ResetPassword from '../resetPassword/ResetPassword';
 import AccountInfo from '../accountInfo/AccountInfo';
 import { navigate } from '@/app/actions';
+import ProfileDetailsTabs from '../profileDetails/profileDetailsTabs/ProfileDetailsTabs';
 
-export default function ClientDetails({ user, onChanges, hasUnsavedChanges, errorMessage }) {
+export default function ClientDetails({ user, onChanges, errorMessage }) {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
   const token = JSON.parse(localStorage.getItem('token'));
-  const [formData, setFormData] = useState(
-    {
+  const [formData, setFormData] = useState({
       username: user.username || '',
       name: user.name || '',
       lastName: user.lastName || '',
@@ -24,16 +22,10 @@ export default function ClientDetails({ user, onChanges, hasUnsavedChanges, erro
     }
   );
   const [favoriteProviders, setFavoriteProviders] = useState([]);
-  const favoriteEscortsSectionRef = useRef(null);
+  const [activeTabId, setActiveTabId] = useState(0);
+
   const profileSectionRef = useRef(null);
   const settingsSectionRef = useRef(null);
-
-  const menuItems = [
-    { name: 'Profile', sectionRef: profileSectionRef },
-    { name: 'Favorite Escorts', sectionRef: favoriteEscortsSectionRef },
-    { name: 'Settings', sectionRef: settingsSectionRef },
-  ];
-  const menu = CREATE_MENU_BAR(menuItems);
 
   useEffect(() => {
     const favoritesIdsArray = formData.favoriteProvidersIds.map((obj) => obj.item);
@@ -77,43 +69,57 @@ export default function ClientDetails({ user, onChanges, hasUnsavedChanges, erro
     onChanges(true, {...formData, [field]: value});
   };
 
-  const handleScrollToSection = (sectionRef) => {
-    let topPosition;
-      topPosition = sectionRef.current.offsetTop - 20;
-    if (sectionRef.current) {
-      window.scrollTo({ top: topPosition, behavior: 'smooth' });
-    };
-  };
+  const CLIENT_PROFILE_DETAILS_TABS = [
+    {
+      id: 0,
+      label: 'Account details',
+      icon: null
+    },
+    {
+      id: 1,
+      label: 'My favorites',
+      icon: null,
+    },
+    {
+      id: 2,
+      label: 'Settings',
+      icon: null
+    }
+  ];
 
   return (
     <div className={styles.mainWrap}>
-      <div className={`${styles.container} page-width`}>
-        <MenuBar
-          isNotificationBarOpen={hasUnsavedChanges}
-          onScrollToSection={handleScrollToSection}
-          items={menu}
-          isClientDashboard={true}
+      <div className={`${styles.container}`}>
+        <ProfileDetailsTabs
+          profileDetailsTabsData={CLIENT_PROFILE_DETAILS_TABS}
+          activeTabId={activeTabId}
+          setActiveTabId={setActiveTabId}
         />
-        <AccountInfo
-          ref={profileSectionRef}
-          email={formData.email}
-          gender={formData.gender}
-          formData={formData}
-          onChange={handleChange}
-          onMouseDown={handleMouseDown}
-          onChildFormDataChange={handleChildFormDataChange}
-          errorMessage={errorMessage}
-        />
-        <FavoriteEscorts
-          ref={favoriteEscortsSectionRef}
-          providers={favoriteProviders}
-          title={'My Favorite Escorts'}
-          onStarIconClick={handleStarIconClick}
-        />
-        <ResetPassword
-          password={formData.password}
-          ref={settingsSectionRef}
-        />
+        {activeTabId === 0 &&
+          <AccountInfo
+            ref={profileSectionRef}
+            email={formData.email}
+            gender={formData.gender}
+            formData={formData}
+            onChange={handleChange}
+            onMouseDown={handleMouseDown}
+            onChildFormDataChange={handleChildFormDataChange}
+            errorMessage={errorMessage}
+          />
+        }
+        {activeTabId === 1 &&
+          <FavoriteEscorts
+            providers={favoriteProviders}
+            title={'My Favorite Escorts'}
+            onStarIconClick={handleStarIconClick}
+          />
+        }
+        {activeTabId === 2 &&
+          <ResetPassword
+            password={formData.password}
+            ref={settingsSectionRef}
+          />
+        }
       </div>
     </div>
   )
