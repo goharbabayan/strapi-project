@@ -9,6 +9,7 @@ import EditIcon from '@/components/icons/Edit';
 import RemoveIcon from '@/components/icons/RemoveIcon';
 import Loading from '@/app/loading';
 import { useFetchData } from '@/app/utils/hooks/useFetch';
+import { useSearchParams } from 'next/navigation';
 
 export default function Members ({email, id, user}) {
   const strapiBaseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
@@ -36,7 +37,15 @@ export default function Members ({email, id, user}) {
     navigate(`/my-account/${user}/members/${username}`);
   }
 
+  const confirmRemoving = () => {
+    let text = "Are you sure you want to delete the escort?\nChoose Yes or Cancel.";
+    return confirm(text) == true;
+  }
+
   const handleRemoveMember = async (index) => {
+    const shouldBeDeleted = confirmRemoving();
+
+    if(!shouldBeDeleted) return;
     const memberToken = process.env.NEXT_PUBLIC_API_TOKEN_MEMBER;
     const id = members[index].id;
 
@@ -54,7 +63,7 @@ export default function Members ({email, id, user}) {
             console.error(errorMessage);
           } else {
             setShowSuccessfullRemoveMessage(true);
-            setRemoveMemberText({text: `${members[index].username} was successfully removed from your members list.`});
+            setRemoveMemberText({text: `${members[index].username} was successfully removed from your escorts list.`});
             setTimeout(() => {
               setShowSuccessfullRemoveMessage(false);
             }, 5000)
@@ -66,7 +75,7 @@ export default function Members ({email, id, user}) {
     <div className="page-width">
       <section className={`${styles.section}`}>
         <div className={`${styles.container} ${styles.buttonsWrap}`}>
-          <Button children={'Create new member'} onClick={navigateToNewMember} className='button_general'/>
+          <Button children={'Create new escort'} onClick={navigateToNewMember} className='button_general'/>
         </div>
       </section>
       <section>
@@ -74,7 +83,7 @@ export default function Members ({email, id, user}) {
           <Text
             tag={'h2'}
             className={'title'}
-            children={'My members'}
+            children={'My escorts'}
           />
           {!members && <Loading className={styles.loading} />}
           {members && members.length > 0 &&
@@ -102,7 +111,7 @@ export default function Members ({email, id, user}) {
                   />
                   </div>
                   <div className={styles.editButtons}>
-                    <span className={`text-middle ${styles.approvedStatus} ${!isApproved ? styles.isNotApproved : ''}`}>{`Is ${!isApproved ? 'not ': ' '}approved`}</span>
+                    <span className={`text-middle ${styles.approvedStatus} ${!isApproved ? styles.isNotApproved : ''}`}>{`${!isApproved ? 'Not approved': 'Approved'}`}</span>
                     <div className={styles.editButton} onClick={() => handleEditIconClick(member.username)}>
                       <EditIcon className={styles.editIcon} />
                     </div>
@@ -124,7 +133,7 @@ export default function Members ({email, id, user}) {
             <Text
               tag={'h4'}
               className={'text-middle'}
-              children={`You don't have members yet.`}
+              children={`You don't have escorts yet.`}
             />
           }
         </div>

@@ -59,7 +59,8 @@
   font-size: 14px;
 }
 
-.uploadButton:hover {
+.uploadButton:hover,
+.deleteButton:hover {
   opacity: 60%;
 }
 

@@ -28,11 +28,11 @@ module.exports = createCoreController('api::my-account.my-account',
           await strapi.plugins['email'].services.email.send({
             from: `${process.env.SENDGRID_DEFAULT_FROM_EMAIL}`,
             to: `${process.env.SENDGRID_DEFAULT_REPLY_TO_EMAIL}`,
-            subject: 'New User Registration for Approval',
-            text: `A new user has registered. Please review the user at ${reviewLink}`,
-            html: `<p>A new user has registered. Please review the user at <a href="${reviewLink}">${reviewLink}</a></p>`,
+            subject: 'Escort profile update awaiting review',
+            text: `Escort just filled in or edited information from her dashboard, please review and accept or decline at ${reviewLink}`,
+            html: `<p>Escort just filled in or edited information from her dashboard, please review and accept or decline <a href="${reviewLink}">${reviewLink}</a></p>`,
           });
-          ctx.body = JSON.stringify('ok');
+          return ctx.send(JSON.stringify({ message: "Email sent successfully!" }));
         }
       } catch (error) {
         ctx.body = error;

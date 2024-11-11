@@ -77,16 +77,18 @@ export default function LoginPage() {
     .then(resp => {
       if (resp.status !== 200) {
         const errorData = resp.json();
+        setIsLoading(false);
         errorData.then(error => {
           const errorMessage = error?.error?.message;
           setErrorMessage({type: 'password', text: errorMessage ? errorMessage : 'Login failed.'});
         });
+        return;
       } else {
         return resp.json();
       }
     })
     .then(data => {
-      const isLoggedinSuccesfully = data != undefined;
+      const isLoggedinSuccesfully = data !== undefined;
       const token = isLoggedinSuccesfully && data.jwt;
       if (isLoggedinSuccesfully && token) {
         const userName = data.user.username;

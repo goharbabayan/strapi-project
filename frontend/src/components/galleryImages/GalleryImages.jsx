@@ -37,51 +37,53 @@ const GalleryImages = forwardRef(({type, id, children, images, onChildFormDataCh
   return (
     <section
       id={id}
-      className={`${styles.formGroup} ${styles.images} ${styles.section} ${type === 'selfies' ? styles.selfiesSection : ''} page-width`}
+      className={`${styles.section} ${type === 'selfies' ? styles.selfiesSection : ''}`}
       ref={ref}
     >
-      <Text
-        tag={'h2'}
-        className={styles.title}
-        children={children}
-      />
-      <div className={`${styles.imagesWrapper}`}>
-        {images && images.length > 0 &&
-          images.map((image, index) => (
-            <div className={styles.imageWrapper} key={index}>
-              <img
-                src={`${baseUrl}${image?.url}`}
-                alt={`${image?.alternativeText && `image-${index}`}`}
-              />
-              <RemoveIcon
-                className={styles.removeIcon}
-                onClick={(e) => handleRemoveButtonClick(e, index, type)}
-              />
-            </div>
-          ))
-        }
-        {error &&
-          <Text
-            tag={'span'}
-            className='text-small errorText page-width'
-            children={error}
-          />
-        }
+      <div className="page-width">
+        <Text
+          tag={'h2'}
+          className={styles.title}
+          children={children}
+        />
+        <div className={`${styles.imagesWrapper}`}>
+          {images && images.length > 0 &&
+            images.map((image, index) => (
+              <div className={styles.imageWrapper} key={index}>
+                <img
+                  src={`${baseUrl}${image?.url}`}
+                  alt={`${image?.alternativeText && `image-${index}`}`}
+                />
+                <RemoveIcon
+                  className={styles.removeIcon}
+                  onClick={(e) => handleRemoveButtonClick(e, index, type)}
+                />
+              </div>
+            ))
+          }
+          {error &&
+            <Text
+              tag={'span'}
+              className='text-small errorText page-width'
+              children={error}
+            />
+          }
+        </div>
+        <input
+          type='file'
+          id={type === 'photos' ? 'generalImages' : 'selfyImages'}
+          name={type === 'photos' ? 'generalImage' : 'selfyImage'}
+          accept='image/*'
+          className={styles.hidden}
+          onChange={(e) => handleUpload(e, type === 'photos' ? 'photos' : 'selfies')}
+        />
+        <label
+          htmlFor={type === 'photos' ? 'generalImages' : 'selfyImages'}
+          className={`${styles.uploadButton}`}
+        >
+          {type === 'photos' ? 'Upload photos' : 'Upload selfies'}
+        </label>
       </div>
-      <input
-        type='file'
-        id={type === 'photos' ? 'generalImages' : 'selfyImages'}
-        name={type === 'photos' ? 'generalImage' : 'selfyImage'}
-        accept='image/*'
-        className={styles.hidden}
-        onChange={(e) => handleUpload(e, type === 'photos' ? 'photos' : 'selfies')}
-      />
-      <label
-        htmlFor={type === 'photos' ? 'generalImages' : 'selfyImages'}
-        className={`${styles.uploadButton} btn_small`}
-      >
-        {type === 'photos' ? 'Upload photos' : 'Upload selfies'}
-      </label>
     </section>
   )
 });

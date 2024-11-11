@@ -26,7 +26,7 @@ const Reviews = forwardRef(({reviews, onChildFormDataChange, errorMessage}, ref)
 
   return (
     <section
-      className={`${styles.formGroup} ${styles.reviews} section reviews page-width`}
+      className={`reviews page-width`}
       id='Reviews'
       ref={ref}
     >

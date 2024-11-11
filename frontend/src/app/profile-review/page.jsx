@@ -235,7 +235,7 @@ export default function ProfileReview() {
             username={user?.username}
             schedule={user?.schedule}
             additionalInfo={user?.additionalInfo}
-            showSubscribeNow={false}
+            hideSubscribeNow={true}
           />
         }
         {activeTabId === 4 &&

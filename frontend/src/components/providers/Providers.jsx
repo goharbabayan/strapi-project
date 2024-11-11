@@ -70,11 +70,13 @@ export default function Providers ({
         {
           <div>
             {heading &&
-              <Text
-                tag={'h3'}
-                className={`${styles.heading} page-width`}
-                children={`${heading}`}
-              />
+              <div className="page-width">
+                <Text
+                  tag={'h3'}
+                  className={`${styles.heading}`}
+                  children={`${heading}`}
+                />
+              </div>
             }
             {showCategories && !!categories.length &&
               <div className={`${styles.categoriesWrap} page-width`}>

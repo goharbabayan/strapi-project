@@ -101,35 +101,38 @@ function ServiceProviderDetails ({user, onChanges, hasUnsavedChanges, errorMessa
           onChildFormDataChange={handleChildFormDataChange}
         />
       </section>
-      <section className={`profileInfo page-width`}>
-        <ProfilePageImage
-          type='profilePicture'
-          formData={formData}
-          onChildFormDataChange={handleChildFormDataChange}
-        />
-        <div className={styles.details}>
-          <Text
-            tag={'h2'}
-            className={styles.title}
-            children={'Personal details'}
+      <section className="page-width">
+        <div className="profileInfo">
+
+          <ProfilePageImage
+            type='profilePicture'
+            formData={formData}
+            onChildFormDataChange={handleChildFormDataChange}
           />
-          <div className={styles.settingIconWrap}>
+          <div className={styles.details}>
             <Text
-              tag={'span'}
-              children={'Settings'}
-              className={`text-middle ${styles.settings}`}
+              tag={'h2'}
+              className={styles.title}
+              children={'Personal details'}
             />
-            <SettingIcon
-              className={styles.settingIcon}
-              onClick={() => handleSettingIconClick()}
+            <div className={styles.settingIconWrap}>
+              <Text
+                tag={'span'}
+                children={'Settings'}
+                className={`text-middle ${styles.settings}`}
+              />
+              <SettingIcon
+                className={styles.settingIcon}
+                onClick={() => handleSettingIconClick()}
+              />
+            </div>
+            <PersonalDetails
+              formData={formData}
+              onChange={handleChange}
+              onMouseDown={handleMouseDown}
+              errorMessage={errorMessage}
             />
           </div>
-          <PersonalDetails
-            formData={formData}
-            onChange={handleChange}
-            onMouseDown={handleMouseDown}
-            errorMessage={errorMessage}
-          />
         </div>
       </section>
       <section className='page-width'>

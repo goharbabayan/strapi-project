@@ -26,11 +26,12 @@ export default function Member ({params}) {
   const { replace } = useRouter();
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
-  const [globalErrorText, setGlobalErrorText] = useState('');
+  const [notificationBarMessageAndStatus, setNotificationBarMessageAndStatus] = useState({
+    show: false,
+    message: ''
+  });
   const [errorMessage, setErrorMessage] = useState({});
-
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [showNotificationBar, setShowNotificationBar] = useState(false);
   const [userSelectedSuburbs, setUserSelectedSuburbs] = useState([]);
   const [selectedCity, setSelectedCity] = useState('');
   const [isCityDataChanged, setIsCityDataChanged] = useState(false);
@@ -72,18 +73,29 @@ export default function Member ({params}) {
 
   const handleChange = (event) => {
     setErrorMessage('');
+    setNotificationBarMessageAndStatus({
+      show: false,
+      message: ''
+    });
+
     const isUsernameEreased = event.target.name === 'username' && event.target.value === '';
     if (isUsernameEreased) {
-      setGlobalErrorText('Username must be at least 3 characters');
+      setNotificationBarMessageAndStatus({
+        show: true,
+        message: 'Username must be at least 3 characters'
+      })
       return;
     };
-    setGlobalErrorText('');
+    setShowNotificationBar(true);
     setFormData({ ...formData, [event.target.name]: event.target.value });
-    setHasUnsavedChanges(true);
   };
 
   const handleMouseDown = async (name, value) => {
     setErrorMessage('');
+    setNotificationBarMessageAndStatus({
+      show: false,
+      message: ''
+    });
     if (name === 'city') {
       setSelectedCity(value);
       setUserSelectedSuburbs([]);
@@ -91,21 +103,26 @@ export default function Member ({params}) {
     };
 
     setFormData({ ...formData, [name]: value });
-    setShowSuccessMessage(false);
-    setHasUnsavedChanges(true);
+    setShowNotificationBar(true);
   };
 
   const handleScheduleChange = (childFormData) => {
-    setGlobalErrorText('');
+    setNotificationBarMessageAndStatus({
+      show: false,
+      message: ''
+    });
     setFormData({...formData, schedule: childFormData});
-    setHasUnsavedChanges(true);
+    setShowNotificationBar(true);
   };
 
   const handleMemberFormSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.profilePicture || !formData.coverPhoto) {
-      setGlobalErrorText(`Cover picture and Profile picture are required fields.`);
+      setNotificationBarMessageAndStatus({
+        show: true,
+        message: 'Cover photo and Profile picture are required fields.'
+      });
       return;
     };
 
@@ -114,11 +131,17 @@ export default function Member ({params}) {
 
     if (hasErrors) {
       setErrorMessage(errors);
-      setGlobalErrorText('Please correct the errors and try again.');
+      setNotificationBarMessageAndStatus({
+        show: true,
+        message: 'Please correct the errors and try again.'
+      });
       return;
     } else {
       setErrorMessage('');
-      setGlobalErrorText('');
+      setNotificationBarMessageAndStatus({
+        show: false,
+        message: ''
+      });
     };
 
     memberToken && formData.id &&
@@ -132,13 +155,17 @@ export default function Member ({params}) {
       }).then(data => {
         if (data.error || data.errors) {
           const errorMessage = data.error.message;
-          setGlobalErrorText(errorMessage);
+          setNotificationBarMessageAndStatus({
+            show: true,
+            message: errorMessage
+          });
+          return;
         } else {
-          setShowSuccessMessage(true);
-
+          setNotificationBarMessageAndStatus({
+            show: true,
+            message: 'All changes have done !'
+          });
           setTimeout(() => {
-            setShowSuccessMessage(false);
-            setHasUnsavedChanges(false);
             // if changed username the url params should be changed
             replace(`/my-account/${user}/members/${formData.username}`);
           }, 5000)
@@ -154,18 +181,34 @@ export default function Member ({params}) {
               'authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN_MEMBER}`
             },
             body: JSON.stringify(formData),
-          })
+          }).then(() => {
+            setShowNotificationBar(true);
+            setNotificationBarMessageAndStatus({
+              show: true,
+              message: 'Request was sent successfuly'
+            });
+            setTimeout(() => {
+              setShowNotificationBar(false)
+              setNotificationBarMessageAndStatus({
+                show: false,
+                message: ''
+              });
+            }, 3000)})
       }
   };
 
   const handleChildFormDataChange = (field, value) => {
-    setGlobalErrorText('');
-    setHasUnsavedChanges(true);
+    setNotificationBarMessageAndStatus({
+      show: false,
+      message: ''
+    });
+    setShowNotificationBar(true);
     setFormData({...formData, [field]: value});
   };
 
   const handleCancelChangesButtonClick = () => {
-    setHasUnsavedChanges(false);
+    setShowNotificationBar(false);
+    window.location.reload();
   };
 
   const navigateToDashboard = () => {
@@ -195,6 +238,15 @@ export default function Member ({params}) {
       isApprovedByAdmin: false
     }
 
+    if (!formData.profilePicture || !formData.coverPhoto) {
+      setShowNotificationBar(true);
+      setNotificationBarMessageAndStatus({
+        show: true,
+        message: 'Cover picture and Profile picture are required fields.'
+      });
+      return;
+    };
+
     memberToken &&
       useFetchData(`${baseUrl}/api/members/${formData.id}`, {
         method: 'PUT',
@@ -203,23 +255,38 @@ export default function Member ({params}) {
           'Authorization': `Bearer ${memberToken}`
         },
         body: JSON.stringify(unsavedUserData),
-      })
+      }).then((res) => {
+        if (res?.error) {
+          setShowNotificationBar(true);
+          setNotificationBarMessageAndStatus({
+            show: true,
+            message: res?.error?.message
+          });
+          return;
+        };
 
-    setHasUnsavedChanges(false);
-    setIsApprovedByAdmin(false);
+        setIsApprovedByAdmin(false);
+        setShowNotificationBar(true);
+        setNotificationBarMessageAndStatus({
+          show: true,
+          message: 'Changes applied successfully.'
+        });
+        setTimeout(() => {
+          setShowNotificationBar(false);
+        }, 2000);
+      })
   };
 
   return (
     <div>
       <form onSubmit={handleMemberFormSubmit}>
-        {hasUnsavedChanges && (
+        {showNotificationBar && (
           <NotificationBar
+            notificationBarMessageAndStatus={notificationBarMessageAndStatus}
+            showNotificationBar={showNotificationBar}
             isApprovedByAdmin={formData.isApprovedByAdmin}
             onCancelButtonClick={handleCancelChangesButtonClick}
             onSaveButtonClick={handleSaveButtonClick}
-            showSuccessfullMessage={showSuccessMessage}
-            successfullMessageText={'All changes have been applied successfully.'}
-            errorMessageText={globalErrorText}
             userRole={formData?.role?.type}
           />
         )}
@@ -299,7 +366,7 @@ export default function Member ({params}) {
                         />
                       </section>
                       <MenuBar
-                        isNotificationBarOpen={hasUnsavedChanges}
+                        isNotificationBarOpen={showNotificationBar}
                         onScrollToSection={handleScrollToSection}
                         items={menu}
                       />

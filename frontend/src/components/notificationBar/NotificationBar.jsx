@@ -3,32 +3,23 @@ import Text from '../text/Text';
 import Button from '../button/Button';
 
 export default function NotificationBar({
+  notificationBarMessageAndStatus,
   isApprovedByAdmin,
   onCancelButtonClick,
   onSaveButtonClick,
-  showSuccessfullMessage,
-  successfullMessageText,
-  errorMessageText,
-  isRegisteringANewMember
+  showNotificationBar,
 }) {
 
   return (
     <div className={styles.notificationBar}>
-      {showSuccessfullMessage && successfullMessageText &&
+      {notificationBarMessageAndStatus?.show &&
         <Text
           tag={'h4'}
           className={`${styles.notificationText} text-middle white`}
-          children={successfullMessageText}
+          children={notificationBarMessageAndStatus.message}
         />
       }
-      {errorMessageText &&
-        <Text
-          tag={'h4'}
-          className={`${styles.notificationText} text-middle white`}
-          children={errorMessageText}
-        />
-      }
-      {!(errorMessageText || showSuccessfullMessage) &&
+      {showNotificationBar && !notificationBarMessageAndStatus?.show &&
         <>
           <Text
             tag={'h4'}
@@ -40,14 +31,14 @@ export default function NotificationBar({
               type='button'
               className={`btn btn_SECONDARY ${styles.cancelButton}`}
               onClick={onCancelButtonClick}
-              children={'Cancel'}
+              children={'Reset to the original'}
             />
             {
               <Button
                 type='button'
                 className={`btn btn_SECONDARY ${styles.submitButton}`}
                 onClick={onSaveButtonClick}
-                children={isRegisteringANewMember ? 'Save as a draft' : 'Save'}
+                children={'Save as a draft'}
               />
             }
           </div>

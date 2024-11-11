@@ -34,10 +34,13 @@ export default function NewMember({params}) {
   const [userSelectedSuburbs, setUserSelectedSuburbs] = useState([]);
   const [selectedCity, setSelectedCity] = useState('');
   const [isCityDataChanged, setIsCityDataChanged] = useState(false);
-  const [globalErrorText, setGlobalErrorText] = useState('');
+
   const [errorMessage, setErrorMessage] = useState({});
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [notificationBarMessageAndStatus, setNotificationBarMessageAndStatus] = useState({
+    show: false,
+    message: ''
+  });
+  const [showNotificationBar, setShowNotificationBar] = useState(false);
   const [formData, setFormData] = useState(USER_FORM_NEW_MEMBER(email, managerId));
   const photosSectionRef = useRef(null);
   const aboutSectionRef = useRef(null);
@@ -56,30 +59,40 @@ export default function NewMember({params}) {
 
 // ToDo: can be merged in one function
   const handleChange = (event) => {
-    setGlobalErrorText('');
+    setShowNotificationBar(true);
+    setNotificationBarMessageAndStatus({
+      show: false,
+      message: ''
+    });
     setErrorMessage('');
-    setShowSuccessMessage(false);
     setFormData({ ...formData, [event.target.name]: event.target.value });
-    setHasUnsavedChanges(true);
   };
 
   const handleScheduleChange = (childFormData) => {
-    setGlobalErrorText('');
+    setShowNotificationBar(true);
+    setNotificationBarMessageAndStatus({
+      show: false,
+      message: ''
+    });
     setErrorMessage('');
-    setShowSuccessMessage(false);
     setFormData({...formData, schedule: childFormData});
-    setHasUnsavedChanges(true);
   }
 // ToDo: can be merged in one function end
 
   const handleMemberFormSubmit = async (event) => {
     event.preventDefault();
     if (!formData.profilePicture) {
-      setGlobalErrorText(`Please, add member's profile picture.`);
+      setNotificationBarMessageAndStatus({
+        show: true,
+        message: `Please, add escort's profile picture.`
+      });
       return;
     };
     if (!formData.coverPhoto) {
-      setGlobalErrorText(`Please, add member's cover photo.`);
+      setNotificationBarMessageAndStatus({
+        show: true,
+        message: `Please, add escort's cover photo.`
+      });
       return;
     };
 
@@ -88,55 +101,35 @@ export default function NewMember({params}) {
 
     if (hasErrors) {
       setErrorMessage(errors);
-      setGlobalErrorText('Please correct the errors and try again.');
+      setNotificationBarMessageAndStatus({
+        show: true,
+        message: `Please correct the errors and try again.`
+      });
       return;
     } else {
       setErrorMessage('');
-      setGlobalErrorText('');
+      setNotificationBarMessageAndStatus({
+        show: false,
+        message: ''
+      });
     };
-
-    if (!isMemberRegistered) {
-      await fetch(`${strapiBaseUrl}/api/auth/local/registerMember`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'authorization': `Bearer ${memberToken}`
-        },
-        body: JSON.stringify({
-          ...formData,
-          confirmed: true
-        }),
-        })
-        .then(response => response.json())
-        .then(json => {
-          const {error, user} = json;
-          if (error) {
-            const errorMessage = error.message;
-            const notUniqueUserNameMessage = errorMessage.includes('This attribute must be unique');
-            const userNameInvalidMessage = errorMessage.includes('username must be at least 3 characters');
-            if (notUniqueUserNameMessage) {
-              setGlobalErrorText('This username is already in use.');
-            } else if (userNameInvalidMessage) {
-              setGlobalErrorText('Username must be at least 3 characters.');
-            } else {
-              setGlobalErrorText(errorMessage);
-            }
-          } else if (user) {
-            setHasUnsavedChanges(true);
-            setShowSuccessMessage(true);
-            const userId = user.id;
-            setUserId(userId);
-            setTimeout(() => {
-              setShowSuccessMessage(false);
-              setHasUnsavedChanges(false);
-            }, 5000);
-          }
-        })
-        .catch(err => {
-          console.error('Error sending email confirmation:', err);
-        });
-    }
-      await handleRequestReview(userId);
+    await updateOrRegisterMember(`/api/members/${userId}`, {
+      ...formData,
+      confirmed: true
+    }, 'PUT', false);
+    setShowNotificationBar(true);
+    setNotificationBarMessageAndStatus({
+      show: true,
+      message: 'Request was sent successfuly'
+    });
+    await handleRequestReview(userId);
+    setTimeout(() => {
+      setShowNotificationBar(false);
+      setNotificationBarMessageAndStatus({
+        show: false,
+        message: ''
+      });
+    }, 3000)
   }
 
   const handleRequestReview = async (userId) => {
@@ -164,14 +157,16 @@ export default function NewMember({params}) {
     }
     setFormData({ ...formData, [name]: value });
     setChanges(showChange, { ...formData, [name]: value });
-    setHasUnsavedChanges(true);
+    setShowNotificationBar(true);
   };
 
   const setChanges = (showChange, childFormData) => {
-    setGlobalErrorText('');
-    setShowSuccessMessage(false);
+    setShowNotificationBar(showChange);
+    setNotificationBarMessageAndStatus({
+      show: false,
+      message: ''
+    });
     setErrorMessage('');
-    setHasUnsavedChanges(showChange);
     setFormData(childFormData);
   }
 
@@ -189,15 +184,18 @@ export default function NewMember({params}) {
   };
 
   const handleChildFormDataChange = (field, value) => {
-    setGlobalErrorText('');
     setErrorMessage('');
-    setShowSuccessMessage(false);
-    setHasUnsavedChanges(true);
+    setShowNotificationBar(true);
+    setNotificationBarMessageAndStatus({
+      show: false,
+      message: ''
+    });
     setFormData({...formData, [field]: value});
   }
 
   const handleCancelChangesButtonClick = () => {
-    setHasUnsavedChanges(false);
+    setShowNotificationBar(false);
+    window.location.reload();
   };
 
   const navigateToDashboard = () => {
@@ -212,7 +210,11 @@ export default function NewMember({params}) {
     };
 
     if (!formData.profilePicture || !formData.coverPhoto || !formData.username) {
-      setGlobalErrorText('The profile picture, cover photo and Username are requerd to fill');
+      setShowNotificationBar(true);
+      setNotificationBarMessageAndStatus({
+        show: true,
+        message: 'The profile picture, cover photo and Username are required to fill'
+      });
       return;
     }
 
@@ -220,8 +222,18 @@ export default function NewMember({params}) {
       await updateOrRegisterMember("/api/auth/local/registerMember", unsavedUserData, 'POST', true);
     } else {
       await updateOrRegisterMember(`/api/members/${userId}`, unsavedUserData, 'PUT', false);
-      setShowSuccessMessage(false);
-      setHasUnsavedChanges(false);
+      setShowNotificationBar(true);
+      setNotificationBarMessageAndStatus({
+        show: true,
+        message: 'Changes applied successfully.'
+      });
+      setTimeout(() => {
+        setShowNotificationBar(false);
+        setNotificationBarMessageAndStatus({
+          show: false,
+          message: ''
+        });
+      }, 5000);
     };
   };
 
@@ -245,15 +257,30 @@ export default function NewMember({params}) {
           const notUniqueUserNameMessage = errorMessage.includes('This attribute must be unique');
           const userNameInvalidMessage = errorMessage.includes('username must be at least 3 characters');
           if (notUniqueUserNameMessage) {
-            setGlobalErrorText('This username is already in use.');
+            setShowNotificationBar(true);
+            setNotificationBarMessageAndStatus({
+              show: true,
+              message: 'This username is already in use.'
+            });
           } else if (userNameInvalidMessage) {
-            setGlobalErrorText('Username must be at least 3 characters.');
+            setShowNotificationBar(true);
+            setNotificationBarMessageAndStatus({
+              show: true,
+              message: 'Username must be at least 3 characters.'
+            });
           } else {
-            setGlobalErrorText(errorMessage);
+            setShowNotificationBar(true);
+            setNotificationBarMessageAndStatus({
+              show: true,
+              message: errorMessage
+            });
           }
         } else if (user) {
-          setHasUnsavedChanges(true);
-          setShowSuccessMessage(true);
+          setShowNotificationBar(true);
+          setNotificationBarMessageAndStatus({
+            show: true,
+            message: 'Changes applied successfully.'
+          });
           if (isRegistering) {
             setIsMemberRegistered(true);
             setUserId(user.id);
@@ -263,8 +290,11 @@ export default function NewMember({params}) {
             })
           }
           setTimeout(() => {
-            setShowSuccessMessage(false);
-            setHasUnsavedChanges(false);
+            setShowNotificationBar(false);
+            setNotificationBarMessageAndStatus({
+              show: false,
+              message: ''
+            });
           }, 5000);
         }
       })
@@ -276,14 +306,13 @@ export default function NewMember({params}) {
   return (
     <div>
       <form onSubmit={handleMemberFormSubmit}>
-        {hasUnsavedChanges && (
+        {showNotificationBar && (
           <NotificationBar
             isApprovedByAdmin={formData.isApprovedByAdmin}
             onCancelButtonClick={handleCancelChangesButtonClick}
             onSaveButtonClick={handleSaveButtonClick}
-            showSuccessfullMessage={showSuccessMessage}
-            successfullMessageText={'All changes have been applied successfully.'}
-            errorMessageText={globalErrorText}
+            showNotificationBar={showNotificationBar}
+            notificationBarMessageAndStatus={notificationBarMessageAndStatus}
             userRole={'service provider'}
           />
         )}
@@ -303,7 +332,7 @@ export default function NewMember({params}) {
           <Text
             tag={'h2'}
             className={'title'}
-            children={'New member'}
+            children={'New escort'}
           />
         </section>
         <section className='page-width'>
@@ -354,7 +383,7 @@ export default function NewMember({params}) {
           />
         </section>
         <MenuBar
-          isNotificationBarOpen={hasUnsavedChanges}
+          isNotificationBarOpen={showNotificationBar}
           onScrollToSection={handleScrollToSection}
           items={menu}
         />

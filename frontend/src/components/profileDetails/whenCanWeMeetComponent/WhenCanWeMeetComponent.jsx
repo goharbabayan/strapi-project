@@ -2,7 +2,7 @@ import ProviderInterests from "../providerInterests/ProviderInterests";
 import WhenCanWeMeetModal from "../whenCanWeMeetModal/WhenCanWeMeetModal";
 import styles from './whenCanWeMeetComponent.module.css';
 
-export default function WhenCanWeMeetComponent({schedule, additionalInfo, username, showSubscribeNow}) {
+export default function WhenCanWeMeetComponent({schedule, additionalInfo, username, hideSubscribeNow}) {
   return (
     <div className="page-width">
       <div className={styles.whenCanWeMeetContainer}>
@@ -14,7 +14,7 @@ export default function WhenCanWeMeetComponent({schedule, additionalInfo, userna
             isScheduleData={true}
           />
         </div>
-        {showSubscribeNow && <WhenCanWeMeetModal username={username} schedule={schedule} />}
+        {!hideSubscribeNow && <WhenCanWeMeetModal username={username} schedule={schedule} />}
       </div>
     </div>
   )

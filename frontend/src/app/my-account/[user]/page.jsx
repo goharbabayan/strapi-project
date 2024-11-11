@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react';
-import Layout from './layout.jsx';
 import styles from './my-account.module.css';
 import NotificationBar from '@/components/notificationBar/NotificationBar.jsx';
 import ClientDetails from '@/components/clientDetails/ClientDetails.jsx';
@@ -22,11 +21,12 @@ export default function MyAccountPage() {
   const [role, setRole] = useState('');
   const [token, setToken] = useState('');
   const [userUpdatedFormData, setUserUpdatedFormData] = useState({});
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  const [globalErrorText, setGlobalErrorText] = useState('');
   const [errorMessage, setErrorMessage] = useState({});
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-
+  const [notificationBarMessageAndStatus, setNotificationBarMessageAndStatus] = useState({
+    show: false,
+    message: ''
+  });
+  const [showNotificationBar, setShowNotificationBar] = useState(false);
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem('token'));
     token && setToken(token);
@@ -55,62 +55,98 @@ export default function MyAccountPage() {
 
   const handleFormSubmit = (event, role) => {
     event.preventDefault();
-
+    let userformData = userUpdatedFormData;
+    const hasUserUpdatedFormData = Object.keys(userUpdatedFormData).length > 0;
+    if (!hasUserUpdatedFormData) {
+      const { id, blocked, createdAt, updatedAt, confirmed, role, ...rest } = user;
+      userformData = rest;
+    }
     if (role !== MANAGER) {
-      if (!userUpdatedFormData.profilePicture) {
-        setGlobalErrorText(`Please, add member's profile picture.`);
+      if (!userformData.profilePicture) {
+        setShowNotificationBar(true);
+        setNotificationBarMessageAndStatus({
+          show: true,
+          message: `Please, add escort's profile picture.`
+        });
         return;
       }
-      if (!userUpdatedFormData.coverPhoto && role !== CLIENT) {
-        setGlobalErrorText(`Please, add member's cover photo.`);
+      if (!userformData.coverPhoto && role !== CLIENT) {
+        setShowNotificationBar(true);
+        setNotificationBarMessageAndStatus({
+          show: true,
+          message: `Please, add escort's cover photo.`
+        });
+        return;
+      }
+      if (userformData.username.length < 3) {
+        setShowNotificationBar(true);
+        setNotificationBarMessageAndStatus({
+          show: true,
+          message: `Username should be at least 3 characters.`
+        });
         return;
       }
     }
 
     let errors;
     if (role !== CLIENT) {
-      errors = validateForm(userUpdatedFormData, false);
+      errors = validateForm(userformData, false);
     } else if (role === CLIENT) {
-      errors = validateForm(userUpdatedFormData, true);
+      errors = validateForm(userformData, true);
     };
     const hasErrors = Object.keys(errors).length > 0;
 
     if (hasErrors) {
       setErrorMessage(errors);
-      setGlobalErrorText('Please correct the errors and try again.');
+      setShowNotificationBar(true);
+      setNotificationBarMessageAndStatus({
+        show: true,
+        message: `Please correct the errors and try again.`
+      });
       return;
     } else {
       setErrorMessage('');
-      setGlobalErrorText('');
-    }
-
-    token && userId && user &&
-      fetch(`${strapiBaseUrl}/api/users/${userId}`, {
-        method: 'PUT',
-        body: JSON.stringify(userUpdatedFormData),
-        headers: {
-          'Content-type': 'application/json',
-          'authorization': `Bearer ${token}`
-        }
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.error) {
-          const hasMoreThanOneError = data.error.errors?.length > 0;
-          if (hasMoreThanOneError) {
-            data.error.errors.map(error => {
-              setGlobalErrorText(error.message);
-            })
-          }
-          setGlobalErrorText(data.error.message);
-        } else {
-          setShowSuccessMessage(true);
-          setTimeout(() => {
-            setHasUnsavedChanges(false);
-            setShowSuccessMessage(false);
-          }, 5000);
-        }
+      setShowNotificationBar(false);
+      setNotificationBarMessageAndStatus({
+        show: false,
+        message: ''
       });
+    };
+
+    if (hasUserUpdatedFormData) {
+      token && userId && user &&
+        fetch(`${strapiBaseUrl}/api/users/${userId}`, {
+          method: 'PUT',
+          body: JSON.stringify(userformData),
+          headers: {
+            'Content-type': 'application/json',
+            'authorization': `Bearer ${token}`
+          }
+        })
+        .then(res => res.json())
+        .then(data => {
+          setShowNotificationBar(true);
+          if (data.error) {
+            setNotificationBarMessageAndStatus({
+              show: true,
+              message: data?.error?.message,
+            });
+            return;
+          } else {
+            setNotificationBarMessageAndStatus({
+              show: true,
+              message: 'Changes applied successfully.'
+            });
+            setTimeout(() => {
+              setShowNotificationBar(false);
+              setNotificationBarMessageAndStatus({
+                show: false,
+                message: ''
+              });
+            }, 5000);
+          }
+        });
+    }
 
     if (!user.isApprovedByAdmin) {
       token && userId && user &&
@@ -122,9 +158,17 @@ export default function MyAccountPage() {
           },
           body: JSON.stringify(user),
         })
-        .then(res => res.json())
-    }
-  };
+        .then(response => {
+          if (response.ok) {
+            setShowNotificationBar(true);
+            setNotificationBarMessageAndStatus({
+              show: true,
+              message: 'Request was sent successfuly'
+            });
+          } else throw new Error(`HTTP error! status: ${response.status}`);
+        })
+    };
+  }
 
   const handleSaveButtonClick = () => {
     const unsavedUserData = {
@@ -141,42 +185,62 @@ export default function MyAccountPage() {
         },
         body: JSON.stringify(unsavedUserData),
       })
-    setHasUnsavedChanges(false);
+    setShowNotificationBar(true);
+    setNotificationBarMessageAndStatus({
+      show: true,
+      message: 'Changes applied successfully.'
+    });
+    setTimeout(() => {
+      setShowNotificationBar(false);
+      setNotificationBarMessageAndStatus({
+        show: false,
+        message: ''
+      });
+    }, 3000);
     setIsApprovedByAdmin(false);
   }
 
   const handleCancelChangesButtonClick = () => {
-    setHasUnsavedChanges(false);
+    setShowNotificationBar(true);
+    setTimeout(() => {
+      setShowNotificationBar(false);
+      setNotificationBarMessageAndStatus({
+        show: false,
+        message: ''
+      });
+    }, 3000);
+    window.location.reload();
   };
 
   const handleSetChanges = (childState, childFormData) => {
-    setGlobalErrorText('');
-    setShowSuccessMessage(false);
     setErrorMessage('');
-    setHasUnsavedChanges(childState);
+    setShowNotificationBar(childState);
+    setNotificationBarMessageAndStatus({
+      show: false,
+      message: ''
+    });
     setUserUpdatedFormData(childFormData);
   };
 
   return (
-    <Layout>
-      <div className={`${styles.mainWrap} ${role === CLIENT ? styles.client : null}`}>
-        <div className="dashboard">
-          <form onSubmit={(e) => handleFormSubmit(e, role)}>
-            {hasUnsavedChanges && (
-              <NotificationBar
-                isApprovedByAdmin={user.isApprovedByAdmin}
-                onCancelButtonClick={handleCancelChangesButtonClick}
-                onSaveButtonClick={handleSaveButtonClick}
-                showSuccessfullMessage={showSuccessMessage}
-                successfullMessageText={user.isApprovedByAdmin ? 'All changes have been applied successfully.' : 'Your request has been sent successfully.'}
-                errorMessageText={globalErrorText}
-                userRole={role}
-              />
-            )}
-            {role === SERVICE_PROVIDER &&
-              <div className={`${styles.info} page-width`}>
+    <div className={`${styles.mainWrap} ${role === CLIENT ? styles.client : null}`}>
+      <div className="dashboard">
+        <form onSubmit={(e) => handleFormSubmit(e, role)}>
+          {showNotificationBar && (
+            <NotificationBar
+              isApprovedByAdmin={user.isApprovedByAdmin}
+              onCancelButtonClick={handleCancelChangesButtonClick}
+              onSaveButtonClick={handleSaveButtonClick}
+              notificationBarMessageAndStatus={notificationBarMessageAndStatus}
+              showNotificationBar={showNotificationBar}
+              userRole={role}
+            />
+          )}
+          {role === SERVICE_PROVIDER &&
+            <section className="page-width">
+              <div className={`${styles.info}`}>
                 <Text
-                  className='text-middle'
+                  className={`text-middle ${styles.approvedStatus}`}
                   tag={'span'}
                   children={isApprovedByAdmin ? 'Your account is approved by admin.' : 'Your account has not been approved by admin yet.'}
                 />
@@ -188,40 +252,40 @@ export default function MyAccountPage() {
                   />
                 }
               </div>
-            }
-            {user && role === SERVICE_PROVIDER &&
-              <>
-                <ServiceProviderDetails
-                  user={user}
-                  onChanges={handleSetChanges}
-                  hasUnsavedChanges={hasUnsavedChanges}
-                  errorMessage={errorMessage}
-                />
-              </>
-            }
-            {user && role === CLIENT &&
-              <>
-                <ClientDetails
-                  user={user}
-                  onChanges={handleSetChanges}
-                  hasUnsavedChanges={hasUnsavedChanges}
-                  errorMessage={errorMessage}
-                />
-              </>
-            }
-            {user && role === MANAGER &&
-              <>
-                <ManagerDetails
-                  user={user}
-                  onChanges={handleSetChanges}
-                  onSubmit={handleFormSubmit}
-                  errorMessage={errorMessage}
-                />
-              </>
-            }
-          </form>
-        </div>
+            </section>
+          }
+          {user && role === SERVICE_PROVIDER &&
+            <>
+              <ServiceProviderDetails
+                user={user}
+                onChanges={handleSetChanges}
+                showNotificationBar={showNotificationBar}
+                errorMessage={errorMessage}
+              />
+            </>
+          }
+          {user && role === CLIENT &&
+            <>
+              <ClientDetails
+                user={user}
+                onChanges={handleSetChanges}
+                showNotificationBar={showNotificationBar}
+                errorMessage={errorMessage}
+              />
+            </>
+          }
+          {user && role === MANAGER &&
+            <>
+              <ManagerDetails
+                user={user}
+                onChanges={handleSetChanges}
+                onSubmit={handleFormSubmit}
+                errorMessage={errorMessage}
+              />
+            </>
+          }
+        </form>
       </div>
-    </Layout>
+    </div>
   );
 }

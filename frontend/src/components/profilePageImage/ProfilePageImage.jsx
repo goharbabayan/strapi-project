@@ -54,7 +54,7 @@ export default function ProfilePageImage({type, formData, onChildFormDataChange,
           </label>
           {formData.profilePicture &&
             <Button
-              className={`${styles.deleteButton} btn_small button`}
+              className={`${styles.deleteButton}`}
               onClick={(e) => handleRemoveButtonClick(e, 0, 'profilePicture')}
               children={'Delete profile picture'}
             />
@@ -85,7 +85,7 @@ export default function ProfilePageImage({type, formData, onChildFormDataChange,
           </label>
           {formData.coverPhoto &&
             <Button
-              className={`${styles.deleteButton} btn_small`}
+              className={`${styles.deleteButton}`}
               onClick={(e) => handleRemoveButtonClick(e, 0, 'coverPhoto')}
               children={'Delete Cover Photo'}
             />

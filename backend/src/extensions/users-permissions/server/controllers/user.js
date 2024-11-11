@@ -154,7 +154,6 @@ module.exports = {
   async updateMember(ctx) {
     const { id } = ctx.params;
     const {username} = ctx.request.body;
-
     const user = await getService('user').fetch(id);
     if (!user) {
       throw new NotFoundError(`User not found`);
@@ -175,7 +174,6 @@ module.exports = {
 
     const data = await getService('user').edit(user.id, updateData);
     const sanitizedData = await sanitizeOutput(data, ctx);
-
     ctx.send(sanitizedData);
   },
 
