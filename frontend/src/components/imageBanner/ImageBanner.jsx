@@ -3,6 +3,7 @@
 import styles from './imageBanner.module.css';
 import Image from '../image/Image';
 
+// ToDo: check if this component can be merged with Banner component
 export default function ImageBanner({mobileImage, desktopImage}) {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
   const {url: srcMobile, alternativeText: altMobile, width: widthMobile, height: heightMobile} = mobileImage;

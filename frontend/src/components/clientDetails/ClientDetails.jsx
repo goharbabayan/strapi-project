@@ -68,7 +68,7 @@ export default function ClientDetails({ user, onChanges, errorMessage }) {
     setFormData({...formData, [field]: value});
     onChanges(true, {...formData, [field]: value});
   };
-
+// ToDo: move the constant to constant file
   const CLIENT_PROFILE_DETAILS_TABS = [
     {
       id: 0,

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import styles from './button.module.css';
 
+// ToDo: call this button component everywhere instead of creating a new button, and add props to render different types of button
 const Button = ({ children, href, ...props }) => {
   if (href) {
     return (

@@ -7,6 +7,7 @@ import ProfileDetailsTabs from '../profileDetails/profileDetailsTabs/ProfileDeta
 import { useState } from 'react';
 import Members from '@/app/my-account/[user]/members/page';
 
+// ToDo: combine the user's fields in one object //username, name, lastname, email
 export default function AccountDetails({
   username,
   name,
@@ -19,7 +20,7 @@ export default function AccountDetails({
   isManagerDashboard,
 }) {
   const [activeTabId, setActiveTabId] = useState(0);
-
+// ToDo: move this constant to constant file
   const MANAGER_PROFILE_DETAILS_TABS = [
     {
       id: 0,
@@ -76,7 +77,7 @@ export default function AccountDetails({
                 isRequired={true}
                 errorMessage={errorMessage}
               />
-              {/* ToDo: remove the data */}
+              {/* ToDo: remove the data attribute */}
               <EditIcon className={styles.editIcon} onClick={(e) => onEditIconClick(e, 'data-username')}/>
             </div>
             {/* ToDo: move to separate component and render in the map */}

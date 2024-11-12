@@ -1,5 +1,6 @@
 import styles from './announcementBar.module.css';
 
+// ToDo: remove this component
 export default function AnnouncementBar() {
   // Todo change JS code to react
   function handleClick(e) {

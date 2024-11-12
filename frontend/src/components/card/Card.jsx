@@ -5,6 +5,7 @@ import Text from '../text/Text';
 import StarIcon from '../icons/StarIcon';
 import Link from 'next/link';
 
+// ToDo: remove isblackScheme
 export default function Card({data, height, width, showStarIcon, onStarIconClick, isblackScheme = true}) {
   const { alternativeText, url } = data.profilePicture;
   const { placeOfService, name, lastName, username, incallRates, outcallRates, id } = data;

@@ -35,6 +35,7 @@ export default function AccordionSection ({data, infoSectionIsNotEmpty}) {
                   />
                   <span className={`${styles.button} ${index === rotatedElementIndex ? styles.rotated : ''}`} ref={(el) => (buttonRefs.current[index] = el)}></span>
                 </div>
+                {/* ToDo: check if the ref attribute is required here? */}
                 <div ref={(el) => (answerRefs.current[index] = el)} className={`${styles.answer} ${index === rotatedElementIndex ? styles.expanded : ''}`}>
                   <Text
                     tag={'p'}
@@ -44,6 +45,7 @@ export default function AccordionSection ({data, infoSectionIsNotEmpty}) {
                 </div>
               </div>)
             :
+            // ToDo: Render an empty Fragment instead of a Div tag
               <div key={index} hidden></div>
           })}
         </div>

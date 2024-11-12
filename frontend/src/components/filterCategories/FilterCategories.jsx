@@ -7,6 +7,7 @@ import { HAIR_COLOR_OPTIONS } from '@/app/utils/constants/userPhisicalDetails';
 import Button from '../button/Button';
 import Breadcrumbs from '../breadcrumbs/BreadCrumbs';
 
+// ToDo: move all Filter components in one folder named Filter
 export default function FilterCategories({
   categoryFieldOptions,
   showCategories,
