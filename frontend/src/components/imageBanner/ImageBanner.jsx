@@ -11,7 +11,7 @@ export default function ImageBanner({mobileImage, desktopImage}) {
 
   return (
     <div className={styles.imageWrapper}>
-      {mobileImage?.srcMobile
+      {srcMobile
         ?
           <Image
             src={`${baseUrl}${srcMobile}`}
