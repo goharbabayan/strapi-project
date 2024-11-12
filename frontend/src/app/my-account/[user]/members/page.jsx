@@ -99,7 +99,7 @@ export default function Members ({email, id, user}) {
                       children={index+1}
                     />
                     <Button
-                      href={`members/${member.username}`}
+                      href={`${user}/members/${member.username}`}
                       children={
                         <Text
                           tag={'h4'}

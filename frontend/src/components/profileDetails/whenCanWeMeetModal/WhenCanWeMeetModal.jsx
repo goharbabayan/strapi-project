@@ -7,13 +7,22 @@ export default function WhenCanWeMeetModal({username, schedule}) {
   const [modalShow, setModalShow] = useState(false);
 
   useEffect(() => {
-    document.body.classList.toggle('overflow_hidden');
+    if (modalShow) {
+      document.body.classList.add('overflow_hidden');
+    } else {
+      document.body.classList.remove('overflow_hidden');
+    }
   }, [modalShow])
 
   return (
     <div className={styles.notifyModalContainer}>
       <div className={styles.notifyModalWrapper}>
-        <WhenCanWeMeetIcon width={30} height={30} stroke={'#ffffff'}/>
+        <WhenCanWeMeetIcon
+          onClick={() => setModalShow(false)}
+          width={30}
+          height={30}
+          stroke={'#ffffff'}
+        />
         <h3 className={styles.notifyModalTitle}>Subscribe to my availability</h3>
         <p className={styles.notifyModalDesc}>Be notified when {username} becomes available for bookings on short notice.</p>
         <button onClick={() => setModalShow(true)} className={styles.notifyModalButton}>Subscribe Now</button>
