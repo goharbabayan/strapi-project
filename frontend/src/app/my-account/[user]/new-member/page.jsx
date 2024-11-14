@@ -19,6 +19,7 @@ import { validateForm } from '@/app/utils/validation';
 import { CREATE_MENU_BAR } from '@/app/utils/constants/menuBar';
 import { USER_FORM_NEW_MEMBER} from '@/app/utils/constants/userForm';
 import ProfilePageImage from '@/components/profilePageImage/ProfilePageImage';
+import { isInputLengthValid } from '@/app/utils/helpers';
 
 export default function NewMember({params}) {
   const { user } = params;
@@ -40,7 +41,7 @@ export default function NewMember({params}) {
     show: false,
     message: ''
   });
-  const [showNotificationBar, setShowNotificationBar] = useState(false);
+  const [showSaveResetChangeBar, setShowSaveResetChangeBar] = useState(false);
   const [formData, setFormData] = useState(USER_FORM_NEW_MEMBER(email, managerId));
   const photosSectionRef = useRef(null);
   const aboutSectionRef = useRef(null);
@@ -59,7 +60,7 @@ export default function NewMember({params}) {
 
 // ToDo: can be merged in one function
   const handleChange = (event) => {
-    setShowNotificationBar(true);
+    setShowSaveResetChangeBar(true);
     setNotificationBarMessageAndStatus({
       show: false,
       message: ''
@@ -69,7 +70,7 @@ export default function NewMember({params}) {
   };
 
   const handleScheduleChange = (childFormData) => {
-    setShowNotificationBar(true);
+    setShowSaveResetChangeBar(true);
     setNotificationBarMessageAndStatus({
       show: false,
       message: ''
@@ -96,9 +97,18 @@ export default function NewMember({params}) {
       return;
     };
 
+    const isUsernameLengthValid = isInputLengthValid(formData.username, 3);
+    if (!isUsernameLengthValid) {
+      setShowSaveResetChangeBar(false);
+      setNotificationBarMessageAndStatus({
+        show: true,
+        message: 'Username must be at least 3 characters.'
+      });
+      return;
+    };
+
     const errors = validateForm(formData, false);
     const hasErrors = Object.keys(errors).length > 0;
-
     if (hasErrors) {
       setErrorMessage(errors);
       setNotificationBarMessageAndStatus({
@@ -117,14 +127,13 @@ export default function NewMember({params}) {
       ...formData,
       confirmed: true
     }, 'PUT', false);
-    setShowNotificationBar(true);
+    setShowSaveResetChangeBar(false);
     setNotificationBarMessageAndStatus({
       show: true,
       message: 'Request was sent successfuly'
     });
     await handleRequestReview(userId);
     setTimeout(() => {
-      setShowNotificationBar(false);
       setNotificationBarMessageAndStatus({
         show: false,
         message: ''
@@ -157,11 +166,11 @@ export default function NewMember({params}) {
     }
     setFormData({ ...formData, [name]: value });
     setChanges(showChange, { ...formData, [name]: value });
-    setShowNotificationBar(true);
+    setShowSaveResetChangeBar(true);
   };
 
   const setChanges = (showChange, childFormData) => {
-    setShowNotificationBar(showChange);
+    setShowSaveResetChangeBar(showChange);
     setNotificationBarMessageAndStatus({
       show: false,
       message: ''
@@ -185,7 +194,7 @@ export default function NewMember({params}) {
 
   const handleChildFormDataChange = (field, value) => {
     setErrorMessage('');
-    setShowNotificationBar(true);
+    setShowSaveResetChangeBar(true);
     setNotificationBarMessageAndStatus({
       show: false,
       message: ''
@@ -194,7 +203,7 @@ export default function NewMember({params}) {
   }
 
   const handleCancelChangesButtonClick = () => {
-    setShowNotificationBar(false);
+    setShowSaveResetChangeBar(false);
     window.location.reload();
   };
 
@@ -210,30 +219,28 @@ export default function NewMember({params}) {
     };
 
     if (!formData.profilePicture || !formData.coverPhoto || !formData.username) {
-      setShowNotificationBar(true);
+      setShowSaveResetChangeBar(false);
       setNotificationBarMessageAndStatus({
         show: true,
         message: 'The profile picture, cover photo and Username are required to fill'
       });
       return;
-    }
+    };
+
+    const isUsernameLengthValid = isInputLengthValid(formData.username, 3);
+    if (!isUsernameLengthValid) {
+      setShowSaveResetChangeBar(false);
+      setNotificationBarMessageAndStatus({
+        show: true,
+        message: 'Username must be at least 3 characters.'
+      });
+      return;
+    };
 
     if (!isMemberRegistered) {
       await updateOrRegisterMember("/api/auth/local/registerMember", unsavedUserData, 'POST', true);
     } else {
       await updateOrRegisterMember(`/api/members/${userId}`, unsavedUserData, 'PUT', false);
-      setShowNotificationBar(true);
-      setNotificationBarMessageAndStatus({
-        show: true,
-        message: 'Changes applied successfully.'
-      });
-      setTimeout(() => {
-        setShowNotificationBar(false);
-        setNotificationBarMessageAndStatus({
-          show: false,
-          message: ''
-        });
-      }, 5000);
     };
   };
 
@@ -251,32 +258,32 @@ export default function NewMember({params}) {
       })
       .then(response => response.json())
       .then(json => {
-        const {error, user} = json;
+        const {error, user, username} = json;
         if (error) {
           const errorMessage = error.message;
           const notUniqueUserNameMessage = errorMessage.includes('This attribute must be unique');
           const userNameInvalidMessage = errorMessage.includes('username must be at least 3 characters');
           if (notUniqueUserNameMessage) {
-            setShowNotificationBar(true);
+            setShowSaveResetChangeBar(false);
             setNotificationBarMessageAndStatus({
               show: true,
               message: 'This username is already in use.'
             });
           } else if (userNameInvalidMessage) {
-            setShowNotificationBar(true);
+            setShowSaveResetChangeBar(false);
             setNotificationBarMessageAndStatus({
               show: true,
               message: 'Username must be at least 3 characters.'
             });
           } else {
-            setShowNotificationBar(true);
+            setShowSaveResetChangeBar(false);
             setNotificationBarMessageAndStatus({
               show: true,
               message: errorMessage
             });
           }
-        } else if (user) {
-          setShowNotificationBar(true);
+        } else if (user || username) {
+          setShowSaveResetChangeBar(false);
           setNotificationBarMessageAndStatus({
             show: true,
             message: 'Changes applied successfully.'
@@ -290,7 +297,6 @@ export default function NewMember({params}) {
             })
           }
           setTimeout(() => {
-            setShowNotificationBar(false);
             setNotificationBarMessageAndStatus({
               show: false,
               message: ''
@@ -306,14 +312,11 @@ export default function NewMember({params}) {
   return (
     <div>
       <form onSubmit={handleMemberFormSubmit}>
-        {showNotificationBar && (
+        {(showSaveResetChangeBar || notificationBarMessageAndStatus.show) && (
           <NotificationBar
-            isApprovedByAdmin={formData.isApprovedByAdmin}
             onCancelButtonClick={handleCancelChangesButtonClick}
             onSaveButtonClick={handleSaveButtonClick}
-            showNotificationBar={showNotificationBar}
             notificationBarMessageAndStatus={notificationBarMessageAndStatus}
-            userRole={'service provider'}
           />
         )}
         <section className='section page-width'>
@@ -383,7 +386,6 @@ export default function NewMember({params}) {
           />
         </section>
         <MenuBar
-          isNotificationBarOpen={showNotificationBar}
           onScrollToSection={handleScrollToSection}
           items={menu}
         />

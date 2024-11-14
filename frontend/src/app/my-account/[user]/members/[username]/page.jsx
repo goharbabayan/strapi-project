@@ -20,6 +20,7 @@ import { CREATE_MENU_BAR } from '@/app/utils/constants/menuBar';
 import Reviews from '@/components/reviews/Reviews';
 import ProfilePageImage from '@/components/profilePageImage/ProfilePageImage';
 import { useFetchData } from '@/app/utils/hooks/useFetch';
+import { isInputLengthValid } from '@/app/utils/helpers';
 
 export default function Member ({params}) {
   const { user, username } = params;
@@ -31,7 +32,7 @@ export default function Member ({params}) {
     message: ''
   });
   const [errorMessage, setErrorMessage] = useState({});
-  const [showNotificationBar, setShowNotificationBar] = useState(false);
+  const [showSaveResetChangeBar, setShowSaveResetChangeBar] = useState(false);
   const [userSelectedSuburbs, setUserSelectedSuburbs] = useState([]);
   const [selectedCity, setSelectedCity] = useState('');
   const [isCityDataChanged, setIsCityDataChanged] = useState(false);
@@ -73,6 +74,7 @@ export default function Member ({params}) {
 
   const handleChange = (event) => {
     setErrorMessage('');
+    setShowSaveResetChangeBar(true);
     setNotificationBarMessageAndStatus({
       show: false,
       message: ''
@@ -80,18 +82,19 @@ export default function Member ({params}) {
 
     const isUsernameEreased = event.target.name === 'username' && event.target.value === '';
     if (isUsernameEreased) {
+      setShowSaveResetChangeBar(false);
       setNotificationBarMessageAndStatus({
         show: true,
         message: 'Username must be at least 3 characters'
       })
       return;
     };
-    setShowNotificationBar(true);
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
   const handleMouseDown = async (name, value) => {
     setErrorMessage('');
+    setShowSaveResetChangeBar(true);
     setNotificationBarMessageAndStatus({
       show: false,
       message: ''
@@ -103,7 +106,6 @@ export default function Member ({params}) {
     };
 
     setFormData({ ...formData, [name]: value });
-    setShowNotificationBar(true);
   };
 
   const handleScheduleChange = (childFormData) => {
@@ -112,13 +114,14 @@ export default function Member ({params}) {
       message: ''
     });
     setFormData({...formData, schedule: childFormData});
-    setShowNotificationBar(true);
+    setShowSaveResetChangeBar(true);
   };
 
   const handleMemberFormSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.profilePicture || !formData.coverPhoto) {
+      setShowSaveResetChangeBar(false);
       setNotificationBarMessageAndStatus({
         show: true,
         message: 'Cover photo and Profile picture are required fields.'
@@ -131,6 +134,7 @@ export default function Member ({params}) {
 
     if (hasErrors) {
       setErrorMessage(errors);
+      setShowSaveResetChangeBar(false);
       setNotificationBarMessageAndStatus({
         show: true,
         message: 'Please correct the errors and try again.'
@@ -138,11 +142,17 @@ export default function Member ({params}) {
       return;
     } else {
       setErrorMessage('');
-      setNotificationBarMessageAndStatus({
-        show: false,
-        message: ''
-      });
     };
+
+    const isUsernameLengthValid = isInputLengthValid(formData.username, 3);
+      if (!isUsernameLengthValid) {
+        setShowSaveResetChangeBar(false);
+        setNotificationBarMessageAndStatus({
+          show: true,
+          message: 'Username must be at least 3 characters.'
+        });
+        return;
+      };
 
     memberToken && formData.id &&
       useFetchData(`${baseUrl}/api/members/${formData.id}`, {
@@ -153,6 +163,7 @@ export default function Member ({params}) {
           'authorization': `Bearer ${memberToken}`
         }
       }).then(data => {
+        setShowSaveResetChangeBar(false);
         if (data.error || data.errors) {
           const errorMessage = data.error.message;
           setNotificationBarMessageAndStatus({
@@ -161,53 +172,52 @@ export default function Member ({params}) {
           });
           return;
         } else {
-          setNotificationBarMessageAndStatus({
-            show: true,
-            message: 'All changes have done !'
-          });
+          if (!isApprovedByAdmin) {
+            user &&
+              useFetchData(`${baseUrl}/api/profile-review/${process.env.NEXT_PUBLIC_API_TOKEN_MEMBER}`, {
+                method: 'POST',
+                headers: {
+                  'Content-type': 'application/json',
+                  'authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN_MEMBER}`
+                },
+                body: JSON.stringify(formData),
+              }).then(() => {
+                setShowSaveResetChangeBar(false);
+                setNotificationBarMessageAndStatus({
+                  show: true,
+                  message: 'Request was sent successfuly'
+                });
+                setTimeout(() => {
+                  setNotificationBarMessageAndStatus({
+                    show: false,
+                    message: ''
+                  });
+                }, 3000)})
+          };
           setTimeout(() => {
             // if changed username the url params should be changed
             replace(`/my-account/${user}/members/${formData.username}`);
           }, 5000)
         }
-      });
-
-      if (!formData.isApprovedByAdmin) {
-        user &&
-          useFetchData(`${baseUrl}/api/profile-review/${process.env.NEXT_PUBLIC_API_TOKEN_MEMBER}`, {
-            method: 'POST',
-            headers: {
-              'Content-type': 'application/json',
-              'authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN_MEMBER}`
-            },
-            body: JSON.stringify(formData),
-          }).then(() => {
-            setShowNotificationBar(true);
-            setNotificationBarMessageAndStatus({
-              show: true,
-              message: 'Request was sent successfuly'
-            });
-            setTimeout(() => {
-              setShowNotificationBar(false)
-              setNotificationBarMessageAndStatus({
-                show: false,
-                message: ''
-              });
-            }, 3000)})
-      }
+      })
   };
 
   const handleChildFormDataChange = (field, value) => {
+    setErrorMessage('');
     setNotificationBarMessageAndStatus({
       show: false,
       message: ''
     });
-    setShowNotificationBar(true);
+    setShowSaveResetChangeBar(true);
     setFormData({...formData, [field]: value});
   };
 
   const handleCancelChangesButtonClick = () => {
-    setShowNotificationBar(false);
+    setShowSaveResetChangeBar(false);
+    setNotificationBarMessageAndStatus({
+      show: false,
+      message: ''
+    });
     window.location.reload();
   };
 
@@ -239,10 +249,20 @@ export default function Member ({params}) {
     }
 
     if (!formData.profilePicture || !formData.coverPhoto) {
-      setShowNotificationBar(true);
+      setShowSaveResetChangeBar(false);
       setNotificationBarMessageAndStatus({
         show: true,
         message: 'Cover picture and Profile picture are required fields.'
+      });
+      return;
+    };
+
+    const isUsernameLengthValid = isInputLengthValid(formData.username, 3);
+    if (!isUsernameLengthValid) {
+      setShowSaveResetChangeBar(false);
+      setNotificationBarMessageAndStatus({
+        show: true,
+        message: 'Username must be at least 3 characters.'
       });
       return;
     };
@@ -257,7 +277,7 @@ export default function Member ({params}) {
         body: JSON.stringify(unsavedUserData),
       }).then((res) => {
         if (res?.error) {
-          setShowNotificationBar(true);
+          setShowSaveResetChangeBar(false);
           setNotificationBarMessageAndStatus({
             show: true,
             message: res?.error?.message
@@ -266,13 +286,16 @@ export default function Member ({params}) {
         };
 
         setIsApprovedByAdmin(false);
-        setShowNotificationBar(true);
+        setShowSaveResetChangeBar(false);
         setNotificationBarMessageAndStatus({
           show: true,
           message: 'Changes applied successfully.'
         });
         setTimeout(() => {
-          setShowNotificationBar(false);
+          setNotificationBarMessageAndStatus({
+            show: false,
+            message: ''
+          });
         }, 2000);
       })
   };
@@ -280,14 +303,12 @@ export default function Member ({params}) {
   return (
     <div>
       <form onSubmit={handleMemberFormSubmit}>
-        {showNotificationBar && (
+        {(showSaveResetChangeBar || notificationBarMessageAndStatus.show) && (
           <NotificationBar
             notificationBarMessageAndStatus={notificationBarMessageAndStatus}
-            showNotificationBar={showNotificationBar}
-            isApprovedByAdmin={formData.isApprovedByAdmin}
+            showSaveResetChangeBar={showSaveResetChangeBar}
             onCancelButtonClick={handleCancelChangesButtonClick}
             onSaveButtonClick={handleSaveButtonClick}
-            userRole={formData?.role?.type}
           />
         )}
         <section className={`${styles.section} page-width`}>
@@ -366,7 +387,6 @@ export default function Member ({params}) {
                         />
                       </section>
                       <MenuBar
-                        isNotificationBarOpen={showNotificationBar}
                         onScrollToSection={handleScrollToSection}
                         items={menu}
                       />

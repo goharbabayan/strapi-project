@@ -5,6 +5,7 @@ import ResetPassword from '../resetPassword/ResetPassword';
 import AccountInfo from '../accountInfo/AccountInfo';
 import { navigate } from '@/app/actions';
 import ProfileDetailsTabs from '../profileDetails/profileDetailsTabs/ProfileDetailsTabs';
+import { useFetchData } from '@/app/utils/hooks/useFetch';
 
 export default function ClientDetails({ user, onChanges, errorMessage }) {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
@@ -49,9 +50,21 @@ export default function ClientDetails({ user, onChanges, errorMessage }) {
   }, [formData.favoriteProvidersIds]);
 
   const handleStarIconClick = (id) => {
+    const token = JSON.parse(localStorage.getItem('token'));
     const updatedFavoritesIds = formData.favoriteProvidersIds.filter(object => object.item != id);
+    const updatedProviders = favoriteProviders.filter(provider => provider.id !== id);
     setFormData({...formData, favoriteProvidersIds: updatedFavoritesIds});
-    onChanges(true, {...formData, favoriteProvidersIds: updatedFavoritesIds});
+    setFavoriteProviders(updatedProviders);
+
+    token && user.id && user &&
+      useFetchData(`${baseUrl}/api/users/${user.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({...formData, favoriteProvidersIds: updatedFavoritesIds}),
+      })
   };
 
   const handleChange = (event) => {

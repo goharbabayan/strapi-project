@@ -4,22 +4,18 @@ import Button from '../button/Button';
 
 export default function NotificationBar({
   notificationBarMessageAndStatus,
-  isApprovedByAdmin,
   onCancelButtonClick,
   onSaveButtonClick,
-  showNotificationBar,
 }) {
 
   return (
     <div className={styles.notificationBar}>
-      {notificationBarMessageAndStatus?.show &&
+      {notificationBarMessageAndStatus?.show ?
         <Text
           tag={'h4'}
           className={`${styles.notificationText} text-middle white`}
           children={notificationBarMessageAndStatus.message}
-        />
-      }
-      {showNotificationBar && !notificationBarMessageAndStatus?.show &&
+        /> :
         <>
           <Text
             tag={'h4'}

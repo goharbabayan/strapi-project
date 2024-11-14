@@ -35,6 +35,7 @@ export default function ProfileMainInfo(props) {
   }, []);
 
   const fetchData = async (endpoint, setState) => {
+    // To do get token from Context
     const token = JSON.parse(localStorage.getItem('token'));
     const data = {
       providerId: providerId,
@@ -46,8 +47,12 @@ export default function ProfileMainInfo(props) {
       headers: {
         'Authorization': `Bearer ${token}`
       },
-    });
-    res && setState(res);
+    })
+    if (res.error) {
+      setState(false);
+    } else {
+      setState(res);
+    };
   };
 
   const isProviderExistingInClientsFavorites = () => {

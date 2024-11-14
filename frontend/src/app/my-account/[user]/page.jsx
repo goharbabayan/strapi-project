@@ -12,6 +12,7 @@ import { validateForm } from '@/app/utils/validation.js';
 import { useFetchData } from '@/app/utils/hooks/useFetch.jsx';
 import Button from '@/components/button/Button.jsx';
 import Text from '@/components/text/Text.jsx';
+import { isInputLengthValid } from '@/app/utils/helpers';
 
 export default function MyAccountPage() {
   const strapiBaseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
@@ -26,7 +27,7 @@ export default function MyAccountPage() {
     show: false,
     message: ''
   });
-  const [showNotificationBar, setShowNotificationBar] = useState(false);
+  const [showSaveResetChangeBar, setShowSaveResetChangeBar] = useState(false);
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem('token'));
     token && setToken(token);
@@ -63,29 +64,31 @@ export default function MyAccountPage() {
     }
     if (role !== MANAGER) {
       if (!userformData.profilePicture) {
-        setShowNotificationBar(true);
+        setShowSaveResetChangeBar(true);
         setNotificationBarMessageAndStatus({
           show: true,
-          message: `Please, add escort's profile picture.`
+          message: `Please, add profile picture.`
         });
         return;
       }
       if (!userformData.coverPhoto && role !== CLIENT) {
-        setShowNotificationBar(true);
+        setShowSaveResetChangeBar(true);
         setNotificationBarMessageAndStatus({
           show: true,
-          message: `Please, add escort's cover photo.`
+          message: `Please, add cover photo.`
         });
         return;
       }
-      if (userformData.username.length < 3) {
-        setShowNotificationBar(true);
+
+      const isUsernameLengthValid = isInputLengthValid(userUpdatedFormData.username, 3);
+      if (!isUsernameLengthValid) {
+        setShowSaveResetChangeBar(false);
         setNotificationBarMessageAndStatus({
           show: true,
-          message: `Username should be at least 3 characters.`
+          message: 'Username must be at least 3 characters.'
         });
         return;
-      }
+      };
     }
 
     let errors;
@@ -98,7 +101,7 @@ export default function MyAccountPage() {
 
     if (hasErrors) {
       setErrorMessage(errors);
-      setShowNotificationBar(true);
+      setShowSaveResetChangeBar(true);
       setNotificationBarMessageAndStatus({
         show: true,
         message: `Please correct the errors and try again.`
@@ -106,7 +109,7 @@ export default function MyAccountPage() {
       return;
     } else {
       setErrorMessage('');
-      setShowNotificationBar(false);
+      setShowSaveResetChangeBar(false);
       setNotificationBarMessageAndStatus({
         show: false,
         message: ''
@@ -125,7 +128,7 @@ export default function MyAccountPage() {
         })
         .then(res => res.json())
         .then(data => {
-          setShowNotificationBar(true);
+          setShowSaveResetChangeBar(true);          
           if (data.error) {
             setNotificationBarMessageAndStatus({
               show: true,
@@ -138,7 +141,7 @@ export default function MyAccountPage() {
               message: 'Changes applied successfully.'
             });
             setTimeout(() => {
-              setShowNotificationBar(false);
+              setShowSaveResetChangeBar(false);
               setNotificationBarMessageAndStatus({
                 show: false,
                 message: ''
@@ -160,7 +163,7 @@ export default function MyAccountPage() {
         })
         .then(response => {
           if (response.ok) {
-            setShowNotificationBar(true);
+            setShowSaveResetChangeBar(true);
             setNotificationBarMessageAndStatus({
               show: true,
               message: 'Request was sent successfuly'
@@ -176,6 +179,16 @@ export default function MyAccountPage() {
       isApprovedByAdmin: false
     }
 
+    const isUsernameLengthValid = isInputLengthValid(userUpdatedFormData.username, 3);
+    if (!isUsernameLengthValid) {
+      setShowSaveResetChangeBar(false);
+      setNotificationBarMessageAndStatus({
+        show: true,
+        message: 'Username must be at least 3 characters.'
+      });
+      return;
+    }
+
     token && userId && user &&
       useFetchData(`${strapiBaseUrl}/api/users/${userId}`, {
         method: 'PUT',
@@ -184,26 +197,34 @@ export default function MyAccountPage() {
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(unsavedUserData),
+      }).then(data => {
+        if (data.error || data.errors) {
+          setShowSaveResetChangeBar(false);
+          setNotificationBarMessageAndStatus({
+            show: true,
+            message: data.error.message
+          });
+        } else {
+          setShowSaveResetChangeBar(false);
+          setNotificationBarMessageAndStatus({
+            show: true,
+            message: 'Changes applied successfully.'
+          });
+          setTimeout(() => {
+            setNotificationBarMessageAndStatus({
+              show: false,
+              message: ''
+            });
+          }, 3000);
+          setIsApprovedByAdmin(false);
+        }
       })
-    setShowNotificationBar(true);
-    setNotificationBarMessageAndStatus({
-      show: true,
-      message: 'Changes applied successfully.'
-    });
-    setTimeout(() => {
-      setShowNotificationBar(false);
-      setNotificationBarMessageAndStatus({
-        show: false,
-        message: ''
-      });
-    }, 3000);
-    setIsApprovedByAdmin(false);
   }
 
   const handleCancelChangesButtonClick = () => {
-    setShowNotificationBar(true);
+    setShowSaveResetChangeBar(true);
     setTimeout(() => {
-      setShowNotificationBar(false);
+      setShowSaveResetChangeBar(false);
       setNotificationBarMessageAndStatus({
         show: false,
         message: ''
@@ -214,7 +235,7 @@ export default function MyAccountPage() {
 
   const handleSetChanges = (childState, childFormData) => {
     setErrorMessage('');
-    setShowNotificationBar(childState);
+    setShowSaveResetChangeBar(childState);
     setNotificationBarMessageAndStatus({
       show: false,
       message: ''
@@ -226,13 +247,13 @@ export default function MyAccountPage() {
     <div className={`${styles.mainWrap} ${role === CLIENT ? styles.client : null}`}>
       <div className="dashboard">
         <form onSubmit={(e) => handleFormSubmit(e, role)}>
-          {showNotificationBar && (
+          {(showSaveResetChangeBar || notificationBarMessageAndStatus.show) && (
             <NotificationBar
               isApprovedByAdmin={user.isApprovedByAdmin}
               onCancelButtonClick={handleCancelChangesButtonClick}
               onSaveButtonClick={handleSaveButtonClick}
               notificationBarMessageAndStatus={notificationBarMessageAndStatus}
-              showNotificationBar={showNotificationBar}
+              showSaveResetChangeBar={showSaveResetChangeBar}
               userRole={role}
             />
           )}
@@ -259,7 +280,7 @@ export default function MyAccountPage() {
               <ServiceProviderDetails
                 user={user}
                 onChanges={handleSetChanges}
-                showNotificationBar={showNotificationBar}
+                showSaveResetChangeBar={showSaveResetChangeBar}
                 errorMessage={errorMessage}
               />
             </>
@@ -269,7 +290,7 @@ export default function MyAccountPage() {
               <ClientDetails
                 user={user}
                 onChanges={handleSetChanges}
-                showNotificationBar={showNotificationBar}
+                showSaveResetChangeBar={showSaveResetChangeBar}
                 errorMessage={errorMessage}
               />
             </>

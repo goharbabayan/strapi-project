@@ -39,3 +39,7 @@ export const buildQueriesForFilteredOptions = (data) => {
   const combinedQuery = queryParts.join(`&filters`);
   return combinedQuery;
 };
+
+export const isInputLengthValid = (inputValue, requiredLength) => {
+  return inputValue.length >= requiredLength;
+};

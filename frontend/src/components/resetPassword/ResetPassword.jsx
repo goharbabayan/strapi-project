@@ -4,6 +4,7 @@ import InputField from '../inputField/InputField';
 import Text from '../text/Text';
 import Button from '../button/Button';
 import { AuthContext } from '@/app/Context';
+import { isInputLengthValid } from '@/app/utils/helpers';
 
 const ResetPassword = forwardRef(({password}, ref) => {
 // ToDo: please check if the password and ref params are used in this component
@@ -28,6 +29,10 @@ const ResetPassword = forwardRef(({password}, ref) => {
     if (password === '' || confirmPassword === '' || currentPassword === '') {
       setShowErrorMessage(true);
       setError('Please fill in all required fields.');
+      return;
+    } else if (!isInputLengthValid(password, 6)) {
+      setShowErrorMessage(true);
+      setError('Password must be at least 6 characters.');
       return;
     } else if (password != confirmPassword) {
       setShowErrorMessage(true);
