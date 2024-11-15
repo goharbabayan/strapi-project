@@ -3,13 +3,16 @@ import Button from '../button/Button';
 import Image from '../image/Image';
 import Text from '../text/Text';
 
-const Banner = ({bannerLink, desktopImage, mobileImage, text, button}) => {
+const Banner = ({bannerLink, desktopImage, mobileImage, text, button, showOverlay}) => {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
   return (
     <>
       {desktopImage &&
         <section className={`${styles.container} ${bannerLink ? styles.withLink : ''}`}>
+          {showOverlay &&
+            <div className={styles.overlay}></div>
+          }
           {desktopImage && desktopImage.url &&
             <Image
               src={`${baseUrl}${desktopImage.url}`}
@@ -20,7 +23,7 @@ const Banner = ({bannerLink, desktopImage, mobileImage, text, button}) => {
               {...(bannerLink && { link: bannerLink })}
             />
           }
-          {mobileImage && mobileImage.url ?
+          {mobileImage && mobileImage?.url ?
             <Image
               src={`${baseUrl}${mobileImage.url}`}
               alt={mobileImage.alternativeText || mobileImage.name}
@@ -39,7 +42,7 @@ const Banner = ({bannerLink, desktopImage, mobileImage, text, button}) => {
               {...(bannerLink && { link: bannerLink })}
             />
           }
-          {(text || button) &&
+          {(text || button?.title) &&
             <div className={`${styles.wrapper} ${bannerLink ? styles.withLink : ''}`}>
               <div className={`${styles.info} page-width`}>
                 {text &&
@@ -49,10 +52,10 @@ const Banner = ({bannerLink, desktopImage, mobileImage, text, button}) => {
                     children={text}
                   />
                 }
-                {button &&
+                {button && button.title &&
                   <Button
                     {...(button.link && { href: button.link })}
-                    className={styles.button}
+                    className={`${styles.button} ${button?.link ? styles.withLink : ''} ${bannerLink ? styles.withBannerLink : ''}`}
                     children={button.title}
                   />
                 }

@@ -926,7 +926,8 @@ export interface ApiFaqFaq extends Schema.SingleType {
     draftAndPublish: true;
   };
   attributes: {
-    ImageBanner: Attribute.Component<'section.image-banner'>;
+    image_for_desktop: Attribute.Media;
+    image_for_mobile: Attribute.Media;
     Info: Attribute.Component<'section.info'>;
     QuestionsAndAnswers: Attribute.Component<'block.accordion', true>;
     createdAt: Attribute.DateTime;

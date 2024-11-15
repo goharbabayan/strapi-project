@@ -12,14 +12,23 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "ImageBanner": {
-      "displayName": "imageBanner",
-      "type": "component",
-      "repeatable": false,
-      "component": "section.image-banner"
+    "image_for_desktop": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "image_for_mobile": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
     },
     "Info": {
-      "displayName": "info",
       "type": "component",
       "repeatable": false,
       "component": "section.info"

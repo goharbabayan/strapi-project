@@ -5,19 +5,22 @@ import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_FAQ_PAGE_QUERIES } from '../graphql/faqPageQueries';
 import styles from './faq.module.css';
-import BannerSection from '@/components/bannerSection/BannerSection';
 import Loading from '../loading';
 import TextInfo from '@/components/textInfo/TextInfo';
 import AccordionSection from '@/components/accordion/Accordion';
+import Banner from '@/components/banner/Banner';
 
 export default function FaqPage() {
   const { loading, error, data} = useQuery(GET_FAQ_PAGE_QUERIES);
-  const [bannerData, setBannerData] = useState([]);
+  const [bannerData, setBannerData] = useState(null);
   const [infoData, setInfoData] = useState(null);
   const [questionsData, setQuestionsData] = useState(null);
 
   useEffect(() => {
-    data != undefined && setBannerData(data?.faq?.data?.attributes?.ImageBanner?.image?.data?.attributes);
+    data != undefined && setBannerData({
+      desktopImage: data?.faq?.data?.attributes?.image_for_desktop?.data?.attributes,
+      mobileImage: data?.faq?.data?.attributes?.image_for_mobile?.data?.attributes,
+    });
     data != undefined && setInfoData(data?.faq?.data?.attributes?.Info);
     data != undefined && setQuestionsData(data?.faq?.data?.attributes?.QuestionsAndAnswers);
   },[data]);
@@ -34,7 +37,11 @@ export default function FaqPage() {
         </section>
       }
       {bannerData &&
-        <BannerSection data={bannerData}/>
+        <Banner
+          desktopImage={bannerData?.desktopImage}
+          mobileImage={bannerData?.mobileImage}
+          showOverlay={true}
+        />
       }
       {contentIsNotEmpty &&
         <section className={styles.mainWrap}>
@@ -48,7 +55,10 @@ export default function FaqPage() {
                 />
               }
               {isAtLeastOneAccordionItemExists &&
-                <AccordionSection data={questionsData} infoSectionIsNotEmpty={infoSectionIsNotEmpty}/>
+                <AccordionSection
+                  data={questionsData}
+                  infoSectionIsNotEmpty={infoSectionIsNotEmpty}
+                />
               }
             </div>
           </div>

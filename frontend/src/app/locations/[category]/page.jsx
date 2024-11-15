@@ -5,12 +5,12 @@ import { useQuery } from '@apollo/client';
 import { GET_LOCATION_PAGE_QUERIES } from '@/app/graphql/locationPageQueriess';
 import { FILTER_CATEGORIES } from '@/app/utils/constants/filterCategories';
 import styles from './category.module.css';
-import ImageBanner from '@/components/imageBanner/ImageBanner';
 import FilterCategories from '@/components/filterCategories/FilterCategories';
 import ProviderCard from '@/components/providerCard/ProviderCard';
 import Button from '@/components/button/Button';
 import Loading from '@/app/loading';
 import Text from '@/components/text/Text';
+import Banner from '@/components/banner/Banner';
 import { buildQueriesForFilteredOptions } from '@/app/utils/helpers';
 
 export default function LocationCategoryPage({params}) {
@@ -158,12 +158,12 @@ export default function LocationCategoryPage({params}) {
           <Loading/>
         :
           <section>
-          {(categoryData.mobileImage || categoryData.desktopImage) &&
+          {(categoryData.desktopImage && categoryData.desktopImage?.url) &&
             <div className={styles.mainWrap}>
               <div className={styles.banner}>
-                <ImageBanner
-                  mobileImage={categoryData.mobileImage}
-                  desktopImage={categoryData.desktopImage}
+                <Banner
+                  mobileImage={categoryData?.mobileImage}
+                  desktopImage={categoryData?.desktopImage}
                 />
                 <FilterCategories
                   showCategories={true}

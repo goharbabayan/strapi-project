@@ -5,16 +5,25 @@ const GET_FAQ_PAGE_QUERIES = gql`
     faq {
       data {
         attributes {
-          ImageBanner {
-            image {
-              data {
-                attributes {
-                  alternativeText
-                  name
-                  url
-                  height
-                  width
-                }
+          image_for_desktop {
+            data {
+              attributes {
+                url
+                alternativeText
+                name
+                width
+                height
+              }
+            }
+          }
+          image_for_mobile {
+            data {
+              attributes {
+                url
+                alternativeText
+                name
+                width
+                height
               }
             }
           }

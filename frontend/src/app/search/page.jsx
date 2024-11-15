@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_SEARCH_PAGE_BANNER_QUERIES } from '../graphql/searchPageBannerQueries';
 import styles from './Search.module.css';
-import ImageBanner from '@/components/imageBanner/ImageBanner';
 import SearchInput from '@/components/searchInput/SearchInput';
 import FilterButton from '@/components/filterButton/FilterButton';
 import ProviderCard from '@/components/providerCard/ProviderCard';
@@ -14,6 +13,7 @@ import Loading from '../loading';
 import FilterCategories from '@/components/filterCategories/FilterCategories';
 import { buildQueriesForFilteredOptions } from '../utils/helpers';
 import { SERVICE_PROVIDER } from '../utils/constants/userRoles';
+import Banner from '@/components/banner/Banner';
 
 export default function Search() {
   const [desktopImage, setDesktopImage] = useState(null);
@@ -121,33 +121,31 @@ export default function Search() {
         <Loading/>
       :
         <>
-          <div className={styles.mainWrap}>
-            <section className={`${styles.banner} ${!desktopImage?.url ? styles.empty : ''}`}>
-              {desktopImage && desktopImage?.url &&
-                <ImageBanner
-                  mobileImage={mobileImage || {}}
-                  desktopImage={desktopImage}
-                />
-              }
-              <div className={`${styles.searchButtonsWrapper} page-width`}>
-                <SearchInput
-                  searchQueries={searchQueries}
-                  setSearchQueries={setSearchQueries}
-                  searchResults={searchResults}
-                  setSearchResults={setSearchResults}
-                  setNoResults={setNoResults}
-                />
-                <FilterButton onClick={handleFilterButtonClick}/>
-              </div>
-            </section>
-            <FilterCategories
-              showCategories={showCategories}
-              onApplyFilterButtonClick={handleApllyFilteredOptions}
-              onResetFilterButtonClick={handleClearFilterOptions}
-              filteredOptions={filteredOptions}
-              setFilteredOptions={setFilteredOptions}
-            />
-          </div>
+          <section className={`${styles.banner} ${!desktopImage?.url ? styles.empty : ''}`}>
+            {desktopImage && desktopImage?.url &&
+              <Banner
+                mobileImage={mobileImage}
+                desktopImage={desktopImage}
+              />
+            }
+            <div className={`${styles.searchButtonsWrapper} page-width`}>
+              <SearchInput
+                searchQueries={searchQueries}
+                setSearchQueries={setSearchQueries}
+                searchResults={searchResults}
+                setSearchResults={setSearchResults}
+                setNoResults={setNoResults}
+              />
+              <FilterButton onClick={handleFilterButtonClick}/>
+            </div>
+          </section>
+          <FilterCategories
+            showCategories={showCategories}
+            onApplyFilterButtonClick={handleApllyFilteredOptions}
+            onResetFilterButtonClick={handleClearFilterOptions}
+            filteredOptions={filteredOptions}
+            setFilteredOptions={setFilteredOptions}
+          />
           {searchResults && searchResults.length > 0 &&
             <>
               <section className={`${styles.results} page-width`}>
@@ -159,15 +157,15 @@ export default function Search() {
                     roleType={result.role.type}
                   />
                 ))}
-              {showLoadMore && (
-                <div className={styles.button}>
-                  <Button
-                    onClick={handleLoadMore}
-                    children={'Show more'}
-                    className="button_main"
-                  />
-                </div>
-              )}
+                {showLoadMore && (
+                  <div className={styles.button}>
+                    <Button
+                      onClick={handleLoadMore}
+                      children={'Show more'}
+                      className="button_main"
+                    />
+                  </div>
+                )}
               </section>
             </>
           }
