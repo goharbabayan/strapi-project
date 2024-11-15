@@ -36,7 +36,12 @@ export default function LocationCategoryPage({params}) {
   const [showLoadMore, setShowLoadMore] = useState(false);
   const [noResults, setNoResults] = useState(false);
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
-  const {loading, data, error} = useQuery(GET_LOCATION_PAGE_QUERIES);
+  const handle = `/locations/${category}`;
+  const {loading, data, error} = useQuery(GET_LOCATION_PAGE_QUERIES,{
+    variables: {
+      handle,
+    },
+  });
 
   useEffect(() => {
     if (data) {
@@ -65,7 +70,9 @@ export default function LocationCategoryPage({params}) {
         const isServicesCategory = categoryName === 'services' && provider[categoryName].length > 0;
         const optionIsNotExistingInOptionsListAndIsNotServicesOption = provider[categoryName] && categoryName !== 'services' && !options[categoryName].includes(provider[categoryName]);
         if (isServicesCategory) {
-          provider[categoryName].forEach(item => options[categoryName].push(item.item));
+          provider[categoryName].forEach(item => {
+            !options[categoryName].includes(item.item) && options[categoryName].push(item.item);
+          });
         } else if (optionIsNotExistingInOptionsListAndIsNotServicesOption) {
           options[categoryName].push(provider[categoryName]);
         };
@@ -176,7 +183,6 @@ export default function LocationCategoryPage({params}) {
             {providersList && providersList.length > 0 &&
               <section className={`${styles.results}`}>
                 {displayedItems && displayedItems.map((result, index) => {
-
                     return (
                       <ProviderCard
                         key={index}

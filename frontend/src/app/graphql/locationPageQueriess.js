@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 const GET_LOCATION_PAGE_QUERIES = gql`
-  query {
-    locations(filters: { handle: { eq: "Sydney" }}) {
+  query GetLocationByHandle($handle: String!) {
+    locations(filters: { handle: { eq: $handle }}) {
       data {
         attributes {
           handle
