@@ -1,13 +1,12 @@
 import styles from './accountInfo.module.css';
-import { forwardRef } from 'react';
 import InputField from '../inputField/InputField';
 import { GENDER_OPTIONS } from '@/app/utils/constants/userPhisicalDetails';
 import ProfilePageImage from '../profilePageImage/ProfilePageImage';
 
-const AccountInfo = forwardRef(({gender, email, formData, onChange, onMouseDown, onChildFormDataChange, errorMessage}, ref) => {
+const AccountInfo = ({gender, email, formData, onChange, onMouseDown, onChildFormDataChange, errorMessage}) => {
   return (
     <div className="page-width">
-      <section ref={ref} className={`section`}>
+      <section className={`section`}>
         <div className={styles.mainWrap}>
           <ProfilePageImage
             type='profilePicture'
@@ -81,6 +80,6 @@ const AccountInfo = forwardRef(({gender, email, formData, onChange, onMouseDown,
       </section>
     </div>
   )
-});
+};
 
 export default AccountInfo;

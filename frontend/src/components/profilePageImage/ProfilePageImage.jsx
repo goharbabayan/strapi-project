@@ -1,8 +1,9 @@
 'use client'
-
 import styles from './profilePage.module.css';
 import Button from '../button/Button';
 import Text from '../text/Text';
+import Image from '../image/Image';
+import InfoIcon from '../icons/Info';
 
 export default function ProfilePageImage({type, formData, onChildFormDataChange, className}) {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
@@ -32,10 +33,24 @@ export default function ProfilePageImage({type, formData, onChildFormDataChange,
 
   if (type === 'profilePicture') {
     return (
-      <div className={`${styles.container} ${className ? className : null}`}>
-        <div className={`${styles.profilePicture}`}>
-          {formData.profilePicture && <img src={`${baseUrl}${formData.profilePicture.url}`} key={formData.profilePicture.id} data-id={formData.profilePicture.id} alt={`${formData.profilePicture.alternativeText ? formData.profilePicture.alternativeText : ''}`}/>
-          }
+      <div className={`${styles.container} ${className || ''}`}>
+        {formData.profilePicture && formData.profilePicture?.url ?
+          <Image
+            src={`${baseUrl}${formData.profilePicture.url}`}
+            alt={`${formData.profilePicture.alternativeText || formData.profilePicture.name}`}
+            width={300}
+            height={400}
+            providerCartAspectRatio={0.75}
+          /> :
+          <div className={styles.emptyProfilePicture}></div>
+        }
+        <div className={styles.info}>
+          <InfoIcon/>
+          <Text
+            tag={'span'}
+            className="text-small"
+            children={'Upload picture with 3x4 resolution'}
+          />
         </div>
         <div className={`${styles.buttonsWrap} ${styles.profilePictureButtons}`}>
           <input
@@ -66,7 +81,24 @@ export default function ProfilePageImage({type, formData, onChildFormDataChange,
     return (
       <div>
         <div className={`${styles.photo}`}>
-          {formData.coverPhoto && <img src={`${baseUrl}${formData.coverPhoto.url}`} key={formData.coverPhoto.id} data-id={formData.coverPhoto.id}/>}
+        {formData.coverPhoto && formData.coverPhoto?.url ?
+          <Image
+            src={`${baseUrl}${formData.coverPhoto.url}`}
+            alt={`${formData.coverPhoto.alternativeText || formData.coverPhoto.name}`}
+            width={210}
+            height={90}
+            providerCartAspectRatio={2.3}
+          /> :
+          <div className={styles.emptyCoverPhoto}></div>
+        }
+        </div>
+        <div className={styles.info}>
+          <InfoIcon/>
+          <Text
+            tag={'span'}
+            className="text-small"
+            children={'Upload picture with 21x9 resolution'}
+          />
         </div>
         <div className={styles.buttonsWrap}>
           <input

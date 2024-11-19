@@ -38,10 +38,6 @@
 }
 
 @media screen and (min-width: 850px) {
-  .list {
-    height: 100%;
-  }
-
   .childList .title {
     color: var(--neutral-white-n10);
   }
@@ -75,6 +71,14 @@
     transition: all .3s ease-in;
   }
 
+  .item:hover:before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    height: 45px;
+    width: 100%;
+  }
+
   .submenu.show {
     max-height: 100%;
     opacity: 1;
@@ -88,9 +92,7 @@
   }
 
   .item {
-    height: calc(100% - 38px);
-    margin-top: 38px;
-    align-items: flex-start;
+    position: relative;
   }
 
   .subsubmenu.show {

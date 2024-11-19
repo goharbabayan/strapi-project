@@ -43,16 +43,10 @@
     width: 100%;
     align-items: flex-start;
   }
-
-  .mainWrap {
-    max-height: calc(100% - 52px);
-    margin-block: 26px;
-  }
 }
 
 @media screen and (min-width: 850px) {
   .mainWrap {
     display: flex;
-    height: 100%;
   }
 }

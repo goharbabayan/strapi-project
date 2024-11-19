@@ -103,7 +103,6 @@ function ServiceProviderDetails ({user, onChanges, hasUnsavedChanges, errorMessa
       </section>
       <section className="page-width">
         <div className="profileInfo">
-
           <ProfilePageImage
             type='profilePicture'
             formData={formData}

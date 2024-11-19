@@ -1,9 +1,8 @@
-import { forwardRef } from 'react';
 import styles from './favoriteEscorts.module.css';
 import Card from '../card/Card';
 import Text from '../text/Text';
 
-const FavoriteEscorts = forwardRef(({providers, title, onStarIconClick}) => {
+const FavoriteEscorts = ({providers, title, onStarIconClick}) => {
   return (
     <div className="page-width">
       <section className={`section ${styles.section}`}>
@@ -40,6 +39,6 @@ const FavoriteEscorts = forwardRef(({providers, title, onStarIconClick}) => {
       </section>
     </div>
   )
-});
+};
 
 export default FavoriteEscorts;

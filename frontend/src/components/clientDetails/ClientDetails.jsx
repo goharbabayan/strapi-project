@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './clientDetails.module.css';
 import FavoriteEscorts from '../favoriteEscorts/FavoriteEscorts';
 import ResetPassword from '../resetPassword/ResetPassword';
@@ -24,9 +24,6 @@ export default function ClientDetails({ user, onChanges, errorMessage }) {
   );
   const [favoriteProviders, setFavoriteProviders] = useState([]);
   const [activeTabId, setActiveTabId] = useState(0);
-
-  const profileSectionRef = useRef(null);
-  const settingsSectionRef = useRef(null);
 
   useEffect(() => {
     const favoritesIdsArray = formData.favoriteProvidersIds.map((obj) => obj.item);
@@ -110,7 +107,6 @@ export default function ClientDetails({ user, onChanges, errorMessage }) {
         />
         {activeTabId === 0 &&
           <AccountInfo
-            ref={profileSectionRef}
             email={formData.email}
             gender={formData.gender}
             formData={formData}
@@ -128,10 +124,7 @@ export default function ClientDetails({ user, onChanges, errorMessage }) {
           />
         }
         {activeTabId === 2 &&
-          <ResetPassword
-            password={formData.password}
-            ref={settingsSectionRef}
-          />
+          <ResetPassword/>
         }
       </div>
     </div>

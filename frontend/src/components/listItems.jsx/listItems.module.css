@@ -41,6 +41,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 32px;
   }
 
   .title {
@@ -66,7 +67,7 @@
   }
 
   .link {
-    padding-top: 20px;
+    padding-bottom: 20px;
     color: var(--neutral-black);
     font-family: var(--primary-font);
     font-size: 16px;

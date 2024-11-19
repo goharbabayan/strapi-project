@@ -1,4 +1,4 @@
-import { forwardRef, useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import styles from './resetPassword.module.css';
 import InputField from '../inputField/InputField';
 import Text from '../text/Text';
@@ -6,8 +6,7 @@ import Button from '../button/Button';
 import { AuthContext } from '@/app/Context';
 import { isInputLengthValid } from '@/app/utils/helpers';
 
-const ResetPassword = forwardRef(({password}, ref) => {
-// ToDo: please check if the password and ref params are used in this component
+const ResetPassword = () => {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
   const {setCustomerToken} = useContext(AuthContext);
   const [error, setError] = useState('');
@@ -80,7 +79,7 @@ const ResetPassword = forwardRef(({password}, ref) => {
 
   return (
     <div className="page-width">
-      <section className={`${styles.container}`} ref={ref}>
+      <section className={`${styles.container}`}>
         <h3 className={`subtitle ${styles.center}`}>Change password</h3>
         <div className={`${styles.container}`}>
           <div className={`${styles.passwordContainer} ${styles.newPassword}`}>
@@ -100,7 +99,7 @@ const ResetPassword = forwardRef(({password}, ref) => {
               name='password'
               id='password'
               className={styles.input}
-              value={password}
+              value={newPasswordData.password}
               onChange={handleDataChange}
               isPassword={true}
             />
@@ -110,7 +109,7 @@ const ResetPassword = forwardRef(({password}, ref) => {
               name='passwordConfirmation'
               id='confirm_password'
               className={styles.input}
-              value={password}
+              value={newPasswordData.passwordConfirmation}
               onChange={handleDataChange}
               isPassword={true}
             />
@@ -132,6 +131,6 @@ const ResetPassword = forwardRef(({password}, ref) => {
       </section>
     </div>
   )
-});
+};
 
 export default ResetPassword;

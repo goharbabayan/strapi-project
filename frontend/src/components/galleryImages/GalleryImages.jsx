@@ -7,11 +7,18 @@ const GalleryImages = forwardRef(({type, id, children, images, onChildFormDataCh
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
   async function handleUpload(e, type) {
-    const imageFile = e.target.files[0];
+    const isUploadedMultipleFiles = e.target.files.length > 1;
     const token = JSON.parse(localStorage.getItem('token'));
     const form = new FormData();
-    form.append('files', imageFile);
-    if (!imageFile) return;
+    if (isUploadedMultipleFiles) {
+      for (const key in e.target.files) {
+        form.append('files', e.target.files[key]);
+      };
+    } else {
+      const imageFile = e.target.files[0];
+      form.append('files', imageFile);
+    };
+    if (e.target.files.length == 0) return;
 
     await fetch(`${baseUrl}/api/upload?populate=*`, {
         method: 'POST',
@@ -22,7 +29,12 @@ const GalleryImages = forwardRef(({type, id, children, images, onChildFormDataCh
       })
       .then(resp => resp.json())
       .then(data => {
-        const updatedImages = images === null ? [data[0]] : [...images, data[0]];
+        let updatedImages;
+        if (isUploadedMultipleFiles) {
+          updatedImages = images === null ? data : [...images, ...data];
+        } else {
+          updatedImages = images === null ? [data[0]] : [...images, data[0]];
+        }
         onChildFormDataChange(type, updatedImages);
       })
     e.target.value = '';
@@ -71,6 +83,7 @@ const GalleryImages = forwardRef(({type, id, children, images, onChildFormDataCh
         </div>
         <input
           type='file'
+          multiple
           id={type === 'photos' ? 'generalImages' : 'selfyImages'}
           name={type === 'photos' ? 'generalImage' : 'selfyImage'}
           accept='image/*'
