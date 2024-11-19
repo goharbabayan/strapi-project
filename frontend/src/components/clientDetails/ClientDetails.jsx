@@ -46,7 +46,8 @@ export default function ClientDetails({ user, onChanges, errorMessage }) {
       .catch(err => console.log('err', err))
   }, [formData.favoriteProvidersIds]);
 
-  const handleStarIconClick = (id) => {
+  const handleStarIconClick = (e, id) => {
+    e.preventDefault();
     const token = JSON.parse(localStorage.getItem('token'));
     const updatedFavoritesIds = formData.favoriteProvidersIds.filter(object => object.item != id);
     const updatedProviders = favoriteProviders.filter(provider => provider.id !== id);

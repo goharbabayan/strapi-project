@@ -1,6 +1,6 @@
 import styles from './favoriteEscorts.module.css';
-import Card from '../card/Card';
 import Text from '../text/Text';
+import ProviderCard from '../providerCard/ProviderCard';
 
 const FavoriteEscorts = ({providers, title, onStarIconClick}) => {
   return (
@@ -22,17 +22,17 @@ const FavoriteEscorts = ({providers, title, onStarIconClick}) => {
         }
         {providers.length > 0 &&
           <div className={`${styles.wrapper} collections-wrap`}>
-            {providers.map((data, index) => {
-                return (
-                  <Card
-                    data={data}
-                    key={index}
-                    width={'267'}
-                    height={'332'}
-                    showStarIcon={true}
-                    onStarIconClick={onStarIconClick}
-                  />
-                )
+            {providers.map(data => {
+              return (
+                <ProviderCard
+                  key={data.id}
+                  provider={data}
+                  count={4}
+                  roleType={data.role.type}
+                  showStarIcon={true}
+                  onStarIconClick={onStarIconClick}
+                />
+              )
             })}
           </div>
         }

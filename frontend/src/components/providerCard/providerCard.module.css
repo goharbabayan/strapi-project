@@ -81,6 +81,19 @@
   line-height: 16px;
 }
 
+.starIcon {
+  display: block;
+  background-color: var(--neutral-white-n10);
+  border-radius: 10px;
+  border: 1px solid var(--neutral-white-n10);
+  padding: 8px;
+  display: flex;
+  position: absolute;
+  right: 22px;
+  top: 19px;
+  z-index: 2;
+}
+
 .services {
   display: flex;
   align-items: center;
@@ -91,6 +104,7 @@
 .otherInfo {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
 .otherInfo .text {

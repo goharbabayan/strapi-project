@@ -4,11 +4,10 @@
 }
 
 .wrapper {
-  display: grid;
-  justify-content: center;
-  grid-row-gap: 24px;
-  grid-column-gap: 22px;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 20px;
 }
 
 .heading {
@@ -24,27 +23,8 @@
   margin-block: 0 45px;
 }
 
-@media screen and (max-width: 1149px) {
-  .wrapper {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media screen and (max-width: 849px) {
-  .wrapper {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-
 @media screen and (max-width: 749px) {
   .heading {
     margin-block: 5px 10px;
-  }
-}
-
-@media screen and (max-width: 549px) {
-  .wrapper {
-    grid-template-columns: repeat(1, 1fr);
   }
 }

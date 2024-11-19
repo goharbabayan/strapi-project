@@ -5,9 +5,10 @@ import DollarIcon from '../icons/DollarIcon';
 import Link from 'next/link';
 import Text from '../text/Text';
 import Image from '../image/Image';
+import StarIcon from '../icons/StarIcon';
 import { SERVICE_PROVIDER } from '@/app/utils/constants/userRoles';
 
-const ProviderCard = ({provider, showBadge, badge, count, roleType}) => {
+const ProviderCard = ({provider, showBadge, badge, count, roleType, showStarIcon, onStarIconClick}) => {
   if (!provider) return;
   const [hourlyRate, setHourlyRate] = useState(null);
   const {
@@ -66,6 +67,9 @@ const ProviderCard = ({provider, showBadge, badge, count, roleType}) => {
                 <div className={styles.badgeContainer}>
                   <span className={styles.badge}>{badge}</span>
                 </div>
+              }
+              {showStarIcon &&
+                <StarIcon className={styles.starIcon} onClick={(e) => onStarIconClick(e, id)}/>
               }
             {url &&
                 <Image
