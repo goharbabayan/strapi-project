@@ -49,18 +49,19 @@ export default function CategoryField ({
         <div className={`${styles.categoryOptions} ${showOptions ? styles.show : ''}`}>
           <ul className={`${styles.options}  unstyled-list options`} ref={optionsRef}>
             {options.map((option, index) => (
+              option?.label || option ?
               <li key={index} className={`${styles.option} text-small`} >
                 <label className={styles.lable}>
                   <input
                     type="checkbox"
                     id={`option-${index}`}
-                    name={option.label || option}
-                    onChange={(e) => handleOnChange(e, option.value || option, name)}
-                    checked={filteredOptions[name].includes(option.value || option)}
+                    name={option?.label || option}
+                    onChange={(e) => handleOnChange(e, option?.value || option, name)}
+                    checked={filteredOptions[name].includes(option?.value || option)}
                   />
-                  {option.label || option}
+                  {option?.label || option}
                 </label>
-              </li>
+              </li> : null
             ))}
           </ul>
         </div>

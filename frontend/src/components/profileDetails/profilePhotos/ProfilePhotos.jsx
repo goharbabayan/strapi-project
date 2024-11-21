@@ -29,7 +29,7 @@ export default function ProfilePhotos({photos}) {
           />
           <Text
             tag={'span'}
-            children={'There is no photos yet.'}
+            children={'There are no photos yet.'}
             className={styles.text}
           />
         </div>

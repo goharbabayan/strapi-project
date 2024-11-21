@@ -102,7 +102,7 @@ export default function ProfileReviews ({reviews, providerId}) {
             />
             <Text
               tag={'span'}
-              children={'There is no reviews yet.'}
+              children={'There are no reviews yet.'}
               className={styles.text}
             />
           </div>

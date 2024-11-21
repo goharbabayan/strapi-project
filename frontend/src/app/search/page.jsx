@@ -98,17 +98,16 @@ export default function Search() {
 
     try {
       const response = await fetch(
-        `${baseUrl}/api/users?filters${query}&populate=*`
+        `${baseUrl}/api/users?filters${query}&filters[isApprovedByAdmin][$eq]=true&filters[role][type][$eq]=service_provider&populate=*`
       );
       const results = await response.json();
       setSearchResults(results);
       const isAllMemebersDontProvidersOrNotApprovedYet = results.every(result => result.role.type !== SERVICE_PROVIDER || !result.isApprovedByAdmin)
-
       if (results.length === 0 || isAllMemebersDontProvidersOrNotApprovedYet) {
         setNoResults(true);
       } else {
         setNoResults(false);
-      }
+      };
     } catch (err) {
       console.log(err);
     };

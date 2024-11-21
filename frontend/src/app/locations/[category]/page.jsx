@@ -10,8 +10,8 @@ import ProviderCard from '@/components/providerCard/ProviderCard';
 import Button from '@/components/button/Button';
 import Loading from '@/app/loading';
 import Text from '@/components/text/Text';
-import Banner from '@/components/banner/Banner';
 import { buildQueriesForFilteredOptions } from '@/app/utils/helpers';
+import Banner from '@/components/banner/Banner';
 
 export default function LocationCategoryPage({params}) {
   const { category } = params;
@@ -19,7 +19,8 @@ export default function LocationCategoryPage({params}) {
     desktopImage: null,
     mobileImage: null,
   });
-  const [providersList, setProvidersList] = useState([]);
+  const [providersList, setProvidersList] = useState(null);
+  const [providersDefaultList, setProvidersDefaultList] = useState([]);
   const [displayedItems, setDisplayedItems] = useState([]);
   const [categoryFieldOptions, setCategoryFieldOptions] = useState({
     city: [],
@@ -54,8 +55,10 @@ export default function LocationCategoryPage({params}) {
   }, [data]);
 
   useEffect(() => {
-    setDisplayedItems(providersList.slice(0, 12));
-    setShowLoadMore(providersList.length > 12);
+    if (providersList) {
+      setDisplayedItems(providersList.slice(0, 12));
+      setShowLoadMore(providersList.length > 12);
+    };
   }, [providersList]);
 
   const generateOptionsForFilterCategories = (results, categoryOptions) => {
@@ -104,10 +107,11 @@ export default function LocationCategoryPage({params}) {
     const city = category && category.replaceAll('-', ' ');
     try {
       const response = await fetch(
-        `${baseUrl}/api/users?filters[city][$eq]=${city}&populate=*`
+        `${baseUrl}/api/users?filters[city][$eq]=${city}&filters[isApprovedByAdmin][$eq]=true&filters[role][type][$eq]=service_provider&populate=*`
       );
       const results = await response.json();
       results && setProvidersList(results);
+      results && setProvidersDefaultList(results);
       generateOptionsForFilterCategories(results, FILTER_CATEGORIES);
     } catch (err) {
       console.log(err);
@@ -118,7 +122,7 @@ export default function LocationCategoryPage({params}) {
     const city = category && category.replaceAll('-', ' ');
     try {
       const response = await fetch(
-        `${baseUrl}/api/users?filters[city][$eq]=${city}&filters${query}&populate=*`
+        `${baseUrl}/api/users?filters[city][$eq]=${city}&filters[isApprovedByAdmin][$eq]=true&filters[role][type][$eq]=service_provider&filters${query}&populate=*`
       );
       const results = await response.json();
       results && setProvidersList(results);
@@ -145,7 +149,12 @@ export default function LocationCategoryPage({params}) {
 
   const handleApllyFilteredOptions = async () => {
     const checkIsFilteredAtLeastOneCategory = isFilteredAtleastOneCategory(filteredOptions);
-    if (!checkIsFilteredAtLeastOneCategory) return;
+    if (!checkIsFilteredAtLeastOneCategory) {
+      setProvidersList(providersDefaultList);
+      setNoResults(false);
+      return;
+    };
+
     const query = buildQueriesForFilteredOptions(filteredOptions);
     fetchUsersByFilteredOptions(query);
   };
@@ -157,28 +166,26 @@ export default function LocationCategoryPage({params}) {
         ?
           <Loading/>
         :
-          <section>
-          {(categoryData.desktopImage && categoryData.desktopImage?.url) &&
-            <div className={styles.mainWrap}>
-              <div className={styles.banner}>
-                <Banner
-                  mobileImage={categoryData?.mobileImage}
-                  desktopImage={categoryData?.desktopImage}
-                />
-                <FilterCategories
-                  showCategories={true}
-                  onApplyFilterButtonClick={handleApllyFilteredOptions}
-                  onResetFilterButtonClick={handleClearFilterOptions}
-                  filteredOptions={filteredOptions}
-                  setFilteredOptions={setFilteredOptions}
-                  categoryFieldOptions={categoryFieldOptions}
-                  sectionClassName={styles.locationPageFilter}
-                  showBreadcrumbs={true}
-                  path={`Locations / ${categoryName}`}
-                />
-              </div>
-            </div>
-          }
+        <>
+          <section className={`${styles.banner} ${!categoryData.desktopImage?.url && providersList ? styles.empty : ''}`}>
+            {(categoryData.desktopImage && categoryData.desktopImage?.url) &&
+              <Banner
+                mobileImage={categoryData?.mobileImage}
+                desktopImage={categoryData?.desktopImage}
+              />
+            }
+            <FilterCategories
+              showCategories={true}
+              onApplyFilterButtonClick={handleApllyFilteredOptions}
+              onResetFilterButtonClick={handleClearFilterOptions}
+              filteredOptions={filteredOptions}
+              setFilteredOptions={setFilteredOptions}
+              categoryFieldOptions={categoryFieldOptions}
+              sectionClassName={styles.locationPageFilter}
+              showBreadcrumbs={true}
+              path={`Locations / ${categoryName}`}
+            />
+          </section>
           <div className="page-width">
             {providersList && providersList.length > 0 &&
               <section className={`${styles.results}`}>
@@ -224,7 +231,7 @@ export default function LocationCategoryPage({params}) {
               </div>
             }
           </div>
-        </section>
+        </>
       }
     </>
   )

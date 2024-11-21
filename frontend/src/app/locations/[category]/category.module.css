@@ -2,6 +2,12 @@
   position: relative;
 }
 
+.banner.empty {
+  height: 259px;
+  width: 100%;
+  background-color: var(--neutral-n100);
+}
+
 .results {
   margin-block: 32px;
   width: 100%;
