@@ -1,10 +1,5 @@
-.container {
-  display: flex;
-  align-items: stretch;
-  justify-content: flex-start;
-  padding-block: 32px 64px;
-  gap: 22px;
-  overflow: hidden;
+.reviews {
+  padding-bottom: 24px;
 }
 
 .author {
@@ -19,7 +14,6 @@
   font-style: normal;
   font-weight: 400;
   line-height: 18px;
-  min-width: 300px;
   min-height: 60px;
   display: flex;
   flex-direction: column;
@@ -28,6 +22,7 @@
   background-color: var(--neutral-n20);
   padding: 20px;
   border-radius: 10px;
+  width: 100%;
 }
 
 .title {

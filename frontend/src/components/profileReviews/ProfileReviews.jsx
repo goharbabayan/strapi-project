@@ -23,16 +23,22 @@ export default function ProfileReviews ({reviews, providerId}) {
 
   const myBreakpoints = {
     200: {
+      slidesPerView: 1,
+    },
+    375: {
       slidesPerView: 1.2,
     },
-    481: {
-      slidesPerView: 2.2,
+    500: {
+      slidesPerView: 1.5,
+    },
+    750: {
+      slidesPerView: 1.8,
     },
     800: {
-      slidesPerView: 3.2,
+      slidesPerView: 2.2,
     },
     1024: {
-      slidesPerView: 4,
+      slidesPerView: 2.8,
     },
   };
 
@@ -57,7 +63,8 @@ export default function ProfileReviews ({reviews, providerId}) {
         />
       }
       {reviews.length > 0 ? (
-          <div className={`${styles.reviews} page-width`}>
+        <div className="page-width">
+          <div className={`${styles.reviews} profileReviews`}>
             <Swiper
               modules={[Navigation, A11y]}
               spaceBetween={24}
@@ -78,7 +85,6 @@ export default function ProfileReviews ({reviews, providerId}) {
                   <SwiperSlide
                     key={id}
                     virtualIndex={id}
-                    clssName={styles.slide}
                   >
                     <ProviderReview
                       author={author}
@@ -92,6 +98,7 @@ export default function ProfileReviews ({reviews, providerId}) {
               <SwiperNavButtons/>
             </Swiper>
           </div>
+        </div>
         ) : (
         <div className="page-width">
           <div className={styles.container}>

@@ -922,6 +922,11 @@ body.overflow-hidden {
   width: 100%;
 }
 
+.profileReviews .swiper:has(.swiper-slide:last-child),
+.reviews .swiper:has(.swiper-slide:last-child) {
+  padding-right: 43px;
+}
+
 .date {
   position: absolute;
   bottom: 10px;
@@ -931,7 +936,6 @@ body.overflow-hidden {
   padding: 2px;
   opacity: 50%;
 }
-
 
 .selectOptionsWrapper {
   position: relative;
@@ -1052,6 +1056,11 @@ body.overflow-hidden {
   .selectOptionLabel .arrow {
     bottom: 5px;
     right: 3px;
+  }
+
+  .profileReviews .swiper:has(.swiper-slide:last-child),
+  .reviews .swiper:has(.swiper-slide:last-child) {
+    padding-right: 24px;
   }
 }
 
