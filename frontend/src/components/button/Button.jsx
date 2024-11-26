@@ -1,16 +1,50 @@
 import Link from 'next/link';
+import Text from '../text/Text';
 import styles from './button.module.css';
+import FilterIcon from '../icons/Filter';
+import { PRIMARY_BUTTON } from '@/app/utils/constants/buttonTypes';
 
-// ToDo: call this button component everywhere instead of creating a new button, and add props to render different types of button
-const Button = ({ children, href, ...props }) => {
+const Button = ({
+  variant,
+  type,
+  className,
+  onClick,
+  children,
+  href,
+  textClassName,
+  Icon,
+  ...props
+}) => {
+
   if (href) {
     return (
-      <Link href={href} {...props} className={`${styles.link} ${props?.className ? props?.className : ''}`}>
-        <span>{ children }</span>
+      <Link
+        href={href}
+        className={`link ${styles.button} ${variant === PRIMARY_BUTTON ? styles.primary : styles.outlined} ${className || ''}`}
+        {...props}
+      >
+        <Text
+          tag={'span'}
+          children={children}
+        />
       </Link>
     );
   }
-  return <button type='button' {...props}>{ children }</button>;
+  return (
+    <button
+      type={type || 'button'}
+      className={`${styles.button} ${variant === PRIMARY_BUTTON ? styles.primary : styles.outlined} ${className || ''}`}
+      onClick={onClick}
+      {...props}
+    >
+      {Icon && Icon}
+      <Text
+        tag={'span'}
+        children={children}
+        className={textClassName || ''}
+      />
+    </button>
+  );
 };
 
 export default Button;

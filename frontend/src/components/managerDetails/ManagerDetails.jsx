@@ -12,7 +12,7 @@ export default function ManagerDetails ({ user, onChanges, onSubmit, errorMessag
     lastName: lastName,
     email: email,
     isApprovedByAdmin: user.isApprovedByAdmin ? user.isApprovedByAdmin : false,
-  })
+  });
 
   const handleChange = (event, noNeedToShowChanges) => {
     console.log('event.target.value: ', event.target.value);
@@ -32,7 +32,7 @@ export default function ManagerDetails ({ user, onChanges, onSubmit, errorMessag
     setFormData({...formData, [input.name]: input.value})
     setHasUnsavedChanges(true);
     onChanges(hasUnsavedChanges, {...formData, [input.name]: input.value});
-  }
+  };
 
   return (
     <div className={styles.mainWrap}>

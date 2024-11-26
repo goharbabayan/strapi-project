@@ -7,7 +7,7 @@ import { FORGOT_PASSWORD_MUTATION } from '../graphql/forgotPasswordMutation.js';
 import Layout from './layuot.jsx';
 import styles from './recover.module.css';
 import FormInput from '@/components/form/FormInput';
-import FormSubmitButton from '@/components/form/FormSubmitButton';
+import Button from '@/components/button/Button.jsx';
 
 export default function RecoverPage() {
   const formFields = [{ id: 'email', type: 'email', placeholder: 'Email', name: 'Email', value: '' }]
@@ -74,8 +74,10 @@ export default function RecoverPage() {
                 value={input.value}
               />
             ))}
-            <FormSubmitButton
-              buttonText="Reset Password"
+            <Button
+              type={'submit'}
+              children={'Reset Password'}
+              className={'submitButton'}
             />
             <Link href='/login' className={styles.loginButton}>CANCEL</Link>
             <div className={`${styles.recoverText} ${showSuccessMessage ? styles.show : ''}`}>

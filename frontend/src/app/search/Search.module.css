@@ -8,6 +8,29 @@
   background-color: var(--neutral-n100);
 }
 
+.filterButton {
+  display: flex;
+  padding: 12px;
+  gap: 8px;
+  border-radius: 10px;
+  border: 1px solid var(--neutral-n50);
+  background: var(--neutral-white-n10);
+  cursor: pointer;
+}
+
+.filterButton:hover {
+  color: var(--color-hover);
+  opacity: 90%;
+}
+
+.text {
+  color: var(--neutral-black);
+  font-family: var(--primary-bold-font);
+  font-size: 16px;
+  font-style: normal;
+  line-height: 24px;
+}
+
 .searchButtonsWrapper {
   width: 62%;
   max-width: 849px;
@@ -66,6 +89,10 @@
 }
 
 @media screen and (max-width: 749px) {
+  .text {
+    display: none;
+  }
+
   .banner.empty {
     height: 321px;
   }

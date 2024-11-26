@@ -8,9 +8,9 @@ import { RESET_PASSWORD_MUTATION } from '../graphql/resetPasswordMutation.js';
 import Layout from './layuot.jsx';
 import styles from './reset-password.module.css';
 import FormInput from '@/components/form/FormInput';
-import FormSubmitButton from '@/components/form/FormSubmitButton';
 import { navigate } from '../actions.js';
 import Loading from '../loading.js';
+import Button from '@/components/button/Button.jsx';
 
 export default function ResetPage() {
   const formFields = [
@@ -72,7 +72,11 @@ export default function ResetPage() {
                     value={input.value}
                   />
                 ))}
-                <FormSubmitButton buttonText="Reset Password"/>
+                <Button
+                  type={'submit'}
+                  children={'Reset Password'}
+                  className={'submitButton'}
+                />
                 <Link href='/login' className={styles.loginButton}>CANCEL</Link>
               </form>
             </div>

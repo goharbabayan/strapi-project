@@ -9,7 +9,7 @@ import EditIcon from '@/components/icons/Edit';
 import RemoveIcon from '@/components/icons/RemoveIcon';
 import Loading from '@/app/loading';
 import { useFetchData } from '@/app/utils/hooks/useFetch';
-import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 export default function Members ({email, id, user}) {
   const strapiBaseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
@@ -75,7 +75,11 @@ export default function Members ({email, id, user}) {
     <div className="page-width">
       <section className={`${styles.section}`}>
         <div className={`${styles.container} ${styles.buttonsWrap}`}>
-          <Button children={'Create new escort'} onClick={navigateToNewMember} className='button_general'/>
+          <Button
+            children={'Create new escort'}
+            onClick={navigateToNewMember}
+            variant={'general'}
+          />
         </div>
       </section>
       <section>
@@ -98,17 +102,10 @@ export default function Members ({email, id, user}) {
                       className={'text-small'}
                       children={index+1}
                     />
-                    <Button
+                    <Link
                       href={`${user}/members/${member.username}`}
-                      children={
-                        <Text
-                          tag={'h4'}
-                          className={'text-middle'}
-                          children={member.username}
-                        />
-                      }
-                      className='unstyled-anchor'
-                  />
+                      className={`text-middle link ${styles.text}`}
+                    >{member.username}</Link>
                   </div>
                   <div className={styles.editButtons}>
                     <span className={`text-middle ${styles.approvedStatus} ${!isApproved ? styles.isNotApproved : ''}`}>{`${!isApproved ? 'Not approved': 'Approved'}`}</span>

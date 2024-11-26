@@ -5,6 +5,7 @@ import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import styles from './blog.module.css';
 import Button from '@/components/button/Button';
 import LoadMoreButton from '@/components/loadMoreButton/LoadMoreButton';
+import Link from 'next/link';
 
 function Blog() {
   const [blog, setBlog] = useState([]);
@@ -75,7 +76,12 @@ function Blog() {
                         </div>
                       </div>
                     }
-                    <Button href={`/articles/${article.id}`} className={`${styles.button} link`}>Read more »</Button>
+                    <Link
+                      href={`/articles/${article.id}`}
+                      className={`${styles.button}`}
+                    >
+                      Read more »
+                    </Link>
                   </div>
                     <p className={styles.date}>{articleDate}</p>
                 </div>

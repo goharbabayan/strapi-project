@@ -130,10 +130,10 @@ export default function Header() {
                         {atLeastOneButtonExists && !isMobileLayout &&
                           headerData?.buttons.map((button, index) =>
                             <Button
-                              children={button.title}
-                              href={button.link || ''}
-                              className={index % 2 === 0 ? `${styles.button} button_general` : `${styles.button} button_main`}
                               key={index}
+                              children={button.title}
+                              {...(button.link && { href: button.link })}
+                              variant={`${index === 0 ? 'general' : 'main'}`}
                             />
                           )
                         }

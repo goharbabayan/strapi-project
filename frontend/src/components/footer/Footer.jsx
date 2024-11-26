@@ -7,6 +7,7 @@ import styles from './footer.module.css';
 import Arrow from '../icons/Arrow';
 import Text from '../text/Text';
 import Button from '../button/Button';
+import Link from 'next/link';
 
 export default function Footer() {
   const [logo, setLogo] = useState(null);
@@ -66,8 +67,8 @@ export default function Footer() {
                         const {name, url} = item.attributes;
                         if (index < 12) return (
                           <div className={styles.navItem} key={index}>
-                            <Button
-                              href={url}
+                            <Link
+                              {...(url && { href: url })}
                               children={name}
                               className={styles.link}
                             />

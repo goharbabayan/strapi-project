@@ -4,6 +4,7 @@ import styles from './subscribeModal.module.css';
 import { useState } from 'react';
 import { validateEmail } from '@/app/utils/validation';
 import WhenCanWeMeetIcon from '@/components/icons/WhenCanWeMeetIcon';
+import Button from '@/components/button/Button';
 
 export default function SubscribeModal({setShow, username, schedule}) {
   const [emailValue, setEmailValue] = useState('');
@@ -65,7 +66,11 @@ export default function SubscribeModal({setShow, username, schedule}) {
               placeholder="Email"
             />
             {showError && <span className={styles.subscribeModalError}>Fill valid email</span>}
-            <button className={styles.subscribeModalButton} onClick={() => handleSubscribeToAvailability()}>Notify Me!</button>
+            <Button
+              className={styles.subscribeModalButton}
+              onClick={() => handleSubscribeToAvailability()}
+              children={'Notify Me!'}
+            />
             {showSuccessMessage && <span className={styles.subscribeModalSuccess}>You have subscribed successfully !</span>}
           </div>
         </div>

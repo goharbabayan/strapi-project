@@ -80,7 +80,7 @@ export default function MyAccountPage() {
         return;
       }
 
-      const isUsernameLengthValid = isInputLengthValid(userUpdatedFormData.username, 3);
+      const isUsernameLengthValid = isInputLengthValid(userformData.username, 3);
       if (!isUsernameLengthValid) {
         setShowSaveResetChangeBar(false);
         setNotificationBarMessageAndStatus({
@@ -268,8 +268,9 @@ export default function MyAccountPage() {
                 {!isApprovedByAdmin &&
                   <Button
                     type='submit'
-                    className={`button_main ${styles.submitButton}`}
+                    variant={'main'}
                     children={'Request to review'}
+                    className={styles.button}
                   />
                 }
               </div>

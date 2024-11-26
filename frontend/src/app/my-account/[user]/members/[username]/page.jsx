@@ -313,13 +313,19 @@ export default function Member ({params}) {
         )}
         <section className={`${styles.section} page-width`}>
           <div className={`${styles.container} ${styles.buttonsWrap}`}>
-            <Button children={'Back to dashboard'} onClick={navigateToDashboard} className='button_general'/>
+            <Button
+              children={'Back to dashboard'}
+              onClick={navigateToDashboard}
+              variant={'general'}
+              className={styles.btn}
+            />
             {!isApprovedByAdmin &&
               <div className={styles.button}>
                 <Button
                   type='submit'
-                  className={`button_main ${styles.submitButton}`}
                   children={'Request to review'}
+                  variant={'main'}
+                  className={styles.btn}
                 />
               </div>
             }

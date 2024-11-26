@@ -5,7 +5,6 @@ import { useQuery } from '@apollo/client';
 import { GET_SEARCH_PAGE_BANNER_QUERIES } from '../graphql/searchPageBannerQueries';
 import styles from './Search.module.css';
 import SearchInput from '@/components/searchInput/SearchInput';
-import FilterButton from '@/components/filterButton/FilterButton';
 import ProviderCard from '@/components/providerCard/ProviderCard';
 import Text from '@/components/text/Text';
 import Button from '@/components/button/Button';
@@ -14,6 +13,7 @@ import FilterCategories from '@/components/filterCategories/FilterCategories';
 import { buildQueriesForFilteredOptions } from '../utils/helpers';
 import { SERVICE_PROVIDER } from '../utils/constants/userRoles';
 import Banner from '@/components/banner/Banner';
+import FilterIcon from '@/components/icons/Filter';
 
 export default function Search() {
   const [desktopImage, setDesktopImage] = useState(null);
@@ -135,7 +135,13 @@ export default function Search() {
                 setSearchResults={setSearchResults}
                 setNoResults={setNoResults}
               />
-              <FilterButton onClick={handleFilterButtonClick}/>
+              <Button
+                className={styles.filterButton}
+                onClick={handleFilterButtonClick}
+                Icon={<FilterIcon/>}
+                children={'Filter'}
+                textClassName={styles.text}
+              />
             </div>
           </section>
           <FilterCategories
@@ -161,7 +167,7 @@ export default function Search() {
                     <Button
                       onClick={handleLoadMore}
                       children={'Show more'}
-                      className="button_main"
+                      variant={'main'}
                     />
                   </div>
                 )}
@@ -182,7 +188,7 @@ export default function Search() {
               />
               <Button
                 children={'Clear filter'}
-                className="button_general"
+                variant={'general'}
                 onClick={handleClearFilterOptions}
               />
             </section>

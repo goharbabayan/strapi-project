@@ -122,9 +122,10 @@ export default function ProfileReviewPopup({setShowReviewPopup, providerId}) {
         children={'Your review successfully submited.'}
       />
       <Button
-        className={`${styles.submitButton} button_main`}
+        className={styles.submitButton}
         onClick={handleAddReview}
         children={'Add a review'}
+        variant={'main'}
       />
       </div>
     </div>

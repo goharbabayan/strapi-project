@@ -3,7 +3,6 @@
 import { createContext, Suspense, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Header from '@/components/header/Header';
-import AnnouncementBar from '@/components/announcementBar/AnnouncementBar';
 import Client from '@/lib/apolloClient';
 import { ApolloProvider } from '@apollo/client';
 import Loading from './loading';
@@ -35,7 +34,6 @@ export default function RootLayout({ children }) {
         </head>
       <body>
         <ApolloProvider client={Client}>
-          {/* <AnnouncementBar/> */}
           <AuthContext.Provider value={{customerToken, setCustomerToken, loggedInUserData, setLoggedInUserData}}>
             {!isProfileReviewPage && <Header />}
             <main className="main-wrapper">{children}</main>

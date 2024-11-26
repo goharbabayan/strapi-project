@@ -12,6 +12,7 @@ import ProviderCard from '../providerCard/ProviderCard';
 import Text from '../text/Text';
 import Button from '../button/Button';
 import { SERVICE_PROVIDER } from '@/app/utils/constants/userRoles';
+import Link from 'next/link';
 
 export default function Providers ({
   sectionName,
@@ -84,12 +85,13 @@ export default function Providers ({
                   {categories.map(category => {
                     const {id, name, link} = category;
                     return (
-                      <Button
+                      <Link
                         key={id}
-                        className={`${styles.category}`}
+                        className={`link ${styles.category}`}
                         {...(link && { href: link })}
-                        children={name}
-                      />
+                      >
+                        {name}
+                        </Link>
                     )
                   })}
                 </div>

@@ -11,6 +11,10 @@
   margin-top: 25px;
 }
 
+.text {
+  color: var(--neutral-black);
+}
+
 .list li {
   display: flex;
   align-items: center;

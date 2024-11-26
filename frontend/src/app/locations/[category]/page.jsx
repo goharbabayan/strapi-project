@@ -205,7 +205,7 @@ export default function LocationCategoryPage({params}) {
                     <Button
                       onClick={handleLoadMore}
                       children={'Show more'}
-                      className="button_main"
+                      variant={'main'}
                     />
                   </div>
                 )}
@@ -225,8 +225,8 @@ export default function LocationCategoryPage({params}) {
                 />
                 <Button
                   children={'Clear filter'}
-                  className="button_general"
                   onClick={handleClearFilterOptions}
+                  variant={'general'}
                 />
               </div>
             }

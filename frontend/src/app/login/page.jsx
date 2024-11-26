@@ -6,8 +6,8 @@ import { navigate } from '../../app/actions';
 import Loading from '../loading';
 import styles from './login.module.css';
 import FormInput from '@/components/form/FormInput';
-import FormSubmitButton from '@/components/form/FormSubmitButton';
 import { AuthContext } from '../Context';
+import Button from '@/components/button/Button';
 
 export default function LoginPage() {
   const {setCustomerToken, setLoggedInUserData} = useContext(AuthContext);
@@ -133,7 +133,11 @@ export default function LoginPage() {
                     value={input.value}
                   />
                 ))}
-                <FormSubmitButton buttonText={"Login"}/>
+                <Button
+                  type={'submit'}
+                  children={'Login'}
+                  className={styles.submitButton}
+                />
                 <Link href='/recover' className={`${styles.link} ${styles.forgotPassword}`}>Forgot password?</Link>
                 <div className={styles.loginText}>
                   <Link href='/signup' className={styles.link}>I don't have an account.</Link>

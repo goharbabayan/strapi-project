@@ -61,6 +61,10 @@
   flex-shrink: 0;
 }
 
+.category:hover {
+  opacity: 60%;
+}
+
 .categories:last-child {
   padding-right: 48px;
 }

@@ -29,12 +29,12 @@ export default function FilterCategories({
           <div className={styles.buttons}>
             <Button
               children={'Reset filters'}
-              className="button_general"
+              variant={'general'}
               onClick={onResetFilterButtonClick}
             />
             <Button
               children={'Apply filters'}
-              className="button_main"
+              variant={'main'}
               onClick={onApplyFilterButtonClick}
             />
           </div>

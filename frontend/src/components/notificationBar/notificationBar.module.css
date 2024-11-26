@@ -3,7 +3,7 @@
   display: flex;
   position: fixed;
   top: 0;
-  height: var(--notification-bar-height);
+  padding-block: 10px;
   width: 100%;
   background: var(--neutral-n90);
   left: 0;
@@ -37,7 +37,7 @@
 
 @media screen and (max-width: 749px) {
   .notificationBar {
-    padding: 7px 24px;
+    padding: 10px 24px;
   }
 
   .notificationText {

@@ -49,7 +49,7 @@
   border-radius: 0;
 }
 
-.submitButton {
+.form .submitButton {
   display: inline-block;
   width: 100%;
   padding: 14px 24px;
@@ -64,6 +64,7 @@
   text-transform: uppercase;
   color: var(--neutral-white-n10);
   background-color: var(--neutral-black);
+  outline: none;
 }
 
 .link {

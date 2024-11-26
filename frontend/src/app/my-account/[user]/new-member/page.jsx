@@ -321,13 +321,17 @@ export default function NewMember({params}) {
         )}
         <section className='section page-width'>
           <div className='container buttonsWrap'>
-            <Button children={'Back to dashboard'} onClick={navigateToDashboard} className='button_general'/>
+            <Button
+              children={'Back to dashboard'}
+              onClick={navigateToDashboard}
+              variant={'general'}
+            />
             {isMemberRegistered &&
               <div className={styles.buttonWrap}>
                 <Button
                   type='submit'
-                  className={`button_main ${styles.submitButton}`}
                   children={'Request to review'}
+                  variant={'main'}
                 />
               </div>
             }

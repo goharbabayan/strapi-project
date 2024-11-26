@@ -20,6 +20,7 @@
   font-family: var(--primary-bold-font);
   border: none;
   cursor: pointer;
+  margin: auto;
 }
 
 .notifyModalTitle {

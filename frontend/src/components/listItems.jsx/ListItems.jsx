@@ -3,6 +3,7 @@ import styles from './listItems.module.css';
 import Text from '../text/Text';
 import ArrowDown from '../icons/arrowDown/ArrowDown';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 export default function ListItems({
   title,
@@ -49,13 +50,13 @@ export default function ListItems({
               {items.map(item => {
                 const {id, link, name} = item
                 return name ?
-                  <Button
+                  <Link
                     key={id}
-                    href={link || ''}
-                    className={`${styles.link} unstyled-anchor`}
+                    {...(link && { href: link })}
+                    className={styles.link}
                   >
                     {name}
-                  </Button>
+                  </Link>
                 :
                   null;
                 }

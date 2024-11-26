@@ -52,28 +52,16 @@
   margin-bottom: 24px;
 }
 
-.button {
+.info .button {
   display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  border: 1px solid var(--neutral-white-n10);
-  background-color: var(--neutral-white-n10);
-  padding: 14px 24px;
-  color: var(--color-main);
-  font-family: var(--primary-bold-font);
-  font-size: 16px;
-  font-style: normal;
-  line-height: 20px;
+  cursor: pointer;
 }
 
 .button.withBannerLink {
-  cursor: pointer;
   pointer-events: none;
 }
 
 .button.withLink {
-  cursor: pointer;
   pointer-events: auto;
 }
 

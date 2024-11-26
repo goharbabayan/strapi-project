@@ -2,6 +2,7 @@ import styles from './whenCanWeMeetModal.module.css';
 import SubscribeModal from './subscribeModal/SubscribeModal';
 import { useEffect, useState } from 'react';
 import WhenCanWeMeetIcon from '@/components/icons/WhenCanWeMeetIcon';
+import Button from '@/components/button/Button';
 
 export default function WhenCanWeMeetModal({username, schedule}) {
   const [modalShow, setModalShow] = useState(false);
@@ -25,7 +26,11 @@ export default function WhenCanWeMeetModal({username, schedule}) {
         />
         <h3 className={styles.notifyModalTitle}>Subscribe to my availability</h3>
         <p className={styles.notifyModalDesc}>Be notified when {username} becomes available for bookings on short notice.</p>
-        <button onClick={() => setModalShow(true)} className={styles.notifyModalButton}>Subscribe Now</button>
+        <Button
+          onClick={() => setModalShow(true)}
+          className={styles.notifyModalButton}
+          children={'Subscribe Now'}
+        />
       </div>
       {modalShow && <SubscribeModal username={username} setShow={setModalShow} schedule={schedule} />}
     </div>

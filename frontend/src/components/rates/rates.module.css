@@ -101,7 +101,6 @@
 
 .smallButton {
   align-self: end;
-  font-size: 12px;
 }
 
 .priceInput {
@@ -122,12 +121,9 @@
 }
 
 @media screen and (max-width: 749px)  {
-  .button {
-    font-size: 12px;
-  }
-
+  .button,
   .smallButton {
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .title {

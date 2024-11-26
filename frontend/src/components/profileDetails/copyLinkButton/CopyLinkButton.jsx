@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import LinkIcon from '@/components/icons/LinkIcon';
 import styles from './copyLinkButton.module.css';
+import Button from '@/components/button/Button';
 
 export default function CopyLinkButton() {
   const [isCopied, setIsCopied] = useState(false);
@@ -20,11 +21,12 @@ export default function CopyLinkButton() {
   };
 
   return (
-    <button onClick={handleCopyButtonClick} className={styles.copyButton}>
-      <LinkIcon />
+    <Button
+      onClick={handleCopyButtonClick}
+      className={styles.copyButton}
+      Icon={<LinkIcon />}
+    >
       {isCopied ? 'Copied!' : 'Copy Profile Link'}
-    </button>
+    </Button>
   );
-}
-
-;
+};

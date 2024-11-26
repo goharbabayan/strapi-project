@@ -53,7 +53,8 @@ export default function ProfileReviews ({reviews, providerId}) {
         <Button
           children={'Add Review'}
           onClick={handleShowReviewPopup}
-          className={`${styles.button} button_general`}
+          className={styles.button}
+          variant={'general'}
         />
       </div>
       {showReviewPopup &&

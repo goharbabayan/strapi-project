@@ -39,7 +39,7 @@
 }
 
 @media screen and (max-width: 549px) {
-  .submitButton {
+  .info .button {
     font-size: 14px;
     padding: 5px 10px;
   }

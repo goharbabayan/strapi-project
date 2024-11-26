@@ -1,3 +1,4 @@
+import Button from '../button/Button';
 import InputField from '../inputField/InputField';
 import Text from '../text/Text';
 import styles from './rates.module.css';
@@ -107,17 +108,20 @@ export default function Rates ({title, type, memberFormData, memberIndex, onChil
                   onChange={(e) => handleChange(e, index, 'additionalInfo', type)}
                 />
               </div>
-              <button
+              <Button
                 type='button'
-                className={`${styles.smallButton} btn_small  button`}
-                data-index={memberIndex}
+                className={`${styles.smallButton} btn_small button`}
                 onClick={(e) => handleRemoveRate(e, index, type)}
-              >
-                Remove
-              </button>
+                children={'Remove'}
+              />
             </div>
           ))}
-          <button type='button' className={`${styles.button} btn`} data-index={memberIndex} onClick={(e) => handleAddRate(e, type)}>ADD NEW RATE HERE</button>
+          <Button
+            type='button'
+            className={`${styles.button} btn`}
+            onClick={(e) => handleAddRate(e, type)}
+            children={'ADD NEW RATE HERE'}
+          />
         </div>
         {error &&
           <Text

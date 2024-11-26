@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useState } from 'react';
 import Button from '@/components/button/Button.jsx';
 import FormInput from '@/components/form/FormInput';
-import FormSubmitButton from '@/components/form/FormSubmitButton';
 import Layout from './layout.jsx';
 import styles from './Signup.module.css';
 
@@ -205,7 +204,11 @@ export default function SignupPage() {
                 formData={formData}
               />
             ))}
-            <FormSubmitButton buttonText={"Sign up"}/>
+            <Button
+              type={'submit'}
+              children={'Sign up'}
+              className={'submitButton'}
+            />
             <div className={`${styles.signupText}`}>
               <Link href='/login' className={styles.link}>Already have an account?</Link>
               <Link href='/login' className={styles.loginButton}>Login</Link>
@@ -214,7 +217,11 @@ export default function SignupPage() {
           <div className={`${styles.succesfullMessage} ${showSuccessMessage ? styles.show : ''}`}>
             <h2 className={`${styles.varificationMessage}`}>{`We've sent a verification email to your '${userData.email}' email. Please check your inbox (including spam) and click the link to activate your account and log in.`}</h2>
             <p>Didn't receive a verification email? No worries, you can request a new one below.</p>
-            <Button className={styles.loginButton} onClick={handleButtonClick}>Resend</Button>
+            <Button
+              className={styles.loginButton}
+              onClick={handleButtonClick}
+              children={'Resend'}
+            />
             <div className={`${styles.message}`}>
              <span className={`${styles.errorMessage} ${showResendErrorMessage ? styles.show : ''}`}>{showResendErrorMessage.text}</span>
              <span className={`${styles.succesfullMessage} ${showResendSuccesfullMessage ? styles.show : ''}`}>Email confirmation sent successfully</span>

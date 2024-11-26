@@ -2,7 +2,6 @@
   --swiper-theme-color: #333333 !important;
   --swiper-menuBar-width-size: 32px;
   --swiper-menuBar-height-size: 32px;
-  --notification-bar-height: 45px;
   --headings-font: 'Queensila';
   --primary-font: 'Urbanist';
   --primary-bold-font: 'UrbanistBold';
@@ -210,6 +209,57 @@ body.overflow-hidden {
   padding: 0 24px;
 }
 
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 24px;
+  margin-block: 40px;
+}
+
+.button {
+  background-color: var(--neutral-n30);
+  border: none;
+  cursor: pointer;
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 10px 16px;
+  border-radius: 5px;
+  color: var(--neutral-black);
+  transition: opacity 0.2s ease-in-out;
+}
+
+.button:hover {
+  opacity: 60%;
+}
+
+form .submitButton {
+  display: inline-block;
+  width: 100%;
+  padding: 14px 24px;
+  font-family: var(--primary-font);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  text-transform: uppercase;
+  color: var(--neutral-white-n10);
+  background-color: var(--neutral-black);
+}
+
+.buttonChangePassword {
+  width: 100%;
+}
+
 .btn_general {
   font-family: var(--primary-font);
   font-size: 16px;
@@ -396,50 +446,6 @@ body.overflow-hidden {
 
 .unstyled-anchor {
   text-decoration: none;
-}
-
-.button_main {
-  background-color: var(--color-main);
-  border-radius: 10px;
-  display: flex;
-  padding: 10px 16px;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  color: var(--neutral-white-n10);
-  font-family: var(--primary-bold-font);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: normal;
-  line-height: 20px;
-  border: none;
-}
-
-.button_general {
-  background-color: var(--neutral-white-n10);
-  border-radius: 10px;
-  display: flex;
-  padding: 10px 16px;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  color: var(--color-main);
-  font-family: var(--primary-bold-font);
-  font-size: 16px;
-  font-style: normal;
-  line-height: 20px;
-  outline: 1px solid var(--color-main);
-  border: none;
-}
-
-.button_main:hover {
-  background-color: var(--color-hover);
-  opacity: 80%;
-}
-
-.button_general:hover {
-  color: var(--color-hover);
-  opacity: 80%;
 }
 
 .link {
@@ -834,20 +840,6 @@ body.overflow-hidden {
   font-size: 12px;
   top: 100%;
   right: 0;
-}
-
-.button {
-  background-color: var(--neutral-n30);
-  border: none;
-  cursor: pointer;
-}
-
-.button:hover {
-  opacity: 60%;
-}
-
-.buttonChangePassword {
-  width: 100%;
 }
 
 .error {

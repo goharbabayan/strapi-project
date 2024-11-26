@@ -126,7 +126,11 @@ const ResetPassword = () => {
           />
         </div>
         <div className={`${styles.buttonWrap}`}>
-          <Button className={`btn button`} onClick={handleChangePassword}>Save new password</Button>
+          <Button
+            className={'btn button'}
+            onClick={handleChangePassword}
+            children={'Save new password'}
+          />
         </div>
       </section>
     </div>

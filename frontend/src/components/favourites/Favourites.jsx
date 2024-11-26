@@ -138,7 +138,6 @@ export default function Favourites ({
           <input
             type='text'
             name='options'
-            id='optionInput'
             ref={inputRef}
             onClick={handleClick}
             onChange={handleChange}

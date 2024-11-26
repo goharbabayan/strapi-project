@@ -161,18 +161,18 @@ export default function ProfileReview() {
       />
       <div className={styles.buttons}>
         <Button
-          className={`button_main ${styles.button}`}
+          className={styles.button}
           onClick={() => handleButtonClick('accept')}
-        >
-          Accept
-        </Button>
+          variant={'main'}
+          children={'Accept'}
+        />
         <Button
           href={`mailto:${user?.email}`}
-          className={`button_general ${styles.button}`}
+          className={styles.button}
           onClick={() => handleButtonClick('decline')}
-        >
-          Decline
-        </Button>
+          variant={'general'}
+          children={'Decline'}
+        />
       </div>
       <Text
         className={`${styles.message} ${showMessage ? styles.show : ''}`}
