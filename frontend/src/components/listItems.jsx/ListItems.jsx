@@ -46,7 +46,7 @@ export default function ListItems({
               </div>
 
             }
-            <div className={`${styles.wrapper} ${isOpen ? styles.show : ''}`}>
+            <div className={`${styles.wrapper} ${isOpen ? styles.show : ''} ${items.length < 9 ? styles.centered : ''}`}>
               {items.map(item => {
                 const {id, link, name} = item
                 return name ?

@@ -441,7 +441,7 @@ form .submitButton {
   list-style: none;
   padding: 0;
   scrollbar-width: thin;
-  scrollbar-color: #ccc #eee;
+  scrollbar-color: var(--neutral-n70) var(--neutral-n90);
 }
 
 .unstyled-anchor {

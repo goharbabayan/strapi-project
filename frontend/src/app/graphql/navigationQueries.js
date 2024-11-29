@@ -12,11 +12,11 @@ const GET_NAVIGATION_QUERIES = gql`
                 attributes {
                   title
                   link
-                  level_2 {
+                  level_2(pagination: {limit: 100}) {
                     id
                     title
                     link
-                    level_3 {
+                    level_3(pagination: {limit: 100}) {
                       id
                       title
                       link

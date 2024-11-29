@@ -18,7 +18,7 @@ const GET_HEADER_QUERIES = gql`
           announcement_bar {
             id
             title
-            announcement_bar_links {
+            announcement_bar_links(pagination: {limit: 14}) {
               id
               name
               link

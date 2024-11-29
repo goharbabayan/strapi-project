@@ -112,14 +112,20 @@ export default function Menu({
                       children={menuItem.title}
                     />
                   }
-                  {hasNextLevel &&
+                  {hasNextLevel && isMobileLayout &&
                     <ArrowDown
                       isOpen={isOpen}
-                      color={(level === 2 && !isMobileLayout) ? '#FFF' : null}
                       dataId={id}
                     />
                   }
                 </div>
+                {hasNextLevel && !isMobileLayout &&
+                  <ArrowDown
+                    isOpen={isOpen}
+                    color={level === 2 ? '#FFF' : null}
+                    dataId={id}
+                  />
+                }
                 {isMobileLayout ?
                   isOpen && hasNextLevel && (
                     <div className={`${styles.submenuWrapper}`}>

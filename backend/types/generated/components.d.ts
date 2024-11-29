@@ -110,7 +110,13 @@ export interface ElementsCollection extends Schema.Component {
   };
   attributes: {
     title: Attribute.String;
-    announcement_bar_links: Attribute.Component<'block.category', true>;
+    announcement_bar_links: Attribute.Component<'block.category', true> &
+      Attribute.SetMinMax<
+        {
+          max: 14;
+        },
+        number
+      >;
   };
 }
 

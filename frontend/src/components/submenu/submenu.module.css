@@ -2,7 +2,7 @@
   list-style: none;
   padding: 0;
   scrollbar-width: thin;
-  scrollbar-color: #ccc #eee;
+  scrollbar-color: var(--neutral-n70) var(--neutral-n90);
 }
 
 @media screen and (min-width: 850px) {
@@ -31,7 +31,7 @@
     top: 24px;
     left: 300px;
     padding-bottom: 40px;
-    height: 100%;
+    height: calc(100% - 24px);
     z-index: 99;
     width: calc(100% - 300px);
   }
@@ -48,7 +48,7 @@
     width: 100%;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: #9e9e9e rgb(76 76 76);
+    scrollbar-color: var(--neutral-n70) var(--neutral-n90);
   }
 
   .childWrapper {

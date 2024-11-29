@@ -13,7 +13,8 @@
       "displayName": "category",
       "type": "component",
       "repeatable": true,
-      "component": "block.category"
+      "component": "block.category",
+      "max": 14
     }
   }
 }

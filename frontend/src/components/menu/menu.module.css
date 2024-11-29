@@ -14,7 +14,7 @@
   list-style: none;
   padding: 0;
   scrollbar-width: thin;
-  scrollbar-color: #ccc #eee;
+  scrollbar-color: var(--neutral-n70) var(--neutral-n90);
 }
 
 .link {
@@ -34,7 +34,6 @@
 
 .menuItem {
   display: flex;
-  column-gap: 8px;
 }
 
 @media screen and (min-width: 850px) {
@@ -52,13 +51,13 @@
     min-width: 168px;
     row-gap: 24px;
     padding-block: 24px;
-    height: 100%;
     position: sticky;
     top: 0;
     flex-grow: 1;
     display: inline-flex;
     opacity: 0;
     height: 0;
+    overflow-y: auto;
   }
 
   .grandchildList {
@@ -80,9 +79,8 @@
   }
 
   .submenu.show {
-    max-height: 100%;
+    max-height: calc(100% - var(--header-height));
     opacity: 1;
-    height: calc(100vh / 2);
     overflow-y: auto;
   }
 
@@ -100,8 +98,12 @@
     opacity: 1;
   }
 
+  .menuItem {
+    margin-right: 8px;
+  }
+
   .menuItem.child, .menuItem.grandChild {
-    min-width: 168px;
+    width: 220px;
     justify-content: space-between;
   }
 
@@ -132,7 +134,7 @@
   }
 
   .title {
-    width: calc(100% - 32px);
+    width: calc(100% - 24px);
   }
 
   .childList, .grandchildList {

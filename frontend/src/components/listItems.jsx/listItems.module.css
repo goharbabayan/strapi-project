@@ -16,6 +16,10 @@
   display: flex;
   padding: 10px 0;
   align-items: center;
+  justify-content: space-between;
+}
+
+.wrapper.centered {
   column-gap: 40px;
   justify-content: center;
 }
