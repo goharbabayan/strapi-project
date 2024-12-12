@@ -26,7 +26,7 @@
 }
 
 .label, .input, .selectClassName {
-  color: var(--neutral-black);
+  color: var(--neutral-n100);
   font-family: var(--primary-font);
   font-size: 16px;
   font-style: normal;
@@ -36,7 +36,7 @@
 
 .label .selectClassName,
 .label .input {
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 .selectClassName {
@@ -99,6 +99,8 @@
 }
 
 .showPasswordButton {
+  display: inline-block;
+  margin-top: 4px;
   font-size: 12px;
   cursor: pointer;
 }
@@ -108,7 +110,7 @@
 }
 
 .input.invalid {
-  border-color: #9b0a0a;
+  border-color: var(--red-r5);
 }
 
 @media screen and (max-width: 749px) {

@@ -6,7 +6,7 @@ export default function ContactDetails ({formData, onChange, role, errorMessage}
       {role === 'service-provider' &&
         <div className='formGroup email socialLink'>
           <InputField
-            label='Email Address*'
+            label='Email Address'
             type='text'
             name='email'
             id='email'
@@ -14,11 +14,12 @@ export default function ContactDetails ({formData, onChange, role, errorMessage}
             inputClassName='inputEmail'
             disabled={true}
             errorMessage={errorMessage}
+            isRequired={true}
           />
         </div>
       }
       <InputField
-        label='Phone Number*'
+        label='Phone Number'
         type='number'
         name='phoneNumber'
         id='phoneNumber'

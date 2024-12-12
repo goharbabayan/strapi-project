@@ -43,3 +43,65 @@ export const buildQueriesForFilteredOptions = (data) => {
 export const isInputLengthValid = (inputValue, requiredLength) => {
   return inputValue.length >= requiredLength;
 };
+
+const emailRegex = /^[a-zA-Z0-9._%±]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/;
+
+export const emailValidation = (value) => {
+  if (!value) return {
+    isValid: false,
+    errorMessage: `Email is required.`
+  };
+  if (emailRegex.test(value) === false) return {
+    isValid: false,
+    errorMessage: 'Email is invalid.'
+  }
+  return {
+    isValid: true,
+    errorMessage: '',
+  }
+};
+
+export const inputValidation = (fieldName, value, requiredLength) => {
+  let isUsername = false;
+  if(fieldName === 'Username') isUsername = true;
+
+  if (!value) return {
+    isValid: false,
+    errorMessage: `${fieldName} is required.`
+  };
+  if (value.includes(' ') && !isUsername) return {
+    isValid: false,
+    errorMessage: `${fieldName} is invalid.`
+  };
+  if (value.length < requiredLength) return {
+    isValid: false,
+    errorMessage: `${fieldName} must be at least ${requiredLength} characters.`
+  };
+  return {
+    isValid: true,
+    errorMessage: '',
+  }
+};
+
+export const confirmPasswordValidation = (confirmPasswordValue, passwordValue) => {
+  if (!confirmPasswordValue) return {
+    isValid: false,
+    errorMessage: 'Password confirmation is required.'
+  };
+  if (confirmPasswordValue.includes(' ')) return {
+    isValid: false,
+    errorMessage: 'Password confirmation is invalid.'
+  };
+  if (confirmPasswordValue !== passwordValue) return {
+    isValid: false,
+    errorMessage: 'Passwords do not match.'
+  };
+  if (confirmPasswordValue.length < 6) return {
+    isValid: false,
+    errorMessage: 'Password confirmation must be at least 6 characters.'
+  };
+  return {
+    isValid: true,
+    errorMessage: '',
+  }
+};

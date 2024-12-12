@@ -115,7 +115,7 @@ export default function Providers ({
                 {atLeastOneCardExists &&
                   providers.map((provider, index) => {
                     const { role: { data: { attributes: { type } } }, isApprovedByAdmin } = provider;
-                    if (type !== SERVICE_PROVIDER || !isApprovedByAdmin) return;
+                    if (type !== SERVICE_PROVIDER.type || !isApprovedByAdmin) return;
 
                     return (
                       <SwiperSlide key={index} virtualIndex={index}>

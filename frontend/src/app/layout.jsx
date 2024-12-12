@@ -5,10 +5,10 @@ import { usePathname } from 'next/navigation';
 import Header from '@/components/header/Header';
 import Client from '@/lib/apolloClient';
 import { ApolloProvider } from '@apollo/client';
-import Loading from './loading';
 import Footer from '@/components/footer/Footer';
 import globalStyles from '../app/global.css';
 import { AuthContext } from './Context';
+import { HIDE_FOOTER_FROM_SELECTED_PAGES } from './utils/constants/hideHeaderAndFooterPages';
 
 export default function RootLayout({ children }) {
   const [customerToken, setCustomerToken] = useState('');
@@ -37,7 +37,7 @@ export default function RootLayout({ children }) {
           <AuthContext.Provider value={{customerToken, setCustomerToken, loggedInUserData, setLoggedInUserData}}>
             {!isProfileReviewPage && <Header />}
             <main className="main-wrapper">{children}</main>
-            <Footer />
+            {HIDE_FOOTER_FROM_SELECTED_PAGES.every(pagePathname => pagePathname !== pathname) && <Footer/>}
           </AuthContext.Provider>
         </ApolloProvider>
       </body>

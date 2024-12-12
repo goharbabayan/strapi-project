@@ -84,7 +84,7 @@ const ResetPassword = () => {
         <div className={`${styles.container}`}>
           <div className={`${styles.passwordContainer} ${styles.newPassword}`}>
             <InputField 
-              label='Current Password*'
+              label='Current Password'
               type='password'
               name='currentPassword'
               id='current_password'
@@ -92,9 +92,10 @@ const ResetPassword = () => {
               value={newPasswordData.currentPassword}
               onChange={handleDataChange}
               isPassword={true}
+              isRequired={true}
             />
             <InputField 
-              label='New Password*'
+              label='New Password'
               type='password'
               name='password'
               id='password'
@@ -102,9 +103,10 @@ const ResetPassword = () => {
               value={newPasswordData.password}
               onChange={handleDataChange}
               isPassword={true}
+              isRequired={true}
             />
             <InputField 
-              label='Confirm Password*'
+              label='Confirm Password'
               type='password'
               name='passwordConfirmation'
               id='confirm_password'
@@ -112,6 +114,7 @@ const ResetPassword = () => {
               value={newPasswordData.passwordConfirmation}
               onChange={handleDataChange}
               isPassword={true}
+              isRequired={true}
             />
           </div>
           <Text

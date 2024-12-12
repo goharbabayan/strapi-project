@@ -31,7 +31,7 @@ export default function ProfileMainInfo(props) {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
   useEffect(() => {
-    loggedInUserData?.role === CLIENT && isProviderExistingInClientsFavorites();
+    loggedInUserData?.role === CLIENT.type && isProviderExistingInClientsFavorites();
   }, []);
 
   const fetchData = async (endpoint, setState) => {
@@ -68,7 +68,7 @@ export default function ProfileMainInfo(props) {
       <div className='page-width'>
         <div className={styles.profileInfoContainer}>
           <div className={styles.profilePhotoContainer}>
-            {loggedInUserData?.role === CLIENT && !hideStarIcon &&
+            {loggedInUserData?.role === CLIENT.type && !hideStarIcon &&
               <>
                 {isUserExistingInFavorites
                   ?

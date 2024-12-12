@@ -17,12 +17,12 @@ export default function InputField ({
   inputClassName,
   options,
   errorMessage,
-  errorBorderColor,
   labelClassName,
   selectClassName,
   errorMessageClassName,
   onMouseDown,
-  ...other
+  isPassword,
+  checked,
 }) {
   const [showOptions, setShowOptions] = useState(false);
   const [inputType, setInputType] = useState({
@@ -71,13 +71,13 @@ export default function InputField ({
       id: closestInputId,
       showPassword: !inputType.showPassword
     });
-  }
+  };
 
   return (
     <div className={`${fieldClassName ? fieldClassName : ''}`}>
       {type === 'select' ? (
         <>
-          <label htmlFor={id} className={`${styles.label} ${labelClassName ? labelClassName : ''}`} onMouseDown={(e) => handleClick(e)} ref={labelRef}>{label}
+          <label htmlFor={id} className={`${styles.label} ${labelClassName ? labelClassName : ''}`} onMouseDown={(e) => handleClick(e)} ref={labelRef}>{`${label || ''} ${isRequired ? '*' : ''}`}
             <select
               name={name}
               id={id}
@@ -87,7 +87,6 @@ export default function InputField ({
               required={isRequired}
               disabled={disabled}
               onChange={onChange}
-              {...other}
             >
               {[{ label: `select ${label}`.toLowerCase(), value: '' }, ...options].map((option, index) => (
                 <option key={index} value={option.value} data-code={option.code}>{option.label ? option.label : option.value}</option>
@@ -106,27 +105,25 @@ export default function InputField ({
           {errorMessage && errorMessage[name] && 
             <Text
               tag={'span'}
-              className={`${styles.errorText} text-extrasmall errorText ${errorMessageClassName ? errorMessageClassName : null}`}
               children={errorMessage && errorMessage[name]}
             />
           }
         </>
       ) : (
-        <label htmlFor={id} className={`${styles.label} ${labelClassName ? labelClassName : ''}`}>{label}
+        <label htmlFor={id} className={`${styles.label} ${labelClassName ? labelClassName : ''}`}>{`${label || ''} ${isRequired ? '*' : ''}`}
           <input
             type={inputType.id === id && inputType.showPassword ? 'text' : type}
             name={name}
             id={id}
-            className={`${styles.input} ${inputClassName ? inputClassName : ''} ${errorMessage && errorMessage[name] && styles.invalid}`}
+            className={`${styles.input} ${inputClassName ? inputClassName : ''} ${errorMessage && errorMessage[name] ? styles.invalid : ''}`}
             value={value}
             onChange={onChange}
             required={isRequired}
             disabled={disabled}
-            checked={other.checked}
+            checked={checked}
             onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : null}
-            {...other}
           />
-          {!!other.isPassword && <span data-id={id} className={styles.showPasswordButton} onClick={(e) => handleShowHidePassword(e)}>
+          {!!isPassword && <span data-id={id} className={styles.showPasswordButton} onClick={(e) => handleShowHidePassword(e)}>
             {inputType.id === id && inputType.showPassword ? "Hide password" : "Show password"}
           </span>}
           {name === 'email' &&

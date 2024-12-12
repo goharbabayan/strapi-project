@@ -24,7 +24,7 @@ export default function PersonalDetails ({
       <div className='fullName'>
         {showUsername &&
           <InputField
-            label='Username*'
+            label='Username'
             type='text'
             name='username'
             id='username'
@@ -35,7 +35,7 @@ export default function PersonalDetails ({
           />
         }
         <InputField
-          label='Name*'
+          label='Name'
           type='text'
           name='name'
           id='name'
@@ -45,7 +45,7 @@ export default function PersonalDetails ({
           errorMessage={errorMessage}
         />
         <InputField
-          label='Last name*'
+          label='Last name'
           type='text'
           name='lastName'
           id='lastName'
@@ -55,7 +55,7 @@ export default function PersonalDetails ({
           errorMessage={errorMessage}
         />
         <InputField
-          label='Gender*'
+          label='Gender'
           labelClassName={'selectOptionLabel'}
           selectClassName={'select'}
           fieldClassName={'selectOptionsWrapper'}
@@ -73,7 +73,7 @@ export default function PersonalDetails ({
       <StrokeBorder/>
       <div className='userDetails'>
         <InputField
-          label='Age*'
+          label='Age'
           labelClassName={'selectOptionLabel'}
           selectClassName={'select'}
           fieldClassName={'selectOptionsWrapper'}
@@ -88,7 +88,7 @@ export default function PersonalDetails ({
           errorMessage={errorMessage}
         />
         <InputField
-          label='Eye color*'
+          label='Eye color'
           labelClassName={'selectOptionLabel'}
           selectClassName={'select'}
           fieldClassName={'selectOptionsWrapper'}
@@ -103,7 +103,7 @@ export default function PersonalDetails ({
           errorMessage={errorMessage}
         />
         <InputField
-          label='Hair color*'
+          label='Hair color'
           labelClassName={'selectOptionLabel'}
           selectClassName={'select'}
           fieldClassName={'selectOptionsWrapper'}
@@ -118,7 +118,7 @@ export default function PersonalDetails ({
           errorMessage={errorMessage}
         />
         <InputField
-          label='Bust*'
+          label='Bust'
           labelClassName={'selectOptionLabel'}
           selectClassName={'select'}
           fieldClassName={'selectOptionsWrapper'}
@@ -133,7 +133,7 @@ export default function PersonalDetails ({
           errorMessage={errorMessage}
         />
         <InputField
-          label='Place of service*'
+          label='Place of service'
           labelClassName={'selectOptionLabel'}
           selectClassName={'select'}
           fieldClassName={'selectOptionsWrapper'}
@@ -148,7 +148,7 @@ export default function PersonalDetails ({
           errorMessage={errorMessage}
         />
         <InputField
-          label='Height*'
+          label='Height'
           labelClassName={'selectOptionLabel'}
           selectClassName={'select'}
           fieldClassName={'selectOptionsWrapper'}

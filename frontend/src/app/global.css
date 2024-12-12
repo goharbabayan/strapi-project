@@ -24,6 +24,9 @@
   --color-main: #772A40;
   --color-hover: #753642;
   --red-r5: #FF4D4F;
+  --orange-50: #C2576B;
+  --orange-60: #B63450;
+  --green-g1: #F6FFED;
   --header-height: 140px;
   --header-navigation-height: 100px;
   --header-height-mobile: 72px;
@@ -237,23 +240,6 @@ body.overflow-hidden {
 
 .button:hover {
   opacity: 60%;
-}
-
-form .submitButton {
-  display: inline-block;
-  width: 100%;
-  padding: 14px 24px;
-  font-family: var(--primary-font);
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 20px;
-  border: none;
-  border-radius: 0;
-  cursor: pointer;
-  text-transform: uppercase;
-  color: var(--neutral-white-n10);
-  background-color: var(--neutral-black);
 }
 
 .buttonChangePassword {

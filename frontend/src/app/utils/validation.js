@@ -120,4 +120,4 @@ export const validateForm = (formData, isClientDashboardPage) => {
 export const validateEmail = (email) => {
   const emailRegex = /^\w+([\.-]?\w+)*@[a-z A-Z . 0-9]+([\.-]?\w+)$/;
   return emailRegex.test(email);
-}
+};

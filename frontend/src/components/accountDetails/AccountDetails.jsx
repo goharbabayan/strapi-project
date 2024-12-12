@@ -67,7 +67,7 @@ export default function AccountDetails({
           <>
             <div className={`${styles.profileName}`} data-username>
               <InputField 
-                label='Username*'
+                label='Username'
                 type='text'
                 name='username'
                 id='username'

@@ -102,7 +102,7 @@ export default function Search() {
       );
       const results = await response.json();
       setSearchResults(results);
-      const isAllMemebersDontProvidersOrNotApprovedYet = results.every(result => result.role.type !== SERVICE_PROVIDER || !result.isApprovedByAdmin)
+      const isAllMemebersDontProvidersOrNotApprovedYet = results.every(result => result.role.type !== SERVICE_PROVIDER.type || !result.isApprovedByAdmin)
       if (results.length === 0 || isAllMemebersDontProvidersOrNotApprovedYet) {
         setNoResults(true);
       } else {

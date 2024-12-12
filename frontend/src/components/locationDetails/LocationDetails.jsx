@@ -29,7 +29,7 @@ export default function LocationDetails ({
     <div>
       <div className='userDetails location'>
         <InputField
-          label='Country*'
+          label='Country'
           labelClassName={'selectOptionLabel'}
           selectClassName={'select'}
           fieldClassName={'selectOptionsWrapper'}
@@ -44,7 +44,7 @@ export default function LocationDetails ({
           errorMessage={errorMessage}
         />
         <CityField
-          label='City*'
+          label='City'
           labelClassName={'selectOptionLabel'}
           selectClassName={'select'}
           fieldClassName={'selectOptionsWrapper'}

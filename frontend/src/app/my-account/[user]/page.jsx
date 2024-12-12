@@ -62,7 +62,7 @@ export default function MyAccountPage() {
       const { id, blocked, createdAt, updatedAt, confirmed, role, ...rest } = user;
       userformData = rest;
     }
-    if (role !== MANAGER) {
+    if (role !== MANAGER.type) {
       if (!userformData.profilePicture) {
         setShowSaveResetChangeBar(true);
         setNotificationBarMessageAndStatus({
@@ -71,7 +71,7 @@ export default function MyAccountPage() {
         });
         return;
       }
-      if (!userformData.coverPhoto && role !== CLIENT) {
+      if (!userformData.coverPhoto && role !== CLIENT.type) {
         setShowSaveResetChangeBar(true);
         setNotificationBarMessageAndStatus({
           show: true,
@@ -92,9 +92,9 @@ export default function MyAccountPage() {
     }
 
     let errors;
-    if (role !== CLIENT) {
+    if (role !== CLIENT.type) {
       errors = validateForm(userformData, false);
-    } else if (role === CLIENT) {
+    } else if (role === CLIENT.type) {
       errors = validateForm(userformData, true);
     };
     const hasErrors = Object.keys(errors).length > 0;
@@ -244,7 +244,7 @@ export default function MyAccountPage() {
   };
 
   return (
-    <div className={`${styles.mainWrap} ${role === CLIENT ? styles.client : null}`}>
+    <div className={`${styles.mainWrap} ${role === CLIENT.type ? styles.client : null}`}>
       <div className="dashboard">
         <form onSubmit={(e) => handleFormSubmit(e, role)}>
           {(showSaveResetChangeBar || notificationBarMessageAndStatus.show) && (
@@ -257,7 +257,7 @@ export default function MyAccountPage() {
               userRole={role}
             />
           )}
-          {role === SERVICE_PROVIDER &&
+          {role === SERVICE_PROVIDER.type &&
             <section className="page-width">
               <div className={`${styles.info}`}>
                 <Text
@@ -276,7 +276,7 @@ export default function MyAccountPage() {
               </div>
             </section>
           }
-          {user && role === SERVICE_PROVIDER &&
+          {user && role === SERVICE_PROVIDER.type &&
             <>
               <ServiceProviderDetails
                 user={user}
@@ -286,7 +286,7 @@ export default function MyAccountPage() {
               />
             </>
           }
-          {user && role === CLIENT &&
+          {user && role === CLIENT.type &&
             <>
               <ClientDetails
                 user={user}
@@ -296,7 +296,7 @@ export default function MyAccountPage() {
               />
             </>
           }
-          {user && role === MANAGER &&
+          {user && role === MANAGER.type &&
             <>
               <ManagerDetails
                 user={user}

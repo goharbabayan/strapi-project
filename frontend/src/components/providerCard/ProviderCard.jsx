@@ -52,7 +52,7 @@ const ProviderCard = ({provider, showBadge, badge, count, roleType, showStarIcon
 
   return (
     <>
-    {roleType === SERVICE_PROVIDER && isApprovedByAdmin &&
+    {roleType === SERVICE_PROVIDER.type && isApprovedByAdmin &&
       <div
         className={`${styles.card} ${count ? styles.hasCount : ''}`}
         style={{ '--provider-card-width': `${cardWidth}`}}

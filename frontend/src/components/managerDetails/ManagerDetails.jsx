@@ -18,7 +18,7 @@ export default function ManagerDetails ({ user, onChanges, onSubmit, errorMessag
     console.log('event.target.value: ', event.target.value);
     
     if (noNeedToShowChanges) {
-      onSubmit(event, MANAGER);
+      onSubmit(event, MANAGER.type);
     } else {
       setFormData({ ...formData, [event.target.name]: event.target.value });
       setHasUnsavedChanges(true);
