@@ -1,0 +1,22 @@
+.heading {
+  text-align: center;
+  font-size: 32px;
+  font-family: var(--headings-font);
+  font-style: normal;
+  line-height: normal;
+}
+
+.content h2,
+.content h3,
+.content h4,
+.content h5 {
+  font-family: var(--headings-font);
+}
+
+.content strong {
+  font-family: var(--primary-bold-font);
+}
+
+.content img {
+  max-width: 100%;
+}

@@ -1174,6 +1174,31 @@ export interface ApiNavigationItemNavigationItem extends Schema.CollectionType {
   };
 }
 
+export interface ApiPagePage extends Schema.CollectionType {
+  collectionName: 'pages';
+  info: {
+    singularName: 'page';
+    pluralName: 'pages';
+    displayName: 'Page';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    seo_page_url_path: Attribute.String;
+    heading: Attribute.String;
+    content: Attribute.Blocks;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::page.page', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::page.page', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
 export interface ApiSearchSearch extends Schema.SingleType {
   collectionName: 'searches';
   info: {
@@ -1268,6 +1293,7 @@ declare module '@strapi/types' {
       'api::menu-item.menu-item': ApiMenuItemMenuItem;
       'api::my-account.my-account': ApiMyAccountMyAccount;
       'api::navigation-item.navigation-item': ApiNavigationItemNavigationItem;
+      'api::page.page': ApiPagePage;
       'api::search.search': ApiSearchSearch;
       'api::subscriber.subscriber': ApiSubscriberSubscriber;
     }
