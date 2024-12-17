@@ -12,12 +12,12 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "item": {
+    "name": {
       "type": "string",
       "required": true,
       "default": "menu item"
     },
-    "redirection_url": {
+    "url": {
       "type": "string",
       "required": true
     }

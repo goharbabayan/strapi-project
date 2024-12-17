@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_entry_suburbs",
+  "info": {
+    "displayName": "suburb",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    }
+  }
+}

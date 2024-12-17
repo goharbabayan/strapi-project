@@ -1,0 +1,93 @@
+.section {
+  padding-top: 40px;
+}
+
+.selectionContainer {
+  display: flex;
+  gap: 20px;
+}
+
+.textarea {
+  outline: none;
+  min-height: 300px;
+  width: 100%;
+  color: var(--neutral-black);
+  padding: 15px;
+  border: 1px solid var(--neutral-n50);
+  border-radius: 3px;
+}
+
+.aboutText {
+  width: 100%;
+}
+
+.mainInfo {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  width: 100%;
+  margin-block: 30px 0;
+}
+
+.column {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+}
+
+.mainInfo .inputWrapper {
+  display: flex;
+  gap: 20px;
+}
+
+.heading {
+  display: flex;
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 38px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-block: 20px 45px;
+  justify-content: center;
+}
+
+.title {
+  display: flex;
+  flex-basis: 100%;
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 34px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border-bottom: 1px solid #c6c6c6;
+  margin-block: 0 10px;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 24px;
+  width: 100%;
+}
+
+@media screen and (max-width: 979px) {
+  .container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .title {
+    font-size: 22px;
+  }
+
+  .formGroup {
+    flex-wrap: wrap;
+  }
+
+  .container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

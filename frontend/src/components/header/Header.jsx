@@ -1,103 +1,186 @@
 'use client';
-import Link from 'next/link';
+
+import { useState, useEffect, useContext } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_HEADER_QUERIES } from '../../app/graphql/headerQueries';
-import { GET_LOGO_QUERIES } from '@/app/graphql/findLogoQueries';
+import ListItems from '../listItems.jsx/ListItems';
 import styles from './header.module.css';
-import SearchInput from '../../components/input/SearchInput';
-import Button from '@/components/button/Button';
-import Accordion from '../icons/Accordion';
-
-
+import SearchIcon from '../icons/SearchIcon';
+import Button from '../button/Button';
+import BurgerButton from '../icons/burgerButton/BurgerButton';
+import Navigation from '../navigation/Navigation';
+import { AuthContext } from '@/app/Context';
+import { useFetchData } from '@/app/utils/hooks/useFetch';
+import HeaderAccountTab from './headerAccountTab/HeaderAccountTab';
 
 export default function Header() {
-  const { loading: headerLoading, error: headerError, data: headerSectionData } = useQuery(GET_HEADER_QUERIES);
-  const { loading: logoLoading, error: logoError, data: logoData } = useQuery(GET_LOGO_QUERIES);
-  if (headerLoading) {
-    // Something for loading;
-  }
-  if (headerError) {
-    // Something for error;
+  const {customerToken} = useContext(AuthContext);
+  const [headerData, setHeaderData] = useState({
+    logo: null,
+    buttons: null,
+    menuItemsTitle: null,
+    menuItems: null,
+  });
+  const [isMobileLayout, setIsMobileLayout] = useState(false);
+  const [showMobileNavigation, setShowMobileNavigation] = useState(false);
+  const [listItemsAreOpened, setListItemsAreOpened] = useState(false);
+  const [isOneOfTheMobileMenuItemsOpened, setIsOneOfTheMobileMenuItemsOpened] = useState(false);
+  const [openedFirstLevelMobileItemId, setOpenedFirstLevelMobileItemId] = useState(null);
+  const [navigationIsOpen, setNavigationIsOpen] = useState(false);
+  const [isRotated, setIsRotated] = useState(false);
+  const [loggedInCustomerData, setLoggedInCustomerData] = useState(null);
+  const {loading, error, data} = useQuery(GET_HEADER_QUERIES);
+  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
+
+  useEffect(() => {
+    if (data !== undefined) {
+      setHeaderData({
+        logo: data?.header?.data?.attributes?.logo?.data?.attributes,
+        buttons: data?.header?.data?.attributes?.buttons,
+        menuItemsTitle: data?.header?.data?.attributes?.announcement_bar?.title,
+        menuItems: data?.header?.data?.attributes?.announcement_bar?.announcement_bar_links,
+      });
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (customerToken) {
+      useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/me?populate=*`, {
+        method: 'GET',
+        headers: {
+          'authorization': `Bearer ${customerToken}`
+        }
+      }).then((data) => {
+        setLoggedInCustomerData({
+          username: data?.username,
+          profilePicture: data?.profilePicture?.url,
+          name: data?.name,
+          lastname: data?.lastName,
+          role: data?.role?.type
+        })
+      })
+    }
+  }, [customerToken]);
+
+  useEffect(() => {
+    checkWidth();
+    window.addEventListener('resize', checkWidth);
+  }, []);
+
+  const checkWidth = () => {
+    const isMobileLayout = window.innerWidth < 850;
+    setIsMobileLayout(isMobileLayout);
   };
 
-  if (headerSectionData === undefined || headerSectionData === null) return;
+  const handleBurgerButtonClick = () => {
+    setIsRotated(!isRotated);
+    setShowMobileNavigation(!showMobileNavigation);
+    setNavigationIsOpen(!navigationIsOpen);
+  };
 
-  const headerData = headerSectionData?.homePage?.data?.attributes?.Header;
-  const logoUrl = logoData?.homePage?.data?.attributes?.Header?.logo.data?.attributes?.url;
+  const closeNavigationDrawer = () => {
+    setIsRotated(false);
+    setShowMobileNavigation(false);
+    setNavigationIsOpen(false);
+  };
 
-  let firstNavigationText, secondNavigationText;
-  if (headerData.menuItem1) {
-    firstNavigationText = headerData.menuItem1;
-  }
-  if (headerData.menuItem2) {
-    secondNavigationText = headerData.menuItem2;
-  }
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const buttons = headerData.Button;
-  const isButtonsExisting = buttons.length > 0;
+  const menuItemsHasAtLeastOneItem = headerData.menuItems && headerData.menuItems.length > 0;
+  const atLeastOneButtonExists = headerData.buttons && headerData.buttons.length > 0;
+
   return (
-    <header className={`${styles.header}`}>
-      <div className={`${styles.mainWrap} page-width`}>
-        <div className={`${styles.left_wrap}`}>
-          <Link href='/' className={styles.logoWrap}>
-            {logoUrl && (
-              <img
-                src={`${baseUrl}${logoUrl}`}
-                alt='logo'
-                class='logo'
-                width='170'
-                height='41'
-              />
-            )}
-          </Link>
-          <ul className={styles.navigation}>
-            {firstNavigationText &&
-              <li className={styles.navItem}>
-                <span>{firstNavigationText}</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
-                  <path d="M13 6L8 11L3 6" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </li>
-            }
-            {secondNavigationText &&
-              <li className={styles.navItem}>
-                <span>{secondNavigationText}</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
-                  <path d="M13 6L8 11L3 6" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </li>
-            }
-          </ul>
-        </div>
-        <div className={`${styles.right_wrap}`}>
-          <SearchInput/>
-          {isButtonsExisting &&
-            <div className={styles.buttons_wrap}>
-              { buttons.map((button) => {
-                  let href = null;
-                  button.link ? href = button.link : null;
-                  return (
-                    button.title
-                    ?
-                    <Button
-                      key={`${button.id}`}
-                      href={href}
-                      className={`${styles.btn} btn_${button.type}`}
-                    >
-                      <span>{button.title}</span>
-                    </Button>
-                    :
-                    null
-                  )
-                })
-              }
-            </div>
+    <>
+      {loading && <header className={styles.emptyHeader}></header>}
+      {data &&
+        <header className={`${styles.header} ${menuItemsHasAtLeastOneItem === false ? styles.menuItemsAreEmpty : ''}`}>
+          {menuItemsHasAtLeastOneItem && !isMobileLayout &&
+            <ListItems items={headerData.menuItems}/>
           }
-        </div>
-        <div className={styles.iconAccordion}>
-          <Accordion/>
-        </div>
-      </div>
-    </header>
+          <section>
+            <div className="page-width">
+              <div className={`${styles.headerSection}`}>
+                {!isMobileLayout &&
+                  <Navigation
+                    className={styles.navigation}
+                    menuItemsHasAtLeastOneItem={menuItemsHasAtLeastOneItem}
+                  />
+                }
+                <div className={styles.container}>
+                  {headerData?.logo &&
+                    <a className={styles.logo} href="/">
+                      <img
+                        src={`${baseUrl}${headerData?.logo?.url}`}
+                        alt={headerData?.logo?.alternativeText || 'logo'}
+                        width={238}
+                        height={68}
+                      />
+                    </a>
+                  }
+                  {isMobileLayout &&
+                    <BurgerButton
+                      className={styles.navigationButton}
+                      isRotated={isRotated}
+                      onBurgerButtonClick={handleBurgerButtonClick}
+                    />
+                  }
+                  <div className={styles.headerMenu}>
+                    <a href="/search" className={styles.anchor}>
+                      <SearchIcon
+                        className={styles.searchIcon}
+                      />
+                    </a>
+                    {customerToken && loggedInCustomerData ?
+                      <HeaderAccountTab
+                        loggedInCustomerData={loggedInCustomerData}
+                        isMobileLayout={isMobileLayout}
+                      />
+                        :
+                      <>
+                        {atLeastOneButtonExists && !isMobileLayout &&
+                          headerData?.buttons.map((button, index) =>
+                            <Button
+                              key={index}
+                              children={button.title}
+                              {...(button.link && { href: button.link })}
+                              variant={`${index === 0 ? 'general' : 'main'}`}
+                            />
+                          )
+                        }
+                      </>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+            {isMobileLayout &&
+              <div className={`${styles.mobileNavigation} ${showMobileNavigation ? styles.show : ''} ${navigationIsOpen ? 'navigation_is_open' : ''}`}>
+                {menuItemsHasAtLeastOneItem &&
+                  <ListItems
+                    items={headerData?.menuItems}
+                    isMobile={true}
+                    title={headerData?.menuItemsTitle}
+                    isOneOfTheMobileMenuItemsOpened={isOneOfTheMobileMenuItemsOpened}
+                    setIsOneOfTheMobileMenuItemsOpened={setIsOneOfTheMobileMenuItemsOpened}
+                    listItemsAreOpened={listItemsAreOpened}
+                    setListItemsAreOpened={setListItemsAreOpened}
+                    handleChildItemClick={closeNavigationDrawer}
+                  />
+                }
+                <Navigation
+                  isMobileLayout={isMobileLayout}
+                  atLeastOneButtonExists={atLeastOneButtonExists}
+                  buttons={headerData.buttons}
+                  isOneOfTheMobileMenuItemsOpened={isOneOfTheMobileMenuItemsOpened}
+                  setIsOneOfTheMobileMenuItemsOpened={setIsOneOfTheMobileMenuItemsOpened}
+                  openedFirstLevelMobileItemId={openedFirstLevelMobileItemId}
+                  setOpenedFirstLevelMobileItemId={setOpenedFirstLevelMobileItemId}
+                  listItemsAreOpened={listItemsAreOpened}
+                  handleNavigationButtonClick={() => closeNavigationDrawer()}
+                />
+              </div>
+            }
+          </section>
+        </header>
+      }
+    </>
   )
 }

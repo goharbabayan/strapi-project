@@ -1,0 +1,114 @@
+.container {
+  background-color: var(--neutral-white-n10);
+  padding: 24px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 58.5%;
+}
+
+.container.fullWidth {
+  width: 100%;
+}
+
+.title {
+  color: var(--neutral-n100);
+  font-family: var(--primary-bold-font);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  margin: 0;
+  max-width: calc(100% - 30px);
+}
+
+.answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.answer.expanded {
+  max-height: 1000px;
+  transition: max-height 0.2s ease-in;
+}
+
+.text {
+  margin-block: 16px 0;
+  color: var(--neutral-n80);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.accordionItem {
+  padding-block: 24px;
+  border-top: 1px solid var(--neutral-n30);
+}
+
+.question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.button {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background: #fff;
+  cursor: pointer;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}
+
+.button:after {
+  content: '';
+  position: absolute;
+  transform: translate(-50%, -50%);
+  height: 2px;
+  width: 60%;
+  background: var(--neutral-black);
+  top: 50%;
+  left: 50%;
+  transition: transform 0.3s ease-in-out;
+}
+
+.button:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--neutral-black);
+  height: 60%;
+  width: 2px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.button.rotated:before {
+  transform: translateY(-45%) rotate(45deg);
+  transition: transform 0.3s ease-in-out;
+}
+
+.button.rotated:after {
+  transform: translateX(-45%) rotate(45deg);
+  transition: transform 0.3s ease-in-out;
+}
+
+@media screen and (max-width: 959px) {
+  .container {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .title {
+    font-size: 16px;
+  }
+}

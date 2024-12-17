@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "subscribers",
+  "info": {
+    "singularName": "subscriber",
+    "pluralName": "subscribers",
+    "displayName": "Provider's Schedule Subscribers",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "email": {
+      "type": "string"
+    },
+    "provider": {
+      "type": "string"
+    },
+    "schedule": {
+      "type": "json"
+    }
+  }
+}

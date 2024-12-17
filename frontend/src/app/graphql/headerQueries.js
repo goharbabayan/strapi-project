@@ -2,18 +2,32 @@ import { gql } from '@apollo/client';
 
 const GET_HEADER_QUERIES = gql`
   query {
-    homePage {
+    header {
       data {
         attributes {
-          Header {
-            menuItem1
-            menuItem2
-            Button {
+          logo {
+            data {
+              attributes {
+                alternativeText
+                url
+                width
+                height
+              }
+            }
+          }
+          announcement_bar {
+            id
+            title
+            announcement_bar_links(pagination: {limit: 14}) {
               id
-              title
-              type
+              name
               link
             }
+          }
+          buttons {
+            id
+            title
+            link
           }
         }
       }

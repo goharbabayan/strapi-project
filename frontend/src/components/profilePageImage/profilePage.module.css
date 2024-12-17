@@ -1,0 +1,106 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 320px;
+  width: 100%;
+}
+
+.photo {
+  display: flex;
+  position: relative;
+  width: 100%;
+  margin-top: 25px;
+}
+
+.emptyProfilePicture {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  border: 2px solid #cacaca;
+}
+
+.emptyCoverPhoto {
+  display: flex;
+  height: 540px;
+  width: 100%;
+  border: 2px solid #cacaca;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 10px;
+}
+
+.info svg {
+  width: 18px;
+  height: 18px;
+}
+
+.buttonsWrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.uploadButton,
+.deleteButton {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 3px;
+  font-family: var(--primary-font);
+  font-weight: 400;
+  cursor: pointer;
+  background-color: var(--neutral-n20);
+  color: var(--neutral-black);
+  transition: opacity 0.2s ease-in-out;
+  font-size: 14px;
+}
+
+.uploadButton:hover,
+.deleteButton:hover {
+  opacity: 60%;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen and (max-width: 979px) {
+  .uploadButton,
+  .deleteButton,
+  .button {
+    font-size: 14px;
+    padding: 6px 12px;
+    line-height: normal;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .container {
+    width: 100%;
+    max-width: 100%;
+    display: inline-block;
+  }
+
+  .emptyProfilePicture {
+    height: 322px;
+    width: 100%;
+  }
+
+  .uploadButton,
+  .deleteButton {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .profilePicture {
+    width: 100%;
+  }
+}

@@ -1,0 +1,31 @@
+.container {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  flex-grow: 1;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--neutral-n50);
+  background: var(--neutral-white-n10);
+}
+
+.inputWrap {
+  flex-grow: 1;
+}
+
+.closeIcon,
+.searchIcon {
+  display: flex;
+  cursor: pointer;
+}
+
+.container .input {
+  margin: 0;
+  padding: 1px 5px;
+  border: none;
+}
+
+.container .label {
+  line-height: 20px;
+}

@@ -1,0 +1,84 @@
+.inputWrapper {
+  position: relative;
+}
+
+.input {
+  padding: 8px 8px 8px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--neutral-n30);
+  background: var(--neutral-white-n10);
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  outline: none;
+  color: var(--neutral-black);
+  font-size: 16px;
+  line-height: 20px;
+  font-family: var(--primary-font);
+  font-style: normal;
+  font-weight: 400;
+}
+
+.input[type="number"]::-webkit-outer-spin-button,
+.input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.label {
+  display: flex;
+  position: relative;
+}
+
+.labelText {
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--neutral-n100);
+  font-size: 14px;
+  line-height: 18px;
+  font-family: var(--primary-font);
+  font-style: normal;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+.error {
+  text-align: center;
+  display: block;
+  margin-top: 4px;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  color: var(--red-r5);
+  font-family: var(--primary-font);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.error.password {
+  top: 80px;
+}
+
+.input.invalid {
+  border: 1px solid var(--red-r5);
+}
+
+.showPasswordButton {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 12px;
+  font-family: var(--primary-font);
+  border-bottom: 1px solid var(--neutral-white-n10);
+  cursor: pointer;
+}
+
+.showPasswordButton:hover {
+  border-bottom: 1px solid var(--neutral-black);
+}

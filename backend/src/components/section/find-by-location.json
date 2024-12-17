@@ -15,10 +15,6 @@
       "repeatable": true,
       "component": "block.location-card",
       "required": true
-    },
-    "activateBlackMode": {
-      "type": "boolean",
-      "default": false
     }
   }
 }

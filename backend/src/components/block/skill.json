@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_block_skills",
+  "info": {
+    "displayName": "Skill"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    }
+  }
+}

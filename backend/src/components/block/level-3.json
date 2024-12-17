@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_block_level_3s",
+  "info": {
+    "displayName": "level_3",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "link": {
+      "type": "string"
+    }
+  }
+}

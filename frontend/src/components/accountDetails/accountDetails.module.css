@@ -1,0 +1,99 @@
+.nameInputsContainer {
+  display: flex;
+  gap: 22px;
+}
+
+.profileName {
+  width: 100%;
+}
+
+.profileName,
+.address {
+  margin-bottom: 22px;
+}
+
+.profileName .input,
+.address .input {
+  padding-right: 25px;
+}
+
+.input {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--neutral-n50);
+  border-radius: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  outline: none;
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.editIcon {
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  cursor: pointer;
+}
+
+.heading {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 38px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-block: 20px 45px;
+}
+
+.infoWrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.infoWrap.row {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  row-gap: 10px;
+}
+
+.address, .profileName {
+  position: relative;
+  border-radius: 6px;
+  border: 1px solid #F5F5F5;
+  background: var(--neutral-n20);
+  padding: 12px;
+}
+
+.emailWrapper {
+  position: relative;
+}
+
+@media screen and (max-width: 749px) {
+  .editIcon {
+    height: 15px;
+    width: 15px;
+  }
+
+  .infoWrap.row {
+    flex-direction: column;
+    margin-bottom: 40px;
+    align-items: center;
+  }
+
+  .nameInputsContainer {
+    flex-direction: column;
+    gap: 0;
+  }
+}

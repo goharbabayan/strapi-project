@@ -1,133 +1,77 @@
 .container {
-  background: #EEE;
-}
-
-.wrapper {
-  display: flex;
-  min-height: 366px;
-  flex-wrap: wrap;
-  position: relative;
-}
-
-.wrapper * {
-  margin: 0;
-  position: relative;
-}
-
-.mainContent {
-  display: flex;
-  justify-content: space-between;
-  width: 85%;
-  gap: 15px;
-}
-
-.imageWrap {
-  display: flex;
-  position: absolute;
-  right: 35px;
-  top: 89px;
-  width: 179px;
-}
-
-.imageWrap > img {
   width: 100%;
-  height: 100%;
+  background-color: var(--neutral-white-n10);
+  position: relative;
 }
 
-.title {
-  max-width: 543px;
-  color: var(--text-color-main);
-  font-family: "Abril Fatface";
-  font-size: 48px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  padding-top: 80px;
-  padding-bottom: 80px;
+.container .withLink {
+  cursor: pointer;
 }
 
-.description {
-  color: var(--text-color-main);;
-  font-family: "Urbanist";
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  max-width: 423px;
-  padding-top: 94px;
+.loading {
+  min-height: calc(100vh / 2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .imageWrap > img {
   object-fit: contain;
 }
 
-@media screen and (max-width: 1279px) {
-  .mainContent {
-    width: 80%;
-  }
+.wrapper {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  width: 100%;
+  pointer-events: none;
+}
 
-  .description,
-  .title {
-    width: calc(50% - 10px);
-  }
+.overlay {
+  background: linear-gradient(0deg, rgba(36, 15, 20, 0.60) 0%, rgba(36, 15, 20, 0.60) 100%) no-repeat;
+  height: 100%;
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+}
 
-  .description {
-    font-size: 14px;
-  }
+.info {
+  width: 100%;
+}
 
-  .title {
-    font-size: 30px;
-  }
+.title {
+  display: flex;
+  margin: 0;
+  width: 50%;
+  font-family: var(--headings-font);
+  font-size: 46px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  color: var(--neutral-white-n10);
+  margin-bottom: 24px;
+}
 
-  .imageWrap {
-    width: 150px;
-  }
+.info .button {
+  display: inline-flex;
+  cursor: pointer;
+}
+
+.button.withBannerLink {
+  pointer-events: none;
+}
+
+.button.withLink {
+  pointer-events: auto;
+}
+
+.button > span {
+  display: flex;
 }
 
 @media screen and (max-width: 749px) {
-  .mainContent {
-    flex-wrap: wrap;
-    width: 100%;
-  }
-
-  .wrapper {
-    min-height: unset;
-  }
-
-  .description,
   .title {
+    font-size: 38px;
     width: 100%;
-    display: flex;
-  }
-
-  .title {
-    padding-top: 25px;
-    padding-bottom: 25px;
-    font-size: 24px;
-    align-items: center;
-  }
-
-  .description {
-    padding-top: 10px;
-    padding-bottom: 148px;
-    font-size: 12px;
-  }
-
-  .imageWrap {
-    top: unset;
-    right: 20px;
-    height: 100px;
-    bottom: 32px;
-  }
-
-  .imageWrap > img {
-    width: 100%;
-    height: 100%;
-  }
-}
-
-@media screen and (min-width: 750px) {
-  .wrapper {
-    column-gap: 20px;
   }
 }

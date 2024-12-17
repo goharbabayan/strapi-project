@@ -1,0 +1,189 @@
+.formGroup.images {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 20px;
+}
+
+.section {
+  padding-block: 40px;
+  width: 100%;
+}
+
+.title {
+  display: flex;
+  flex-basis: 100%;
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 34px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border-bottom: 1px solid #c6c6c6;
+  margin-block: 0 10px;
+}
+
+.imagesWrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: center;
+  width: 100%;
+  grid-gap: 20px;
+  position: relative;
+  min-height: 200px;
+  margin-bottom: 10px;
+}
+
+.imageWrapper {
+  position: relative;
+  overflow: hidden;
+  min-height: 200px;
+  min-width: 200px;
+}
+
+.imageWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.imageWrapper img:hover {
+  transform: scale(1.1);
+  opacity: 60%;
+}
+
+.removeIcon {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  transition: all 0.2s;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.label, .input, .date {
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.input {
+  outline: none;
+}
+
+.uploadButton,
+.deleteButton {
+  display: inline-flex;
+  color: var(--neutral-black);
+  padding: 8px 16px;
+  border: none;
+  border-radius: 3px;
+  background-color: var(--neutral-n20);
+  text-align: center;
+  align-items: center;
+  padding: 8px 16px;
+  font-family: var(--primary-font);
+  font-weight: 400;
+  cursor: pointer;
+  transition: opacity .2s ease-in-out;
+  font-size: 14px;
+}
+
+.uploadButton:hover,
+.deleteButton:hover {
+  opacity: 60%;
+}
+
+.hidden {
+  display: none;
+}
+
+.selfiesSection {
+  width: 100%;
+  padding-bottom: 40px;
+}
+
+@media screen and (min-width: 980px) {
+  .photo img:hover ~ .removeIcon,
+  .photo img ~ .removeIcon:hover,
+  .profilePicture img:hover ~ .removeIcon,
+  .profilePicture img ~ .removeIcon:hover,
+  .imageWrapper img:hover ~ .removeIcon,
+  .imageWrapper img ~ .removeIcon:hover {
+    opacity: 40%;
+  }
+
+  .removeIcon {
+    cursor: pointer;
+    position: absolute;
+    opacity: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 3px;
+    background: #DBDBDB;
+  }
+}
+
+@media screen and (max-width: 979px) {
+  .formGroup.images {
+    row-gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .imagesWrapper {
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 15px;
+  }
+
+  .imageWrapper {
+    min-width: unset;
+    min-height: unset;
+  }
+
+  .removeIcon {
+    padding: 4px;
+    background: #DBDBDB;
+    border-radius: 10%;
+    opacity: 70%;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .selectOption,
+  .date,
+  .item,
+  .uploadButton,
+  .deleteButton,
+  .button {
+    font-size: 12px;
+  }
+
+  .removeIcon {
+    padding: 1px;
+    height: 16px;
+    width: 16px;
+  }
+
+  .imagesWrapper {
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+  }
+
+  .formGroup {
+    flex-wrap: wrap;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+}

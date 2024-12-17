@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_section_image_banners",
+  "info": {
+    "displayName": "imageBanner",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

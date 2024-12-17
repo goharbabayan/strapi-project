@@ -1,0 +1,123 @@
+.mainWrap {
+  padding-block: 80px;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.container.topProviders {
+  justify-content: center;
+}
+
+.container.topProviders,
+.container.findByType {
+  gap: 22px;
+}
+
+.heading {
+  color: var(--neutral-black);
+  text-align: center;
+  font-family: var(--headings-font);
+  font-size: 38px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-block: 0 32px;
+}
+
+.categoriesWrap {
+  padding-right: 0;
+}
+
+.categories {
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+  gap: 16px;
+  box-sizing: border-box;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--neutral-n50) var(--neutral-n30);
+  padding-right: 0;
+}
+
+.category {
+  background: none;
+  border-radius: 50px;
+  border: 1px solid var(--neutral-black);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  color: var(--neutral-black);
+  font-family: var(--primary-bold-font);
+  font-size: 16px;
+  font-style: normal;
+  line-height: 20px;
+  padding: 8px 19px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.category:hover {
+  opacity: 60%;
+}
+
+.categories:last-child {
+  padding-right: 48px;
+}
+
+.buttonWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 32px;
+}
+
+.button {
+  display: flex;
+  padding: 14px 24px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  background: var(--color-main);
+}
+
+.button:hover {
+  background-color: var(--color-hover);
+}
+
+.button span {
+  color: var(--neutral-white-n10);
+  font-family: var(--primary-bold-font);
+  font-size: 16px;
+  font-style: normal;
+  line-height: 20px;
+}
+
+@media screen and (max-width: 749px) {
+  .mainWrap {
+    padding-block: 48px;
+  }
+
+  .heading {
+    font-size: 32px;
+  }
+
+  .categories:last-child {
+    padding-right: 24px;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .mainWrap.findByType {
+    padding-block: 64px;
+  }
+
+  .categories.centered {
+    justify-content: center;
+  }
+}

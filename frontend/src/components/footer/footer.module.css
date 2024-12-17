@@ -1,179 +1,126 @@
-.mainWrap {
-  background-color: var(--background-color-main);
+/* Added for footer to be in place */
+.footer {
+  grid-row: 3;
+}
+
+.footer {
+  background-color: var(--neutral-black);
+}
+
+.emptyFooter {
+  width: 100%;
+  height: 400px;
 }
 
 .container {
   display: flex;
-  gap: 102px;
-  justify-content: center;
+  justify-content: space-between;
+  padding-block: 64px;
+  flex-wrap: wrap;
 }
 
-.leftWrap {
-  width: 38%;
+.logoWrapper {
+  display: inline-flex;
+  flex-direction: column;
   max-width: 453px;
+  row-gap: 32px;
+  width: 36%;
 }
 
-.leftWrap  a {
+.logoWrapper.fullWidth {
+  width: 100%;
+  max-width: unset;
+}
+
+.logo {
   display: flex;
+  width: 202px;
+  height: 100px;
 }
 
-.rightWrap {
-  width: 62%;
-  max-width: 753px;
-}
-
-.logoWrap {
-  max-width: 295px;
-}
-
-.logoWrap > img {
+.logo > img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-}
-
-.MenuItemsWrapper {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  grid-row-gap: 34px;
-  grid-column-gap: 32px;
-}
-
-.MenuItemsWrapper li {
   display: flex;
+  object-fit: contain
 }
 
-.MenuItemsWrapper li a {
-  color: var(--text-color-main);;
-  font-family: 'Urbanist';
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  display: flex;
-  flex-wrap: wrap;
-  text-decoration: none;
-}
-
-.bottomInfoContainer {
-  border-radius: 16px;
-  background-image: url(../../../public/assets/footerBgImage/Footer_gree_bg_image.png);
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.bottomContainer {
-  background-color: var(--background-color-main);
-  display: flex;
-  flex-wrap: wrap;
-  row-gap: 20px;
-  padding-bottom: 57px;
-  justify-content: center;
-}
-
-.svgWrapper {
-  display: flex;
+.iconWrap {
   flex-basis: 100%;
+  margin-top: 19px;
 }
 
-.bottomInfoContainer {
-  flex-basis: 100%;
-  padding: 10px 64px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 140px;
+.iconArrow {
+  display: inline-flex;
+  border-radius: 50%;
+  border: 1px solid var(--neutral-white-n10);
+  padding: 4px;
+  cursor: pointer;
 }
 
-.footerText {
-  display: flex;
+.description {
   margin: 0;
-  color: var(--text-color-secondary);
-  font-family: 'Urbanist';
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 130%;
-  letter-spacing: -0.2px;
-}
-
-.url {
   display: flex;
-  padding: 12px;
-}
-
-.text {
-  color: var(--text-color-main);
-  font-family: 'Urbanist';
+  color: var(--neutral-white-n10);
+  font-family: var(--primary-font);
   font-size: 16px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: normal;
+  line-height: 20px;
+}
+
+.navigation {
+  display: grid;
+  grid-template-rows: repeat(4, 1fr) ;
+  grid-auto-flow: column;
+  width: 56.5%;
+  max-width: 713px;
+  column-gap: 32px;
+  row-gap: 34px;
+}
+
+.navItem {
+  display: flex;
+}
+
+.link {
+  border-bottom: 1px solid transparent;
+}
+
+.link:hover {
+  border-bottom: 1px solid var(--neutral-white-n10);
+}
+
+.link {
+  text-decoration: none;
+  color: var(--neutral-white-n10);
+  font-family: var(--primary-font);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: normal;
   line-height: normal;
+  display: flex;
+  align-items: center;
 }
 
-@media screen and (max-width: 989px) {
-  .bottomInfoContainer {
-    min-height: 65px;
-    padding: 10px 34px;
-  }
-
-  .url {
-    padding: 5px;
-  }
-
-  .text, .MenuItemsWrapper li a {
-    font-size: 14px;
-  }
-
-  .footerText {
-    font-size: 16px;
-  }
-}
-
-@media screen and (max-width: 749px) {
-  .mainWrap {
-    padding-block: 20px;
-  }
-
+@media screen and (max-width:749px) {
   .container {
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: flex-start;
+    row-gap: 32px;
+    padding-block: 24px;
   }
 
-  .leftWrap, .rightWrap {
+  .logoWrapper,
+  .navigation {
     width: 100%;
   }
 
-  .MenuItemsWrapper {
-    grid-row-gap: 10px;
+  .navigation {
+    display: flex;
+    flex-direction: column;
   }
 
-  .text, .MenuItemsWrapper li a {
-    font-size: 12px;
-  }
-
-  .footerText {
-    font-size: 14px;
-  }
-
-  .url {
-    padding: 0;
-  }
-
-  .logoWrap {
-    max-width: 200px;
-  }
-
-  .bottomInfoContainer {
-    min-height: 65px;
-    padding: 5px 24px;
-  }
-
-  .bottomContainer {
-    padding-bottom: 24px;
+  .logo {
+    width: 142px;
+    height: 70px;
   }
 }

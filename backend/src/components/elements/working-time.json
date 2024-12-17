@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_elements_working_times",
+  "info": {
+    "displayName": "WorkingTime",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "workday": {
+      "type": "string"
+    },
+    "start": {
+      "type": "string"
+    },
+    "end": {
+      "type": "string"
+    }
+  }
+}

@@ -1,4 +1,3 @@
-
 export default function Accordion () {
   return (
     <svg className="iconAccordion" width="16" height="16" viewBox="0 0 16 12" fill="none" xmlns="https://www.w3.org/2000/svg">

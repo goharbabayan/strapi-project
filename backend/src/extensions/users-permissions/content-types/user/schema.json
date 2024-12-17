@@ -1,0 +1,226 @@
+{
+  "kind": "collectionType",
+  "collectionName": "up_users",
+  "info": {
+    "name": "user",
+    "description": "",
+    "singularName": "user",
+    "pluralName": "users",
+    "displayName": "User"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "timestamps": true
+  },
+  "attributes": {
+    "username": {
+      "type": "string",
+      "minLength": 3,
+      "unique": true,
+      "configurable": false,
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "minLength": 6,
+      "configurable": false,
+      "required": true
+    },
+    "provider": {
+      "type": "string",
+      "configurable": false
+    },
+    "password": {
+      "type": "password",
+      "minLength": 6,
+      "configurable": false,
+      "private": true,
+      "searchable": false
+    },
+    "resetPasswordToken": {
+      "type": "string",
+      "configurable": false,
+      "private": true,
+      "searchable": false
+    },
+    "confirmationToken": {
+      "type": "string",
+      "configurable": false,
+      "private": true,
+      "searchable": false
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": false,
+      "configurable": false
+    },
+    "isApprovedByAdmin": {
+      "type": "boolean",
+      "default": false
+    },
+    "managerID": {
+      "type": "string"
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false,
+      "configurable": false
+    },
+    "role": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.role",
+      "inversedBy": "users",
+      "configurable": false
+    },
+    "photos": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "name": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "age": {
+      "type": "string"
+    },
+    "eyeColor": {
+      "type": "string"
+    },
+    "height": {
+      "type": "string"
+    },
+    "bust": {
+      "type": "string"
+    },
+    "dressSize": {
+      "type": "string"
+    },
+    "hairColor": {
+      "type": "string"
+    },
+    "bodyType": {
+      "type": "string"
+    },
+    "placeOfService": {
+      "type": "string"
+    },
+    "selfies": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "profilePicture": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "coverPhoto": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "phoneNumber": {
+      "type": "string"
+    },
+    "contactInfo": {
+      "type": "string"
+    },
+    "instagramLink": {
+      "type": "string"
+    },
+    "onlyFansLink": {
+      "type": "string"
+    },
+    "websiteLink": {
+      "type": "string"
+    },
+    "aboutMe": {
+      "type": "richtext"
+    },
+    "outfits": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.text"
+    },
+    "makeup": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.text"
+    },
+    "costume": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.text"
+    },
+    "extras": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.text"
+    },
+    "incallRates": {
+      "displayName": "data",
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.data"
+    },
+    "outcallRates": {
+      "displayName": "data",
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.data"
+    },
+    "services": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.text"
+    },
+    "schedule": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.working-time"
+    },
+    "additionalInfo": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.text"
+    },
+    "reviews": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.review"
+    },
+    "favoriteProvidersIds": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.text"
+    },
+    "gender": {
+      "type": "string"
+    },
+    "badge": {
+      "type": "string"
+    }
+  }
+}

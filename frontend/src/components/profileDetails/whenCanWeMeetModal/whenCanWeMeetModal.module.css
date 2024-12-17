@@ -1,0 +1,48 @@
+.notifyModalContainer {
+  background: var(--neutral-black);
+  width: 100%;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.notifyModalWrapper {
+  text-align: center;
+}
+
+.notifyModalButton {
+  background-color: var(--neutral-white-n10);
+  padding: 10px 16px;
+  border-radius: 10px;
+  color: var(--color-main);
+  font-family: var(--primary-bold-font);
+  border: none;
+  cursor: pointer;
+  margin: auto;
+}
+
+.notifyModalTitle {
+  font-family: var(--headings-font);
+  color: var(--neutral-white-n10);
+  font-weight: normal;
+  font-size: 24px;
+  margin: 0;
+  padding-bottom: 16px;
+}
+
+.notifyModalDesc {
+  font-family: var(--primary-font);
+  color: var(--neutral-white-n10);
+  font-weight: normal;
+  font-size: 14px;
+  margin: 0;
+  padding-bottom: 16px;
+}
+
+@media screen and (max-width: 748px) {
+  .notifyModalTitle {
+    font-size: 22px;
+  }
+}

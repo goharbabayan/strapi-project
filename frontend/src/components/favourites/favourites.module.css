@@ -1,0 +1,150 @@
+
+.container {
+  position: relative;
+  margin-top: 40px;
+  width: 50%;
+}
+
+.input {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--neutral-n50);
+  border-radius: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  outline: none;
+}
+
+.label {
+  display: block;
+}
+
+.subtitle {
+  display: block;
+  margin-block: 0 8px;
+}
+
+.label, .input, .selectClassName {
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.label .selectClassName,
+.label .input {
+  margin-top: 8px;
+}
+
+.arrow {
+  content: '';
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent;
+  border-top-color: var(--neutral-n100);
+  display: inline-block;
+  position: absolute;
+  right: 22px;
+  bottom: 20px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.selectClassName {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--neutral-n50);
+  border-radius: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+}
+
+/* ToDo: duplication of the style, should be removed */
+.options {
+  display: none;
+  margin: 0;
+  flex-direction: column;
+  max-height: 220px;
+  overflow: hidden;
+  overflow-y: scroll;
+  padding: 8px;
+  z-index: 2;
+  background: var(--neutral-white-n10);
+  border: 1px solid var(--neutral-n50);
+  border-radius: 3px;
+  border-top: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.options.show {
+  display: flex;
+}
+
+.options .option,
+.options .groupLabel {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.groupLabel {
+  font-family: var(--primary-bold-font);
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.options .option:hover {
+  background-color: var(--neutral-n20);
+}
+
+.selectedSuburbs {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 8px;
+  row-gap: 4px;
+  margin: 0;
+}
+
+.optionItem {
+  background-color: var(--neutral-n20);
+  padding: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.optionInputWrapper {
+  border: 1px solid var(--neutral-n50);
+  border-radius: 3px;
+  padding: 12px;
+  position: relative;
+}
+
+.optionInput {
+  margin-top: 20px;
+}
+
+.closeIcon {
+  font-family: var(--primary-font);
+  cursor: pointer;
+}
+
+@media screen and (max-width: 749px) {
+  .container {
+    width: 100%;
+  }
+}

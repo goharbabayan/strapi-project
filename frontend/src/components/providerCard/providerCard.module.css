@@ -1,231 +1,192 @@
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  padding: 13px 14px;
-  gap: 15px;
+.card {
+  width: 100%;
+}
+
+.card.hasCount {
+  max-width: calc(var(--provider-card-width) - 17px);
+  width: calc(var(--provider-card-width) - 17px);
+}
+
+.mainWrap {
   position: relative;
-  border: 2px solid #E8E8E8;
+  padding: 13px 16px;
   border-radius: 10px;
-  background: var(--background-color-primary);
+  border: 2px solid var(--neutral-n20);
+  background-color: var(--neutral-black);
+  overflow: hidden;
+  transition: background-color .2s ease-in-out;
 }
 
-.wrapper.blackScheme {
-  border-radius: 10px;
-  border: 2px solid #333;
-  background: linear-gradient(142deg, #111 46%, #2A2A2A 92%);
-}
-
-.wrapper {
-  cursor: pointer;
+.link {
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
 }
 
 .imageWrapper {
-  height: 100%;
-  display: flex;
-  width: 100%;
-  overflow: hidden;
-}
-
-.imageWrapper > img {
-  filter: blur(8px);
-  object-fit: cover;
-  object-position: center;
   width: 100%;
   height: 100%;
-  transition: transform 0.3s ease-in-out;
-}
-
-.imageWrapper:hover .imageWrapper > img {
-  transform: scale(1.1);
-}
-
-.cardtitle {
-  display: flex;
-  padding: 5px 12px;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  left: 24px;
-  top: 21px;
-  right: 24px;
-  border-radius: 5px;
-  background: rgba(0, 0, 0, 0.60);
-  -webkit-backdrop-filter: blur(4.5px);
-  backdrop-filter: blur(4.5px);
-}
-
-.title {
-  display: flex;
-  color: var(--text-color-primary);
-  font-family: 'Urbanist';
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
+  padding-top: var(--image-aspect-ratio);
+  position: relative;
+  top: 0;
 }
 
 .info {
   display: flex;
   flex-direction: column;
-  row-gap: 15px;
+  position: absolute;
+  bottom: 13px;
+  left: 15px;
+  right: 15px;
+  padding-top: 16px;
+  transform: translateY(0);
+  background-color: var(--neutral-black);
+  transition: background-color .2s ease-in-out;
 }
 
 .data {
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-
-.name {
-  margin: 0;
-  width: 50%;
-  color: var(--text-color-main);
-  text-overflow: ellipsis;
-  font-family: 'Urbanist';
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  display: block;
-  -webkit-line-clamp: 3; /* WebKit (Chrome, Safari) */
-  -moz-line-clamp: 3; /* Firefox */
-  line-clamp: 3; /* Standard */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.costData {
-  display: flex;
-  width: 40%;
-  gap: 8px;
-}
-
-.costData.flexEnd {
-  justify-content: flex-end;
-}
-
-.datawrap.locationdata {
-  width: 100%;
-}
-
-.costData > img {
-  border-radius: 50%;
-}
-
-.locationdata {
-  display: flex;
-  justify-content: flex-start;
   align-items: center;
   gap: 8px;
 }
 
+.user {
+  margin: 0;
+  color: var(--neutral-white-n10);
+  font-family: var(--primary-bold-font);
+  font-size: 18px;
+  font-style: normal;
+  line-height: normal;
+  text-overflow: ellipsis;
+  max-width: 45%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .cost {
   display: flex;
-  color: var(--text-color-main);
-  font-family: 'Urbanist';
+  justify-content: space-between;
+  align-items: center;
+  max-width: calc(55% - 8px);
+  gap: 8px;
+}
+
+.text {
+  color: var(--neutral-white-n10);
+  font-family: var(--primary-font);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;
+  line-height: 16px;
 }
 
-.location {
+.starIcon {
+  display: block;
+  background-color: var(--neutral-white-n10);
+  border-radius: 10px;
+  border: 1px solid var(--neutral-white-n10);
+  padding: 8px;
   display: flex;
-  color: var(--text-color-main);
-  font-family: 'Urbanist';
-  font-size: 14px;
+  position: absolute;
+  right: 22px;
+  top: 19px;
+  z-index: 2;
+}
+
+.services {
+  display: flex;
+  align-items: center;
+  margin-top: 13px;
+  gap: 8px;
+}
+
+.otherInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.otherInfo .text {
+  padding-top: 13px;
+}
+
+.badgeContainer {
+  position: absolute;
+  top: 21px;
+  left: 24px;
+  right: 24px;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.60);
+  backdrop-filter: blur(4.5px);
+  padding: 5px 12px;
+  text-align: center;
+  z-index: 1;
+}
+
+.badge {
+  color: var(--neutral-white-n10);
+  font-family: var(--primary-bold-font);
+  font-size: 16px;
   font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+  line-height: 20px;
 }
 
-.location.blackScheme, .cost.blackScheme, .name.blackScheme {
-  color: var(--text-color-primary);
-}
-
-@media screen and (max-width: 1789px) {
-  .name {
-    font-size: 15px;
+@media screen and (min-width: 900px) {
+  .otherInfo {
+    height: 0;
+    opacity: 0;
+    transition: visibility .4s ease-in-out;
   }
 
-  .cost {
-    font-size: 12px;
+  .card:hover .info,
+  .card:hover .mainWrap {
+    background: var(--color-hover);
   }
-
-  .location {
-    font-size: 12px;
-  }
-}
-
-@media screen and (max-width: 749px) {
-  .name {
-    font-size: 14px;
-  }
-
-  .cost {
-    font-size: 12px;
-  }
-
-  .location {
-    font-size: 12px;
+  
+  .card:hover .otherInfo {
+    height: unset;
+    opacity: 1;
   }
 }
 
-@media screen and (max-width: 449px) {
-  .info {
-    row-gap: 4px;
+@media screen and (max-width: 1280px) {
+  .data {
+    flex-wrap: wrap;
+  }
+
+  .data .user, 
+  .data .cost {
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 1259px) {
+  .card.hasCount {
+    max-width: calc(33.3% - 15px);
+    width: calc(33.3% - 15px)
   }
 
   .data {
-    gap: 12px;
+    flex-wrap: wrap;
   }
 
-  .name {
-    font-size: 14px;
-    width: 100%;
-  }
-
-  .costData,
-  .costData.flexEnd {
-    width: 100%;
-    justify-content: flex-start;
-  }
-
-  .location {
-    font-size: 12px;
+  .data .user, 
+  .data .cost {
+    max-width: 100%;
   }
 }
 
-@media screen and (min-width: 570px) and (max-width: 870px) {
-  .info {
-    row-gap: 4px;
-  }
-
-  .data {
-    gap: 12px;
-  }
-
-  .name {
-    font-size: 14px;
-    width: 100%;
-  }
-
-  .costData,
-  .costData.flexEnd {
-    width: 100%;
-    justify-content: flex-start;
-  }
-
-  .location {
-    font-size: 12px;
+@media screen and (max-width: 948px) {
+  .card.hasCount {
+    max-width: calc(50% - 17px);
+    width: calc(50% - 17px)
   }
 }
 
-@media screen and (min-width: 890px) {
-  .wrapper:hover .imageWrapper > img {
-    transform: scale(1.1);
-    transition: transform 0.3s ease-in-out;
+@media screen and (max-width: 590px) {
+  .card.hasCount {
+    max-width: 100%;
+    width: 100%;
   }
 }

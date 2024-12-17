@@ -1,0 +1,71 @@
+import { useState, useRef, useEffect } from 'react';
+import styles from './categoryField.module.css';
+import ArrowDown from '../icons/arrowDown/ArrowDown';
+
+export default function CategoryField ({
+  category,
+  name,
+  options,
+  setFilteredOptions,
+  filteredOptions,
+}) {
+  const [showOptions, setShowOptions] = useState(false);
+  const categoryRef = useRef(null);
+  const arrowRef = useRef(null);
+  const optionsRef = useRef(null);
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleClickOutside = (e) => {
+    const isOutsideCategory = !(categoryRef.current && categoryRef.current.contains(e.target)) && !(optionsRef.current && optionsRef.current.contains(e.target));
+    if (isOutsideCategory) {
+      setShowOptions(false);
+    };
+  };
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    if (categoryRef.current && categoryRef.current.contains(e.target) || arrowRef.current && arrowRef.current.contains(e.target)) {
+      setShowOptions(!showOptions);
+    };
+  };
+
+  const handleOnChange = (e, value, name) => {
+    const isSelected = filteredOptions[name].length ? filteredOptions[name].includes(value) : false;
+    const updatedOptions = isSelected ? filteredOptions[name].filter(filteredOption => filteredOption !== value) : [...filteredOptions[name], value];
+    setFilteredOptions({ ...filteredOptions, [name]: updatedOptions })
+  };
+
+  return (
+    <div className={styles.category}>
+      <div className={styles.categoryName} ref={categoryRef} onClick={(e) => handleClick(e)} >
+        <span className={styles.title}>{category}</span>
+        <ArrowDown/>
+      </div>
+      {options && options.length > 0 &&
+        <div className={`${styles.categoryOptions} ${showOptions ? styles.show : ''}`}>
+          <ul className={`${styles.options}  unstyled-list options`} ref={optionsRef}>
+            {options.map((option, index) => (
+              option?.label || option ?
+              <li key={index} className={`${styles.option} text-small`} >
+                <label className={styles.lable}>
+                  <input
+                    type="checkbox"
+                    id={`option-${index}`}
+                    name={option?.label || option}
+                    onChange={(e) => handleOnChange(e, option?.value || option, name)}
+                    checked={filteredOptions[name].includes(option?.value || option)}
+                  />
+                  {option?.label || option}
+                </label>
+              </li> : null
+            ))}
+          </ul>
+        </div>
+      }
+    </div>
+  )
+}

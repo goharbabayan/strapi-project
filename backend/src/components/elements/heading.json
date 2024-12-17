@@ -1,7 +1,8 @@
 {
   "collectionName": "components_elements_headings",
   "info": {
-    "displayName": "Heading"
+    "displayName": "Heading",
+    "description": ""
   },
   "options": {},
   "attributes": {

@@ -1,7 +1,7 @@
 {
   "collectionName": "components_block_location_cards",
   "info": {
-    "displayName": "LocationCard",
+    "displayName": "Card",
     "description": ""
   },
   "options": {},
@@ -15,11 +15,11 @@
       ]
     },
     "badge": {
-      "type": "text"
+      "type": "string"
     },
     "url": {
       "type": "string",
-      "required": true
+      "required": false
     }
   }
 }

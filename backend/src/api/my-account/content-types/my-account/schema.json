@@ -1,0 +1,18 @@
+{
+  "kind": "singleType",
+  "collectionName": "my_accounts",
+  "info": {
+    "singularName": "my-account",
+    "pluralName": "my-accounts",
+    "displayName": "My account"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "dashboard": {
+      "type": "string"
+    }
+  }
+}

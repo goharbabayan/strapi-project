@@ -1,0 +1,97 @@
+.input {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--neutral-n50);
+  border-radius: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  outline: none;
+}
+
+.input[type="number"]::-webkit-outer-spin-button,
+.input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.category {
+  position: relative;
+}
+
+.categoryName {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 8px 8px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--neutral-n50);
+  background: var(--neutral-white-n10);
+  cursor: pointer;
+}
+
+.title {
+  display: flex;
+  flex-grow: 1;
+  cursor: pointer;
+}
+
+.title, .input, .selectClassName {
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.categoryOptions {
+  display: none;
+  position: absolute;
+  top: 52px;
+  right: 0;
+  left: 0;
+  flex-direction: column;
+  max-height: 220px;
+  padding-inline: 8px;
+  z-index: 2;
+  background: var(--neutral-white-n10);
+  border-radius: 8px;
+}
+
+.options {
+  overflow: hidden;
+  overflow-y: scroll;
+  margin: 0;
+  padding-block: 8px;
+}
+
+.categoryOptions.show {
+  display: flex;
+}
+
+.options .option {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.options .option:hover {
+  background-color: var(--neutral-n30);
+}
+
+.lable {
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  align-items: center;
+}

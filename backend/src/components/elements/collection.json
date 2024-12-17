@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_elements_collections",
+  "info": {
+    "displayName": "categories",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "announcement_bar_links": {
+      "displayName": "category",
+      "type": "component",
+      "repeatable": true,
+      "component": "block.category",
+      "max": 14
+    }
+  }
+}

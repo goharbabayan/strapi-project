@@ -1,0 +1,36 @@
+.mainWrap {
+  padding-block: 80px;
+}
+
+.heading {
+  margin-block: 0 20px;
+  color: var(--neutral-black);
+  font-family: var(--headings-font);
+  text-align: center;
+  font-size: 38px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+@media screen and (max-width: 749px) {
+  .mainWrap {
+    padding-block: 48px;
+  }
+
+  .heading {
+    font-size: 32px;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .swiper.center > div {
+    justify-content: center;
+  }
+}

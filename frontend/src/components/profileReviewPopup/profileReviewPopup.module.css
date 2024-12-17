@@ -1,0 +1,155 @@
+.modalOverlay {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 9;
+}
+
+.modalOverlay.show {
+  display: flex;
+}
+
+.modalContent {
+  background-color: var(--neutral-white-n10);
+  padding: 16px;
+  border-radius: 20px;
+  max-width: 600px;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.closeIcon {
+  padding: 8px;
+  display: flex;
+  cursor: pointer;
+}
+
+.inputWrap {
+  margin-bottom: 24px;
+}
+
+.inputWrap .input {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  outline: none;
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  border-radius: 10px;
+  border: 1px solid var(--neutral-n30);
+  background: var(--neutral-white-n10);
+}
+
+.comment {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.inputWrap .input::placeholder,
+.comment::placeholder {
+  color: var(--neutral-n70);
+}
+
+.label {
+  display: block;
+}
+
+.inputWrap .label {
+  color: var(--neutral-n100);
+  font-family: var(--primary-font);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.comment {
+  display: flex;
+  padding: 8px 12px;
+  min-height: 120px;
+}
+
+.title {
+  color: var(--neutral-black);
+  font-family: var(--headings-font);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0;
+}
+
+.inputWrap,
+.comment {
+  width: 100%;
+}
+
+.infoWrap {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  column-gap: 24px;
+}
+
+.submitButton {
+  margin-block: 24px 70px;
+}
+
+.successMessage {
+  opacity: 0;
+  visibility: hidden;
+  display: flex;
+  flex-basis: 100%;
+  justify-content: center;
+  margin-top: 7px;
+  color: var(--neutral-black);
+  font-style: normal;
+  font-family: var(--primary-bold-font);
+  font-size: 14px;
+  text-align: center;
+}
+
+.successMessage.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media screen and (max-width: 749px) {
+  .modalContent {
+    margin: 0 18px;
+  }
+
+  .submitButton {
+    margin: 32px 0;
+  }
+
+  .comment {
+    min-height: 220px;
+  }
+}

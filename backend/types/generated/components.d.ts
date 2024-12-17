@@ -1,55 +1,134 @@
 import type { Schema, Attribute } from '@strapi/strapi';
 
-export interface BlockLocationCard extends Schema.Component {
-  collectionName: 'components_block_location_cards';
+export interface BlockAccordion extends Schema.Component {
+  collectionName: 'components_block_accordions';
   info: {
-    displayName: 'LocationCard';
-    description: '';
+    displayName: 'Accordion';
   };
   attributes: {
-    image: Attribute.Media & Attribute.Required;
-    badge: Attribute.Text;
-    url: Attribute.String & Attribute.Required;
+    title: Attribute.String;
+    text: Attribute.Text;
   };
 }
 
-export interface BlockProviderType extends Schema.Component {
-  collectionName: 'components_block_provider_types';
+export interface BlockCategory extends Schema.Component {
+  collectionName: 'components_block_categories';
   info: {
-    displayName: 'EscortType';
+    displayName: 'location';
     description: '';
   };
   attributes: {
-    text: Attribute.String & Attribute.Required & Attribute.DefaultTo<'Type'>;
+    name: Attribute.String;
     link: Attribute.String & Attribute.Required;
   };
 }
 
-export interface BlockServiceProviderCard extends Schema.Component {
-  collectionName: 'components_block_service_provider_cards';
+export interface BlockFavoritesIds extends Schema.Component {
+  collectionName: 'components_block_favorites_ids';
   info: {
-    displayName: 'EscortCard';
+    displayName: 'favoritesIds';
+  };
+  attributes: {};
+}
+
+export interface BlockLevel2 extends Schema.Component {
+  collectionName: 'components_block_level_2s';
+  info: {
+    displayName: 'level_2';
     description: '';
   };
   attributes: {
-    badge: Attribute.String;
+    title: Attribute.String;
+    link: Attribute.String;
+    level_3: Attribute.Component<'block.level-3', true>;
+  };
+}
+
+export interface BlockLevel3 extends Schema.Component {
+  collectionName: 'components_block_level_3s';
+  info: {
+    displayName: 'level_3';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String;
+    link: Attribute.String;
+  };
+}
+
+export interface BlockLocationCard extends Schema.Component {
+  collectionName: 'components_block_location_cards';
+  info: {
+    displayName: 'Card';
+    description: '';
+  };
+  attributes: {
     image: Attribute.Media & Attribute.Required;
+    badge: Attribute.String;
+    url: Attribute.String;
+  };
+}
+
+export interface BlockRichText extends Schema.Component {
+  collectionName: 'components_block_rich_texts';
+  info: {
+    displayName: 'RichText';
+  };
+  attributes: {
+    heading: Attribute.String;
+    text: Attribute.Blocks;
+  };
+}
+
+export interface BlockSkill extends Schema.Component {
+  collectionName: 'components_block_skills';
+  info: {
+    displayName: 'Skill';
+  };
+  attributes: {
     name: Attribute.String;
-    location: Attribute.String;
-    cost: Attribute.String;
   };
 }
 
 export interface ElementsButtonLink extends Schema.Component {
   collectionName: 'components_elements_button_links';
   info: {
-    displayName: 'Button link';
+    displayName: 'Button';
     description: '';
   };
   attributes: {
     title: Attribute.String;
-    type: Attribute.Enumeration<['PRIMARY', 'SECONDARY']>;
     link: Attribute.String;
+  };
+}
+
+export interface ElementsCollection extends Schema.Component {
+  collectionName: 'components_elements_collections';
+  info: {
+    displayName: 'categories';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String;
+    announcement_bar_links: Attribute.Component<'block.category', true> &
+      Attribute.SetMinMax<
+        {
+          max: 14;
+        },
+        number
+      >;
+  };
+}
+
+export interface ElementsData extends Schema.Component {
+  collectionName: 'components_elements_data';
+  info: {
+    displayName: 'data';
+  };
+  attributes: {
+    duration: Attribute.String;
+    price: Attribute.Integer;
+    additionalInfo: Attribute.String;
   };
 }
 
@@ -57,6 +136,7 @@ export interface ElementsHeading extends Schema.Component {
   collectionName: 'components_elements_headings';
   info: {
     displayName: 'Heading';
+    description: '';
   };
   attributes: {
     Heading: Attribute.String & Attribute.Required;
@@ -66,10 +146,61 @@ export interface ElementsHeading extends Schema.Component {
 export interface ElementsLink extends Schema.Component {
   collectionName: 'components_elements_links';
   info: {
-    displayName: 'Link';
+    displayName: 'ButtonWithLink';
+    description: '';
   };
   attributes: {
-    redirection_url: Attribute.String & Attribute.Required;
+    title: Attribute.String;
+    link: Attribute.String;
+  };
+}
+
+export interface ElementsReview extends Schema.Component {
+  collectionName: 'components_elements_reviews';
+  info: {
+    displayName: 'Review';
+    description: '';
+  };
+  attributes: {
+    author: Attribute.String;
+    text: Attribute.Text;
+    date: Attribute.Date;
+    show: Attribute.Boolean & Attribute.DefaultTo<false>;
+  };
+}
+
+export interface ElementsText extends Schema.Component {
+  collectionName: 'components_elements_texts';
+  info: {
+    displayName: 'Text';
+    description: '';
+  };
+  attributes: {
+    item: Attribute.String;
+  };
+}
+
+export interface ElementsWorkingTime extends Schema.Component {
+  collectionName: 'components_elements_working_times';
+  info: {
+    displayName: 'WorkingTime';
+    description: '';
+  };
+  attributes: {
+    workday: Attribute.String;
+    start: Attribute.String;
+    end: Attribute.String;
+  };
+}
+
+export interface EntrySuburb extends Schema.Component {
+  collectionName: 'components_entry_suburbs';
+  info: {
+    displayName: 'suburb';
+    description: '';
+  };
+  attributes: {
+    name: Attribute.String;
   };
 }
 
@@ -80,9 +211,11 @@ export interface SectionBanner extends Schema.Component {
     description: '';
   };
   attributes: {
-    title: Attribute.String;
-    description: Attribute.Text;
-    image: Attribute.Media;
+    heading: Attribute.Text;
+    image_for_mobile: Attribute.Media;
+    Button: Attribute.Component<'elements.button-link'>;
+    image_for_desktop: Attribute.Media;
+    link: Attribute.String;
   };
 }
 
@@ -95,21 +228,26 @@ export interface SectionFindByLocation extends Schema.Component {
   attributes: {
     heading: Attribute.String;
     card: Attribute.Component<'block.location-card', true> & Attribute.Required;
-    activateBlackMode: Attribute.Boolean & Attribute.DefaultTo<false>;
   };
 }
 
 export interface SectionFindByType extends Schema.Component {
   collectionName: 'components_section_find_by_types';
   info: {
-    displayName: 'FindByType';
+    displayName: 'Find_By_Type';
     description: '';
   };
   attributes: {
-    title: Attribute.String & Attribute.DefaultTo<'Section title'>;
-    type: Attribute.Component<'block.provider-type', true>;
-    card: Attribute.Component<'block.service-provider-card', true>;
-    activateBlackMode: Attribute.Boolean & Attribute.DefaultTo<false>;
+    heading: Attribute.String;
+    providers: Attribute.Relation<
+      'section.find-by-type',
+      'oneToMany',
+      'plugin::users-permissions.user'
+    >;
+    categories: Attribute.Component<'block.category', true>;
+    show_categories_in_the_center: Attribute.Boolean &
+      Attribute.DefaultTo<false>;
+    Button: Attribute.Component<'elements.link'>;
   };
 }
 
@@ -121,27 +259,31 @@ export interface SectionFooter extends Schema.Component {
   };
   attributes: {
     info: Attribute.Text;
-    menu_items: Attribute.Relation<
-      'section.footer',
-      'oneToMany',
-      'api::menu-item.menu-item'
-    >;
     text: Attribute.String;
     link: Attribute.Component<'elements.link'>;
   };
 }
 
-export interface SectionHeader extends Schema.Component {
-  collectionName: 'components_section_headers';
+export interface SectionImageBanner extends Schema.Component {
+  collectionName: 'components_section_image_banners';
   info: {
-    displayName: 'Header';
+    displayName: 'imageBanner';
     description: '';
   };
   attributes: {
-    logo: Attribute.Media & Attribute.Required;
-    menuItem1: Attribute.String;
-    menuItem2: Attribute.String;
-    Button: Attribute.Component<'elements.button-link', true>;
+    image: Attribute.Media;
+  };
+}
+
+export interface SectionInfo extends Schema.Component {
+  collectionName: 'components_section_infos';
+  info: {
+    displayName: 'TextWithTitle';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String;
+    text: Attribute.Text;
   };
 }
 
@@ -155,41 +297,65 @@ export interface SectionList extends Schema.Component {
   };
 }
 
-export interface SectionSlider extends Schema.Component {
-  collectionName: 'components_section_sliders';
+export interface SectionNavigation extends Schema.Component {
+  collectionName: 'components_section_navigations';
   info: {
-    displayName: 'Section';
+    displayName: 'navigation';
+  };
+  attributes: {
+    navigation_items: Attribute.Relation<
+      'section.navigation',
+      'oneToMany',
+      'api::navigation-item.navigation-item'
+    >;
+  };
+}
+
+export interface SectionTopProviders extends Schema.Component {
+  collectionName: 'components_section_top_providers';
+  info: {
+    displayName: 'Providers';
     description: '';
   };
   attributes: {
-    title: Attribute.String & Attribute.DefaultTo<'Section title'>;
-    card: Attribute.Component<'block.service-provider-card', true> &
-      Attribute.SetMinMax<
-        {
-          min: 1;
-        },
-        number
-      >;
-    activateBlackMode: Attribute.Boolean & Attribute.DefaultTo<false>;
+    heading: Attribute.String;
+    providers: Attribute.Relation<
+      'section.top-providers',
+      'oneToMany',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
 declare module '@strapi/types' {
   export module Shared {
     export interface Components {
+      'block.accordion': BlockAccordion;
+      'block.category': BlockCategory;
+      'block.favorites-ids': BlockFavoritesIds;
+      'block.level-2': BlockLevel2;
+      'block.level-3': BlockLevel3;
       'block.location-card': BlockLocationCard;
-      'block.provider-type': BlockProviderType;
-      'block.service-provider-card': BlockServiceProviderCard;
+      'block.rich-text': BlockRichText;
+      'block.skill': BlockSkill;
       'elements.button-link': ElementsButtonLink;
+      'elements.collection': ElementsCollection;
+      'elements.data': ElementsData;
       'elements.heading': ElementsHeading;
       'elements.link': ElementsLink;
+      'elements.review': ElementsReview;
+      'elements.text': ElementsText;
+      'elements.working-time': ElementsWorkingTime;
+      'entry.suburb': EntrySuburb;
       'section.banner': SectionBanner;
       'section.find-by-location': SectionFindByLocation;
       'section.find-by-type': SectionFindByType;
       'section.footer': SectionFooter;
-      'section.header': SectionHeader;
+      'section.image-banner': SectionImageBanner;
+      'section.info': SectionInfo;
       'section.list': SectionList;
-      'section.slider': SectionSlider;
+      'section.navigation': SectionNavigation;
+      'section.top-providers': SectionTopProviders;
     }
   }
 }

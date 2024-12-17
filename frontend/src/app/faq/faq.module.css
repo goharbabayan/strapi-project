@@ -1,0 +1,24 @@
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.mainWrap {
+  background-color: var(--neutral-black);
+}
+
+.container {
+  padding-block: 33px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+@media screen and (max-width: 959px) {
+  .container {
+    flex-wrap: wrap;
+  }
+}

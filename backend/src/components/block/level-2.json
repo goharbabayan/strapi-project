@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_block_level_2s",
+  "info": {
+    "displayName": "level_2",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "link": {
+      "type": "string"
+    },
+    "level_3": {
+      "type": "component",
+      "repeatable": true,
+      "component": "block.level-3"
+    }
+  }
+}

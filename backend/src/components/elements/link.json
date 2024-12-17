@@ -1,13 +1,17 @@
 {
   "collectionName": "components_elements_links",
   "info": {
-    "displayName": "Link"
+    "displayName": "ButtonWithLink",
+    "description": ""
   },
   "options": {},
   "attributes": {
-    "redirection_url": {
+    "title": {
+      "type": "string"
+    },
+    "link": {
       "type": "string",
-      "required": true
+      "required": false
     }
   }
 }
