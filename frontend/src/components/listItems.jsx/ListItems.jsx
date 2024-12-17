@@ -11,7 +11,9 @@ export default function ListItems({
   isMobile,
   isOneOfTheMobileMenuItemsOpened,
   setIsOneOfTheMobileMenuItemsOpened,
-  setListItemsAreOpened}) {
+  setListItemsAreOpened,
+  handleChildItemClick
+}) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -48,12 +50,13 @@ export default function ListItems({
             }
             <div className={`${styles.wrapper} ${isOpen ? styles.show : ''} ${items.length < 9 ? styles.centered : ''}`}>
               {items.map(item => {
-                const {id, link, name} = item
+                const {id, link, name} = item;
                 return name ?
                   <Link
                     key={id}
                     {...(link && { href: link })}
                     className={styles.link}
+                    onClick={handleChildItemClick}
                   >
                     {name}
                   </Link>

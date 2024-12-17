@@ -3,7 +3,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_HEADER_QUERIES } from '../../app/graphql/headerQueries';
-import { navigate } from '../../app/utils/actions';
 import ListItems from '../listItems.jsx/ListItems';
 import styles from './header.module.css';
 import SearchIcon from '../icons/SearchIcon';
@@ -27,7 +26,8 @@ export default function Header() {
   const [listItemsAreOpened, setListItemsAreOpened] = useState(false);
   const [isOneOfTheMobileMenuItemsOpened, setIsOneOfTheMobileMenuItemsOpened] = useState(false);
   const [openedFirstLevelMobileItemId, setOpenedFirstLevelMobileItemId] = useState(null);
-  const [navigationClassName, setNavigationClassName] = useState(false);
+  const [navigationIsOpen, setNavigationIsOpen] = useState(false);
+  const [isRotated, setIsRotated] = useState(false);
   const [loggedInCustomerData, setLoggedInCustomerData] = useState(null);
   const {loading, error, data} = useQuery(GET_HEADER_QUERIES);
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
@@ -73,8 +73,15 @@ export default function Header() {
   };
 
   const handleBurgerButtonClick = () => {
+    setIsRotated(!isRotated);
     setShowMobileNavigation(!showMobileNavigation);
-    setNavigationClassName(!navigationClassName);
+    setNavigationIsOpen(!navigationIsOpen);
+  };
+
+  const closeNavigationDrawer = () => {
+    setIsRotated(false);
+    setShowMobileNavigation(false);
+    setNavigationIsOpen(false);
   };
 
   const menuItemsHasAtLeastOneItem = headerData.menuItems && headerData.menuItems.length > 0;
@@ -111,6 +118,7 @@ export default function Header() {
                   {isMobileLayout &&
                     <BurgerButton
                       className={styles.navigationButton}
+                      isRotated={isRotated}
                       onBurgerButtonClick={handleBurgerButtonClick}
                     />
                   }
@@ -144,7 +152,7 @@ export default function Header() {
               </div>
             </div>
             {isMobileLayout &&
-              <div className={`${styles.mobileNavigation} ${showMobileNavigation ? styles.show : ''} ${navigationClassName ? 'navigation_is_open' : ''}`}>
+              <div className={`${styles.mobileNavigation} ${showMobileNavigation ? styles.show : ''} ${navigationIsOpen ? 'navigation_is_open' : ''}`}>
                 {menuItemsHasAtLeastOneItem &&
                   <ListItems
                     items={headerData?.menuItems}
@@ -154,6 +162,7 @@ export default function Header() {
                     setIsOneOfTheMobileMenuItemsOpened={setIsOneOfTheMobileMenuItemsOpened}
                     listItemsAreOpened={listItemsAreOpened}
                     setListItemsAreOpened={setListItemsAreOpened}
+                    handleChildItemClick={closeNavigationDrawer}
                   />
                 }
                 <Navigation
@@ -165,6 +174,7 @@ export default function Header() {
                   openedFirstLevelMobileItemId={openedFirstLevelMobileItemId}
                   setOpenedFirstLevelMobileItemId={setOpenedFirstLevelMobileItemId}
                   listItemsAreOpened={listItemsAreOpened}
+                  handleNavigationButtonClick={() => closeNavigationDrawer()}
                 />
               </div>
             }

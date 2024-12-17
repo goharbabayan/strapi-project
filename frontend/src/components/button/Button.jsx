@@ -22,6 +22,7 @@ const Button = ({
         href={href}
         className={`link ${styles.button} ${variant === PRIMARY_BUTTON ? styles.primary : styles.outlined} ${className || ''}`}
         {...props}
+        onClick={onClick}
       >
         <Text
           tag={'span'}

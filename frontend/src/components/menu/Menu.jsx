@@ -18,12 +18,12 @@ export default function Menu({
 
   const [openLevels, setOpenLevels] = useState({});
   const [expandedSubmenuLevel, setExpandedSubmenuLevel] = useState(null);
-  const [isOpened, setIsOpened] = useState(false);
+  const [hasNextLevel, setHasNextLevel] = useState(false);
   // const [hoveredFirstLevelMenuItemId, setHoveredFirstLevelMenuItemId] = useState(null);
   // const [hoveredSecondLevelMenuItemId, setHoveredSecondLevelMenuItemId] = useState(null);
 
-  const handleMouseOver = (id, level) => {
-    setIsOpened(true);
+  const handleMouseOver = (id, level, hasNextLevel) => {
+    setHasNextLevel(hasNextLevel);
     if (level === 1) {
       // setHoveredFirstLevelMenuItemId(id);
       setExpandedSubmenuLevel(id);
@@ -34,7 +34,7 @@ export default function Menu({
   };
 
   const handleMouseOut = (id, level) => {
-    setIsOpened(false);
+    setHasNextLevel(false);
     if (level === 1) {
       setExpandedSubmenuLevel(null);
     }
@@ -79,7 +79,7 @@ export default function Menu({
   return (
     <>
       {hasChild && (
-        <ul className={`${level === 1 ? styles.list : level === 2 ? styles.childList : styles.grandchildList} ${level === 1 && isOpened ? 'navigation_is_hovered' : ''}`}>
+        <ul className={`${level === 1 ? styles.list : level === 2 ? styles.childList : styles.grandchildList} ${level === 1 && menu.length === 3 ? styles.threeItems : ''} ${level === 1 && menu.length > 3 ? styles.moreThanThreeItems : ''} ${level === 1 && hasNextLevel ? 'navigation_is_hovered' : ''}`}>
           {menu.map((menuItem, index) => {
             const id = `level-${level}-${index+1}`
             const isOpen = openLevels[id];
@@ -89,8 +89,8 @@ export default function Menu({
             return (
               <li
                 key={id}
-                className={`${level === 1 ? styles.item : styles.childItem}`}
-                onMouseOver={() => handleMouseOver(id, level)}
+                className={`${level === 1 ? styles.item : styles.childItem} ${hasNextLevel ? styles.hasSubmenu : ''}`}
+                onMouseOver={() => handleMouseOver(id, level, hasNextLevel)}
                 onMouseOut={() => handleMouseOut(id, level)}
               >
                 <div

@@ -19,7 +19,8 @@ export default function Navigation ({
   setIsOneOfTheMobileMenuItemsOpened,
   openedFirstLevelMobileItemId,
   setOpenedFirstLevelMobileItemId,
-  listItemsAreOpened
+  listItemsAreOpened,
+  handleNavigationButtonClick
 }) {
   const [navigationItems, setNavigationItems] = useState([]);
   const {loading, error, data} = useQuery(GET_NAVIGATION_QUERIES);
@@ -58,6 +59,7 @@ export default function Navigation ({
                     variant={`${index === 0 ? 'general' : 'main'}`}
                     className={styles.button}
                     key={index}
+                    onClick={handleNavigationButtonClick}
                   />
                 )}
               </div>)
