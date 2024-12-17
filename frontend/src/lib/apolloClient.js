@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 
  const Client = new ApolloClient({
-  uri: process.env.STRAPI_GRAPHQL_API || 'http://localhost:1337/graphql',
+  uri: 'https://dashboard.sneakylinx.com.au/graphql',
   cache: new InMemoryCache()
 });
 
