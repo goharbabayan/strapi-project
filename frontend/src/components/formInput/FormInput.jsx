@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Text from '../text/Text';
 import styles from './formInput.module.css';
+import InfoIcon from '../icons/Info';
+import InfoMessage from '../infoMessage/infoMessage';
 
 export default function FormInput({
   error,
@@ -14,7 +16,11 @@ export default function FormInput({
   updateData,
   validate,
   showError,
+  disabled,
+  showInfoIcon,
 }) {
+  const infoMessageRef = useRef(null);
+  const [showInfoMessage, setShowInfoMessage] = useState(false);
   const [inputType, setInputType] = useState({
     id: '',
     showPassword: false
@@ -25,6 +31,11 @@ export default function FormInput({
       id: id,
       showPassword: !inputType.showPassword
     });
+  };
+
+  const handleInfoIconClick = (e) => {
+    const isMobileLayout = window.innerWidth < 980;
+    isMobileLayout && infoMessageRef?.current && setShowInfoMessage(!showInfoMessage);
   };
 
   return (
@@ -43,11 +54,12 @@ export default function FormInput({
         value={value}
         className={`${styles.input} ${error && showError ? styles.invalid : ''}`}
         onChange={(e) => {
-          validate(e.target.value);
+          validate && validate(e.target.value);
           updateData(e.target.name, e.target.value);
         }}
         placeholder={placeholder}
         type={inputType.id === id && inputType.showPassword ? 'text' : type}
+        disabled={disabled}
       />
       {type === 'password' &&
         <Text
@@ -56,6 +68,19 @@ export default function FormInput({
           onClick={(e) => handleShowHidePassword(e, id)}
           children={inputType.id === id && inputType.showPassword ? "Hide password" : "Show password"}
         />
+      }
+      {showInfoIcon &&
+        <>
+          <InfoIcon
+            className={styles.infoIcon}
+            onClick={handleInfoIconClick}
+          />
+          <InfoMessage
+            className={`${styles.infoMessageWrapper} ${showInfoMessage ? styles.show : ''}`}
+            text={`To change your email, please contact with our team 'contact@test.com'`}
+            ref={infoMessageRef}
+          />
+        </>
       }
       {error && showError &&
         <Text

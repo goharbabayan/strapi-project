@@ -1,14 +1,4 @@
-.input[type="number"]::-webkit-outer-spin-button,
-.input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.input[type="number"] {
-  -moz-appearance: textfield;
-}
-
-.label {
+.wrapper {
   display: block;
   position: relative;
 }
@@ -18,11 +8,11 @@
   line-height: 18px;
 }
 
-.show_password_button {
+.showPasswordButton {
   font-size: 12px;
 }
 
-.text, .show_password_button {
+.text, .showPasswordButton {
   display: inline-flex;
   color: var(--neutral-n100);
   font-family: var(--primary-font);
@@ -54,30 +44,37 @@
   line-height: normal;
 }
 
-.label .selectClassName,
-.label .input {
-  margin-top: 4px;
-}
-
 .selectClassName {
+  padding: 8px 8px 8px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--neutral-n30);
+  background: var(--neutral-white-n10);
   width: 100%;
-  padding: 7px 10px;
-  border: 1px solid var(--neutral-n50);
-  border-radius: 3px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   outline: none;
+  color: var(--neutral-black);
+  font-size: 16px;
+  line-height: 20px;
+  font-family: var(--primary-font);
+  font-style: normal;
+  width: 100%;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   -ms-appearance: none;
+  cursor: pointer;
+}
+
+.selectClassName.invalid {
+  border: 1px solid var(--red-r5);
 }
 
 .options {
   display: none;
   position: absolute;
-  top: 58px;
+  top: 60px;
   right: 0;
   left: 0;
   margin: 0;
@@ -87,9 +84,9 @@
   overflow-y: scroll;
   z-index: 2;
   padding: 8px;
-  background: var(--neutral-white-n10);
-  border: 1px solid var(--neutral-n50);
-  border-radius: 3px;
+  border-radius: 8px;
+  background-color: var(--neutral-white-n10);
+  box-shadow: 0px 16px 32px 4px rgba(0, 0, 0, 0.15);
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--neutral-n20) var(--neutral-n70);
@@ -105,10 +102,16 @@
   padding: 8px;
   width: 100%;
   cursor: pointer;
+  font-family: var(--primary-font);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .options .option:hover {
   background-color: var(--neutral-n30);
+  border-radius: 6px;
 }
 
 .arrow {
@@ -125,15 +128,19 @@
   cursor: pointer;
 }
 
-.error_text {
+.errorText {
   text-align: center;
   display: block;
-  margin-top: 3px;
+  margin-top: 4px;
   position: absolute;
   top: 60px;
   left: 0;
-  right: 0;
   color: var(--red-r5);
+  font-family: var(--primary-font);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .showPasswordButton {
@@ -143,7 +150,7 @@
   cursor: pointer;
 }
 
-.show_password_button:hover {
+.showPasswordButton:hover {
   border-bottom: 1px solid var(--neutral-black);
 }
 
@@ -159,5 +166,9 @@
 
   .options {
     top: 60px;
+  }
+
+  .options .option {
+    font-size: 12px;
   }
 }

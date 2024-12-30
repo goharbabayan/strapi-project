@@ -219,30 +219,32 @@ module.exports = {
    * @return {Object|Array}
    */
   async addToFavorites(ctx) {
-    const { providerId, clientId } = JSON.parse(ctx.request.body);
-    if (!providerId || !clientId) {
+    const { providerId, clientId, favoriteProvidersIds } = JSON.parse(ctx.request.body);
+
+    if (!providerId || !clientId || !favoriteProvidersIds) {
       return ctx.badRequest('Missing or invalid ID');
+    };
+    const user = await getService('user').fetch(clientId);
+
+    if (!user) {
+      throw new NotFoundError(`User not found`);
     };
 
     try {
-      const user = await getService('user').editFavoriteProvidersIds(clientId);
-      const { createdBy, updatedBy, ...data } = user;
-      let isIdAlreadyIncludedInFavorites = false;
-      user.favoriteProvidersIds.forEach(element => {
-        if (element.item == providerId) {
-          isIdAlreadyIncludedInFavorites = true;
-          return;
-        };
+      const updatedData = {
+        userId: clientId,
+        favoriteProvidersIds: [...favoriteProvidersIds, { item:`${providerId}`}]
+      };
+
+      const data = await getService('user').edit(clientId, updatedData);
+      const sanitizedData = await sanitizeOutput(data, ctx);
+      ctx.send({
+        isProviderExistingInClientFavorites: true,
+        favoriteProvidersIds: sanitizedData.favoriteProvidersIds
       });
-      if (isIdAlreadyIncludedInFavorites) {
-        return ctx.badRequest(`Provider already existing in client's favorites list.`);
-      }
-      const updateData = {...data, favoriteProvidersIds: [...user.favoriteProvidersIds, { item:`${providerId}`}]};
-      const updatedUser = await getService('user').editFavoriteProvidersIds(clientId, updateData);
-      ctx.send(true);
     } catch (error) {
       ctx.send(error);
-    }
+    };
   },
 
   async findFromFavorites(ctx) {
@@ -252,11 +254,13 @@ module.exports = {
     };
 
     try {
-      const user = await getService('user').editFavoriteProvidersIds(clientId);
-      const { createdBy, updatedBy, ...data } = user;
-      let isProviderExistingInClientFavorites = false;
-      isProviderExistingInClientFavorites = user.favoriteProvidersIds.filter(favoriteProviderId => Number(favoriteProviderId?.item) === Number(providerId)).length > 0;
-      ctx.send(isProviderExistingInClientFavorites);
+      const user = await getService('user').fetch(clientId, {populate: ['favoriteProvidersIds']});
+      const isProviderExistingInClientFavorites = user.favoriteProvidersIds.filter(favoriteProviderId => Number(favoriteProviderId?.item) === Number(providerId)).length > 0;
+      const sanitizedData = await sanitizeOutput(user, ctx);
+      ctx.send({
+        isProviderExistingInClientFavorites: isProviderExistingInClientFavorites,
+        favoriteProvidersIds: sanitizedData.favoriteProvidersIds
+      });
     } catch (error) {
       ctx.send(error);
     }
@@ -270,18 +274,27 @@ module.exports = {
     if (!id) {
       return ctx.badRequest('Missing ID');
     };
+
     const reviewData = JSON.parse(ctx.request.body);
     for (const [key, value] of Object.entries(reviewData)) {
       if(key !== 'show' && value.trim() === '') {
         return ctx.badRequest(`Missing ${key} parametr for review`);
       };
     }
+
     try {
-      const user = await getService('user').editReviews(id);
-      const { createdBy, updatedBy, ...data } = user;
-      const updateData = {...data, reviews: [...user.reviews, { ...JSON.parse(ctx.request.body)}]};
-      const updatedUser = await getService('user').editReviews(id, updateData);
-      ctx.send(updatedUser);
+      const user = await getService('user').fetch(id, {populate: ['reviews']});
+
+    if (!user) {
+      throw new NotFoundError(`User not found`);
+    };
+      const updatedData = {
+        userId: id,
+        reviews: [...user.reviews, { ...reviewData}]
+      };
+      const data = await getService('user').edit(id, updatedData);
+      const sanitizedData = await sanitizeOutput(data, ctx);
+      ctx.send({isSuccessfullyCreated: true});
     } catch (error) {
       ctx.send(error);
     }

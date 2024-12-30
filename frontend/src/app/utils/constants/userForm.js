@@ -152,7 +152,6 @@ export const USER_FORM_NEW_MEMBER = (email, id) => {
 }
 
 export const USER_REQUIRED_FIELDS = [
-  'email',
   'name',
   'lastName',
   'country',
@@ -172,15 +171,14 @@ export const USER_REQUIRED_FIELDS = [
 ];
 
 export const USER_REQUIRED_FIELDS_FOR_CLIENT_ROLE = [
-  'email',
+  'profilePicture',
   'name',
   'lastName',
   'gender',
-  'profilePicture',
-]
+];
 
 export const USER_REQUIRED_FIELDS_FOR_ADDING_REVIEW = [
   'author',
   'text',
   'date',
-]
+];

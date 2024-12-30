@@ -90,7 +90,7 @@ function Blog() {
           })}
         </div>
         {currentPage < pagination.pageCount && (
-          <LoadMoreButton onClick={handleLoadMore} isLoading={isLoading}>Load More</LoadMoreButton>
+          <LoadMoreButton onClick={handleLoadMore} isLoading={isLoading} title={'Load More'}/>
         )}
         {error && (
           <span>Something went wrong.</span>

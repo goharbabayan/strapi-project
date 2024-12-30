@@ -1,0 +1,38 @@
+{
+  "kind": "singleType",
+  "collectionName": "client_dashboard_pages",
+  "info": {
+    "singularName": "client-dashboard-page",
+    "pluralName": "client-dashboard-pages",
+    "displayName": "Client dashboard page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "image_for_desktop": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "image_for_mobile": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "title": {
+      "type": "string"
+    }
+  }
+}

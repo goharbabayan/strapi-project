@@ -23,6 +23,21 @@
   margin-block: 0 45px;
 }
 
+.bannerTitleWrapper {
+  z-index: 2;
+}
+
+.bannerTitleWrapper h2 {
+  width: 100%;
+  justify-content: center;
+}
+
+.modal {
+  max-width: 320px;
+  row-gap: 4px;
+  margin-left: 12px;
+}
+
 @media screen and (max-width: 749px) {
   .heading {
     margin-block: 5px 10px;

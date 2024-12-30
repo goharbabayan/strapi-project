@@ -30,6 +30,14 @@
   -moz-appearance: textfield;
 }
 
+.input:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  color: var(--neutral-n70);
+  border: 1px solid var(--neutral-n50);
+  background: var(--neutral-n30);
+}
+
 .label {
   display: flex;
   position: relative;
@@ -81,4 +89,51 @@
 
 .showPasswordButton:hover {
   border-bottom: 1px solid var(--neutral-black);
+}
+
+.infoIcon {
+  position: absolute;
+  bottom: 33%;
+  transform: translateY(50%);
+  right: 10px;
+  cursor: pointer;
+}
+
+.infoMessageWrapper {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  background-color: var(--neutral-white-n10);
+  border: 1px solid var(--neutral-n50);
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  top: 100%;
+  right: 0;
+  z-index: 1;
+}
+
+.infoMessageWrapper.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+@media screen and (min-width: 980px) {
+  .infoIcon:hover ~ .infoMessageWrapper {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .infoIcon {
+    bottom: 18px;
+  }
+
+  .editIcon,
+  .infoIcon {
+    height: 15px;
+    width: 15px;
+  }
 }

@@ -14,7 +14,7 @@ import { CLIENT } from '@/app/utils/constants/userRoles';
 
 export default function ProfileMainInfo(props) {
   const {loggedInUserData} = useContext(AuthContext);
-  const [isUserExistingInFavorites,setIsUserExistingInFavorites] = useState(false);
+  const [findFromFavoritesResponse, setFindFromFavoritesResponse] = useState(null);
 
   const {
     profilePhoto,
@@ -34,33 +34,40 @@ export default function ProfileMainInfo(props) {
     loggedInUserData?.role === CLIENT.type && isProviderExistingInClientsFavorites();
   }, []);
 
-  const fetchData = async (endpoint, setState) => {
+  const fetchData = async (action, endpoint) => {
     // To do get token from Context
     const token = JSON.parse(localStorage.getItem('token'));
-    const data = {
+    let data = {
       providerId: providerId,
       clientId: loggedInUserData?.id,
     };
+    if (action === 'add') {
+      data = {
+        ...data,
+        favoriteProvidersIds: findFromFavoritesResponse?.favoriteProvidersIds
+      }
+    };
+
     const res = await useFetchData(`${baseUrl}${endpoint}`, {
-      method: 'Post',
+      method: 'POST',
       body: JSON.stringify(data),
       headers: {
         'Authorization': `Bearer ${token}`
       },
     })
     if (res.error) {
-      setState(false);
+      setFindFromFavoritesResponse(false);
     } else {
-      setState(res);
+      setFindFromFavoritesResponse(res);
     };
   };
 
   const isProviderExistingInClientsFavorites = () => {
-    fetchData('/api/user/findFromFavorites', setIsUserExistingInFavorites);
+    fetchData('find', '/api/user/findFromFavorites');
   };
 
   const handleAddToFavorites = () => {
-    fetchData('/api/user/addToFavorites', setIsUserExistingInFavorites);
+    fetchData('add', '/api/user/addToFavorites');
   };
 
   return (
@@ -70,7 +77,7 @@ export default function ProfileMainInfo(props) {
           <div className={styles.profilePhotoContainer}>
             {loggedInUserData?.role === CLIENT.type && !hideStarIcon &&
               <>
-                {isUserExistingInFavorites
+                {findFromFavoritesResponse?.isProviderExistingInClientFavorites
                   ?
                     <StarIcon
                       className={styles.providerFavoriteIcon}

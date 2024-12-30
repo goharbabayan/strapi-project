@@ -20,6 +20,7 @@
   --neutral-n90: #4D4D4D;
   --neutral-n100: #262626;
   --neutral-black: #000000;
+  --gray-900: #1E1E1E;
   --gradient-black: #111111 #2A2A2A;
   --color-main: #772A40;
   --color-hover: #753642;
@@ -815,20 +816,6 @@ body.overflow-hidden {
   cursor: pointer;
 }
 
-.infoMessageWrapper {
-  visibility: hidden;
-  opacity: 0;
-  position: absolute;
-  transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out;
-  background-color: var(--neutral-white-n10);
-  border: 1px solid var(--neutral-n50);
-  padding: 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  top: 100%;
-  right: 0;
-}
-
 .error {
   display: none;
 }
@@ -940,13 +927,6 @@ body.overflow-hidden {
   bottom: 10px;
   border-radius: 2px;
   cursor: pointer;
-}
-
-@media screen and (min-width: 980px) {
-  .infoIcon:hover ~ .infoMessageWrapper {
-    visibility: visible;
-    opacity: 1;
-  }
 }
 
 @media screen and (max-width: 979px) {

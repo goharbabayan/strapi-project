@@ -1,15 +1,19 @@
 import { useState, useEffect } from 'react';
+import { useQuery } from '@apollo/client';
 import styles from './clientDetails.module.css';
 import FavoriteEscorts from '../favoriteEscorts/FavoriteEscorts';
 import ResetPassword from '../resetPassword/ResetPassword';
-import AccountInfo from '../accountInfo/AccountInfo';
-import { navigate } from '@/app/actions';
 import ProfileDetailsTabs from '../profileDetails/profileDetailsTabs/ProfileDetailsTabs';
-import { useFetchData } from '@/app/utils/hooks/useFetch';
+import { GET_CLIENT_DASHBOARD_PAGE_QUERIES } from '@/app/graphql/clientDashboardPageQueries';
+import Loading from '@/app/loading';
+import ClientProfile from '../clientProfile/ClientProfile';
+import { CLIENT_DASHBOARD_PAGE_TABS } from '@/app/utils/constants/dashboardPageTabs';
 
-export default function ClientDetails({ user, onChanges, errorMessage }) {
-  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
-  const token = JSON.parse(localStorage.getItem('token'));
+export default function ClientDetails({
+  user,
+  onChanges,
+  errorMessage
+}) {
   const [formData, setFormData] = useState({
       username: user.username || '',
       name: user.name || '',
@@ -22,112 +26,59 @@ export default function ClientDetails({ user, onChanges, errorMessage }) {
       favoriteProvidersIds: user.favoriteProvidersIds || [],
     }
   );
-  const [favoriteProviders, setFavoriteProviders] = useState([]);
+  const [bannerData, setBannerData] = useState({
+    title: '',
+    desktopImage: null,
+    mobileImage: null,
+  });
   const [activeTabId, setActiveTabId] = useState(0);
+  const {loading, error, data} = useQuery(GET_CLIENT_DASHBOARD_PAGE_QUERIES);
 
   useEffect(() => {
-    const favoritesIdsArray = formData.favoriteProvidersIds.map((obj) => obj.item);
-    token && favoritesIdsArray.length > 0 &&
-      fetch(`${baseUrl}/api/user/favorites?ids=${favoritesIdsArray}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.error) {
-          // the token is expired need to login again to update existing token;
-          navigate('/login');
-        } else {
-          setFavoriteProviders(data);
-        }
-      })
-      .catch(err => console.log('err', err))
-  }, [formData.favoriteProvidersIds]);
-
-  const handleStarIconClick = (e, id) => {
-    e.preventDefault();
-    const token = JSON.parse(localStorage.getItem('token'));
-    const updatedFavoritesIds = formData.favoriteProvidersIds.filter(object => object.item != id);
-    const updatedProviders = favoriteProviders.filter(provider => provider.id !== id);
-    setFormData({...formData, favoriteProvidersIds: updatedFavoritesIds});
-    setFavoriteProviders(updatedProviders);
-
-    token && user.id && user &&
-      useFetchData(`${baseUrl}/api/users/${user.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({...formData, favoriteProvidersIds: updatedFavoritesIds}),
-      })
-  };
-
-  const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-    onChanges(true, {...formData, [event.target.name]: event.target.value });
-  };
-
-  const handleMouseDown = async (name, value) => {
-    setFormData({ ...formData, [name]: value });
-    onChanges(true, { ...formData, [name]: value });
-  };
+    if (data !== undefined) {
+      setBannerData({
+        title: data?.clientDashboardPage?.data?.attributes?.title,
+        desktopImage: data?.clientDashboardPage?.data?.attributes?.image_for_desktop?.data?.attributes,
+        mobileImage: data?.clientDashboardPage?.data?.attributes?.image_for_mobile?.data?.attributes
+      });
+    }
+  }, [data]);
 
   const handleChildFormDataChange = (field, value) => {
     setFormData({...formData, [field]: value});
-    onChanges(true, {...formData, [field]: value});
+    onChanges({...formData, [field]: value})
   };
-// ToDo: move the constant to constant file
-  const CLIENT_PROFILE_DETAILS_TABS = [
-    {
-      id: 0,
-      label: 'Account details',
-      icon: null
-    },
-    {
-      id: 1,
-      label: 'My favorites',
-      icon: null,
-    },
-    {
-      id: 2,
-      label: 'Settings',
-      icon: null
-    }
-  ];
 
   return (
     <div className={styles.mainWrap}>
-      <div className={`${styles.container}`}>
-        <ProfileDetailsTabs
-          profileDetailsTabsData={CLIENT_PROFILE_DETAILS_TABS}
-          activeTabId={activeTabId}
-          setActiveTabId={setActiveTabId}
-        />
-        {activeTabId === 0 &&
-          <AccountInfo
-            email={formData.email}
-            gender={formData.gender}
-            formData={formData}
-            onChange={handleChange}
-            onMouseDown={handleMouseDown}
-            onChildFormDataChange={handleChildFormDataChange}
-            errorMessage={errorMessage}
+      {loading ? <Loading/> :
+        <div className={`${styles.container}`}>
+          <ProfileDetailsTabs
+            profileDetailsTabsData={CLIENT_DASHBOARD_PAGE_TABS}
+            activeTabId={activeTabId}
+            setActiveTabId={setActiveTabId}
           />
-        }
-        {activeTabId === 1 &&
-          <FavoriteEscorts
-            providers={favoriteProviders}
-            title={'My Favorite Escorts'}
-            onStarIconClick={handleStarIconClick}
-          />
-        }
-        {activeTabId === 2 &&
-          <ResetPassword/>
-        }
-      </div>
+          {activeTabId === 0 &&
+            <FavoriteEscorts
+              favoriteProvidersIds={formData.favoriteProvidersIds}
+              bannerData={bannerData}
+              clientId={user.id}
+              formData={formData}
+              setFormData={setFormData}
+            />
+          }
+          {activeTabId === 1 &&
+            <ClientProfile
+              formData={formData}
+              onChildFormDataChange={handleChildFormDataChange}
+              errorMessage={errorMessage}
+            />
+          }
+          {activeTabId === 2 &&
+            <ResetPassword/>
+          }
+        </div>
+      }
     </div>
   )
 }

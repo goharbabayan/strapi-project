@@ -66,7 +66,7 @@ export default function ProfileReviewPopup({setShowReviewPopup, providerId}) {
       body: JSON.stringify(formData),
     });
 
-    if (data) {
+    if (data.isSuccessfullyCreated) {
       setShowSuccessMessage(true);
       setTimeout(() => {
         setShowSuccessMessage(false);

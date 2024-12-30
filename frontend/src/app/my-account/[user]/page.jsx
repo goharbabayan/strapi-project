@@ -56,56 +56,46 @@ export default function MyAccountPage() {
 
   const handleFormSubmit = (event, role) => {
     event.preventDefault();
-    let userformData = userUpdatedFormData;
-    const hasUserUpdatedFormData = Object.keys(userUpdatedFormData).length > 0;
-    if (!hasUserUpdatedFormData) {
-      const { id, blocked, createdAt, updatedAt, confirmed, role, ...rest } = user;
-      userformData = rest;
-    }
-    if (role !== MANAGER.type) {
-      if (!userformData.profilePicture) {
-        setShowSaveResetChangeBar(true);
-        setNotificationBarMessageAndStatus({
-          show: true,
-          message: `Please, add profile picture.`
-        });
-        return;
-      }
-      if (!userformData.coverPhoto && role !== CLIENT.type) {
-        setShowSaveResetChangeBar(true);
-        setNotificationBarMessageAndStatus({
-          show: true,
-          message: `Please, add cover photo.`
-        });
-        return;
-      }
 
-      const isUsernameLengthValid = isInputLengthValid(userformData.username, 3);
-      if (!isUsernameLengthValid) {
-        setShowSaveResetChangeBar(false);
-        setNotificationBarMessageAndStatus({
-          show: true,
-          message: 'Username must be at least 3 characters.'
-        });
-        return;
-      };
-    }
+    const isClientRole = role === CLIENT.type;
+    // comment Should be changed or removed when doing Provider and manager dashboard tasks.
+    // const isServiceProviderRole = role === SERVICE_PROVIDER.type;
+    // const isManagerRole = role === MANAGER.type;
+    // let userformData = userUpdatedFormData;
+    // if (!isManagerRole) {
+    //   if (!userformData.profilePicture) {
+    //     setShowSaveResetChangeBar(true);
+    //     setNotificationBarMessageAndStatus({
+    //       show: true,
+    //       message: `Please, add profile picture.`
+    //     });
+    //     return;
+    //   }
+    //   if (!userformData.coverPhoto && role !== CLIENT.type) {
+    //     setShowSaveResetChangeBar(true);
+    //     setNotificationBarMessageAndStatus({
+    //       show: true,
+    //       message: `Please, add cover photo.`
+    //     });
+    //     return;
+    //   };
 
-    let errors;
-    if (role !== CLIENT.type) {
-      errors = validateForm(userformData, false);
-    } else if (role === CLIENT.type) {
-      errors = validateForm(userformData, true);
-    };
+      // const isUsernameLengthValid = isInputLengthValid(userformData.username, 3);
+      // if (!isUsernameLengthValid) {
+      //   setShowSaveResetChangeBar(false);
+      //   setNotificationBarMessageAndStatus({
+      //     show: true,
+      //     message: 'Username must be at least 3 characters.'
+      //   });
+      //   return;
+      // };
+    // }
+    // endcomment
+
+    const errors = validateForm(userUpdatedFormData, isClientRole) || {};
     const hasErrors = Object.keys(errors).length > 0;
-
     if (hasErrors) {
       setErrorMessage(errors);
-      setShowSaveResetChangeBar(true);
-      setNotificationBarMessageAndStatus({
-        show: true,
-        message: `Please correct the errors and try again.`
-      });
       return;
     } else {
       setErrorMessage('');
@@ -116,40 +106,22 @@ export default function MyAccountPage() {
       });
     };
 
-    if (hasUserUpdatedFormData) {
-      token && userId && user &&
-        fetch(`${strapiBaseUrl}/api/users/${userId}`, {
-          method: 'PUT',
-          body: JSON.stringify(userformData),
-          headers: {
-            'Content-type': 'application/json',
-            'authorization': `Bearer ${token}`
-          }
-        })
-        .then(res => res.json())
-        .then(data => {
-          setShowSaveResetChangeBar(true);          
-          if (data.error) {
-            setNotificationBarMessageAndStatus({
-              show: true,
-              message: data?.error?.message,
-            });
-            return;
-          } else {
-            setNotificationBarMessageAndStatus({
-              show: true,
-              message: 'Changes applied successfully.'
-            });
-            setTimeout(() => {
-              setShowSaveResetChangeBar(false);
-              setNotificationBarMessageAndStatus({
-                show: false,
-                message: ''
-              });
-            }, 5000);
-          }
-        });
-    }
+    token && userId && user &&
+      fetch(`${strapiBaseUrl}/api/users/${userId}`, {
+        method: 'PUT',
+        body: JSON.stringify(userUpdatedFormData),
+        headers: {
+          'Content-type': 'application/json',
+          'authorization': `Bearer ${token}`
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          setErrorMessage({text: data?.error?.message});
+          return;
+        };
+      });
 
     if (!user.isApprovedByAdmin) {
       token && userId && user &&
@@ -171,13 +143,13 @@ export default function MyAccountPage() {
           } else throw new Error(`HTTP error! status: ${response.status}`);
         })
     };
-  }
+  };
 
   const handleSaveButtonClick = () => {
     const unsavedUserData = {
       ...userUpdatedFormData,
       isApprovedByAdmin: false
-    }
+    };
 
     const isUsernameLengthValid = isInputLengthValid(userUpdatedFormData.username, 3);
     if (!isUsernameLengthValid) {
@@ -233,13 +205,8 @@ export default function MyAccountPage() {
     window.location.reload();
   };
 
-  const handleSetChanges = (childState, childFormData) => {
+  const handleSetChanges = (childFormData) => {
     setErrorMessage('');
-    setShowSaveResetChangeBar(childState);
-    setNotificationBarMessageAndStatus({
-      show: false,
-      message: ''
-    });
     setUserUpdatedFormData(childFormData);
   };
 
@@ -291,7 +258,6 @@ export default function MyAccountPage() {
               <ClientDetails
                 user={user}
                 onChanges={handleSetChanges}
-                showSaveResetChangeBar={showSaveResetChangeBar}
                 errorMessage={errorMessage}
               />
             </>

@@ -61,7 +61,7 @@ export const emailValidation = (value) => {
   }
 };
 
-export const inputValidation = (fieldName, value, requiredLength) => {
+export const inputValidation = (fieldName, value, requiredLength, mayIncludeSpaces) => {
   let isUsername = false;
   if(fieldName === 'Username') isUsername = true;
 
@@ -69,7 +69,7 @@ export const inputValidation = (fieldName, value, requiredLength) => {
     isValid: false,
     errorMessage: `${fieldName} is required.`
   };
-  if (value.includes(' ') && !isUsername) return {
+  if (!mayIncludeSpaces && value.includes(' ') && !isUsername) return {
     isValid: false,
     errorMessage: `${fieldName} is invalid.`
   };

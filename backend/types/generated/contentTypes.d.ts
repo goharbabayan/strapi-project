@@ -914,6 +914,39 @@ export interface ApiBlogBlog extends Schema.SingleType {
   };
 }
 
+export interface ApiClientDashboardPageClientDashboardPage
+  extends Schema.SingleType {
+  collectionName: 'client_dashboard_pages';
+  info: {
+    singularName: 'client-dashboard-page';
+    pluralName: 'client-dashboard-pages';
+    displayName: 'Client dashboard page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    image_for_desktop: Attribute.Media;
+    image_for_mobile: Attribute.Media;
+    title: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::client-dashboard-page.client-dashboard-page',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::client-dashboard-page.client-dashboard-page',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiFaqFaq extends Schema.SingleType {
   collectionName: 'faqs';
   info: {
@@ -1285,6 +1318,7 @@ declare module '@strapi/types' {
       'api::about-us.about-us': ApiAboutUsAboutUs;
       'api::article.article': ApiArticleArticle;
       'api::blog.blog': ApiBlogBlog;
+      'api::client-dashboard-page.client-dashboard-page': ApiClientDashboardPageClientDashboardPage;
       'api::faq.faq': ApiFaqFaq;
       'api::footer.footer': ApiFooterFooter;
       'api::header.header': ApiHeaderHeader;

@@ -1,143 +1,215 @@
 import { useContext, useState } from 'react';
 import styles from './resetPassword.module.css';
-import InputField from '../inputField/InputField';
+import FormInput from '../formInput/FormInput';
 import Text from '../text/Text';
 import Button from '../button/Button';
 import { AuthContext } from '@/app/Context';
 import { isInputLengthValid } from '@/app/utils/helpers';
+import { inputValidation, confirmPasswordValidation } from '@/app/utils/helpers';
+import { useFetchData } from '@/app/utils/hooks/useFetch';
 
-const ResetPassword = () => {
+export default function ResetPassword() {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
   const {setCustomerToken} = useContext(AuthContext);
-  const [error, setError] = useState('');
-  const [showErrorMessage, setShowErrorMessage] = useState(false);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [newPasswordData, setNewPasswordData] = useState({
+  const {customerToken} = useContext(AuthContext);
+  const [formData, setFormData] = useState({
     currentPassword: '',
     password: '',
     passwordConfirmation: '',
   });
+  const [showState, setShowState] = useState({
+    error: {
+      show: false,
+      message: '',
+    },
+    success: {
+      message: 'Password successfully changed!'
+    }
+  });
+  const [fieldsValidation, setFieldsValidation] = useState({
+    currentPassword: {
+      isValid: false,
+      errorMessage: 'Current password is required.',
+    },
+    password: {
+      isValid: false,
+      errorMessage: 'New Password is required.',
+    },
+    passwordConfirmation: {
+      isValid: false,
+      errorMessage: 'Password confirmation is required.',
+    },
+    show: false,
+  });
 
-  const handleChangePassword = (e) => {
+  const formFields = [
+    {
+      id: 'current_password',
+      placeholder: 'current password',
+      name: 'currentPassword',
+      label: 'Current password',
+      type: 'password',
+      validate: (value) => {
+        setFieldsValidation({
+          ...fieldsValidation,
+          currentPassword: inputValidation('Current password', value, 6),
+          show: false,
+        });
+      },
+    },
+    {
+      id: 'new_password',
+      placeholder: 'new password',
+      name: 'password',
+      label: 'New password',
+      type: 'password',
+      validate: (value) => {
+        setFieldsValidation({
+          ...fieldsValidation,
+          password: inputValidation('New password', value, 6),
+          passwordConfirmation: confirmPasswordValidation(formData?.passwordConfirmation, value),
+          show: false,
+        });
+      },
+    },
+    {
+      id: 'repeat_new_password',
+      placeholder: 'repeat new password',
+      name: 'passwordConfirmation',
+      label: 'Repeat new password',
+      type: 'password',
+      validate: (value) => {
+        setFieldsValidation({
+          ...fieldsValidation,
+          passwordConfirmation: confirmPasswordValidation(value, formData?.password),
+          show: false,
+        });
+      },
+    },
+  ];
+
+  const handleChangePassword = async (e) => {
     e.preventDefault();
-    const password = newPasswordData.password;
-    const confirmPassword = newPasswordData.passwordConfirmation;
-    const currentPassword = newPasswordData.currentPassword;
 
-    // check validation
-    if (password === '' || confirmPassword === '' || currentPassword === '') {
-      setShowErrorMessage(true);
-      setError('Please fill in all required fields.');
+    const hasAtLeastOneError = Object.values(fieldsValidation).some(field => field.isValid === false);
+    if (hasAtLeastOneError) {
+      setFieldsValidation({
+        ...fieldsValidation,
+        show: true,
+      });
       return;
-    } else if (!isInputLengthValid(password, 6)) {
-      setShowErrorMessage(true);
-      setError('Password must be at least 6 characters.');
-      return;
-    } else if (password != confirmPassword) {
-      setShowErrorMessage(true);
-      setError('Password and password confirmation do not match.');
-      return;
-    }
-    // end check validation
+    };
 
-    const token = JSON.parse(localStorage.getItem('token'));
-    if (!token) navigate('/login');
-    try {
-      fetch(`${baseUrl}/api/auth/change-password?`, {
-        method: 'POST',
-        body: JSON.stringify(newPasswordData),
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-type': 'application/json',
+    if (!customerToken) navigate('/login');
+    const data = await useFetchData(`${baseUrl}/api/auth/change-password?`, {
+      method: 'POST',
+      body: JSON.stringify(formData),
+      headers: {
+        'Authorization': `Bearer ${customerToken}`,
+        'Content-type': 'application/json',
+      }
+    });
+
+    if (data.error) {
+      setShowState({
+        ...showState,
+        error: {
+          show: true,
+          message: data?.error?.message || 'Password change failed.'
         }
-      })
-      .then(resp => resp.json())
-      .then(data => {
-        if (data.error) {
-          setShowErrorMessage(true);
-          setError(data.error.message);
-        } else if (data.user) {
-          const token = data.jwt;
-          localStorage.setItem('token', JSON.stringify(token));
-          setCustomerToken(token);
-          setShowSuccessMessage(true);
-          setTimeout(() => {
-            setShowSuccessMessage(false);
-          }, 5000);
+      });
+    } else if (data.user) {
+      const token = data.jwt;
+      localStorage.setItem('token', JSON.stringify(token));
+      setCustomerToken(token);
+      setShowState({
+        error: {
+          show: false,
+          message: '',
+        },
+        success: {
+          ...showState?.success,
+          show: true,
         }
-      })
-    } catch (err) {
-      console.log('error', err);
-    }
+      });
+      setTimeout(() => {
+        setShowState({
+          ...showState,
+          success: {
+            ...showState?.success,
+            show: false,
+          }
+        })
+      }, 5000);
+    };
   };
 
-  const handleDataChange = (e) => {
-    setShowErrorMessage(false);
-    setError('');
-    setNewPasswordData({...newPasswordData, [e.target.name]:  e.target.value});
+  const handleDataChange = (name, value) => {
+    setShowState({
+      ...showState,
+      error: {
+        show: false,
+        message: '',
+      }
+    });
+    setFormData({...formData, [name]: value});
   };
+console.log('formData', formData, fieldsValidation);
 
   return (
     <div className="page-width">
-      <section className={`${styles.container}`}>
-        <h3 className={`subtitle ${styles.center}`}>Change password</h3>
+      <section className={`${styles.mainWrap}`}>
         <div className={`${styles.container}`}>
-          <div className={`${styles.passwordContainer} ${styles.newPassword}`}>
-            <InputField 
-              label='Current Password'
-              type='password'
-              name='currentPassword'
-              id='current_password'
-              className={styles.input}
-              value={newPasswordData.currentPassword}
-              onChange={handleDataChange}
-              isPassword={true}
-              isRequired={true}
-            />
-            <InputField 
-              label='New Password'
-              type='password'
-              name='password'
-              id='password'
-              className={styles.input}
-              value={newPasswordData.password}
-              onChange={handleDataChange}
-              isPassword={true}
-              isRequired={true}
-            />
-            <InputField 
-              label='Confirm Password'
-              type='password'
-              name='passwordConfirmation'
-              id='confirm_password'
-              className={styles.input}
-              value={newPasswordData.passwordConfirmation}
-              onChange={handleDataChange}
-              isPassword={true}
-              isRequired={true}
-            />
-          </div>
           <Text
-            tag={'span'}
-            className={`errorMessage ${styles.error} ${showErrorMessage ? styles.show : ''} text-small`}
-            children={error}
+            tag={'h3'}
+            className={styles.title}
+            children={'Change password'}
           />
-          <Text
-            tag={'span'}
-            className={`${styles.successMessage} ${showSuccessMessage ? styles.show : ''} text-small`}
-            children={'Password succesfully changed.'}
+          <div className={styles.content}>
+          {formFields.map((input) => {
+            const {id, name, label, type, placeholder, disabled, validate} = input;
+            return (
+              <FormInput
+                key={id}
+                error={fieldsValidation[name].errorMessage && fieldsValidation[name].errorMessage}
+                id={id}
+                placeholder={placeholder}
+                name={name}
+                label={label}
+                value={formData[name] || ''}
+                type={type}
+                isRequired={true}
+                updateData={handleDataChange}
+                validate={validate}
+                showError={fieldsValidation?.show}
+                showInfoIcon={name === 'email' ? true : false}
+              />
+            )
+          })}
+          </div>
+          <Button
+            variant={'main'}
+            onClick={handleChangePassword}
+            children={'Save changes'}
           />
         </div>
-        <div className={`${styles.buttonWrap}`}>
-          <Button
-            className={'btn button'}
-            onClick={handleChangePassword}
-            children={'Save new password'}
-          />
+        <div className={styles.messageContainer}>
+          {showState?.error?.show &&
+            <Text
+              tag={'span'}
+              children={showState?.error?.message}
+              className={`${styles.error}`}
+            />
+          }
+          {showState?.success?.show &&
+            <Text
+              tag={'span'}
+              children={showState?.success?.message}
+              className={`${styles.successMessage}`}
+            />
+          }
         </div>
       </section>
     </div>
   )
 };
-
-export default ResetPassword;

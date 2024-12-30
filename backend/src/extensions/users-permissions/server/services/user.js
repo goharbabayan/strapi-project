@@ -50,7 +50,7 @@ module.exports = ({ strapi }) => ({
   async edit(userId, params = {}) {
     return strapi.entityService.update('plugin::users-permissions.user', userId, {
       data: params,
-      populate: ['role'],
+      populate: ['role', 'favoriteProvidersIds', 'reviews'],
     });
   },
  /**

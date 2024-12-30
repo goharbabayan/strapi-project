@@ -3,7 +3,7 @@ import Button from '../button/Button';
 import Image from '../image/Image';
 import Text from '../text/Text';
 
-const Banner = ({bannerLink, desktopImage, mobileImage, text, button, showOverlay}) => {
+const Banner = ({bannerLink, desktopImage, mobileImage, text, infoWrapperClassName, button, showOverlay}) => {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
   return (
@@ -43,12 +43,12 @@ const Banner = ({bannerLink, desktopImage, mobileImage, text, button, showOverla
             />
           }
           {(text || button?.title) &&
-            <div className={`${styles.wrapper} ${bannerLink ? styles.withLink : ''}`}>
+            <div className={`${styles.wrapper} ${bannerLink ? styles.withLink : ''} ${infoWrapperClassName || ''}`}>
               <div className={`${styles.info} page-width`}>
                 {text &&
                   <Text
                     tag={'h2'}
-                    className={styles.title}
+                    className={`${styles.title}`}
                     children={text}
                   />
                 }

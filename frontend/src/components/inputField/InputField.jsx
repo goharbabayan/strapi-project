@@ -77,7 +77,12 @@ export default function InputField ({
     <div className={`${fieldClassName ? fieldClassName : ''}`}>
       {type === 'select' ? (
         <>
-          <label htmlFor={id} className={`${styles.label} ${labelClassName ? labelClassName : ''}`} onMouseDown={(e) => handleClick(e)} ref={labelRef}>{`${label || ''} ${isRequired ? '*' : ''}`}
+          <label htmlFor={id} className={`${styles.label} ${labelClassName ? labelClassName : ''}`} onMouseDown={(e) => handleClick(e)} ref={labelRef}>
+            <Text
+              tag={'span'}
+              className={styles.text}
+              children={`${label || ''} ${isRequired ? '*' : ''}`}
+            />
             <select
               name={name}
               id={id}
@@ -92,7 +97,7 @@ export default function InputField ({
                 <option key={index} value={option.value} data-code={option.code}>{option.label ? option.label : option.value}</option>
               ))}
             </select>
-            <span className='arrow' ref={arrowRef}></span>
+            <span className={styles.arrow} ref={arrowRef}></span>
           </label>
           <ul className={`${styles.options} ${showOptions ? styles.show : ''} unstyled-list options`}>
             {options.map((option, index) => (
@@ -105,12 +110,18 @@ export default function InputField ({
           {errorMessage && errorMessage[name] && 
             <Text
               tag={'span'}
+              className={`${styles.error_text} text-extrasmall ${errorMessageClassName ? errorMessageClassName : null}`}
               children={errorMessage && errorMessage[name]}
             />
           }
         </>
       ) : (
-        <label htmlFor={id} className={`${styles.label} ${labelClassName ? labelClassName : ''}`}>{`${label || ''} ${isRequired ? '*' : ''}`}
+        <label htmlFor={id} className={`${styles.label} ${labelClassName ? labelClassName : ''}`}>
+          <Text
+            tag={'span'}
+            className={styles.text}
+            children={`${label || ''} ${isRequired ? '*' : ''}`}
+          />
           <input
             type={inputType.id === id && inputType.showPassword ? 'text' : type}
             name={name}
@@ -136,7 +147,7 @@ export default function InputField ({
           {errorMessage && errorMessage[name] && 
             <Text
               tag={'span'}
-              className={`${styles.errorText} text-extrasmall errorText ${errorMessageClassName ? errorMessageClassName : null}`}
+              className={`${styles.error_text} text-extrasmall ${errorMessageClassName ? errorMessageClassName : null}`}
               children={errorMessage && errorMessage[name]}
             />
           }
