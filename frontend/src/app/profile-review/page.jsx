@@ -217,9 +217,8 @@ export default function ProfileReview() {
         {activeTabId === 1 &&
           <ProfileAboutMe
             aboutMeDescription={user?.aboutMe}
-            providerCostumes={user?.costume}
-            providerMakeup={user?.makeup}
-            providerOutfits={user?.outfits}
+            providerGlam={user?.glam}
+            providerCloset={user?.closet}
             providerExtraOptions={user?.extras}
           />
         }

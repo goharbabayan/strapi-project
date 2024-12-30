@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import styles from './aboutMe.module.css';
 import Text from '../text/Text';
 import Favourites from '../favourites/Favourites';
-import { COSTUME, EXTRAS, MAKEUP, POSSIBLE_OUTFITS_OPTIONS } from '@/app/utils/constants/userPossibleOutfits';
+import { EXTRAS, MY_GLAM, MY_CLOSET } from '@/app/utils/constants/userPossibleOutfits';
 
 const AboutMe = forwardRef(({formData, onChildFormDataChange, error}, ref) => {
   const handleChangeAboutMeText = (e) => {
@@ -60,20 +60,20 @@ const AboutMe = forwardRef(({formData, onChildFormDataChange, error}, ref) => {
         {/* comment for wishlist field */}
         <div className={`${styles.selectionContainer}`}>
           <Favourites
-            label='Possible outfits to wear'
+            label='My closet'
             labelClassName={'selectOptionLabel'}
             selectClassName={'select'}
             fieldClassName={'selectOptionsWrapper'}
             type='text'
-            name='outfits'
-            userOptions={formData.outfits}
+            name='closet'
+            userOptions={formData.closet}
             onMouseDown={handlePreferencesChange}
             isRequired={false}
-            optionsList={POSSIBLE_OUTFITS_OPTIONS}
+            optionsList={MY_CLOSET}
             errorMessage={error?.favouriteThings}
           />
           <Favourites
-            label='Makeup'
+            label='My glam'
             labelClassName={'selectOptionLabel'}
             selectClassName={'select'}
             fieldClassName={'selectOptionsWrapper'}
@@ -82,22 +82,7 @@ const AboutMe = forwardRef(({formData, onChildFormDataChange, error}, ref) => {
             userOptions={formData.makeup}
             onMouseDown={handlePreferencesChange}
             isRequired={false}
-            optionsList={MAKEUP}
-            errorMessage={error?.favouriteThings}
-          />
-        </div>
-        <div className={styles.selectionContainer}>
-          <Favourites
-            label='Costume'
-            labelClassName={'selectOptionLabel'}
-            selectClassName={'select'}
-            fieldClassName={'selectOptionsWrapper'}
-            type='text'
-            name='costume'
-            userOptions={formData.costume}
-            onMouseDown={handlePreferencesChange}
-            isRequired={false}
-            optionsList={COSTUME}
+            optionsList={MY_GLAM}
             errorMessage={error?.favouriteThings}
           />
           <Favourites
@@ -106,7 +91,7 @@ const AboutMe = forwardRef(({formData, onChildFormDataChange, error}, ref) => {
             selectClassName={'select'}
             fieldClassName={'selectOptionsWrapper'}
             type='text'
-            name='extra'
+            name='extras'
             userOptions={formData.extras}
             onMouseDown={handlePreferencesChange}
             isRequired={false}

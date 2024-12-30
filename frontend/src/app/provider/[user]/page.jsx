@@ -156,9 +156,8 @@ export default function Provider () {
           {activeTabId === 1 &&
             <ProfileAboutMe
               aboutMeDescription={providerData?.aboutMe}
-              providerCostumes={providerData?.costume}
-              providerMakeup={providerData?.makeup}
-              providerOutfits={providerData?.outfits}
+              providerGlam={providerData?.glam}
+              providerCloset={providerData?.closet}
               providerExtraOptions={providerData?.extras}
             />
           }

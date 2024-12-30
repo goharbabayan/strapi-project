@@ -1,10 +1,4 @@
 export const AGE_OPTIONS = [
-  { value: `20's`, label: `20's` },
-  { value: `30's`, label: `30's` },
-  { value: `40's`, label: `40's` },
-  { value: `50's`, label: `50's` },
-  { value: 'cougar', label: 'cougar' },
-  { value: 'MILF', label: 'MILF' },
   { value: '18', label: '18' },
   { value: '19', label: '19' },
   { value: '20', label: '20' },
@@ -58,30 +52,36 @@ export const AGE_OPTIONS = [
   { value: '68', label: '68' },
   { value: '69', label: '69' },
   { value: '70', label: '70' },
+  { value: `20's`, label: `20's` },
+  { value: `30's`, label: `30's` },
+  { value: `40's`, label: `40's` },
+  { value: `50's`, label: `50's` },
+  { value: 'cougar', label: 'cougar' },
+  { value: 'MILF', label: 'MILF' },
 ];
 
 export const EYE_COLOR_OPTIONS = [
-  {value: 'Brown', label: 'Brown'},
-  {value: 'Blue', label: 'Blue'},
-  {value: 'Green', label: 'Green'},
-  {value: 'Hazel', label: 'Hazel'},
   {value: 'Grey', label: 'Grey'},
+  {value: 'Hazel', label: 'Hazel'},
+  {value: 'Green', label: 'Green'},
+  {value: 'Blue', label: 'Blue'},
   {value: 'Black', label: 'Black'},
+  {value: 'Brown', label: 'Brown'},
 ];
 
 export const HAIR_COLOR_OPTIONS = [
-  {value: 'blonde', label: 'blonde'},
-  {value: 'red', label: 'red'},
-  {value: 'black', label: 'black'},
-  {value: 'brunette', label: 'brunette'},
-  {value: 'auburn', label: 'auburn'},
-  {value: 'platinum blonde', label: 'platinum blonde'},
-  {value: 'strawberry blonde', label: 'strawberry blonde'},
-  {value: 'caramel', label: 'caramel'},
-  {value: 'pink', label: 'pink'},
-  {value: 'purple', label: 'purple'},
-  {value: 'blue', label: 'blue'},
-  {value: 'green', label: 'green'},
+  {value: 'black', label: 'Black'},
+  {value: 'blonde', label: 'Blonde'},
+  {value: 'red', label: 'Red'},
+  {value: 'brunette', label: 'Brunette'},
+  {value: 'caramel', label: 'Caramel'},
+  {value: 'auburn', label: 'Auburn'},
+  {value: 'platinum blonde', label: 'Platinum blonde'},
+  {value: 'strawberry blonde', label: 'Strawberry blonde'},
+  {value: 'pink', label: 'Pink'},
+  {value: 'blue', label: 'Blue'},
+  {value: 'purple', label: 'Purple'},
+  {value: 'green', label: 'Green'},
 ]
 
 export const HEIGHT_OPTIONS = [
@@ -151,7 +151,6 @@ export const HEIGHT_OPTIONS = [
 export const PLACE_OF_SERVICE_OPTIONS = [
   {value: 'In-Call', label: 'In-Call'},
   {value: 'Out-Call', label: 'Out-Call'},
-  {value: 'In-Call, Out-Call', label: 'In-Call, Out-Call'},
 ]
 
 export const BUST_OPTIONS = [

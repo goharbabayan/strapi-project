@@ -1,5 +1,4 @@
-export const POSSIBLE_OUTFITS_OPTIONS = [
-  {groupLabel: 'Possible Outfits to Wear'},
+export const MY_CLOSET = [
   {value: 'Cocktail Dress', label: 'Cocktail Dress'},
   {value: 'Party Dress', label: 'Party Dress'},
   {value: 'Day/Sun Dress', label: 'Day/Sun Dress'},
@@ -9,18 +8,6 @@ export const POSSIBLE_OUTFITS_OPTIONS = [
   {value: 'Lounge wear', label: 'Lounge wear'},
   {value: 'High Heels', label: 'High Heels'},
   {value: 'Trench & Lingerie', label: 'Trench & Lingerie'},
-]
-
-export const MAKEUP = [
-  {groupLabel: 'Makeup'},
-  {value: 'Makeup', label: 'Makeup'},
-  {value: 'No Makeup', label: 'No Makeup'},
-  {value: 'Perfume', label: 'Perfume'},
-  {value: 'No perfume', label: 'No perfume'},
-]
-
-export const COSTUME = [
-  {groupLabel: 'Costume Options'},
   {value: 'Schoolgirl', label: 'Schoolgirl'},
   {value: 'Maid', label: 'Maid'},
   {value: 'Secretary', label: 'Secretary'},
@@ -31,13 +18,19 @@ export const COSTUME = [
   {value: 'Swimwear', label: 'Swimwear'},
 ]
 
+export const MY_GLAM = [
+  {value: 'Makeup', label: 'Makeup'},
+  {value: 'No Makeup', label: 'No Makeup'},
+  {value: 'Perfume', label: 'Perfume'},
+  {value: 'No perfume', label: 'No perfume'},
+]
+
 export const EXTRAS = [
-  {groupLabel: 'Extras Options'},
   {value: 'Bubble Bath', label: 'Bubble Bath'},
   {value: 'Massage Oils', label: 'Massage Oils'},
   {value: 'Candles', label: 'Candles'},
   {value: 'Music Box', label: 'Music Box'},
   {value: 'Chrome Cast', label: 'Chrome Cast'},
   {value: 'Porn', label: 'Porn'},
-  {value: `Men's Deodorant', label: 'Men's Deodorant`},
+  {value: `Men's Deodorant`, label: `Men's Deodorant`},
 ]

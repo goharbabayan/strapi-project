@@ -170,17 +170,12 @@ module.exports = {
     aboutMe: {
       type: 'richtext'
     },
-    outfits: {
+    closet: {
       type: "component",
       repeatable: true,
       component: "elements.text"
     },
-    makeup: {
-      type: "component",
-      repeatable: true,
-      component: "elements.text"
-    },
-    costume: {
+    glam: {
       type: "component",
       repeatable: true,
       component: "elements.text"

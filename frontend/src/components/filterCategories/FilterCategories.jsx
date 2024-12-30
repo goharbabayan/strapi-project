@@ -1,9 +1,7 @@
+import { usePathname } from 'next/navigation';
 import styles from './filterCategories.module.css';
+import { CATEGORY_FIELDS } from '@/app/utils/constants/categories';
 import CategoryField from '../categoryField/CategoryField';
-import { CITIES_OPTIONS } from '@/app/utils/constants/cities';
-import { GENDER_OPTIONS } from '@/app/utils/constants/userPhisicalDetails';
-import { SERVICES_OPTIONS } from '@/app/utils/constants/userServices';
-import { HAIR_COLOR_OPTIONS } from '@/app/utils/constants/userPhisicalDetails';
 import Button from '../button/Button';
 import Breadcrumbs from '../breadcrumbs/BreadCrumbs';
 
@@ -19,6 +17,7 @@ export default function FilterCategories({
   showBreadcrumbs,
   path,
 }) {
+  const pathname = usePathname();
   return (
     <section className={`${styles.section} ${showCategories ? styles.show : ''} ${sectionClassName ? sectionClassName : ''}`}>
       <div className={`${styles.categories} page-width`}>
@@ -40,34 +39,21 @@ export default function FilterCategories({
           </div>
         </div>
         <div className={styles.categoriesList}>
-          <CategoryField
-            category='Location'
-            name='city'
-            options={categoryFieldOptions ? categoryFieldOptions['city'] : CITIES_OPTIONS}
-            filteredOptions={filteredOptions}
-            setFilteredOptions={setFilteredOptions}
-          />
-          <CategoryField
-            category='Gender'
-            name='gender'
-            options={categoryFieldOptions ? categoryFieldOptions['gender'] : GENDER_OPTIONS}
-            filteredOptions={filteredOptions}
-            setFilteredOptions={setFilteredOptions}
-          />
-          <CategoryField
-            category='Services'
-            name='services'
-            options={categoryFieldOptions ? categoryFieldOptions['services'] : SERVICES_OPTIONS}
-            filteredOptions={filteredOptions}
-            setFilteredOptions={setFilteredOptions}
-          />
-          <CategoryField
-            category='Hair color'
-            name='hairColor'
-            options={categoryFieldOptions ? categoryFieldOptions['hairColor'] : HAIR_COLOR_OPTIONS}
-            filteredOptions={filteredOptions}
-            setFilteredOptions={setFilteredOptions}
-          />
+          {CATEGORY_FIELDS.map((categoryField, index) => {
+            const {category, name, allOptions} = categoryField;
+            if (name === 'suburbs' && pathname == '/search') return;
+            if (name === 'city' && pathname.includes('/locations')) return;
+            return (
+              <CategoryField
+                key={index}
+                category={category}
+                name={name}
+                options={categoryFieldOptions && categoryFieldOptions[name] ? categoryFieldOptions[name] : allOptions}
+                filteredOptions={filteredOptions}
+                setFilteredOptions={setFilteredOptions}
+              />
+            )
+          })}
         </div>
       </div>
     </section>

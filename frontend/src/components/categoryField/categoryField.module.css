@@ -21,6 +21,11 @@
 
 .category {
   position: relative;
+  width: calc(25% - 12px);
+}
+
+.category.largerColumn {
+  width: calc(100% / 3 - 11px);
 }
 
 .categoryName {
@@ -28,7 +33,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  padding: 12px 8px 8px 8px;
+  padding: 8px 8px 8px 12px;
   border-radius: 10px;
   border: 1px solid var(--neutral-n50);
   background: var(--neutral-white-n10);
@@ -53,7 +58,7 @@
 .categoryOptions {
   display: none;
   position: absolute;
-  top: 52px;
+  top: 47px;
   right: 0;
   left: 0;
   flex-direction: column;
@@ -62,6 +67,7 @@
   z-index: 2;
   background: var(--neutral-white-n10);
   border-radius: 8px;
+  border: 1px solid var(--neutral-n50);
 }
 
 .options {
@@ -69,6 +75,10 @@
   overflow-y: scroll;
   margin: 0;
   padding-block: 8px;
+  list-style: none;
+  padding: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--neutral-n70) var(--neutral-white-n10);
 }
 
 .categoryOptions.show {
@@ -94,4 +104,72 @@
   gap: 8px;
   padding: 8px;
   align-items: center;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--neutral-n100);
+  font-family: var(--primary-font);
+  font-style: normal;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+.label.nowrap {
+  white-space: nowrap;
+}
+
+.input {
+  padding: 8px 8px 8px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--neutral-n30);
+  background: var(--neutral-white-n10);
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  outline: none;
+  color: var(--neutral-black);
+  font-size: 16px;
+  line-height: 20px;
+  font-family: var(--primary-font);
+  font-style: normal;
+  font-weight: 400;
+}
+
+.icon {
+  position: absolute;
+  left: 10px;
+  pointer-events: none;
+}
+
+@media screen and (max-width: 849px) {
+  .category {
+    width: calc(100% / 3 - 11px);
+  }
+
+  .category:nth-child(10),
+  .category:nth-child(11) {
+    width: calc(50% - 8px);
+  }
+
+  .title {
+    line-height: 20px; 
+  }
+}
+
+@media screen and (max-width: 579px) {
+  .category,
+  .category.largerColumn,
+  .category:nth-child(10),
+  .category:nth-child(11) {
+    width: calc(50% - 8px);
+  }
+}
+
+@media screen and (max-width: 389px) {
+  .categoryName {
+    gap: 4px;
+  }
+  .category:nth-child(9) > .categoryName {
+    padding: 8px 4px 8px 10px;
+  }
 }

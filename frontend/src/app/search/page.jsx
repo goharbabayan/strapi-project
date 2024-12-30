@@ -12,6 +12,7 @@ import Loading from '../loading';
 import FilterCategories from '@/components/filterCategories/FilterCategories';
 import { buildQueriesForFilteredOptions } from '../utils/helpers';
 import { SERVICE_PROVIDER } from '../utils/constants/userRoles';
+import { DEFAULT_CATEGORIES_OPTIONS } from '../utils/constants/categories';
 import Banner from '@/components/banner/Banner';
 import FilterIcon from '@/components/icons/Filter';
 
@@ -23,12 +24,7 @@ export default function Search() {
   const [showLoadMore, setShowLoadMore] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
   const [searchQueries, setSearchQueries] = useState('');
-  const [filteredOptions, setFilteredOptions] = useState({
-    city: [],
-    gender: [],
-    services: [],
-    hairColor: [],
-  });
+  const [filteredOptions, setFilteredOptions] = useState(DEFAULT_CATEGORIES_OPTIONS);
   const [noResults, setNoResults] = useState(false);
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
   const {loading, error, data} = useQuery(GET_SEARCH_PAGE_BANNER_QUERIES);
@@ -74,20 +70,15 @@ export default function Search() {
     setNoResults(false);
     setSearchResults([]);
     setSearchQueries('');
-    setFilteredOptions({
-      city: [],
-      gender: [],
-      services: [],
-      hairColor: [],
-    });
+    setFilteredOptions(DEFAULT_CATEGORIES_OPTIONS);
   };
 
   const handleApllyFilteredOptions = async () => {
     let data = filteredOptions;
     if (searchQueries.length > 0) {
-      data = {...filteredOptions, name: [searchQueries], lastName: [searchQueries]};
+      data = {...filteredOptions, nameOrLastName: [searchQueries]};
     } else {
-      data = {...filteredOptions, name: [], lastName: []};
+      data = {...filteredOptions, nameOrLastName: []};
     };
     setFilteredOptions(data);
     const query = buildQueriesForFilteredOptions(data);

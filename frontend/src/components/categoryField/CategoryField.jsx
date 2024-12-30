@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import styles from './categoryField.module.css';
 import ArrowDown from '../icons/arrowDown/ArrowDown';
+import DollarIcon from '../icons/DollarIcon';
 
 export default function CategoryField ({
   category,
@@ -10,6 +11,10 @@ export default function CategoryField ({
   filteredOptions,
 }) {
   const [showOptions, setShowOptions] = useState(false);
+  const [hourlyRate, setHourlyRate] = useState({
+    from: '',
+    to: '',
+  });
   const categoryRef = useRef(null);
   const arrowRef = useRef(null);
   const optionsRef = useRef(null);
@@ -39,15 +44,51 @@ export default function CategoryField ({
     setFilteredOptions({ ...filteredOptions, [name]: updatedOptions })
   };
 
+  const handleHourlyRateChange = (option, value) => {
+    const updatedOptions = {
+      ...hourlyRate,
+      [option]: value
+    }
+    setHourlyRate(updatedOptions);
+    setFilteredOptions({ ...filteredOptions, hourlyRate: updatedOptions })
+  }
+
+  const largerColumn = name === 'placeOfService' || name === 'hourlyRate' || name === 'extras';
   return (
-    <div className={styles.category}>
-      <div className={styles.categoryName} ref={categoryRef} onClick={(e) => handleClick(e)} >
+    <div className={`${styles.category} ${largerColumn ? styles.largerColumn : ''}`}>
+      <div className={`${styles.categoryName}`} ref={categoryRef} onClick={(e) => handleClick(e)} >
         <span className={styles.title}>{category}</span>
         <ArrowDown/>
       </div>
-      {options && options.length > 0 &&
+      {name === 'hourlyRate' ? (
+        <div className={`${styles.categoryOptions} ${showOptions ? styles.show : ''}`} ref={optionsRef}>
+          <label className={`${styles.lable} ${styles.nowrap}`}>
+            From
+            <input
+              className={styles.input}
+              type="number"
+              name="from"
+              value={hourlyRate.from}
+              onChange={(e) => handleHourlyRateChange('from', e.target.value)}
+              placeholder="$"
+            />
+          </label>
+          <label className={`${styles.lable} ${styles.nowrap}`}>
+            To
+            <input
+              className={styles.input}
+              type="number"
+              name="to"
+              value={hourlyRate.to}
+              onChange={(e) => handleHourlyRateChange('to', e.target.value)}
+              placeholder="$"
+            />
+          </label>
+        </div>
+      ) : (
+      options && options.length > 0 &&
         <div className={`${styles.categoryOptions} ${showOptions ? styles.show : ''}`}>
-          <ul className={`${styles.options}  unstyled-list options`} ref={optionsRef}>
+          <ul className={`${styles.options}`} ref={optionsRef}>
             {options.map((option, index) => (
               option?.label || option ?
               <li key={index} className={`${styles.option} text-small`} >
@@ -65,7 +106,7 @@ export default function CategoryField ({
             ))}
           </ul>
         </div>
-      }
+      )}
     </div>
   )
 }

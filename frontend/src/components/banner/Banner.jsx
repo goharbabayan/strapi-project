@@ -3,7 +3,7 @@ import Button from '../button/Button';
 import Image from '../image/Image';
 import Text from '../text/Text';
 
-const Banner = ({bannerLink, desktopImage, mobileImage, text, infoWrapperClassName, button, showOverlay}) => {
+const Banner = ({bannerLink, desktopImage, mobileImage, text, infoWrapperClassName, button, showOverlay, isLocationPage}) => {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
   return (
@@ -20,6 +20,7 @@ const Banner = ({bannerLink, desktopImage, mobileImage, text, infoWrapperClassNa
               height={desktopImage.height}
               width={desktopImage.width}
               className={'desktop'}
+              isLocationPage={isLocationPage}
               {...(bannerLink && { link: bannerLink })}
             />
           }
@@ -30,6 +31,7 @@ const Banner = ({bannerLink, desktopImage, mobileImage, text, infoWrapperClassNa
               height={mobileImage.height}
               width={mobileImage.width}
               className={'mobile'}
+              isLocationPage={isLocationPage}
               {...(bannerLink && { link: bannerLink })}
             />
           : desktopImage && desktopImage.url &&
@@ -39,6 +41,7 @@ const Banner = ({bannerLink, desktopImage, mobileImage, text, infoWrapperClassNa
               height={desktopImage.height}
               width={desktopImage.width}
               className={'mobile'}
+              isLocationPage={isLocationPage}
               {...(bannerLink && { link: bannerLink })}
             />
           }

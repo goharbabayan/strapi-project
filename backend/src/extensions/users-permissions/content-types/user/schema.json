@@ -9,8 +9,7 @@
     "displayName": "User"
   },
   "options": {
-    "draftAndPublish": false,
-    "timestamps": true
+    "draftAndPublish": false
   },
   "attributes": {
     "username": {
@@ -54,13 +53,6 @@
       "default": false,
       "configurable": false
     },
-    "isApprovedByAdmin": {
-      "type": "boolean",
-      "default": false
-    },
-    "managerID": {
-      "type": "string"
-    },
     "blocked": {
       "type": "boolean",
       "default": false,
@@ -72,6 +64,13 @@
       "target": "plugin::users-permissions.role",
       "inversedBy": "users",
       "configurable": false
+    },
+    "isApprovedByAdmin": {
+      "type": "boolean",
+      "default": false
+    },
+    "managerID": {
+      "type": "string"
     },
     "photos": {
       "type": "media",
@@ -87,11 +86,19 @@
     "lastName": {
       "type": "string"
     },
+    "gender": {
+      "type": "string"
+    },
     "country": {
       "type": "string"
     },
     "city": {
       "type": "string"
+    },
+    "suburbs": {
+      "type": "component",
+      "repeatable": true,
+      "component": "entry.suburb"
     },
     "age": {
       "type": "string"
@@ -159,17 +166,12 @@
     "aboutMe": {
       "type": "richtext"
     },
-    "outfits": {
+    "closet": {
       "type": "component",
       "repeatable": true,
       "component": "elements.text"
     },
-    "makeup": {
-      "type": "component",
-      "repeatable": true,
-      "component": "elements.text"
-    },
-    "costume": {
+    "glam": {
       "type": "component",
       "repeatable": true,
       "component": "elements.text"
@@ -215,9 +217,6 @@
       "type": "component",
       "repeatable": true,
       "component": "elements.text"
-    },
-    "gender": {
-      "type": "string"
     },
     "badge": {
       "type": "string"

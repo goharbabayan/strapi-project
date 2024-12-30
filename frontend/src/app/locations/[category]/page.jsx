@@ -3,14 +3,14 @@
 import {useState, useEffect} from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_LOCATION_PAGE_QUERIES } from '@/app/graphql/locationPageQueriess';
-import { FILTER_CATEGORIES } from '@/app/utils/constants/filterCategories';
+import { DEFAULT_CATEGORIES_OPTIONS } from '@/app/utils/constants/categories';
 import styles from './category.module.css';
 import FilterCategories from '@/components/filterCategories/FilterCategories';
 import ProviderCard from '@/components/providerCard/ProviderCard';
 import Button from '@/components/button/Button';
 import Loading from '@/app/loading';
 import Text from '@/components/text/Text';
-import { buildQueriesForFilteredOptions } from '@/app/utils/helpers';
+import { buildQueriesForFilteredOptions, generateListOfOptionsForExistingResults } from '@/app/utils/helpers';
 import Banner from '@/components/banner/Banner';
 
 export default function LocationCategoryPage({params}) {
@@ -22,18 +22,8 @@ export default function LocationCategoryPage({params}) {
   const [providersList, setProvidersList] = useState(null);
   const [providersDefaultList, setProvidersDefaultList] = useState([]);
   const [displayedItems, setDisplayedItems] = useState([]);
-  const [categoryFieldOptions, setCategoryFieldOptions] = useState({
-    city: [],
-    gender: [],
-    services: [],
-    hairColor: [],
-  });
-  const [filteredOptions, setFilteredOptions] = useState({
-    city: [],
-    gender: [],
-    services: [],
-    hairColor: [],
-  });
+  const [categoryFieldOptions, setCategoryFieldOptions] = useState(DEFAULT_CATEGORIES_OPTIONS);
+  const [filteredOptions, setFilteredOptions] = useState(DEFAULT_CATEGORIES_OPTIONS);
   const [showLoadMore, setShowLoadMore] = useState(false);
   const [noResults, setNoResults] = useState(false);
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
@@ -49,7 +39,7 @@ export default function LocationCategoryPage({params}) {
       setCategoryData({
         desktopImage: data?.locations?.data[0]?.attributes?.image_banner_landscape_for_desktop?.data?.attributes,
         mobileImage: data?.locations?.data[0]?.attributes?.image_banner_portrait_for_mobile?.data?.attributes,
-      })
+      });
     };
     fetchProvidersData();
   }, [data]);
@@ -61,27 +51,8 @@ export default function LocationCategoryPage({params}) {
     };
   }, [providersList]);
 
-  const generateOptionsForFilterCategories = (results, categoryOptions) => {
-    let options = {
-      city: [],
-      gender: [],
-      services: [],
-      hairColor: [],
-    };
-    results.map(provider => {
-      categoryOptions.forEach(categoryName => {
-        const isServicesCategory = categoryName === 'services' && provider[categoryName].length > 0;
-        const optionIsNotExistingInOptionsListAndIsNotServicesOption = provider[categoryName] && categoryName !== 'services' && !options[categoryName].includes(provider[categoryName]);
-        if (isServicesCategory) {
-          provider[categoryName].forEach(item => {
-            !options[categoryName].includes(item.item) && options[categoryName].push(item.item);
-          });
-        } else if (optionIsNotExistingInOptionsListAndIsNotServicesOption) {
-          options[categoryName].push(provider[categoryName]);
-        };
-      });
-      return options;
-    });
+  const generateOptionsForFilterCategories = (results) => {
+    const options = generateListOfOptionsForExistingResults(results);
     setCategoryFieldOptions(options);
   };
 
@@ -95,12 +66,7 @@ export default function LocationCategoryPage({params}) {
   const handleClearFilterOptions = () => {
     fetchProvidersData();
     setNoResults(false);
-    setFilteredOptions({
-      city: [],
-      gender: [],
-      services: [],
-      hairColor: [],
-    });
+    setFilteredOptions(DEFAULT_CATEGORIES_OPTIONS);
   };
 
   const fetchProvidersData = async () => {
@@ -112,7 +78,7 @@ export default function LocationCategoryPage({params}) {
       const results = await response.json();
       results && setProvidersList(results);
       results && setProvidersDefaultList(results);
-      generateOptionsForFilterCategories(results, FILTER_CATEGORIES);
+      generateOptionsForFilterCategories(results);
     } catch (err) {
       console.log(err);
     };
@@ -139,10 +105,12 @@ export default function LocationCategoryPage({params}) {
   const isFilteredAtleastOneCategory = (options) => {
     let isFiltered = false;
     Object.values(options).forEach(option => {
-      if (option.length > 0) {
+      const isNotEmptyArray = Array.isArray(option) && option.length > 0;
+      const isNotEmptyObject = typeof option === 'object' && option !== null;
+      if (isNotEmptyArray || isNotEmptyObject) {
         isFiltered = true;
         return;
-      };
+      }
     });
     return isFiltered;
   };
@@ -154,7 +122,6 @@ export default function LocationCategoryPage({params}) {
       setNoResults(false);
       return;
     };
-
     const query = buildQueriesForFilteredOptions(filteredOptions);
     fetchUsersByFilteredOptions(query);
   };
@@ -172,6 +139,7 @@ export default function LocationCategoryPage({params}) {
               <Banner
                 mobileImage={categoryData?.mobileImage}
                 desktopImage={categoryData?.desktopImage}
+                isLocationPage={true}
               />
             }
             <FilterCategories

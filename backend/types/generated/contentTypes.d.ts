@@ -750,9 +750,8 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     onlyFansLink: Attribute.String;
     websiteLink: Attribute.String;
     aboutMe: Attribute.RichText;
-    outfits: Attribute.Component<'elements.text', true>;
-    makeup: Attribute.Component<'elements.text', true>;
-    costume: Attribute.Component<'elements.text', true>;
+    closet: Attribute.Component<'elements.text', true>;
+    glam: Attribute.Component<'elements.text', true>;
     extras: Attribute.Component<'elements.text', true>;
     incallRates: Attribute.Component<'elements.data', true>;
     outcallRates: Attribute.Component<'elements.data', true>;

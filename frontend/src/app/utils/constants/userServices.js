@@ -15,7 +15,7 @@ export const SERVICES_OPTIONS = [
   { value: 'Body worship', label: 'Body worship'},
   { value: 'Bondage', label: 'Bondage'},
   { value: 'Brazilian', label: 'Brazilian'},
-  { value: 'CBJ - covered blow job', label: 'Brazilian'},
+  { value: 'CBJ - covered blow job', label: 'CBJ - covered blow job'},
   { value: 'CBT - cock and ball torture', label: 'CBT - cock and ball torture'},
   { value: 'CD - cross dressing', label: 'CD - cross dressing'},
   { value: 'CIM - cum in mouth', label: 'CIM - cum in mouth'},

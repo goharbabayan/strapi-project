@@ -21,6 +21,16 @@
   width: 100%;
 }
 
+.locationPageImage {
+  min-height: 331px;
+}
+
+@media screen and (max-width: 849px) {
+  .locationPageImage {
+    min-height: 355px;
+  }
+}
+
 @media screen and (max-width: 749px) {
   .desktop {
     display: none;
@@ -28,5 +38,11 @@
 
   .mobile {
     display: block;
+  }
+}
+
+@media screen and (max-width: 590px) {
+  .locationPageImage {
+    min-height: 520px;
   }
 }

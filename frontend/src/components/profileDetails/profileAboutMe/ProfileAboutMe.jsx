@@ -1,7 +1,7 @@
 import ProviderInterests from '../providerInterests/ProviderInterests';
 import styles from './profileAboutMe.module.css';
 
-export default function ProfileAboutMe({aboutMeDescription, providerCostumes, providerMakeup, providerOutfits, providerExtraOptions}) {
+export default function ProfileAboutMe({aboutMeDescription, providerGlam, providerCloset, providerExtraOptions}) {
   return (
     <div className="page-width">
       {!!aboutMeDescription &&
@@ -13,27 +13,21 @@ export default function ProfileAboutMe({aboutMeDescription, providerCostumes, pr
         </div>
       }
       <div className={styles.aboutMeInterestsContainer}>
-        {!!providerCostumes.length &&
+        {!!providerGlam.length &&
           <ProviderInterests
-            componentTitle="Costumes"
-            data={providerCostumes}
+            componentTitle="My glam"
+            data={providerGlam}
           />
         }
-        {!!providerMakeup.length &&
+        {!!providerGlam.length &&
           <ProviderInterests
-            componentTitle="Makeup"
-            data={providerMakeup}
-          />
-        }
-        {!!providerOutfits.length &&
-          <ProviderInterests
-            componentTitle="Outfits"
-            data={providerOutfits}
+            componentTitle="My closet"
+            data={providerCloset}
           />
         }
         {!!providerExtraOptions.length &&
           <ProviderInterests
-            componentTitle="Extra options"
+            componentTitle="Extras"
             data={providerExtraOptions}
           />
         }
