@@ -12,10 +12,13 @@
   font-family: var(--primary-bold-font);
   font-size: 16px;
   font-style: normal;
-  font-weight: normal;
   line-height: 20px;
   border: none;
   border: 1px solid var(--color-main);
+}
+
+.button span {
+  font-family: var(--primary-bold-font);
 }
 
 .primary {

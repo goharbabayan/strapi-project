@@ -858,6 +858,40 @@ export interface ApiAboutUsAboutUs extends Schema.SingleType {
   };
 }
 
+export interface ApiAgeConfirmationPopUpAgeConfirmationPopUp
+  extends Schema.SingleType {
+  collectionName: 'age_confirmation_pop_ups';
+  info: {
+    singularName: 'age-confirmation-pop-up';
+    pluralName: 'age-confirmation-pop-ups';
+    displayName: 'Age confirmation pop-up';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    heading: Attribute.String;
+    logo: Attribute.Media;
+    description: Attribute.Blocks;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::age-confirmation-pop-up.age-confirmation-pop-up',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::age-confirmation-pop-up.age-confirmation-pop-up',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiArticleArticle extends Schema.CollectionType {
   collectionName: 'articles';
   info: {
@@ -1315,6 +1349,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
       'api::about-us.about-us': ApiAboutUsAboutUs;
+      'api::age-confirmation-pop-up.age-confirmation-pop-up': ApiAgeConfirmationPopUpAgeConfirmationPopUp;
       'api::article.article': ApiArticleArticle;
       'api::blog.blog': ApiBlogBlog;
       'api::client-dashboard-page.client-dashboard-page': ApiClientDashboardPageClientDashboardPage;

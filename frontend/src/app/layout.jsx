@@ -9,6 +9,7 @@ import Footer from '@/components/footer/Footer';
 import globalStyles from '../app/global.css';
 import { AuthContext } from './Context';
 import { HIDE_FOOTER_FROM_SELECTED_PAGES } from './utils/constants/hideHeaderAndFooterPages';
+import { AgeConfirmationPopup } from '@/components/ageConfirmationPupup/AgeConfirmationPopup';
 
 export default function RootLayout({ children }) {
   const [customerToken, setCustomerToken] = useState('');
@@ -34,6 +35,7 @@ export default function RootLayout({ children }) {
         </head>
       <body>
         <ApolloProvider client={Client}>
+          <AgeConfirmationPopup />
           <AuthContext.Provider value={{customerToken, setCustomerToken, loggedInUserData, setLoggedInUserData}}>
             {!isProfileReviewPage && <Header />}
             <main className="main-wrapper">{children}</main>

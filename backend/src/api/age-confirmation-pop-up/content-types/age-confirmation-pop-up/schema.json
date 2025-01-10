@@ -1,0 +1,30 @@
+{
+  "kind": "singleType",
+  "collectionName": "age_confirmation_pop_ups",
+  "info": {
+    "singularName": "age-confirmation-pop-up",
+    "pluralName": "age-confirmation-pop-ups",
+    "displayName": "Age confirmation pop-up",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "heading": {
+      "type": "string"
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "description": {
+      "type": "blocks"
+    }
+  }
+}
