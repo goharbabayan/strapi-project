@@ -37,6 +37,7 @@
   box-sizing: border-box;
   font-variant-ligatures: none;
   font-family: var(--primary-font);
+  font-weight: normal;
 }
 
 /* Added for header and footer to be in place */

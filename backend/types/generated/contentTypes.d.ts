@@ -907,6 +907,11 @@ export interface ApiArticleArticle extends Schema.CollectionType {
     heroImage: Attribute.Media & Attribute.Required;
     content: Attribute.Blocks;
     heading: Attribute.String;
+    related_articles: Attribute.Relation<
+      'api::article.article',
+      'oneToMany',
+      'api::article.article'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -937,6 +942,9 @@ export interface ApiBlogBlog extends Schema.SingleType {
     draftAndPublish: true;
   };
   attributes: {
+    Image_for_desktop: Attribute.Media;
+    Image_for_mobile: Attribute.Media;
+    blog_title: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

@@ -25,6 +25,12 @@
   transform: translateY(-50%);
   width: 100%;
   pointer-events: none;
+  z-index: 2;
+}
+
+.centerText .title{
+  width: 100%;
+  justify-content: center;
 }
 
 .overlay {

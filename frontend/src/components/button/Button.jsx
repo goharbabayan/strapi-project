@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import Text from '../text/Text';
 import styles from './button.module.css';
-import FilterIcon from '../icons/Filter';
 import { PRIMARY_BUTTON } from '@/app/utils/constants/buttonTypes';
 
 const Button = ({

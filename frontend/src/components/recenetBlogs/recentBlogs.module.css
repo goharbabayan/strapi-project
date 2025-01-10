@@ -1,0 +1,27 @@
+.heading {
+  font-family: var(--headings-font);
+  font-size: 32px;
+  font-weight: 400;
+  margin-top: 30px;
+  margin-bottom: 32px;
+}
+
+.articlesContainer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, min-content);
+  grid-auto-rows: auto;
+  grid-gap: 32px;
+}
+
+@media screen and (max-width: 989px) {
+  .heading {
+    margin-top: 32px;
+    font-size: 26px;
+  }
+
+  .articlesContainer {
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+  }
+}

@@ -3,7 +3,7 @@ import Button from '../button/Button';
 import Image from '../image/Image';
 import Text from '../text/Text';
 
-const Banner = ({bannerLink, desktopImage, mobileImage, text, infoWrapperClassName, button, showOverlay, isLocationPage}) => {
+const Banner = ({bannerLink, desktopImage, mobileImage, text, infoWrapperClassName, button, showOverlay, isLocationPage, shouldBeCentered}) => {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
   return (
@@ -46,7 +46,7 @@ const Banner = ({bannerLink, desktopImage, mobileImage, text, infoWrapperClassNa
             />
           }
           {(text || button?.title) &&
-            <div className={`${styles.wrapper} ${bannerLink ? styles.withLink : ''} ${infoWrapperClassName || ''}`}>
+            <div className={`${styles.wrapper} ${bannerLink ? styles.withLink : ''} ${infoWrapperClassName || ''} ${shouldBeCentered && styles.centerText}`}>
               <div className={`${styles.info} page-width`}>
                 {text &&
                   <Text

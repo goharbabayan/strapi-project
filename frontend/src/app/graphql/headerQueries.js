@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-const GET_HEADER_QUERIES = gql`
+const GET_HEADER_QUERIES = gql `
   query {
     header {
       data {
