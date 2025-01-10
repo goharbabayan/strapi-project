@@ -8,23 +8,66 @@ import InfoIcon from '../icons/Info';
 export default function ProfilePageImage({type, formData, onChildFormDataChange, className}) {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
-  async function handleUpload(e, type) {
+  async function handleUpload(e) {
     const token = JSON.parse(window.localStorage.getItem('token'));
-    const imageFile = e.target.files[0];
-    const form = new FormData();
-    form.append('files', imageFile);
-    if (!imageFile) return;
-  
-    await fetch(`${baseUrl}/api/upload?populate=*`, {
+    const imageFiles = e.target.files;
+
+    if (!imageFiles || imageFiles.length === 0) return;
+
+    const fileData = new FormData();
+    
+    for (let i = 0; i < imageFiles.length; i++) {
+      fileData.append('images', imageFiles[i]);
+    }
+
+    try {
+      const watermarkResponse = await fetch(`${baseUrl}/api/watermark-images`, {
+        method: 'POST',
+        body: fileData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const watermarkData = await watermarkResponse.json();
+
+      if (!watermarkResponse.ok || !watermarkData.watermarkedImages) {
+        throw new Error('Failed to apply watermark');
+      }
+
+      const uploadFormData = new FormData();
+      for (let i = 0; i < watermarkData.watermarkedImages.length; i++) {
+        const watermarkedImageUrl = watermarkData.watermarkedImages[i].url;
+        const watermarkedImageBlob = await fetch(`${baseUrl}${watermarkedImageUrl}`).then(res => res.blob());
+        const fileName = watermarkedImageUrl.split('/').pop();
+        const customFile = new File([watermarkedImageBlob], fileName, {
+            type: watermarkedImageBlob.type,
+            lastModified: Date.now(),
+        });
+
+        uploadFormData.append('files', customFile);
+      }
+
+      const uploadResponse = await fetch(`${baseUrl}/api/upload?populate=*`, {
         method: 'POST',
         headers: {
-          'authorization': `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
         },
-        body: form,
-      })
-      .then(resp => resp.json())
-      .then(data => onChildFormDataChange(type, data[0]));
-    e.target.value = '';
+        body: uploadFormData,
+      });
+
+      const uploadData = await uploadResponse.json();
+
+      if (!uploadResponse.ok || !uploadData[0]) {
+        throw new Error('Failed to upload watermarked image');
+      }
+
+      await onChildFormDataChange(type, uploadData[0]);
+    } catch (error) {
+      console.error('Error during image processing or upload:', error);
+    } finally {
+      e.target.value = "";
+    }
   }
 
   const handleRemoveButtonClick = (e, index, type) => {

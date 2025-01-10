@@ -10,36 +10,67 @@ const GalleryImages = forwardRef(({type, id, children, images, onChildFormDataCh
     const isUploadedMultipleFiles = e.target.files.length > 1;
     const token = JSON.parse(localStorage.getItem('token'));
     const form = new FormData();
+
     if (isUploadedMultipleFiles) {
       for (const key in e.target.files) {
-        form.append('files', e.target.files[key]);
-      };
+        form.append('images', e.target.files[key]);
+      }
     } else {
       const imageFile = e.target.files[0];
-      form.append('files', imageFile);
-    };
-    if (e.target.files.length == 0) return;
+      form.append('images', imageFile);
+    }
 
-    await fetch(`${baseUrl}/api/upload?populate=*`, {
+    if (e.target.files.length === 0) return;
+  
+    try {
+      const watermarkResponse = await fetch(`${baseUrl}/api/watermark-images`, {
         method: 'POST',
         body: form,
         headers: {
-          'Authorization': `Bearer ${token}`,
-        }
-      })
-      .then(resp => resp.json())
-      .then(data => {
-        let updatedImages;
-        if (isUploadedMultipleFiles) {
-          updatedImages = images === null ? data : [...images, ...data];
-        } else {
-          updatedImages = images === null ? [data[0]] : [...images, data[0]];
-        }
-        onChildFormDataChange(type, updatedImages);
-      })
-    e.target.value = '';
-  };
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const watermarkData = await watermarkResponse.json();
+  
+      if (!watermarkResponse.ok || !watermarkData.watermarkedImages) {
+        throw new Error('Failed to apply watermark');
+      }
 
+      const uploadFormData = new FormData();
+      for (let i = 0; i < watermarkData.watermarkedImages.length; i++) {
+        const watermarkedImageUrl = watermarkData.watermarkedImages[i].url;
+        const watermarkedImageBlob = await fetch(`${baseUrl}${watermarkedImageUrl}`).then(res => res.blob());
+        const fileName = watermarkedImageUrl.split('/').pop();
+        const customFile = new File([watermarkedImageBlob], fileName, {
+          type: watermarkedImageBlob.type,
+          lastModified: Date.now(),
+        });
+
+        uploadFormData.append('files', customFile);
+      }
+
+      const uploadResponse = await fetch(`${baseUrl}/api/upload?populate=*`, {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        body: uploadFormData,
+      });
+
+      const uploadData = await uploadResponse.json();
+
+      if (!uploadResponse.ok || !uploadData[0]) {
+        throw new Error('Failed to upload watermarked image');
+      }
+
+      onChildFormDataChange(type, uploadData);
+    } catch (error) {
+      console.error('Error during image processing or upload:', error);
+    } finally {
+      e.target.value = '';
+    }
+  }
+  
   const handleRemoveButtonClick = (e, index, type) => {
     const updatedImages = [...images];
     updatedImages.splice(index, 1);
