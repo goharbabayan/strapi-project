@@ -8,7 +8,7 @@ import { isInputLengthValid } from '@/app/utils/helpers';
 import { inputValidation, confirmPasswordValidation } from '@/app/utils/helpers';
 import { useFetchData } from '@/app/utils/hooks/useFetch';
 
-export default function ResetPassword() {
+export default function ResetPassword({className}) {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
   const {setCustomerToken} = useContext(AuthContext);
   const {customerToken} = useContext(AuthContext);
@@ -154,11 +154,10 @@ export default function ResetPassword() {
     });
     setFormData({...formData, [name]: value});
   };
-console.log('formData', formData, fieldsValidation);
 
   return (
     <div className="page-width">
-      <section className={`${styles.mainWrap}`}>
+      <section className={`${styles.mainWrap} ${className ? className : ''}`}>
         <div className={`${styles.container}`}>
           <Text
             tag={'h3'}

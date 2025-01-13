@@ -15,8 +15,6 @@ export default function ManagerDetails ({ user, onChanges, onSubmit, errorMessag
   });
 
   const handleChange = (event, noNeedToShowChanges) => {
-    console.log('event.target.value: ', event.target.value);
-    
     if (noNeedToShowChanges) {
       onSubmit(event, MANAGER.type);
     } else {

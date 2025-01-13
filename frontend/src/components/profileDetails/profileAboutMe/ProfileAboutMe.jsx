@@ -27,7 +27,7 @@ export default function ProfileAboutMe({aboutMeDescription, providerGlam, provid
         }
         {!!providerExtraOptions.length &&
           <ProviderInterests
-            componentTitle="Extras"
+            componentTitle="My extras"
             data={providerExtraOptions}
           />
         }

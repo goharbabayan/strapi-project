@@ -29,6 +29,8 @@ export const AgeConfirmationPopup = () => {
     notifyOnNetworkStatusChange: true,
   });
 
+  const popupInfo = data?.ageConfirmationPopUp?.data ? data?.ageConfirmationPopUp?.data?.attributes : null;
+
   const handleConfirm = () => {
     localStorage.setItem('ageConfirmed', 'true');
     document.body.classList.remove('overflow_hidden');
@@ -40,33 +42,33 @@ export const AgeConfirmationPopup = () => {
     window.location.href = 'https://www.google.com';
   };
 
-  if (!isVisible || isConfirmed) return null;
+  if (!isVisible || isConfirmed || !popupInfo) return null;
   if (loading) return <Loading />;
   if (error) return <Error />;
 
   return (
     <div className={styles.overlay}>
       <div className={styles.popup}>
-        {data.ageConfirmationPopUp.data.attributes.logo.data && 
+        {popupInfo?.logo?.data &&
           <div className={styles.popupImageContainer}>
             <Image
-              src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${data.ageConfirmationPopUp.data.attributes.logo.data.attributes.url}`}
-              alt={data.ageConfirmationPopUp.data.attributes.logo.data.attributes.alternativeText || 'logo'}
-              height={data.ageConfirmationPopUp.data.attributes.logo.data.attributes.height}
-              width={data.ageConfirmationPopUp.data.attributes.logo.data.attributes.width}
+              src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${popupInfo?.logo?.data?.attributes?.url}`}
+              alt={popupInfo?.logo?.data?.attributes?.alternativeText || 'logo'}
+              height={popupInfo?.logo?.data?.attributes?.height}
+              width={popupInfo?.logo?.data?.attributes?.width}
             />
          </div>
         }
-        {data.ageConfirmationPopUp.data.attributes.heading &&
+        {popupInfo?.heading &&
           <Text
             tag={'h2'}
             className={styles.popupTitle}
-            children={data.ageConfirmationPopUp.data.attributes.heading}
+            children={popupInfo?.heading}
           />
         }
         <div className={styles.popupDesc}>
-          {data.ageConfirmationPopUp.data.attributes.description &&
-            <BlocksRenderer content={data.ageConfirmationPopUp.data.attributes.description} />
+          {popupInfo?.description &&
+            <BlocksRenderer content={popupInfo?.description} />
           }
         </div>
         <div className={styles.buttons}>

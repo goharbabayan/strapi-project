@@ -18,6 +18,7 @@ export default function AccountDetails({
   onChange,
   onEditIconClick,
   isManagerDashboard,
+  className,
 }) {
   const [activeTabId, setActiveTabId] = useState(0);
 // ToDo: move this constant to constant file
@@ -130,7 +131,7 @@ export default function AccountDetails({
           </>
         }
       </div>
-      {(activeTabId === 2 || !isManagerDashboard) && <ResetPassword />}
+      {(activeTabId === 2 || !isManagerDashboard) && <ResetPassword className={className}/>}
     </section>
   )
 }

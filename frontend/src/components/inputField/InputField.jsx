@@ -139,9 +139,9 @@ export default function InputField ({
           </span>}
           {name === 'email' &&
             <>
-              <InfoIcon className='infoIcon'/>
+              <InfoIcon className={styles.infoIcon}/>
               {/* ToDo: the email should be changed */}
-              <InfoMessage className='infoMessageWrapper' text={`To change your email, please contact with our team 'contact@test.com'`}/>
+              <InfoMessage className={styles.infoMessageWrapper} text={`To change your email, please contact with our team 'contact@test.com'`}/>
             </>
           }
           {errorMessage && errorMessage[name] && 

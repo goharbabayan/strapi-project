@@ -40,8 +40,8 @@ function ServiceProviderDetails ({user, onChanges, hasUnsavedChanges, errorMessa
 
   const handleChange = (event) => {
     event.preventDefault();
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-    onChanges(true, { ...formData, [event.target.name]: event.target.value });
+    setFormData({ ...formData, isApprovedByAdmin: false, [event.target.name]: event.target.value });
+    onChanges(true, { ...formData, isApprovedByAdmin: false, [event.target.name]: event.target.value });
   };
 
   const handleMouseDown = async (name, value) => {
@@ -50,8 +50,8 @@ function ServiceProviderDetails ({user, onChanges, hasUnsavedChanges, errorMessa
       setUserSelectedSuburbs([]);
       setIsCityDataChanged(true);
     }
-      setFormData({ ...formData, [name]: value });
-      onChanges(true, { ...formData, [name]: value });
+      setFormData({ ...formData, isApprovedByAdmin: false, [name]: value });
+      onChanges(true, { ...formData, isApprovedByAdmin: false, [name]: value });
   };
 
   const handleSettingIconClick = (e) => {
@@ -67,17 +67,17 @@ function ServiceProviderDetails ({user, onChanges, hasUnsavedChanges, errorMessa
   const handleEditIconClick = (e, data) => {
     const input = (e.currentTarget).closest(`[${data}]`).querySelector('input');
     input.focus();
-    setFormData({...formData, [input.name]: input.value})
+    setFormData({...formData, isApprovedByAdmin: false, [input.name]: input.value})
   };
 
   const handleChildFormDataChange = (field, value) => {
-    setFormData({...formData, [field]: value});
-    onChanges(true, {...formData, [field]: value});
+    setFormData({...formData, isApprovedByAdmin: false, [field]: value});
+    onChanges(true, {...formData, isApprovedByAdmin: false, [field]: value});
   };
 
   const handleScheduleChange = (childFormData) => {
-    setFormData({...formData, schedule: childFormData});
-    onChanges(true, {...formData, schedule: childFormData});
+    setFormData({...formData, isApprovedByAdmin: false, schedule: childFormData});
+    onChanges(true, {...formData, isApprovedByAdmin: false, schedule: childFormData});
   };
 
   const handleScrollToSection = (sectionRef) => {

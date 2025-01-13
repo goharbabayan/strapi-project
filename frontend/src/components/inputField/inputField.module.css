@@ -151,6 +151,34 @@
   border-color: var(--red-r5);
 }
 
+.editIcon,.infoIcon {
+  position: absolute;
+  top: 57%;
+  right: 2px;
+  cursor: pointer;
+}
+
+.infoMessageWrapper {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  background-color: var(--neutral-white-n10);
+  border: 1px solid var(--neutral-n50);
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  top: 100%;
+  right: 0;
+}
+
+@media screen and (min-width: 980px) {
+  .infoIcon:hover ~ .infoMessageWrapper {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
 @media screen and (max-width: 749px) {
   .text,
   .selectClassName {
@@ -159,5 +187,15 @@
 
   .options {
     top: 60px;
+  }
+
+  .editIcon,
+  .infoIcon {
+    height: 15px;
+    width: 15px;
+  }
+
+  .infoIcon {
+    bottom: 15px;
   }
 }

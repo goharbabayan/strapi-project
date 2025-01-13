@@ -96,6 +96,13 @@ export default function MyAccountPage() {
     const hasErrors = Object.keys(errors).length > 0;
     if (hasErrors) {
       setErrorMessage(errors);
+      if (!isClientRole) {
+        setShowSaveResetChangeBar(true);
+        setNotificationBarMessageAndStatus({
+          show: true,
+          message: `Please correct the errors and try again.`
+        });
+      };
       return;
     } else {
       setErrorMessage('');
@@ -210,6 +217,16 @@ export default function MyAccountPage() {
     setUserUpdatedFormData(childFormData);
   };
 
+  const setChanges = (childState, childFormData) => {
+    setErrorMessage('');
+    setShowSaveResetChangeBar(childState);
+    setNotificationBarMessageAndStatus({
+      show: false,
+      message: ''
+    });
+    setUserUpdatedFormData(childFormData);
+  };
+
   return (
     <div className={`${styles.mainWrap} ${role === CLIENT.type ? styles.client : null}`}>
       <div className="dashboard">
@@ -247,7 +264,7 @@ export default function MyAccountPage() {
             <>
               <ServiceProviderDetails
                 user={user}
-                onChanges={handleSetChanges}
+                onChanges={setChanges}
                 showSaveResetChangeBar={showSaveResetChangeBar}
                 errorMessage={errorMessage}
               />
@@ -266,7 +283,7 @@ export default function MyAccountPage() {
             <>
               <ManagerDetails
                 user={user}
-                onChanges={handleSetChanges}
+                onChanges={setChanges}
                 onSubmit={handleFormSubmit}
                 errorMessage={errorMessage}
               />

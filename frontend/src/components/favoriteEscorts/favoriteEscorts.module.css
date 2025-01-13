@@ -38,6 +38,14 @@
   margin-left: 12px;
 }
 
+.button {
+  flex-grow: 1;
+  flex-basis: 100%;
+  display: flex;
+  justify-content: center;
+  padding-block: 24px;
+}
+
 @media screen and (max-width: 749px) {
   .heading {
     margin-block: 5px 10px;

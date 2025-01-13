@@ -11,6 +11,7 @@ export default function AccountInfoPopup({onClose, username, onChange, onEditIco
           username={username}
           onChange={onChange}
           onEditIconClick={onEditIconClick}
+          className={styles.accountInfoResetPassword}
         />
         <Button className={`${styles.modalClose}`} onClick={() => onClose()}>&times;</Button>
       </div>

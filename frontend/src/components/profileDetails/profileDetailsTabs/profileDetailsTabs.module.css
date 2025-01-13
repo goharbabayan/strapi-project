@@ -2,6 +2,7 @@
   border-top: 1px solid var(--neutral-n40);
   border-bottom: 1px solid var(--neutral-n40);
   padding-top: 7px;
+  width: 100%;
 }
 
 .container {

@@ -79,14 +79,14 @@ const AboutMe = forwardRef(({formData, onChildFormDataChange, error}, ref) => {
             fieldClassName={'selectOptionsWrapper'}
             type='text'
             name='makeup'
-            userOptions={formData.makeup}
+            userOptions={formData.glam}
             onMouseDown={handlePreferencesChange}
             isRequired={false}
             optionsList={MY_GLAM}
             errorMessage={error?.favouriteThings}
           />
           <Favourites
-            label='Extras'
+            label='My extras'
             labelClassName={'selectOptionLabel'}
             selectClassName={'select'}
             fieldClassName={'selectOptionsWrapper'}

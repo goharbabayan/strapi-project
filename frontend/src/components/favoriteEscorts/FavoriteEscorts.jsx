@@ -3,11 +3,11 @@ import styles from './favoriteEscorts.module.css';
 import Text from '../text/Text';
 import ProviderCard from '../providerCard/ProviderCard';
 import Banner from '../banner/Banner';
-import LoadMoreButton from '../loadMoreButton/LoadMoreButton';
 import { useFetchData } from '@/app/utils/hooks/useFetch';
 import { navigate } from '@/app/actions';
 import Modal from '../modal/Modal';
 import InfoIcon from '../icons/Info';
+import Button from '../button/Button';
 
 const FavoriteEscorts = ({
   favoriteProvidersIds,
@@ -121,10 +121,13 @@ const FavoriteEscorts = ({
             </div>
           }
           {showLoadMore && favoriteProvidersIds.length > 0 &&
-            <LoadMoreButton
-              onClick={handleLoadMore}
-              title={'Load More'}
-            />
+            <div className={styles.button}>
+              <Button
+                onClick={handleLoadMore}
+                children={'Load More'}
+                variant={'main'}
+              />
+            </div>
           }
         </section>
       </div>
