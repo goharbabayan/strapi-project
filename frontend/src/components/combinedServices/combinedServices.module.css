@@ -1,0 +1,14 @@
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 24px;
+  margin-top: 28px;
+}
+
+.buttons > button {
+  padding: 13px 24px;
+  flex: 1;
+  max-width: 187px;
+  white-space: nowrap;
+}

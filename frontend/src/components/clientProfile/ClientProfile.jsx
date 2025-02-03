@@ -9,8 +9,10 @@ import SelectOptions from '../selectOptions/SelectOptions';
 import InfoIcon from '../icons/Info';
 
 export default function ClientProfile ({
+  hideImage,
+  title,
   formData,
-  onChildFormDataChange,
+  onChange,
   errorMessage,
 }) {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
@@ -58,12 +60,12 @@ export default function ClientProfile ({
         body: form,
       })
       .then(resp => resp.json())
-      .then(data => onChildFormDataChange('profilePicture', data[0]));
+      .then(data => onChange('profilePicture', data[0]));
     e.target.value = '';
   };
 
   const handleRemoveProfilePicture = () => {
-    onChildFormDataChange('profilePicture', null);
+    onChange('profilePicture', null);
   };
 
   return (
@@ -73,59 +75,61 @@ export default function ClientProfile ({
           <Text
             tag={'h3'}
             className={styles.title}
-            children={'Good to see you'}
+            children={title}
           />
-          <div>
-            <div className={`${styles.container} `}>
-              {formData?.profilePicture && formData?.profilePicture?.url ?
-                <div className={styles.imageContainer}>
-                  <Image
-                    src={`${baseUrl}${formData?.profilePicture.url}`}
-                    alt={`${formData?.profilePicture?.alternativeText || formData?.profilePicture?.name}`}
-                    width={91}
-                    height={91}
-                    providerCartAspectRatio={1}
+          {!hideImage &&
+            <div>
+              <div className={`${styles.container} `}>
+                {formData?.profilePicture && formData?.profilePicture?.url ?
+                  <div className={styles.imageContainer}>
+                    <Image
+                      src={`${baseUrl}${formData?.profilePicture.url}`}
+                      alt={`${formData?.profilePicture?.alternativeText || formData?.profilePicture?.name}`}
+                      width={91}
+                      height={91}
+                      providerCartAspectRatio={1}
+                    />
+                  </div> :
+                  <div className={`${styles.emptyPicture} ${errorMessage?.profilePicture ? styles.invalid : ''}`}></div>
+                }
+                <div className={`${styles.buttonsWrap}`}>
+                  <RemoveIcon
+                    className={styles.iconRemove}
+                    onClick={handleRemoveProfilePicture}
                   />
-                </div> :
-                <div className={`${styles.emptyPicture} ${errorMessage?.profilePicture ? styles.invalid : ''}`}></div>
-              }
-              <div className={`${styles.buttonsWrap}`}>
-                <RemoveIcon
-                  className={styles.iconRemove}
-                  onClick={handleRemoveProfilePicture}
-                />
-                <input
-                  type='file'
-                  id='profileImageInput'
-                  name='profileImage'
-                  accept='image/*'
-                  hidden
-                  onChange={(e) => handleUpload(e, 'profilePicture')}
-                />
-                <label htmlFor='profileImageInput' className={`${styles.uploadButton}`}>
-                  <Text
-                    tag={'span'}
-                    children={'Upload image'}
+                  <input
+                    type='file'
+                    id='profileImageInput'
+                    name='profileImage'
+                    accept='image/*'
+                    hidden
+                    onChange={(e) => handleUpload(e, 'profilePicture')}
                   />
-                </label>
+                  <label htmlFor='profileImageInput' className={`${styles.uploadButton}`}>
+                    <Text
+                      tag={'span'}
+                      children={'Upload image'}
+                    />
+                  </label>
+                </div>
               </div>
+              <div className={styles.info}>
+                <InfoIcon/>
+                <Text
+                  tag={'span'}
+                  className="text-small"
+                  children={'Upload picture with 3x4 resolution'}
+                />
+              </div>
+              {errorMessage?.profilePicture &&
+                <Text
+                  tag={'span'}
+                  className={`${styles.error}`}
+                  children={errorMessage?.profilePicture}
+                />
+              }
             </div>
-            <div className={styles.info}>
-              <InfoIcon/>
-              <Text
-                tag={'span'}
-                className="text-small"
-                children={'Upload picture with 3x4 resolution'}
-              />
-            </div>
-            {errorMessage?.profilePicture &&
-              <Text
-                tag={'span'}
-                className={`${styles.error}`}
-                children={errorMessage?.profilePicture}
-              />
-            }
-          </div>
+          }
           {formFields.map((input) => {
             const {id, name, label, type, placeholder, disabled, validate} = input;
             if (name === 'gender') {
@@ -137,16 +141,16 @@ export default function ClientProfile ({
                   label={label}
                   name={name}
                   value={formData[name] || ''}
-                  onChange={onChildFormDataChange}
+                  onChange={onChange}
                   options={GENDER_OPTIONS}
-                  error={errorMessage[name] && errorMessage[name]}
+                  error={errorMessage && errorMessage[name]}
                   showError={true}
                 />
               )
             } else return (
               <FormInput
                 key={id}
-                error={errorMessage[name] && errorMessage[name]}
+                error={errorMessage && errorMessage[name]}
                 id={id}
                 placeholder={placeholder}
                 name={name}
@@ -154,7 +158,7 @@ export default function ClientProfile ({
                 value={formData[name] || ''}
                 type={type}
                 isRequired={true}
-                updateData={onChildFormDataChange}
+                updateData={onChange}
                 validate={validate}
                 showError={true}
                 disabled={disabled || false}

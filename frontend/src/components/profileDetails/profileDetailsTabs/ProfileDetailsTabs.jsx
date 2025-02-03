@@ -3,24 +3,27 @@ import DynamicComponent from '@/components/dynamicComponent/DynamicComponent';
 
 export default function ProfileDetailsTabs({
   profileDetailsTabsData,
-  activeTabId,
-  setActiveTabId
+  activeTab,
+  setActiveTab,
+  isMenuTabs,
+  errors,
+  hideMainWrapperBorders,
 }) {
   return (
-    <div className={styles.mainWrapper}>
+    <div className={`${styles.mainWrapper} ${hideMainWrapperBorders ? styles.noBorders : ''}`}>
       <div className='page-width'>
-        <div className={styles.container}>
+        <div className={`${styles.container} ${isMenuTabs ? styles.menuTabs : ''}`}>
           {profileDetailsTabsData.map((profileDetailsTab, index) => {
-              const {id, label, icon} = profileDetailsTab;
+              const {id, label, name, icon} = profileDetailsTab;
               const DynamicIconComponent = icon ? DynamicComponent(icon) : null;
               return (
                 <div
                   key={index}
-                  className={`${activeTabId === id  ? styles.active : ''} ${styles.tab}`}
-                  onClick={() => setActiveTabId(id)}
+                  className={`${activeTab === id  ? styles.active : ''} ${styles.tab}`}
+                  onClick={() => setActiveTab(id)}
                 >
                   {icon && <DynamicIconComponent />}
-                  <h3 className={styles.label}>{label}</h3>
+                  <h3 className={`${styles.label} ${errors && errors[name] ? styles.invalid : ''}`}>{label}</h3>
                 </div>
               )
             })

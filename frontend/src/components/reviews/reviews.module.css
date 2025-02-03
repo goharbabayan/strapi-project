@@ -1,64 +1,124 @@
-.reviews {
-  padding-bottom: 24px;
+.mainWrapper {
+  margin-top: 24px;
 }
 
-.author {
+.selectedItems {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 8px;
+  flex-wrap: wrap;
+  margin: 0 0 8px 0;
+  padding: 0;
+  max-height: 15vh;
+  overflow: auto;
+}
+
+.selectedItem {
+  background-color: var(--neutral-n20);
+  border-radius: 51px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 16px;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 0 10px 0;
+  max-height: 48vh;
+  overflow: hidden;
+  overflow: auto;
 }
 
 .review {
-  color:#0D0C22;
-  font-family: var(--primary-font);
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 18px;
-  min-height: 60px;
-  display: flex;
-  flex-direction: column;
-  row-gap: 20px;
-  flex-wrap: wrap;
-  background-color: var(--neutral-n20);
-  padding: 20px;
+  display: grid;
+  grid-template-columns: 2fr 7fr 2fr 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 8px 16px;
   border-radius: 10px;
-  width: 100%;
+  background: var(--neutral-n20);
+  margin-inline: 0 17px;
 }
 
 .title {
-  display: flex;
-  flex-basis: 100%;
-  color: var(--neutral-black);
-  font-family: var(--primary-font);
-  font-size: 34px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  border-bottom: 1px solid #c6c6c6;
-  margin-block: 0px 30px;
+  text-align: center;
+  color: var(--color-main);
+  font-size: 16px;
+  font-family: var(--primary-bold-font);
 }
 
-.checkbox {
-  display: flex;
-  gap: 20px;
+.header {
+  font-weight: bold;
+  background-color: var(--neutral-white-n10);
+  padding: 10px;
+  border: 1px solid var(--color-main);
+  margin-right: 18px;
 }
 
-.review .label {
+.buttons {
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 10px;
-  font-size: 13px;
+  column-gap: 24px;
+  margin-top: 28px;
+}
+
+.buttons > button {
+  padding: 13px 24px;
+  flex: 1;
+  max-width: 187px;
   white-space: nowrap;
-  margin: 0;
+}
+
+.add {
+  display: flex;
+  margin-top: 18px;
+}
+
+.iconPlus {
+  cursor: pointer;
+  border-radius: 8px;
+  background: var(--color-main);
+  display: flex;
+  padding: 4px 12px 4px 4px;
+  align-items: center;
+  gap: 6px;
+}
+
+.buttonText {
+  display: flex;
+  color: var(--neutral-white-n10);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
   line-height: 24px;
 }
 
-.checkbox input {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--neutral-n20);
+.buttonShowHide:hover {
+  opacity: 80%;
 }
 
-.label .input {
-  margin-top: 3px;
+.closeIcon {
+  display: flex;
+}
+
+.options.gfepseOptions {
+  max-height: 30vh;
+}
+
+@media screen and (max-width: 979px) {
+
+}
+
+@media screen and (max-width: 749px) {
+
+
+  .selectedItemTitle {
+    font-size: 14px;
+  }
 }

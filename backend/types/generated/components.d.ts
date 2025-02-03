@@ -11,6 +11,17 @@ export interface BlockAccordion extends Schema.Component {
   };
 }
 
+export interface BlockArrayData extends Schema.Component {
+  collectionName: 'components_block_array_data';
+  info: {
+    displayName: 'arrayData';
+    description: '';
+  };
+  attributes: {
+    item: Attribute.String;
+  };
+}
+
 export interface BlockCategory extends Schema.Component {
   collectionName: 'components_block_categories';
   info: {
@@ -29,6 +40,19 @@ export interface BlockFavoritesIds extends Schema.Component {
     displayName: 'favoritesIds';
   };
   attributes: {};
+}
+
+export interface BlockIncall extends Schema.Component {
+  collectionName: 'components_block_incalls';
+  info: {
+    displayName: 'Rate';
+    description: '';
+  };
+  attributes: {
+    general: Attribute.Component<'elements.data', true>;
+    GFE: Attribute.Component<'elements.data', true>;
+    PSE: Attribute.Component<'elements.data', true>;
+  };
 }
 
 export interface BlockLevel2 extends Schema.Component {
@@ -77,6 +101,16 @@ export interface BlockRichText extends Schema.Component {
   attributes: {
     heading: Attribute.String;
     text: Attribute.Blocks;
+  };
+}
+
+export interface BlockServices extends Schema.Component {
+  collectionName: 'components_block_services';
+  info: {
+    displayName: 'services';
+  };
+  attributes: {
+    item: Attribute.Component<'block.array-data', true>;
   };
 }
 
@@ -180,6 +214,19 @@ export interface ElementsText extends Schema.Component {
   };
 }
 
+export interface ElementsUserData extends Schema.Component {
+  collectionName: 'components_elements_user_data';
+  info: {
+    displayName: 'userData';
+    description: '';
+  };
+  attributes: {
+    general: Attribute.Component<'block.array-data', true>;
+    GFE: Attribute.Component<'block.array-data', true>;
+    PSE: Attribute.Component<'block.array-data', true>;
+  };
+}
+
 export interface ElementsWorkingTime extends Schema.Component {
   collectionName: 'components_elements_working_times';
   info: {
@@ -190,6 +237,30 @@ export interface ElementsWorkingTime extends Schema.Component {
     workday: Attribute.String;
     start: Attribute.String;
     end: Attribute.String;
+  };
+}
+
+export interface EntryDataWithBooleanValues extends Schema.Component {
+  collectionName: 'components_entry_data_with_boolean_values';
+  info: {
+    displayName: 'dataWithBooleanValues';
+  };
+  attributes: {
+    hasBronzeBadge: Attribute.Boolean & Attribute.DefaultTo<false>;
+    hasSilverBadge: Attribute.Boolean & Attribute.DefaultTo<false>;
+    hasGoldBadge: Attribute.Boolean & Attribute.DefaultTo<false>;
+  };
+}
+
+export interface EntryRates extends Schema.Component {
+  collectionName: 'components_entry_rates';
+  info: {
+    displayName: 'rates';
+  };
+  attributes: {
+    general: Attribute.Component<'elements.data', true>;
+    GFE: Attribute.Component<'elements.data', true>;
+    PSE: Attribute.Component<'elements.data', true>;
   };
 }
 
@@ -331,12 +402,15 @@ declare module '@strapi/types' {
   export module Shared {
     export interface Components {
       'block.accordion': BlockAccordion;
+      'block.array-data': BlockArrayData;
       'block.category': BlockCategory;
       'block.favorites-ids': BlockFavoritesIds;
+      'block.incall': BlockIncall;
       'block.level-2': BlockLevel2;
       'block.level-3': BlockLevel3;
       'block.location-card': BlockLocationCard;
       'block.rich-text': BlockRichText;
+      'block.services': BlockServices;
       'block.skill': BlockSkill;
       'elements.button-link': ElementsButtonLink;
       'elements.collection': ElementsCollection;
@@ -345,7 +419,10 @@ declare module '@strapi/types' {
       'elements.link': ElementsLink;
       'elements.review': ElementsReview;
       'elements.text': ElementsText;
+      'elements.user-data': ElementsUserData;
       'elements.working-time': ElementsWorkingTime;
+      'entry.data-with-boolean-values': EntryDataWithBooleanValues;
+      'entry.rates': EntryRates;
       'entry.suburb': EntrySuburb;
       'section.banner': SectionBanner;
       'section.find-by-location': SectionFindByLocation;

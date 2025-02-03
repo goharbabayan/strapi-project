@@ -1,0 +1,115 @@
+.mainWrapper {
+  margin-top: 24px;
+}
+
+.selectedItems {
+  display: flex;
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 8px;
+  flex-wrap: wrap;
+  margin: 0 0 8px 0;
+  padding: 0;
+  max-height: 15vh;
+  overflow: auto;
+}
+
+.selectedItem {
+  background-color: var(--neutral-n20);
+  border-radius: 51px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 16px;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  max-height: 48vh;
+  overflow: hidden;
+  overflow: auto;
+}
+
+.option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 8px 16px;
+  border-radius: 10px;
+  background: var(--neutral-n20);
+  margin-inline: 0 17px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 24px;
+  margin-top: 28px;
+}
+
+.buttons > button {
+  padding: 13px 24px;
+  flex: 1;
+  max-width: 187px;
+  white-space: nowrap;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.add {
+  display: flex;
+  margin-top: 18px;
+}
+
+.iconPlus {
+  cursor: pointer;
+  border-radius: 8px;
+  background: var(--color-main);
+  display: flex;
+  padding: 4px 12px 4px 4px;
+  align-items: center;
+  gap: 6px;
+}
+
+.buttonText {
+  display: flex;
+  color: var(--neutral-white-n10);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.buttonShowHide:hover {
+  opacity: 80%;
+}
+
+.closeIcon {
+  display: flex;
+}
+
+.options.gfepseOptions {
+  max-height: 30vh;
+}
+
+@media screen and (max-width: 979px) {
+
+}
+
+@media screen and (max-width: 749px) {
+
+
+  .selectedItemTitle {
+    font-size: 14px;
+  }
+}

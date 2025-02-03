@@ -151,6 +151,7 @@ export const HEIGHT_OPTIONS = [
 export const PLACE_OF_SERVICE_OPTIONS = [
   {value: 'In-Call', label: 'In-Call'},
   {value: 'Out-Call', label: 'Out-Call'},
+  {value: 'In-Call, Out-Call', label: 'In-Call, Out-Call'},
 ]
 
 export const BUST_OPTIONS = [
@@ -183,4 +184,9 @@ export const GENDER_OPTIONS = [
   {value: 'male', label: 'Male'},
   {value: 'female', label: 'Female'},
   {value: 'trans', label: 'Trans'},
+]
+
+export const DIGITAL_SERVICE_OPTIONS = [
+  {value: true, label: 'Yes'},
+  {value: false, label: 'No'},
 ]

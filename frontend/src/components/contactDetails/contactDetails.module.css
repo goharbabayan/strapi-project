@@ -1,0 +1,12 @@
+.socialLinks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 28px;
+  margin-top: 28px;
+  row-gap: 28px;
+}
+
+.socialLinks.member {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}

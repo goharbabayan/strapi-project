@@ -12,6 +12,7 @@ export const USER_FORM = (user) => {
     eyeColor: '',
     height: '',
     bust: '',
+    badge: '',
     dressSize: '',
     hairColor: '',
     bodyType: '',
@@ -29,9 +30,21 @@ export const USER_FORM = (user) => {
     closet: [],
     glam: [],
     extras: [],
-    incallRates: [],
-    outcallRates: [],
-    services: [],
+    incall: {
+      GFE: [],
+      PSE: [],
+      general: [],
+    },
+    outcall: {
+      GFE: [],
+      PSE: [],
+      general: [],
+    },
+    services: {
+      GFE: [],
+      PSE: [],
+      general: [],
+    },
     schedule: [
       { workday: 'Monday', start: '', end: '' },
       { workday: 'Tuesday', start: '', end: '' },
@@ -44,6 +57,16 @@ export const USER_FORM = (user) => {
     additionalInfo: [],
     reviews: [],
     isApprovedByAdmin: false,
+    verificationStatus: {
+      hasBronzeBadge: false,
+      hasSilverBadge: false,
+      hasGoldBadge: false
+    },
+    twitterLink: '',
+    otherLink: '',
+    availableNow: false,
+    digitalService: '',
+    managerEscortEmail: '',
   };
 } 
 
@@ -61,6 +84,7 @@ export const USER_FORM_WITH_DATA = (user) => {
     eyeColor: user.eyeColor,
     height: user.height,
     bust: user.bust,
+    badge: user.badge,
     dressSize: user.dressSize,
     hairColor: user.hairColor,
     bodyType: user.bodyType,
@@ -78,10 +102,10 @@ export const USER_FORM_WITH_DATA = (user) => {
     closet: user.closet,
     glam: user.glam,
     extras: user.extras,
-    incallRates: user.incallRates,
-    outcallRates: user.outcallRates,
+    incall: user.incall,
+    outcall: user.outcall,
     services: user.services,
-    schedule: user.schedule.length > 0 ? user.schedule : [
+    schedule: user?.schedule?.length > 0 ? user.schedule : [
       { workday: 'Monday', start: '', end: '' },
       { workday: 'Tuesday', start: '', end: '' },
       { workday: 'Wednesday', start: '', end: '' },
@@ -94,13 +118,18 @@ export const USER_FORM_WITH_DATA = (user) => {
     reviews: user.reviews,
     isApprovedByAdmin: user.isApprovedByAdmin,
     favoriteProvidersIds: user.favoriteProvidersIds,
+    twitterLink: user.twitterLink,
+    otherLink: user.otherLink,
+    availableNow: user.availableNow,
+    digitalService: user.digitalService,
+    managerEscortEmail: user.managerEscortEmail,
   }
 }
 
-export const USER_FORM_NEW_MEMBER = (email, id) => {
+export const USER_FORM_NEW_MEMBER = (email, managerID) => {
   return {
     email: email,
-    managerID: id,
+    managerID: managerID,
     isApprovedByAdmin: false,
     role: 8,
     username: '',
@@ -119,8 +148,8 @@ export const USER_FORM_NEW_MEMBER = (email, id) => {
     placeOfService: '',
     photos: [],
     selfies: [],
-    profilePicture: '',
-    coverPhoto: '',
+    profilePicture: null,
+    coverPhoto: null,
     phoneNumber: '',
     contactInfo: '',
     instagramLink: '',
@@ -130,9 +159,21 @@ export const USER_FORM_NEW_MEMBER = (email, id) => {
     closet: [],
     glam: [],
     extras: [],
-    incallRates: [],
-    outcallRates: [],
-    services: [],
+    incall: {
+      GFE: [],
+      PSE: [],
+      general: [],
+    },
+    outcall: {
+      GFE: [],
+      PSE: [],
+      general: [],
+    },
+    services: {
+      GFE: [],
+      PSE: [],
+      general: [],
+    },
     schedule: [
       { workday: 'Monday', start: '', end: '' },
       { workday: 'Tuesday', start: '', end: '' },
@@ -145,6 +186,18 @@ export const USER_FORM_NEW_MEMBER = (email, id) => {
     additionalInfo: [],
     reviews: [],
     favoriteProvidersIds: [],
+    gender: '',
+    badge: '',
+    twitterLink: '',
+    otherLink: '',
+    availableNow: false,
+    digitalService: '',
+    managerEscortEmail: '',
+    verificationStatus: {
+      hasBronzeBadge: false,
+      hasSilverBadge: false,
+      hasGoldBadge: false
+    },
   }
 }
 
@@ -156,15 +209,19 @@ export const USER_REQUIRED_FIELDS = [
   'age',
   'eyeColor',
   'height',
+  'hairColor',
+  'bust',
+  'dressSize',
   'placeOfService',
   'photos',
   'coverPhoto',
   'profilePicture',
   'phoneNumber',
-  'incallRates',
-  'outcallRates',
+  'gender',
   'services',
   'schedule',
+  'incall',
+  'outcall'
 ];
 
 export const USER_REQUIRED_FIELDS_FOR_CLIENT_ROLE = [

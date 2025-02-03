@@ -12,7 +12,9 @@ import { CLIENT_DASHBOARD_PAGE_TABS } from '@/app/utils/constants/dashboardPageT
 export default function ClientDetails({
   user,
   onChanges,
-  errorMessage
+  errorMessage,
+  activeTab,
+  setActiveTab,
 }) {
   const [formData, setFormData] = useState({
       username: user.username || '',
@@ -31,7 +33,6 @@ export default function ClientDetails({
     desktopImage: null,
     mobileImage: null,
   });
-  const [activeTabId, setActiveTabId] = useState(0);
   const {loading, error, data} = useQuery(GET_CLIENT_DASHBOARD_PAGE_QUERIES);
 
   useEffect(() => {
@@ -44,9 +45,9 @@ export default function ClientDetails({
     }
   }, [data]);
 
-  const handleChildFormDataChange = (field, value) => {
+  const handleChange = (field, value) => {
     setFormData({...formData, [field]: value});
-    onChanges({...formData, [field]: value})
+    onChanges(field, value);
   };
 
   return (
@@ -55,10 +56,10 @@ export default function ClientDetails({
         <div className={`${styles.container}`}>
           <ProfileDetailsTabs
             profileDetailsTabsData={CLIENT_DASHBOARD_PAGE_TABS}
-            activeTabId={activeTabId}
-            setActiveTabId={setActiveTabId}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
           />
-          {activeTabId === 0 &&
+          {activeTab === 'account' &&
             <FavoriteEscorts
               favoriteProvidersIds={formData.favoriteProvidersIds}
               bannerData={bannerData}
@@ -67,14 +68,15 @@ export default function ClientDetails({
               setFormData={setFormData}
             />
           }
-          {activeTabId === 1 &&
+          {activeTab === 'profile_info' &&
             <ClientProfile
               formData={formData}
-              onChildFormDataChange={handleChildFormDataChange}
+              title={'Good to see you'}
+              onChange={handleChange}
               errorMessage={errorMessage}
             />
           }
-          {activeTabId === 2 &&
+          {activeTab === 'settings' &&
             <ResetPassword/>
           }
         </div>

@@ -21,8 +21,28 @@
   width: 100%;
 }
 
+.relative {
+  position: relative;
+}
+
 .locationPageImage {
   min-height: 331px;
+}
+
+.verificationBadgeContainer {
+  display: flex;
+  padding: 7px 4px;
+  position: absolute;
+  top: 12.5px;
+  left: 12.5px;
+  border-radius: 8px;
+  background: var(--neutral-white-n10);
+  z-index: 2;
+}
+
+.verificationBadgeContainer > svg {
+  width: 36px;
+  height: 26px;
 }
 
 @media screen and (max-width: 849px) {

@@ -1,6 +1,6 @@
 'use client'
 
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import styles from './profileReviews.module.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, A11y } from 'swiper/modules';
@@ -13,12 +13,33 @@ import ProviderReview from '../providerReview/ProviderReview';
 import Button from '../button/Button';
 import { SwiperNavButtons } from '../swiperNavButtons/SwiperNavButtons';
 import ProfileReviewPopup from '../profileReviewPopup/ProfileReviewPopup';
+import EditContentIcon from '../icons/EditContent';
+import FormModal from '../formModal/FormModal';
+import Reviews from '../reviews/Reviews';
 
-export default function ProfileReviews ({reviews, providerId}) {
+export default function ProfileReviews ({
+  reviews,
+  providerId,
+  isDashboardPage,
+  updateUserPendingOvverridesAndSubmitUserData,
+}) {
   const [showReviewPopup, setShowReviewPopup] = useState(false);
+  const [showEditReviewsPopup, setShowEditReviewsPopup] = useState(false);
+  const [updatedReviews, setUpdatedReviews] = useState(reviews);
+
+  const handleEditIconClick = () => {
+    setShowEditReviewsPopup(!showEditReviewsPopup);
+  };
+
   const handleShowReviewPopup = () => {
     setShowReviewPopup(true);
     document.body.classList.add('overflow_hidden');
+  };
+
+  const handleShowHide = (target, reviewId, currentShowValue) => {
+    const showValue = currentShowValue || false;
+    const newReviews = updatedReviews.map((review) => review.id === reviewId ? { ...review, show: !showValue } : review);
+    setUpdatedReviews(newReviews);
   };
 
   const myBreakpoints = {
@@ -43,28 +64,58 @@ export default function ProfileReviews ({reviews, providerId}) {
   };
 
   return (
-    <div className={styles.mainWrap}>
-      <div className={`${styles.newReview} page-width`}>
-        <Text
-          tag={'h3'}
-          className={styles.heading}
-          children={'Reviews'}
-        />
-        <Button
-          children={'Add Review'}
-          onClick={handleShowReviewPopup}
-          className={styles.button}
-          variant={'general'}
-        />
-      </div>
-      {showReviewPopup &&
-        <ProfileReviewPopup
-          setShowReviewPopup={setShowReviewPopup}
-          providerId={providerId}
-        />
-      }
-      {reviews.length > 0 ? (
-        <div className="page-width">
+    <div className="page-width">
+      <div className={`${styles.mainWrap}`}>
+        {!(isDashboardPage && updatedReviews.length === 0) &&
+          <div className={`${styles.newReview} ${isDashboardPage ? styles.dashbaordPage : ''}`}>
+            <Text
+              tag={'h3'}
+              className={styles.heading}
+              children={'Reviews'}
+            />
+            {isDashboardPage
+              ?
+                <>
+                  {updatedReviews.length > 0 &&
+                    <EditContentIcon
+                      className={styles.editIcon}
+                      onClick={handleEditIconClick}
+                    />
+                  }
+                </>
+              :
+                <Button
+                  children={'Add Review'}
+                  onClick={handleShowReviewPopup}
+                  className={styles.button}
+                  variant={'general'}
+                />
+            }
+          </div>
+        }
+        {showReviewPopup &&
+          <ProfileReviewPopup
+            setShowReviewPopup={setShowReviewPopup}
+            providerId={providerId}
+          />
+        }
+        {showEditReviewsPopup &&
+          <FormModal
+            title={'My Reviews'}
+            className={styles.locationForm}
+            onClose={() => {
+              setShowEditReviewsPopup(false);
+            }}
+          >
+            <Reviews
+              showServicesOptions={true}
+              userSelectedInterests={null}
+              userReviews={reviews}
+              updateChange={updateUserPendingOvverridesAndSubmitUserData}
+            />
+          </FormModal>
+        }
+        {updatedReviews.length > 0 ? (
           <div className={`${styles.reviews} profileReviews`}>
             <Swiper
               modules={[Navigation, A11y]}
@@ -78,14 +129,16 @@ export default function ProfileReviews ({reviews, providerId}) {
               breakpoints={myBreakpoints}
               margin={25}
               data-slides={2.5}
+              className={styles.swipperWrapper}
             >
-              {reviews.map((review, index) => {
+              {updatedReviews.map((review, index) => {
                 const {id, author, date, text, show} = review;
-                if (!show) return;
+                if (!isDashboardPage && !show) return;
                 return (
                   <SwiperSlide
                     key={id}
                     virtualIndex={id}
+                    className={styles.swiperSlide}
                   >
                     <ProviderReview
                       author={author}
@@ -96,26 +149,26 @@ export default function ProfileReviews ({reviews, providerId}) {
                   </SwiperSlide>
                 )
               })}
-              <SwiperNavButtons/>
+              <SwiperNavButtons className={styles.reviewButton}/>
             </Swiper>
           </div>
-        </div>
-        ) : (
-        <div className="page-width">
-          <div className={styles.container}>
-            <Text
-              tag={'h4'}
-              children={'No Reviews'}
-              className={styles.title}
-            />
-            <Text
-              tag={'span'}
-              children={'There are no reviews yet.'}
-              className={styles.text}
-            />
-          </div>
-        </div>)
-      }
+          ) : (
+          <div className="page-width">
+            <div className={styles.container}>
+              <Text
+                tag={'h4'}
+                children={'No Reviews'}
+                className={styles.title}
+              />
+              <Text
+                tag={'span'}
+                children={'There are no reviews yet.'}
+                className={styles.text}
+              />
+            </div>
+          </div>)
+        }
+      </div>
     </div>
   )
 }

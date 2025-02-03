@@ -12,18 +12,175 @@
   max-width: 320px;
   width: 100%;
   position: relative;
+  flex-shrink: 0;
+}
+
+.emptyImageWrapper {
+  position: relative;
+  max-width: 320px;
+  width: 100%;
+  height: 440px;
+  background-color: var(--neutral-n20);
+  display: flex;
+  justify-content: center;
+}
+
+.emptyImageContainer {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  row-gap: 29px;
+  align-items: center;
+}
+
+.editButtonEmptyState {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  background: var(--neutral-white-n10);
+  padding: 8px;
+  cursor: pointer;
+}
+
+.editButton, .editProfilePictureButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  background: var(--neutral-white-n10);
+  cursor: pointer;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 8px;
+}
+
+.editButton {
+  border: 1px solid var(--color-main);
+}
+
+.editButton:hover, .editButtonEmptyState:hover {
+  opacity: 80%;
+}
+
+.editButtonMobile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  background: var(--neutral-white-n10);
+  cursor: pointer;
+  position: absolute;
+  bottom: 23px;
+  right: 5px;
+  padding: 8px;
+}
+
+.editText {
+  color: var(--color-main);
+  font-family: var(--primary-bold-font);
+  font-size: 16px;
+  font-style: normal;
+  line-height: 20px;
+}
+
+.imageWrapper {
+  position: relative;
+}
+
+.editButtonMobile {
+  display: none;
+}
+
+.uploadText {
+  color: var(--neutral-n90);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.invalidBorder {
+  border: 1px solid var(--red-r5);
+}
+
+.invalidText {
+  color: var(--red-r5);
+}
+
+.iconUpload {
+  display: flex;
+  background-color: var(--neutral-white-n10);
+  border-radius: 10px;
+  border: 1px solid var(--neutral-white-n10);
+  cursor: pointer;
+}
+
+.available {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 24px;
+  background: var(--color-main);
+  padding: 5px 10px;
+  position: absolute;
+  right: 12px;
+  top: 12px;
+}
+
+.badge {
+  color: var(--neutral-white-n10);
+  font-family: var(--primary-bold-font);
+  font-size: 16px;
+  font-style: normal;
+  line-height: 20px;
+}
+
+.digitalService {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 4px;
+  background: var(--color-main);
+  padding: 4px 11px;
+}
+
+.digitalText {
+  color: var(--neutral-white-n10);
+  font-family: var(--primary-font);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
 }
 
 .profileInfoWrapper {
   width: 100%;
 }
 
+.profileFullNameAndAvailability {
+  display: flex;
+  column-gap: 16px;
+  row-gap: 5px;
+  padding-block: 20px 32px;
+  align-items: center;
+}
+
 .profileFullName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-family: var(--headings-font);
   font-size: 32px;
   font-style: normal;
   font-weight: normal;
-  margin: 0 0 32px 0;
+  margin: 0;
+  max-width: 40%;
 }
 
 .profileInfoTextContainer {
@@ -74,6 +231,25 @@
   display: flex;
 }
 
+@media screen and (max-width: 1449px) {
+
+}
+
+@media screen and (max-width: 1069px) {
+  .profileFullNameAndAvailability {
+    max-width: 65%;
+    flex-wrap: wrap;
+  }
+
+  .profileInfoTextContainer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .profileFullName {
+    max-width: unset;
+  }
+}
+
 @media screen and (max-width: 979px) {
   .profileInfoContainer {
     display: block;
@@ -103,9 +279,25 @@
     row-gap: 24px;
     padding-bottom: 16px;
   }
+
+  .profileFullNameAndAvailability {
+    max-width: unset;
+  }
+
+  .editButtonMobile {
+    display: flex;
+  }
+
+  .editButton {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 749px) {
+  .editText {
+    display: none;
+  }
+
   .providerContactInfo {
     margin-top: 16px;
   }

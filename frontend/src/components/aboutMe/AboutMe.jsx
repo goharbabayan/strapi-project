@@ -1,107 +1,50 @@
-import { forwardRef } from 'react';
 import styles from './aboutMe.module.css';
 import Text from '../text/Text';
-import Favourites from '../favourites/Favourites';
-import { EXTRAS, MY_GLAM, MY_CLOSET } from '@/app/utils/constants/userPossibleOutfits';
+import Button from '../button/Button';
+import { useState } from 'react';
 
-const AboutMe = forwardRef(({formData, onChildFormDataChange, error}, ref) => {
-  const handleChangeAboutMeText = (e) => {
-    onChildFormDataChange('aboutMe', e.target.value);
+export default function AboutMe ({aboutMeData, onSaveChanges}) {
+  const [aboutMeText, setAboutMeText] = useState(aboutMeData);
+
+  const handleChange = (value) => {
+    setAboutMeText(value);
   };
 
-  const handlePreferencesChange = (field, value) => {
-    onChildFormDataChange(field, value);
+  const saveChanges = () => {
+    onSaveChanges('aboutMe', aboutMeText);
+  };
+
+  const cancelChanges = () => {
+    setAboutMeText(aboutMeData);
   };
 
   return (
-    <>
-      <section
-        id='About'
-        className={`${styles.aboutText} ${styles.section} page-width`}
-        ref={ref}
-      >
+    <section
+      id='About'
+      className={`${styles.aboutText}`}
+    >
+      <div className={`${styles.bio}`}>
         <Text
-          tag={'h2'}
-          className={styles.title}
-          children={'About Me'}
+          tag={'textarea'}
+          className={`${styles.textarea}`}
+          value={aboutMeText || ''}
+          onChange={(e) => handleChange(e.target.value)}
+          placeholder={'Type your bio here...'}
         />
-        <div className={`${styles.formGroup} ${styles.mainInfo}`}>
-          <Text
-            tag={'textarea'}
-            className={`${styles.textarea} text-middle`}
-            value={formData.aboutMe === null ? '' : formData.aboutMe}
-            onChange={handleChangeAboutMeText}
-            placeholder={'Enter your text here...'}
-          />
-        </div>
-      </section>
-      <section className={`${styles.aboutText} ${styles.section} page-width`}>
-        {/* <Preferences
-          field='interests'
-          subtitle='Interests'
-          data={formData.interests}
-          onPreferencesChange={onChildFormDataChange}
-          error={error?.interests}
-        /> */}
-        {/* comment for wishlist field */}
-        {/* <Favourites
-          label='Wishlist:'
-          labelClassName={'selectOptionLabel'}
-          selectClassName={'select'}
-          fieldClassName={'selectOptionsWrapper'}
-          type='text'
-          name='wishlist'
-          userOptions={formData.wishlist}
-          onMouseDown={handlePreferencesChange}
-          isRequired={true}
-          optionsList={WISHLIST_OPTIONS}
-          errorMessage={error?.wishlist}
-        /> */}
-        {/* comment for wishlist field */}
-        <div className={`${styles.selectionContainer}`}>
-          <Favourites
-            label='My closet'
-            labelClassName={'selectOptionLabel'}
-            selectClassName={'select'}
-            fieldClassName={'selectOptionsWrapper'}
-            type='text'
-            name='closet'
-            userOptions={formData.closet}
-            onMouseDown={handlePreferencesChange}
-            isRequired={false}
-            optionsList={MY_CLOSET}
-            errorMessage={error?.favouriteThings}
-          />
-          <Favourites
-            label='My glam'
-            labelClassName={'selectOptionLabel'}
-            selectClassName={'select'}
-            fieldClassName={'selectOptionsWrapper'}
-            type='text'
-            name='makeup'
-            userOptions={formData.glam}
-            onMouseDown={handlePreferencesChange}
-            isRequired={false}
-            optionsList={MY_GLAM}
-            errorMessage={error?.favouriteThings}
-          />
-          <Favourites
-            label='My extras'
-            labelClassName={'selectOptionLabel'}
-            selectClassName={'select'}
-            fieldClassName={'selectOptionsWrapper'}
-            type='text'
-            name='extras'
-            userOptions={formData.extras}
-            onMouseDown={handlePreferencesChange}
-            isRequired={false}
-            optionsList={EXTRAS}
-            errorMessage={error?.favouriteThings}
-          />
-        </div>
-      </section>
-    </>
+      </div>
+      <div className={styles.buttons}>
+        <Button
+          children={'Cancel'}
+          variant={'general'}
+          onClick={cancelChanges}
+        />
+        <Button
+          type={'button'}
+          children={'Save changes'}
+          variant={'main'}
+          onClick={saveChanges}
+        />
+      </div>
+    </section>
   )
-});
-
-export default AboutMe;
+};

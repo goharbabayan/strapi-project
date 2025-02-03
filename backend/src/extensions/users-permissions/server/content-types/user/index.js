@@ -185,23 +185,6 @@ module.exports = {
       repeatable: true,
       component: "elements.text"
     },
-    incallRates: {
-      displayName: "data",
-      type: "component",
-      repeatable: true,
-      component: "elements.data"
-    },
-    outcallRates: {
-      displayName: "data",
-      type: "component",
-      repeatable: true,
-      component: "elements.data"
-    },
-    services: {
-      type: "component",
-      repeatable: true,
-      component: "elements.text"
-    },
     schedule: {
       type: "component",
       repeatable: true,
@@ -224,6 +207,47 @@ module.exports = {
     },
     badge: {
       type: "string"
+    },
+    verificationStatus: {
+      displayName: "dataWithBooleanValues",
+      type: "component",
+      repeatable: false,
+      component: "entry.data-with-boolean-values"
+    },
+    pendingData: {
+      type: "json"
+    },
+    twitterLink: {
+      type: "string"
+    },
+    otherLink: {
+      type: "string"
+    },
+    availableNow: {
+      type: "boolean",
+      default: false
+    },
+    digitalService: {
+      type: "string"
+    },
+    managerEscortEmail: {
+      type: "string"
+    },
+    services: {
+      displayName: "userData",
+      type: "component",
+      repeatable: false,
+      component: "elements.user-data"
+    },
+    incall: {
+      type: "component",
+      repeatable: false,
+      component: "block.incall"
+    },
+    outcall: {
+      type: "component",
+      repeatable: false,
+      component: "block.incall"
     }
   },
   config: schemaConfig, // TODO: to move to content-manager options

@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_elements_user_data",
+  "info": {
+    "displayName": "userData",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "general": {
+      "type": "component",
+      "repeatable": true,
+      "component": "block.array-data"
+    },
+    "GFE": {
+      "type": "component",
+      "repeatable": true,
+      "component": "block.array-data"
+    },
+    "PSE": {
+      "type": "component",
+      "repeatable": true,
+      "component": "block.array-data"
+    }
+  }
+}

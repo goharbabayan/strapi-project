@@ -1,17 +1,26 @@
+.mainWrapper {
+  display: flex;
+  column-gap: 20px;
+  margin-top: 25px;
+  align-items: flex-start;
+}
+
 .container {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
+  flex-wrap: wrap;
   box-sizing: border-box;
 }
 
 .itemWrap {
   display: flex;
-  gap: 25px;
-  height: 100%;
+  justify-content: space-between;
+  align-items: flex-start;
   width: 100%;
-  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.itemWrap:not(:last-child) {
+  margin-bottom: 10px;
 }
 
 .label {
@@ -22,12 +31,49 @@
   font-style: normal;
   font-weight: 400;
   line-height: 24px;
-  width: 100px;
+}
+
+.itemContainer {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.input[type="time"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 1px solid var(--neutral-n50);
+  border-radius: 4px;
+  padding: 3px;
+  font-size: 14px;
+  color: var(--neutral-black);
+  background-color: var(--neutral-n20);
+  outline: none;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .timeWrapper {
   display: flex;
-  gap: 20px;
+  gap: 6px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 24px;
+  margin-top: 28px;
+}
+
+.buttons > button {
+  padding: 13px 24px;
+  flex: 1;
+  max-width: 187px;
+  white-space: nowrap;
 }
 
 .input {
@@ -38,14 +84,14 @@
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
-  line-height: 22px;
   padding-inline: 8px;
   box-sizing: border-box;
   border: 1px solid var(--neutral-n50);
 }
 
 .additionalInfoWrapper {
-  width: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: var(--neutral-n60) var(--neutral-n20);
 }
 
 .workday {
@@ -53,7 +99,23 @@
   font-size: 18px;
 }
 
+.subtitle {
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-block: 0 20px;
+}
+
 @media screen and (max-width: 749px) {
+  .mainWrapper {
+    flex-wrap: wrap;
+    row-gap: 25px;
+    margin-top: 10px;
+  }
+
   .itemWrap {
     gap: 5px;
     justify-content: space-between;
@@ -64,15 +126,24 @@
     line-height: normal;
     width: 70px;
   }
+
+  .subtitle {
+    margin-block: 0 8px;
+    font-size: 18px;
+  }
+
+  .selectedItems {
+    max-height: 90px;
+  }
 }
 
 @media screen and (max-width: 459px) {
-  .itemWrap {
-    flex-wrap: wrap;
+  .buttons {
+    margin-top: 8px;
   }
 
-  .itemWrap label:nth-child(1) {
-    flex-basis: 100%;
+  .itemWrap {
+    flex-direction: column;
   }
 
   .label {
@@ -80,7 +151,16 @@
   }
 
   .workday {
-    margin-bottom: 8px;
     font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .container {
+    width: 50%;
+  }
+
+  .additionalInfoWrapper {
+    width: 50%;
   }
 }

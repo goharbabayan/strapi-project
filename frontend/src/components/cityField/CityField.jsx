@@ -7,6 +7,7 @@ export default function CityField ({
   type,
   name,
   value,
+  isRequired,
   cities,
   onMouseDown,
   errorMessage }) {
@@ -82,7 +83,7 @@ export default function CityField ({
   return (
     <div className={styles.container}>
       <div>
-        <label className='label'>{label}</label>
+        <label className='label'>{`${label || ''} ${isRequired ? '*' : ''}`}</label>
         <input
           type='text'
           name='suburbs'
@@ -91,7 +92,7 @@ export default function CityField ({
           value={inputValue}
           onClick={handleClick}
           onChange={handleChange}
-          className={`${styles.suburbInput} input`}
+          className={`${styles.cityInput} input ${errorMessage && errorMessage?.city ? styles.invalid : ''}`}
         />
         <span className={styles.arrow} ref={arrowRef} onClick={handleClick}></span>
       </div>

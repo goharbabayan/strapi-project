@@ -1,3 +1,4 @@
+import InfoIcon from '../icons/Info';
 import styles from './text.module.css';
 
 export default function Text({tag, className, children, onMouseOver, onMouseOut, ...rest}) {

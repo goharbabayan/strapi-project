@@ -1,118 +1,125 @@
-'use client'
-
-import { useState, forwardRef } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, A11y } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
 import styles from './reviews.module.css';
-import InputField from '../inputField/InputField';
 import Text from '../text/Text';
-import { SwiperNavButtons } from '../swiperNavButtons/SwiperNavButtons';
+import Button from '../button/Button';
+import { useEffect, useState } from 'react';
+import Checkbox from '../checkbox/CheckBox';
+import PopUpCloseIcon from '../icons/PopUpCloseIcon';
+import EditContentIcon from '../icons/EditContent';
+import EditIcon from '../icons/Edit';
+import PlusIcon from '../icons/plusIcon';
 
-const Reviews = forwardRef(({reviews, onChildFormDataChange, errorMessage}, ref) => {
-  const [updatedReviews, setUpdatedReviews] = useState(reviews);
+export default function Reviews ({
+  userReviews,
+  updateChange,
+  title,
+  showEditAndDeleteButtons
+}) {
+  const [reviewsCheckboxesState, setReviewsCheckboxesState] = useState([]);
+  const [updatedReviews, setUpdatedReviews] = useState(userReviews);
 
-  const myBreakpoints = {
-    200: {
-      slidesPerView: 1,
-    },
-    375: {
-      slidesPerView: 1.2,
-    },
-    500: {
-      slidesPerView: 1.5,
-    },
-    750: {
-      slidesPerView: 1.8,
-    },
-    800: {
-      slidesPerView: 2.2,
-    },
-    1024: {
-      slidesPerView: 2.8,
-    },
+  useEffect(() => {
+    setReviewsCheckboxesState(updatedReviews.map(review => ({ id: review.id, isChecked: review.show })));
+  }, [userReviews]);
+
+  const saveChanges = () => {
+    updateChange({'reviews': updatedReviews});
   };
 
-  // ToDo: remove setTimeout from handleShowHide function
-  const handleShowHide = (target, reviewId, currentShowValue) => {
-    const showValue = currentShowValue || false;
-    const newReviews = updatedReviews.map((review) => review.id === reviewId ? { ...review, show: !showValue } : review);
-    setUpdatedReviews(newReviews);
-    setTimeout(() => {
-      onChildFormDataChange('reviews', newReviews);
-    });
+  const cancelChanges = () => {
+    setUpdatedReviews(userReviews);
+    setReviewsCheckboxesState(userReviews.map(review => ({ id: review.id, isChecked: review.show })));
+  };
+
+  const onCheckboxChange = (reviewId, review, isChecked) => {
+    setReviewsCheckboxesState((prevState) =>
+      prevState.map((item) =>
+        item.id === reviewId ? { ...item, isChecked: !item.isChecked } : item
+      )
+    );
+    setUpdatedReviews((prevState) =>
+      prevState.map((item) =>
+        item.id === reviewId ? { ...item, show: !item.show } : item
+      )
+    );
   };
 
   return (
-    <section
-      className="page-width"
-      id="Reviews"
-      ref={ref}
-    >
-      <div className={`reviews ${styles.reviews}`}>
-        <Text
-          tag={'h2'}
-          className={`${styles.title}`}
-          children={'Reviews'}
-        />
-        {Array.isArray(reviews) && reviews.length === 0
-        ?
-          <Text
-            tag={'h4'}
-            className={'text-middle'}
-            children={`You don't have reviews yet.`}
-          />
-        :
-          <Swiper
-            modules={[Navigation, A11y]}
-            spaceBetween={24}
-            slidesPerView={2.8}
-            navigation={{
-              prevEl: '.swiper-button-prev',
-              nextEl: '.swiper-button-next',
-            }}
-            scrollbar={{ draggable: true }}
-            breakpoints={myBreakpoints}
-            margin={25}
-            data-slides={2.5}
-          >
+    <>
+      <div
+        className={`${styles.mainWrapper}`}
+      >
+        {showEditAndDeleteButtons && title &&
+          <div className={styles.title}>
+            <Text
+              tag={'span'}
+              className={styles.subtitle}
+              children={title}
+            />
+            <div className={styles.edit}>
+              <PopUpCloseIcon/>
+            </div>
+          </div>
+        }
+        {Array.isArray(updatedReviews) && updatedReviews.length > 0 &&
+        <div>
+          <ul className={`${styles.options} unstyled-list`}>
+            <li className={`${styles.review} ${styles.header} text-small`}>
+              <Text tag="span" className={`${styles.title} ${styles.text}`} children="Author" />
+              <Text tag="span" className={`${styles.title} ${styles.text}`} children="Review" />
+              <Text tag="span" className={`${styles.title} ${styles.text}`} children="Date" />
+              <Text tag="span" className={`${styles.title} ${styles.text}`} children="Show/Hide" />
+            </li>
+          </ul>
+          <ul id="reviewsList" className={`${styles.options} unstyled-list`}>
             {updatedReviews.map((review, index) => {
+              const {author, text, date, show, id} = review;
+              const isChecked = reviewsCheckboxesState.find(item => item.id === id)?.isChecked || false;
               return (
-                <SwiperSlide
-                  key={index}
-                  virtualIndex={index}
-                >
-                  <div key={review.id} className={styles.review}>
-                    <div className={styles.author}>
-                      <span>{review.author}</span>
-                      <span>{review.date}</span>
-                    </div>
-                    <span className='text-small'>{review.text}</span>
-                    <InputField
-                      label='Show review'
-                      type='checkbox'
-                      name='review'
-                      id={`review-${review.id}`}
-                      checked={review.show}
-                      onChange={(e) => handleShowHide(e.target, review.id, review.show)}
-                      fieldClassName={styles.checkbox}
-                      labelClassName={styles.label}
-                      inputClassName={styles.input}
-                      errorMessage={errorMessage}
-                    />
-                  </div>
-                </SwiperSlide>
+                <li key={index} className={`${styles.review} text-small`}>
+                  <Text
+                    tag={'span'}
+                    className={styles.text}
+                    children={author}
+                  />
+                  <Text
+                    tag={'span'}
+                    className={styles.text}
+                    children={text}
+                  />
+                  <Text
+                    tag={'span'}
+                    className={styles.text}
+                    children={date}
+                  />
+                <input type="text" value={id} readOnly={true} hidden/>
+                  <Checkbox
+                    props={{
+                      containerClassName: styles.checkboxContainer,
+                      value: id,
+                      onChange: (e) => onCheckboxChange(id, review, !reviewsCheckboxesState.includes(id)),
+                      isChecked: isChecked,
+                    }}
+                  />
+                </li>
               )
             })}
-            <SwiperNavButtons/>
-          </Swiper>
+          </ul>
+        </div>
         }
+        <div className={styles.buttons}>
+          <Button
+            children={'Cancel'}
+            variant={'general'}
+            onClick={cancelChanges}
+          />
+          <Button
+            type={'button'}
+            children={'Save changes'}
+            variant={'main'}
+            onClick={saveChanges}
+          />
+        </div>
       </div>
-    </section>
+    </>
   )
-});
-
-export default Reviews;
+};

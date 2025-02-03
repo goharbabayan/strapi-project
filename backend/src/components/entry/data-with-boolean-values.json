@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_entry_data_with_boolean_values",
+  "info": {
+    "displayName": "dataWithBooleanValues"
+  },
+  "options": {},
+  "attributes": {
+    "hasBronzeBadge": {
+      "type": "boolean",
+      "default": false
+    },
+    "hasSilverBadge": {
+      "type": "boolean",
+      "default": false
+    },
+    "hasGoldBadge": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

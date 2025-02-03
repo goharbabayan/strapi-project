@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react';
-import styles from './members.module.css';
+import styles from './escorts.module.css';
 import Text from '@/components/text/Text';
 import Button from '@/components/button/Button';
 import { navigate } from '@/app/actions';
@@ -10,8 +10,9 @@ import RemoveIcon from '@/components/icons/RemoveIcon';
 import Loading from '@/app/loading';
 import { useFetchData } from '@/app/utils/hooks/useFetch';
 import Link from 'next/link';
+import { fetchUserData } from '@/app/utils/helpers';
 
-export default function Members ({email, id, user}) {
+export default function Escorts ({managerId, onEditEscortButtonClick}) {
   const strapiBaseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
   const [members, setMembers] = useState(null);
@@ -20,22 +21,15 @@ export default function Members ({email, id, user}) {
 
   useEffect(() => {
     const managerToken = JSON.parse(localStorage.getItem('token'));
-    const fetchURL = `${strapiBaseUrl}/api/users?filters[managerID][$eq]=${id}`;
-    user && useFetchData(fetchURL, {
+    if(!managerToken) return;
+    const fetchURL = `${strapiBaseUrl}/api/users?filters[managerID][$eq]=${managerId}`;
+    useFetchData(fetchURL, {
       method: 'GET',
       headers: {
         authorization: `Bearer ${managerToken}`
       }
     }).then(data => setMembers(data));
   }, [showSuccessfullRemoveMessage])
-
-  const navigateToNewMember = () => {
-    navigate(`/my-account/${user}/new-member?email=${email}&id=${id}`);
-  }
-
-  const handleEditIconClick = (username) => {
-    navigate(`/my-account/${user}/members/${username}`);
-  }
 
   const confirmRemoving = () => {
     let text = "Are you sure you want to delete the escort?\nChoose Yes or Cancel.";
@@ -73,15 +67,7 @@ export default function Members ({email, id, user}) {
 
   return (
     <div className="page-width">
-      <section className={`${styles.section}`}>
-        <div className={`${styles.container} ${styles.buttonsWrap}`}>
-          <Button
-            children={'Create new escort'}
-            onClick={navigateToNewMember}
-            variant={'general'}
-          />
-        </div>
-      </section>
+
       <section>
         <div className={`${styles.container}`}>
           <Text
@@ -89,7 +75,7 @@ export default function Members ({email, id, user}) {
             className={'title'}
             children={'My escorts'}
           />
-          {!members && <Loading className={styles.loading} />}
+          {/* {!members && <Loading className={styles.loading} />} */}
           {members && members.length > 0 &&
             <ul className={`${styles.list} unstyled-list`}>
               {members.map((member, index) => {
@@ -102,14 +88,15 @@ export default function Members ({email, id, user}) {
                       className={'text-small'}
                       children={index+1}
                     />
-                    <Link
-                      href={`${user}/members/${member.username}`}
+                    {/* <Link
+                      href={`${username}/members/${member.username}`}
                       className={`text-middle link ${styles.text}`}
-                    >{member.username}</Link>
+                    >{member.username}</Link> */}
+                    <span>{member.username}</span>
                   </div>
                   <div className={styles.editButtons}>
                     <span className={`text-middle ${styles.approvedStatus} ${!isApproved ? styles.isNotApproved : ''}`}>{`${!isApproved ? 'Not approved': 'Approved'}`}</span>
-                    <div className={styles.editButton} onClick={() => handleEditIconClick(member.username)}>
+                    <div className={styles.editButton} onClick={() => onEditEscortButtonClick(member.username)}>
                       <EditIcon className={styles.editIcon} />
                     </div>
                     <div className={styles.editButton} onClick={() => handleRemoveMember(index)}>

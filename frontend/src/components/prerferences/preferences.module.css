@@ -1,4 +1,3 @@
-
 .error {
   display: block;
   text-align: center;
@@ -10,26 +9,62 @@
   right: 0;
 }
 
-.preferences {
+.selectedItems {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin-block: 10px;
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 12px;
+  flex-wrap: wrap;
+  margin: 0 0 12px 0;
+  padding: 0 10px 0 0;
+  max-height: 21vh;
+  overflow: auto;
+  width: 100%;
 }
 
-.preference {
+.selectedItem {
   background-color: var(--neutral-n20);
-  padding: 6px;
+  border-radius: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
+  padding: 5px 16px;
 }
 
-.preferencesList {
+.selectedItemTitle {
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.textInput {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  border: none;
+  background: var(--neutral-white-n10);
+}
+
+.input {
+  border-radius: 10px;
+  border: 1px solid var(--neutral-n50);
+  width: 100%;
+  padding: 6px 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  outline: none;
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .itemContainer {
@@ -37,9 +72,7 @@
   box-sizing: border-box;
   height: 100%;
   position: relative;
-  border: 1px solid var(--neutral-n50);
   border-radius: 3px;
-  padding: 12px;
 }
 
 .servicesContainer {
@@ -51,13 +84,10 @@
   flex-wrap: wrap;
 }
 
-.preferencesButton {
-  border: 1px solid var(--neutral-n20);
-}
-
 .button {
-  margin-top: 10px;
-  border: 1px solid var(--neutral-n20);
+  margin-top: 8px;
+  border: 1px solid var(--color-main);
+  min-width: 100px;
 }
 
 .closeIcon {
@@ -97,5 +127,11 @@
 @media screen and (max-width: 749px) {
   .subtitle {
     font-size: 18px;
+  }
+
+  .additionalInfo {
+    max-height: 80px;
+    row-gap: 5px;
+    column-gap: 5px;
   }
 }

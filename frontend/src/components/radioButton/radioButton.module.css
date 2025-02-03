@@ -1,0 +1,30 @@
+.buttonWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.radio {
+  display: flex;
+  accent-color: var(--neutral-black); 
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--neutral-n60);
+  margin: 0;
+  cursor: pointer;
+}
+
+.radio:checked {
+  border-color: var(--neutral-n100);
+}
+
+.label {
+  color: var(--neutral-n100);
+  font-family: var(--primary-font);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  padding-block: 3px;
+  cursor: pointer;
+}

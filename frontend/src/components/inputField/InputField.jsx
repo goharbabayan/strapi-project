@@ -77,28 +77,48 @@ export default function InputField ({
     <div className={`${fieldClassName ? fieldClassName : ''}`}>
       {type === 'select' ? (
         <>
-          <label htmlFor={id} className={`${styles.label} ${labelClassName ? labelClassName : ''}`} onMouseDown={(e) => handleClick(e)} ref={labelRef}>
-            <Text
-              tag={'span'}
-              className={styles.text}
-              children={`${label || ''} ${isRequired ? '*' : ''}`}
-            />
-            <select
-              name={name}
-              id={id}
-              ref={selectRef} 
-              className={`${styles.selectClassName} ${selectClassName ? selectClassName : ''}`}
-              value={value}
-              required={isRequired}
-              disabled={disabled}
-              onChange={onChange}
-            >
-              {[{ label: `select ${label}`.toLowerCase(), value: '' }, ...options].map((option, index) => (
-                <option key={index} value={option.value} data-code={option.code}>{option.label ? option.label : option.value}</option>
-              ))}
-            </select>
-            <span className={styles.arrow} ref={arrowRef}></span>
-          </label>
+          {label
+            ?
+              <label htmlFor={id} className={`${styles.label} ${labelClassName ? labelClassName : ''}`} onMouseDown={(e) => handleClick(e)} ref={labelRef}>
+                <Text
+                  tag={'span'}
+                  className={`${styles.text}`}
+                  children={`${label || ''} ${isRequired ? '*' : ''}`}
+                />
+                <select
+                  name={name}
+                  id={id}
+                  ref={selectRef} 
+                  className={`${styles.selectClassName} ${selectClassName ? selectClassName : ''} ${errorMessage && errorMessage[name] ? styles.invalid : ''}`}
+                  value={value}
+                  // required={isRequired}
+                  disabled={disabled}
+                  onChange={onChange}
+                >
+                  {[{ label: `select ${label}`.toLowerCase(), value: '' }, ...options].map((option, index) => (
+                    <option key={index} value={option.value} data-code={option.code}>{option.label ? option.label : option.value}</option>
+                  ))}
+                </select>
+                <span className={styles.arrow} ref={arrowRef}></span>
+              </label>
+            :
+            <>
+              <select
+                name={name}
+                id={id}
+                ref={selectRef} 
+                className={`${styles.selectClassName} ${selectClassName ? selectClassName : ''} ${errorMessage && errorMessage[name] ? styles.invalid : ''}`}
+                value={value}
+                disabled={disabled}
+                onChange={onChange}
+              >
+                {[{ label: `select ${name}`.toLowerCase(), value: '' }, ...options].map((option, index) => (
+                  <option key={index} value={option.value} data-code={option.code}>{option.label ? option.label : option.value}</option>
+                ))}
+              </select>
+              <span className={styles.arrow} ref={arrowRef}></span>
+            </>
+          }
           <ul className={`${styles.options} ${showOptions ? styles.show : ''} unstyled-list options`}>
             {options.map((option, index) => (
               <li key={index} value={option.value} name={name} className={`${styles.option} text-small`} ref={suburbRef} onMouseDown={(e) => handleMouseDown(e)}>
@@ -119,7 +139,7 @@ export default function InputField ({
         <label htmlFor={id} className={`${styles.label} ${labelClassName ? labelClassName : ''}`}>
           <Text
             tag={'span'}
-            className={styles.text}
+            className={`${styles.text}`}
             children={`${label || ''} ${isRequired ? '*' : ''}`}
           />
           <input
@@ -129,7 +149,7 @@ export default function InputField ({
             className={`${styles.input} ${inputClassName ? inputClassName : ''} ${errorMessage && errorMessage[name] ? styles.invalid : ''}`}
             value={value}
             onChange={onChange}
-            required={isRequired}
+            // required={isRequired}
             disabled={disabled}
             checked={checked}
             onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : null}

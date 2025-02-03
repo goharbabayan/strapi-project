@@ -1,0 +1,58 @@
+.userDetails {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 28px;
+  margin-top: 28px;
+  row-gap: 28px;
+}
+
+.userDetails.location {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.input {
+  padding: 7px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--neutral-n50);
+  background: var(--neutral-white-n10);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  outline: none;
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-align: start;
+  cursor: pointer;
+  margin-top: auto;
+}
+
+.input.invalid {
+  border-color: var(--red-r5);
+  color: var(--red-r5);
+}
+
+.fullName {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 28px;
+  width: 100%;
+}
+
+.location {
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 375px) {
+  .fullName, .userDetails.location {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .userDetails {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

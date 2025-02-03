@@ -17,8 +17,8 @@
 
 .scheduleWrapper {
   display: flex;
-  flex-wrap: wrap;
   gap: 54px;
+  align-items: flex-start;
 }
 
 .scheduleContainer {
@@ -30,11 +30,15 @@
 }
 
 .scheduleInfoWrapper {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  flex-grow: 1;
 }
 
 .scheduleInfoWrapper .providerInterestsItem {
-  display: block;
+  display: flex;
   margin-bottom: 16px;
 }
 
@@ -50,4 +54,44 @@
 
 .providerRatesItemPrice {
   font-family: var(--primary-bold-font);
+}
+
+.titleAndIconWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 24px;
+}
+
+.editIcon {
+  border-radius: 10px;
+  border: 1px solid var(--color-main);
+  background: var(--neutral-white-n10);
+  padding: 7px;
+  display: flex;
+  cursor: pointer;
+}
+
+.dataWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.subtitle {
+  color: var(--neutral-black);
+  font-family: var(--headings-font);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-block: 24px;
+  display: block;
+}
+
+
+@media screen and (max-width: 749px) {
+  .scheduleWrapper {
+    flex-wrap: wrap;
+  }
 }

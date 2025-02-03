@@ -124,6 +124,7 @@ export default function Providers ({
                           showBadge={showBadge}
                           badge={provider.badge}
                           roleType={type}
+                          verificationStatus={provider?.verificationStatus}
                         />
                       </SwiperSlide>
                   )})
@@ -144,6 +145,7 @@ export default function Providers ({
                         badge={card.badge}
                         count={providerCardCountPerRow}
                         roleType={type}
+                        verificationStatus={card?.verificationStatus}
                       />
                   )})
                 }

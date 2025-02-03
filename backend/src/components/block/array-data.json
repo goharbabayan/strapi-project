@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_block_array_data",
+  "info": {
+    "displayName": "arrayData",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "item": {
+      "type": "string"
+    }
+  }
+}

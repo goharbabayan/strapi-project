@@ -61,21 +61,20 @@
 }
 /* ToDo: duplicated styles */
 .options {
-  display: none;
+  display: flex;
   margin: 0;
   flex-direction: column;
-  max-height: 150px;
+  max-height: 375px;
   overflow: hidden;
-  overflow-y: scroll;
-  padding: 8px;
+  overflow-y: auto;
+  padding: 8px 17px 10px 0;
   z-index: 2;
   background: var(--neutral-white-n10);
-  border: 1px solid var(--neutral-n50);
   border-radius: 3px;
   border-top: none;
-  position: absolute;
-  left: 0;
-  right: 0;
+  gap: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--neutral-n60, --neutral-n20);
 }
 
 .options.show {
@@ -85,30 +84,57 @@
 .options .option {
   display: flex;
   align-items: center;
-  padding: 8px;
+  justify-content: space-between;
+  padding: 10px 8px 10px 16px;
   width: 100%;
   cursor: pointer;
+  border-radius: 10px;
+  background: var(--neutral-n20);
 }
 
 .options .option:hover {
   background-color: var(--neutral-n30);
 }
 
+.options .option:hover .checkboxContainer {
+  background-color: var(--neutral-n30);
+}
+
+.checkboxContainer {
+  display: flex;
+  background-color: var(--neutral-n20);
+  padding: 2px;
+}
+
 .selectedSuburbs {
   display: flex;
   flex-wrap: wrap;
   column-gap: 8px;
-  row-gap: 4px;
+  row-gap: 6px;
   margin: 0;
+  margin-bottom: 12px;
+  max-height: 86px;
+  overflow: hidden;
+  overflow-y: auto;
 }
 
 .suburbItem {
   background-color: var(--neutral-n20);
-  padding: 6px;
+  border-radius: 51px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
+  padding: 5px 16px;
+}
+
+.item {
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
 }
 
 .suburbInputWrapper {

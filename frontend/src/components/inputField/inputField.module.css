@@ -40,18 +40,25 @@
 
 .input, .selectClassName {
   width: 100%;
-  border-radius: 3px;
+  border-radius: 10px;
   border: 1px solid var(--neutral-n50);
   color: var(--neutral-black);
 }
 
-.label, .input, .selectClassName {
+.label {
   color: var(--neutral-n100);
+}
+
+.input, .selectClassName {
+  color: var(--neutral-black);
+}
+
+.label, .input, .selectClassName {
   font-family: var(--primary-font);
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;
+  line-height: 20px;
 }
 
 .label .selectClassName,
@@ -63,7 +70,6 @@
   width: 100%;
   padding: 7px 10px;
   border: 1px solid var(--neutral-n50);
-  border-radius: 3px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -77,22 +83,22 @@
 .options {
   display: none;
   position: absolute;
-  top: 58px;
+  top: 66px;
   right: 0;
   left: 0;
   margin: 0;
   flex-direction: column;
-  max-height: 150px;
+  max-height: 235px;
   overflow: hidden;
   overflow-y: scroll;
-  z-index: 2;
-  padding: 8px;
+  padding-inline: 8px;
   background: var(--neutral-white-n10);
   border: 1px solid var(--neutral-n50);
-  border-radius: 3px;
+  border-radius: 8px;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: var(--neutral-n20) var(--neutral-n70);
+  scrollbar-color: var(--neutral-n60) var(--neutral-n20);
+  z-index: 3;
 }
 
 .options.show {
@@ -147,8 +153,13 @@
   border-bottom: 1px solid var(--neutral-black);
 }
 
-.input.invalid {
+.input.invalid, .selectClassName.invalid {
   border-color: var(--red-r5);
+  color: var(--red-r5);
+}
+
+.text.invalid {
+  color: var(--red-r5);
 }
 
 .editIcon,.infoIcon {
@@ -170,6 +181,7 @@
   font-size: 12px;
   top: 100%;
   right: 0;
+  z-index: 3;
 }
 
 @media screen and (min-width: 980px) {

@@ -18,110 +18,85 @@ import AboutIcon from '@/components/icons/AboutIcon';
 import RatesAndServicesIcon from '@/components/icons/RatesAndServicesIcon';
 import WhenCanWeMeetIcon from '@/components/icons/WhenCanWeMeetIcon';
 import SelfiesIcon from '@/components/icons/SelfiesIcon';
+import { fetchUserRatesAndServices, upgradeVerificationStatus } from '../utils/helpers';
+import { USER_PROFILE_DATA } from '../utils/constants/userProfileData';
+import { PROFILE_DETAILS_TABS } from '../utils/constants/profileDetailsPageTabs';
+import Loading from '../loading';
+import ProfileReviews from '@/components/profileReviews/ProfileReviews';
 
 export default function ProfileReview() {
+  const [loader, setLoader] = useState(true);
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+  // const [userId, setUserId] = useState(null);
+  // const [token, setToken] = useState(null);
+  const [userRatesAndServices, setUserRatesAndServices] = useState({
+    services: [],
+    incall: [],
+    outcall: [],
+  });
   const [showMessage, setShowMessage] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [activeTabId, setActiveTabId] = useState(0);
-  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
-
-  const providerPersonalInfo = [
-    {
-      label: 'Location',
-      data: user?.city,
-    },
-    {
-      label: 'Age',
-      data: user?.age,
-    },
-    {
-      label: 'Eyes',
-      data: user?.eyeColor,
-    },
-    {
-      label: 'Hair',
-      data: user?.hairColor,
-    },
-    {
-      label: 'Bust size',
-      data: user?.bust,
-    },
-    {
-      label: 'Place of service',
-      data: user?.placeOfService
-    },
-    {
-      label: 'Height',
-      data: user?.height
-    },
-    {
-      label: 'Dress size',
-      data: user?.dressSize
-    },
-    {
-      label: 'Body type',
-      data: user?.bodyType
-    }
-  ];
-
-  const PROFILE_DETAILS_TABS = [
-    {
-      id: 0,
-      label: 'Photos',
-      icon: PhotosIcon,
-    },
-    {
-      id: 1,
-      label: 'About',
-      icon: AboutIcon
-    },
-    {
-      id: 2,
-      label: 'Rates & Services',
-      icon: RatesAndServicesIcon
-    },
-    {
-      id: 3,
-      label: 'When can we meet',
-      icon: WhenCanWeMeetIcon
-    },
-    {
-      id: 4,
-      label: 'Selfies',
-      icon: SelfiesIcon
-    }
-  ]
+  const [requestInfo, setRequestInfo] = useState({
+    type: '',
+    title: '',
+  });
   const searchParams = useSearchParams();
+  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
+  const token = searchParams.get('token');
+  const userId = searchParams.get('userId');
+  const requestType = searchParams.get('action');
 
   useEffect(() => {
-    const token = searchParams.get('token');
-    const userId = searchParams.get('userId');
-    setToken(token);
-    token
-      ?
-        fetch(`${baseUrl}/api/users?filters[id][$eq]=${userId}&populate=*`, {
-          method: 'GET',
-          headers: {
-            'authorization': `Bearer ${token}`
-          }
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (data.error) {
-            // the token is expired need to login again to update existing token;
-            // navigate('/login');
-          } else {
-            Array.isArray(data) ? setUser(data[0]) : setUser(data);
-          }
-        })
-        .catch(err => console.log('err', err))
-      :
-        navigate('/');
+    if (token) {
+      fetch(`${baseUrl}/api/users?filters[id][$eq]=${userId}&populate=*`, {
+        method: 'GET',
+        headers: {
+          'authorization': `Bearer ${token}`
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          // the token is expired need to login again to update existing token;
+          // navigate('/login');
+        } else {
+          setLoader(false);
+          Array.isArray(data) ? setUser(data[0]) : setUser(data);
+        }
+      })
+      .catch(err => console.log('err', err))
+
+    } else {
+      navigate('/');
+    };
+
+    if (requestType === 'data_change') {
+      setRequestInfo({
+        type: 'dataChange',
+        title: 'The escort has made changes to her profile that require admin approval.',
+      });
+    } else if (requestType === 'verification_upgrade') {
+      setRequestInfo({
+        type: 'verificationUpgrade',
+        title: 'The escort has requested for verification status level upgrade.',
+      });
+    } else if (requestType === 'get_verification') {
+      setRequestInfo({
+        type: 'verification',
+        title: 'Escort has submitted a request for profile verification ',
+      });
+    };
+
+    fetchRatesAndServices(token);
   }, [])
 
-  const handleButtonClick = (action) => {
+  const fetchRatesAndServices = async (token) => {
+    const ratesAndServicesData = await fetchUserRatesAndServices(token);
+    ratesAndServicesData && setUserRatesAndServices(ratesAndServicesData);
+  };
+
+  const handleButtonClick = (action, requestType) => {
     action === 'decline' ? setIsApproved(false) : setIsApproved(true);
     let formData = {};
     const entriesToRemove = ['id', 'provider', 'confirmed', 'blocked', 'createdAt', 'updatedAt'];
@@ -130,10 +105,34 @@ export default function ProfileReview() {
         formData[key] = user[key];
       }
     });
+    let body = {};
 
+    if (action === 'accept') {
+      if (requestType === 'verification') {
+        body = {
+          formData,
+          isApprovedByAdmin: true,
+          verificationStatus: {hasBronzeBadge: true, hasSilverBadge: false, hasGoldBadge: false}
+        };
+      } else if (requestType === 'verificationUpgrade') {
+        const upgradedVerificationStatus = upgradeVerificationStatus(user?.verificationStatus);
+        body = {
+          formData,
+          verificationStatus: upgradedVerificationStatus,
+        };
+      } else if (requestType === 'dataChange') {
+        body = {
+          formData,
+          isApprovedByAdmin: true,
+        };
+      }
+    };
+
+    
+// update user data
     user && fetch(`${baseUrl}/api/users/${user.id}`, {
       method: 'PUT',
-      body: JSON.stringify({formData, isApprovedByAdmin: action === 'decline' ? false : true}),
+      body: JSON.stringify(body),
       headers: {
         'Content-type': 'application/json',
         'authorization': `Bearer ${token}`
@@ -150,99 +149,130 @@ export default function ProfileReview() {
           }, 5000)
         }
       });
-  }
-  
+  };
+
+const {coverPhoto, profilePicture, managerEscortEmail, email, name, lastName, phoneNumber, instagramLink, onlyFansLink, websiteLink, verificationStatus, photos, aboutMe, glam, closet, extras, username, schedule, additionalInfo, selfies, reviews, availableNow, digitalService} = user || {};
+
   return (
-    <div className={`${styles.mainWrap} page-width`}>
-      <Text
-        tag={'h2'}
-        className={styles.heading}
-        children={'Profile review'}
-      />
-      <div className={styles.buttons}>
-        <Button
-          className={styles.button}
-          onClick={() => handleButtonClick('accept')}
-          variant={'main'}
-          children={'Accept'}
+    <>
+      <div className={`${styles.mainWrap} page-width`}>
+        <Text
+          tag={'h2'}
+          className={styles.heading}
+          children={'Profile review'}
         />
-        <Button
-          href={`mailto:${user?.email}`}
-          className={styles.button}
-          onClick={() => handleButtonClick('decline')}
-          variant={'general'}
-          children={'Decline'}
+        {requestInfo?.title &&
+          <Text
+            tag={'h4'}
+            className={styles.heading}
+            children={requestInfo?.title}
+          />
+        }
+        <div className={styles.buttons}>
+          <Button
+            className={styles.button}
+            onClick={() => handleButtonClick('accept', requestInfo?.type)}
+            variant={'main'}
+            children={'Accept'}
+          />
+          <Button
+            href={`mailto:${user?.email}`}
+            className={styles.button}
+            onClick={() => handleButtonClick('decline', requestInfo?.type)}
+            variant={'general'}
+            children={'Decline'}
+          />
+        </div>
+        <Text
+          className={`${styles.message} ${showMessage ? styles.show : ''}`}
+          tag={'h4'}
+          children={isApproved ? 'Request accepted' : 'Request denied'}
         />
       </div>
-      <Text
-        className={`${styles.message} ${showMessage ? styles.show : ''}`}
-        tag={'h4'}
-        children={isApproved ? 'Request accepted' : 'Request denied'}
-      />
-      <div className={styles.providerPageContainer}>
-        <ProfileCoverPhoto
-          coverPhotoUrl={user?.coverPhoto?.url}
-          coverPhotoName={user?.coverPhoto?.name}
-        />
-        <ProfileMainInfo
-          profilePhoto={user?.profilePicture?.url}
-          profilePhotoName={user?.profilePicture?.name}
-          profileProviderFullName={{
-            name: user?.name,
-            lastname: user?.lastName,
-          }}
-          profileProviderPersonalInfo={providerPersonalInfo}
-          providerContactInfo={{
-            email: user?.email,
-            phone: user?.phoneNumber
-          }}
-          provierSocialLinks={{
-            instagram: user?.instagramLink,
-            onlyFans: user?.onlyFansLink
-          }}
-          providerWebsiteLink={user?.websiteLink}
-          providerId={user?.id}
-          hideStarIcon={true}
-        />
-        <ProfileDetailsTabs
-          profileDetailsTabsData={PROFILE_DETAILS_TABS}
-          activeTabId={activeTabId}
-          setActiveTabId={setActiveTabId}
-        />
-        {activeTabId === 0 && 
-          <ProfilePhotos
-            photos={user?.photos}
-          />
-        }
-        {activeTabId === 1 &&
-          <ProfileAboutMe
-            aboutMeDescription={user?.aboutMe}
-            providerGlam={user?.glam}
-            providerCloset={user?.closet}
-            providerExtraOptions={user?.extras}
-          />
-        }
-        {activeTabId === 2 &&
-          <ProfileRatesAndServices
-            incallRates={user?.incallRates}
-            outcallRates={user?.outcallRates}
-            services={user?.services}
-          />
-        }
-        {activeTabId === 3 &&
-          <WhenCanWeMeetComponent
-            username={user?.username}
-            schedule={user?.schedule}
-            additionalInfo={user?.additionalInfo}
-            hideSubscribeNow={true}
-          />
-        }
-        {activeTabId === 4 &&
-          <ProfilePhotos
-            photos={user?.selfies}
-          />
-        }
-      </div>
-    </div>
+      {loader
+        ?
+          <Loading/>
+        :
+          <>
+          {user &&
+            <div className={styles.pageContainer}>
+              <ProfileCoverPhoto
+                coverPhotoUrl={coverPhoto?.url}
+                coverPhotoName={coverPhoto?.name}
+              />
+              <ProfileMainInfo
+                profilePhoto={profilePicture?.url}
+                profilePhotoName={profilePicture?.name}
+                profileIsAvialabile={availableNow}
+                profileDigitalService={digitalService}
+                profileProviderFullName={{
+                  name: name,
+                  lastname: lastName,
+                }}
+                profileProviderPersonalInfo={USER_PROFILE_DATA(user)}
+                providerContactInfo={{
+                  email: managerEscortEmail || email,
+                  phone: phoneNumber
+                }}
+                provierSocialLinks={{
+                  instagram: instagramLink,
+                  onlyFans: onlyFansLink
+                }}
+                providerWebsiteLink={websiteLink}
+                providerId={userId}
+                verificationStatus={verificationStatus}
+                isDashboardPage={false}
+              />
+              <ProfileDetailsTabs
+                profileDetailsTabsData={PROFILE_DETAILS_TABS}
+                activeTab={activeTabId}
+                setActiveTab={setActiveTabId}
+                isMenuTabs={true}
+                hideMainWrapperBorders={true}
+              />
+              {activeTabId === 0 &&
+                <ProfilePhotos
+                  photos={photos}
+                />
+              }
+              {activeTabId === 1 &&
+                <ProfileAboutMe
+                  aboutMeDescription={aboutMe}
+                  providerGlam={glam}
+                  providerCloset={closet}
+                  providerExtraOptions={extras}
+                />
+              }
+              {activeTabId === 2 &&
+                <ProfileRatesAndServices
+                  incall={userRatesAndServices?.incall}
+                  outcall={userRatesAndServices?.outcall}
+                  services={userRatesAndServices?.services}
+                />
+              }
+              {activeTabId === 3 &&
+                <WhenCanWeMeetComponent
+                  username={username}
+                  schedule={schedule}
+                  additionalInfo={additionalInfo}
+                  hideSubscribeNow={true}
+                />
+              }
+              {activeTabId === 4 &&
+                <ProfilePhotos
+                  photos={selfies}
+                />
+              }
+              {activeTabId === 5 &&
+                <ProfileReviews
+                  reviews={reviews}
+                  providerId={userId}
+                />
+              }
+            </div>
+          }
+        </>
+      }
+    </>
   )
 }

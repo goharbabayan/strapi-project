@@ -1,0 +1,27 @@
+.location {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 18px;
+  row-gap: 10px;
+  width: 100%;
+}
+
+.item {
+  width: 50%;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 24px;
+  margin-top: 28px;
+}
+
+.buttons > button {
+  padding: 13px 24px;
+  flex: 1;
+  max-width: 187px;
+  white-space: nowrap;
+}

@@ -1,0 +1,52 @@
+.mainWrapper {
+  margin-block: 55px 64px;
+}
+
+.title {
+  color: var(--neutral-n100);
+  font-family: var(--headings-font);
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0 0 28px 0;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 24px;
+  margin-top: 28px;
+}
+
+.buttons > button {
+  padding: 13px 24px;
+  flex: 1;
+  max-width: 187px;
+  white-space: nowrap;
+}
+
+.input {
+  width: 33%;
+  padding: 7px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--neutral-n50);
+  background: var(--neutral-white-n10);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  outline: none;
+  color: var(--neutral-black);
+  font-family: var(--primary-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-align: start;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 750px) {
+  
+}

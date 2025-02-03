@@ -7,9 +7,71 @@
   margin-top: 24px;
 }
 
+.mainWrapper {
+  padding-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+}
+
+.infoMessage {
+  display: flex;
+  justify-content: center;
+  padding-block: 15px;
+  color: var(--red-r5);
+}
+
+.serviceTypesWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 48px;
+  padding: 24px;
+  border-radius: 10px;
+  background: var(--neutral-white-n10);
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.title {
+  color: var(--neutral-black);
+  font-family: var(--headings-font);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-block: 0;
+  width: 100%;
+}
+
+.error {
+  justify-content: center;
+  color: var(--red-r5);
+}
+
+.services {
+  display: flex;
+  gap: 48px;
+  border-radius: 10px;
+  background: var(--neutral-white-n10);
+}
+
+.rates {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 24px;
+}
+
 @media screen and (max-width: 749px) {
   .ratesContainer {
     grid-template-columns: repeat(1, 1fr);
     row-gap: 24px;
+  }
+
+  .serviceTypesWrapper {
+    row-gap: 24px;
+  }
+
+  .rates {
+    grid-template-columns: repeat(1, 1fr);
   }
 }

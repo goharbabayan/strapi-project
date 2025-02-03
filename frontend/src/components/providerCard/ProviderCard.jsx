@@ -7,8 +7,17 @@ import Text from '../text/Text';
 import Image from '../image/Image';
 import StarIcon from '../icons/StarIcon';
 import { SERVICE_PROVIDER } from '@/app/utils/constants/userRoles';
+import { getVerificationBadge } from '@/app/utils/helpers';
 
-const ProviderCard = ({provider, showBadge, badge, count, roleType, showStarIcon, onStarIconClick}) => {
+const ProviderCard = ({
+  provider,
+  showBadge,
+  badge,
+  count,
+  roleType,
+  showStarIcon,
+  onStarIconClick,
+}) => {
   if (!provider) return;
   const [hourlyRate, setHourlyRate] = useState(null);
   const {
@@ -20,9 +29,10 @@ const ProviderCard = ({provider, showBadge, badge, count, roleType, showStarIcon
     placeOfService,
     age,
     dressSize,
-    incallRates,
-    outcallRates,
+    incall,
+    outcall,
     isApprovedByAdmin,
+    verificationStatus,
   } = provider;
 
   const {
@@ -36,19 +46,27 @@ const ProviderCard = ({provider, showBadge, badge, count, roleType, showStarIcon
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
   useEffect(() => {
-     incallRates && outcallRates && setHourlyRate(findLowestCost(incallRates, outcallRates));
-  }, [incallRates, outcallRates]);
+    getVerificationBadge();
+    (incall || outcall) && setHourlyRate(findLowestCost(incall, outcall));
+  }, [incall, outcall]);
 
-  const findLowestCost = (incallRates, outcallRates) => {
-    let cost;
-    if (incallRates.length > 0) {
-      incallRates.find(rate => rate.duration && rate.duration.trim() === '1 hour' ? cost = rate.price : cost = null);
+  const findLowestCost = (incall, outcall) => {
+    const getPriceForOneHour = (categories) => {
+      if (!categories) return null;
+      for (const category of ['general', 'GFE', 'PSE']) {
+        if (categories[category]) {
+          for (const rate of categories[category]) {
+            if (rate.duration?.trim() === '1 hour') {
+              return rate.price;
+            };
+          };
+        };
+      };
+      return null;
     };
-    if (!cost && outcallRates.length > 0) {
-      outcallRates.find(rate => rate.duration && rate.duration.trim() === '1 hour' ? cost = rate.price : null);
-    };
-    return cost;
-  }
+
+    return getPriceForOneHour(incall) || getPriceForOneHour(outcall) || null;
+  };
 
   return (
     <>
@@ -71,7 +89,7 @@ const ProviderCard = ({provider, showBadge, badge, count, roleType, showStarIcon
               {showStarIcon &&
                 <StarIcon className={styles.starIcon} onClick={(e) => onStarIconClick(e, id)}/>
               }
-            {url &&
+              {url &&
                 <Image
                   src={`${baseUrl}${url}`}
                   alt={alternativeText || imageName}
@@ -79,6 +97,8 @@ const ProviderCard = ({provider, showBadge, badge, count, roleType, showStarIcon
                   height={imageHeight}
                   providerCartAspectRatio={0.70}
                   className={styles.image}
+                  showVerificationBadge={true}
+                  VerificationIcon={getVerificationBadge(verificationStatus)}
                 />
               }
               <div className={styles.info}>

@@ -1,8 +1,11 @@
 .mainWrapper {
   border-top: 1px solid var(--neutral-n40);
   border-bottom: 1px solid var(--neutral-n40);
-  padding-top: 7px;
   width: 100%;
+}
+
+.mainWrapper.noBorders {
+  border: none;
 }
 
 .container {
@@ -12,14 +15,23 @@
   gap: 32px;
 }
 
+.menuTabs {
+  margin-block: 24px;
+  border-radius: 10px;
+  border-top: 1px solid var(--orange-20);
+  background: var(--neutral-white-n10);
+}
+
 .label {
   color: var(--neutral-n80);
   text-align: center;
   font-size: 14px;
   font-family: var(--primary-font);
   font-weight: normal;
-  margin: 17px 0;
+  margin: 7px 0;
   line-height: 18px;
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .active {
@@ -36,6 +48,11 @@
 .active .label {
   color: var(--neutral-n100);
   font-family: var(--primary-bold-font);
+}
+
+.label.invalid, .active.label.invalid {
+  color: var(--red-r5);
+  border: 1px solid var(--red-r5);
 }
 
 @media screen and (max-width: 749px) {

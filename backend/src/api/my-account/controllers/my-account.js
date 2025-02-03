@@ -11,8 +11,7 @@ module.exports = createCoreController('api::my-account.my-account',
     async generateReviewLink(ctx) {
       let token;
       const parts = ctx.headers.authorization.split(' ');
-      const { id } = ctx.request.body;
-
+      const { id, action } = ctx.request.body;
       if (parts.length === 2 && parts[0] === 'Bearer') {
         token = parts[1];
       } else {
@@ -22,15 +21,26 @@ module.exports = createCoreController('api::my-account.my-account',
         if (token) {
           const environment = strapi.config.environment;
           const url = environment === 'development' ? 'http://localhost:3000' : process.env.BASE_FRONT_URL;
-          const reviewLink = ctx.request.body ? `${url}/profile-review?token=${token}&userId=${id}` :`${url}/profile-review?token=${token}`;
+          const reviewLink = ctx.request.body ? `${url}/profile-review?token=${token}&userId=${id}&action=${action}` :`${url}/profile-review?token=${token}`;
+          let emailText, emailSubject;
+          if (action === 'data_change') {
+            emailText = `Escort just edited information from her dashboard. Please review and accept/decline here: `;
+            emailSubject= `Escort profile update awaiting review`;
+          } else if (action === 'verification_upgrade') {
+            emailText = `Escort just requested a verification status level upgrade. Please review and accept/decline here:`;
+            emailSubject= `Escort Verification Level Upgrade Request`;
+          } else if (action === 'get_verification') {
+            emailText = `Escort has submitted a request for profile verification. Review and approve/decline here: `;
+            emailSubject= `Escort Profile Verification Request`;
+          };
           // Send email to admin with the review link
           // ToDo: The email template should not be static
           await strapi.plugins['email'].services.email.send({
             from: `${process.env.SENDGRID_DEFAULT_FROM_EMAIL}`,
             to: `${process.env.SENDGRID_DEFAULT_REPLY_TO_EMAIL}`,
-            subject: 'Escort profile update awaiting review',
-            text: `Escort just filled in or edited information from her dashboard, please review and accept or decline at ${reviewLink}`,
-            html: `<p>Escort just filled in or edited information from her dashboard, please review and accept or decline <a href="${reviewLink}">${reviewLink}</a></p>`,
+            subject: emailSubject,
+            text: `${emailText} at ${reviewLink}`,
+            html: `<p>${emailText} <a href="${reviewLink}">${reviewLink}</a></p>`,
           });
           return ctx.send(JSON.stringify({ message: "Email sent successfully!" }));
         }

@@ -35,7 +35,7 @@ export default function RootLayout({ children }) {
         </head>
       <body>
         <ApolloProvider client={Client}>
-          <AgeConfirmationPopup />
+          {/* <AgeConfirmationPopup /> */}
           <AuthContext.Provider value={{customerToken, setCustomerToken, loggedInUserData, setLoggedInUserData}}>
             {!isProfileReviewPage && <Header />}
             <main className="main-wrapper">{children}</main>

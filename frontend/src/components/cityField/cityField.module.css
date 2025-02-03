@@ -32,6 +32,15 @@
   margin-top: 8px;
 }
 
+.cityInput {
+  border-radius: 8px;
+}
+
+.cityInput.invalid {
+  border: 1px solid var(--red-r5);
+  color: var(--red-r5);
+}
+
 .arrow {
   content: '';
   border-width: 5px;
@@ -65,18 +74,17 @@
   display: none;
   margin: 0;
   flex-direction: column;
-  max-height: 150px;
+  max-height: 235px;
   overflow: hidden;
   overflow-y: scroll;
-  padding: 8px;
-  z-index: 2;
+  padding-inline: 8px;
   background: var(--neutral-white-n10);
   border: 1px solid var(--neutral-n50);
-  border-radius: 3px;
-  border-top: none;
+  border-radius: 8px;
   position: absolute;
   left: 0;
   right: 0;
+  top: 66px;
   z-index: 3;
 }
 

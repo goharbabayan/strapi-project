@@ -1,7 +1,6 @@
 import { forwardRef } from 'react';
 import Text from '../text/Text';
 import Rates from '../rates/Rates';
-import Favourites from '../favourites/Favourites';
 import { SERVICES_OPTIONS } from '@/app/utils/constants/userServices';
 import { RATES_OPTIONS } from '@/app/utils/constants/ratesOptions';
 
@@ -26,23 +25,23 @@ const RatesAndServices = forwardRef(({
       />
       <Rates
         title={'Incall Rates'}
-        type={'incallRates'}
+        type={'incall'}
         memberFormData={memberFormData}
         incallRates={incallRates}
         onChildFormDataChange={onChildFormDataChange}
-        error={error?.incallRates}
+        error={error?.incall}
         optionsList={RATES_OPTIONS}
       />
       <Rates
         title={'Outcall Rates'}
-        type={'outcallRates'}
+        type={'outcall'}
         memberFormData={memberFormData}
         outcallRates={outcallRates}
         onChildFormDataChange={onChildFormDataChange}
-        error={error?.outcallRates}
+        error={error?.outcall}
         optionsList={RATES_OPTIONS}
       />
-      <Favourites
+      {/* <Favourites
         label='Services*'
         labelClassName={'selectOptionLabel'}
         selectClassName={'select'}
@@ -54,7 +53,7 @@ const RatesAndServices = forwardRef(({
         isRequired={true}
         optionsList={SERVICES_OPTIONS}
         errorMessage={error?.services}
-      />
+      /> */}
     </section>
   )
 });

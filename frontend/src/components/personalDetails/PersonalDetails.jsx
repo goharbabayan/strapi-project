@@ -1,3 +1,4 @@
+import styles from './personalDetails.module.css';
 import InputField from '../inputField/InputField';
 import StrokeBorder from '../strokeBorder/StrokeBorder';
 import {
@@ -10,24 +11,27 @@ import {
   BUST_OPTIONS,
   GENDER_OPTIONS,
 } from '@/app/utils/constants/userPhisicalDetails';
+import Text from '../text/Text';
 
 export default function PersonalDetails ({
   formData,
   onChange,
   onMouseDown,
+  onClick,
   errorMessage,
   showUsername,
 }) {
 
   return (
     <div>
-      <div className='fullName'>
+      <div className={styles.fullName}>
         {showUsername &&
           <InputField
-            label='Username'
+            label='Escort username'
             type='text'
             name='username'
             id='username'
+            min={3}
             value={formData.username ? formData.username : ''}
             onChange={onChange}
             isRequired={true}
@@ -70,8 +74,20 @@ export default function PersonalDetails ({
           errorMessage={errorMessage}
         />
       </div>
-      <StrokeBorder/>
-      <div className='userDetails'>
+      <div className={styles.userDetails}>
+        <div className={styles.location}>
+          <Text
+            className={`${styles.label} ${errorMessage?.country || errorMessage?.city ? styles.invalid : ''}`}
+            children={'Location *'}
+            tag={'span'}
+          />
+          <input
+            type="button"
+            onClick={onClick}
+            value={formData?.city || 'choose your location'}
+            className={`${styles.input} ${errorMessage?.country || errorMessage?.city ? styles.invalid : ''}`}
+          />
+        </div>
         <InputField
           label='Age'
           labelClassName={'selectOptionLabel'}
@@ -169,7 +185,7 @@ export default function PersonalDetails ({
           id='dressSize'
           value={formData.dressSize ? formData.dressSize : ''}
           onChange={onChange}
-          isRequired={false}
+          isRequired={true}
           min={1}
           errorMessage={errorMessage}
         />

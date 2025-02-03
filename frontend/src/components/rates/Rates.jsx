@@ -1,127 +1,141 @@
+import { useState } from 'react';
 import Button from '../button/Button';
 import InputField from '../inputField/InputField';
 import Text from '../text/Text';
 import styles from './rates.module.css';
+import PlusIcon from '../icons/plusIcon';
+import RemoveIcon from '../icons/RemoveIcon';
 
-export default function Rates ({title, type, memberFormData, memberIndex, onChildFormDataChange, error, optionsList}) {
+export default function Rates ({type, subType, userRates, memberIndex, updateChange, setParentState, error, optionsList, hideButtons, showSubType}) {
+  const [rates, setRates] = useState(userRates);
   const handleAddRate = (e, type) => {
-    const updatedRates = [...memberFormData[type],
+    const updatedRates = [...rates,
       {
         duration: '',
         price: '',
         additionalInfo: ''
       }
     ];
-    onChildFormDataChange(type, updatedRates);
+    setRates(updatedRates);
+    setParentState && setParentState(updatedRates);
   };
 
-  const handleRemoveRate = (e, index, type) => {
-    const ratesAfterRemove = memberFormData[type].filter((item, i) => i !== index);
-    onChildFormDataChange(type, ratesAfterRemove);
+  const handleRemoveRate = (e, index, type, subType) => {
+    const ratesAfterRemove = rates.filter((item, i) => i !== index);
+    setRates(ratesAfterRemove);
+    setParentState && setParentState(ratesAfterRemove);
   };
 
-  const handleChange = (e, index, field, type) => {
-    const updatedRates = memberFormData[type].map((rate, i) => {
+  const handleChange = (e, index, field, type, subType) => {
+    const updatedRates = rates.map((rate, i) => {
       if (i === index) {
         return { ...rate, [field]: e.target.value };
       }
       return rate;
     });
-    onChildFormDataChange(type, updatedRates);
+    
+    setRates(updatedRates);
+    setParentState && setParentState(updatedRates);
   };
 
-  const handleMouseDown = (field, fieldValue, index, type) => {
-    if (!Array.isArray(memberFormData[type]) && !memberFormData[type].length > 0) return;
-    const updatedRates = memberFormData[type].map((rate, i) => {
+  const handleMouseDown = (field, fieldValue, index, type, subType) => {
+    if (!Array.isArray(rates) && !rates.length > 0) return;
+    const updatedRates = rates.map((rate, i) => {
       if (i === index) {
         return { ...rate, [field]: fieldValue };
       }
       return rate;
     });
-    onChildFormDataChange(type, updatedRates);
-  }
+    setRates(updatedRates);
+    setParentState && setParentState(updatedRates);
+  };
+
+  const saveChanges = () => {
+    updateChange(rates)
+  };
+
+  const cancelChanges = () => {
+    setRates(userRates);
+  };
 
   return (
     <>
-      <h4 className={styles.subtitle}>{title}</h4>
       <div className={`${styles.formGroup} ${styles.mainInfo}`}>
+        {showSubType &&
+          <Text
+            tag={'h2'}
+            className={styles.subType}
+            children={subType}
+          />
+        }
         <div className={`${styles.ratesContainer}`}>
-          {memberFormData && memberFormData[type].map((rate, index) => (
+          {rates && rates.map(({duration, price, additionalInfo}, index) => (
             <div className={styles.rateItem} key={index}>
-              <InputField
-                label='Duration:'
-                labelClassName={'selectOptionLabel'}
-                selectClassName={`${styles.duration} select`}
-                fieldClassName={'selectOptionsWrapper'}
-                type='select'
-                name='duration'
-                id={`duration_${index}`}
-                datatype={type}
-                data-index={memberIndex}
-                value={rate.duration ? rate.duration : ''}
-                onChange={handleChange}
-                onMouseDown={(name, fieldValue) => handleMouseDown(name, fieldValue, index, type)}
-                isRequired={true}
-                options={optionsList}
-                errorMessage={error}
-              />
-              <div className={styles.inputWrap}>
-                <label
-                  htmlFor={`price_${index}`}
-                  className={styles.label}
-                >
-                  Price:
-                </label>
-                <div className={`${styles.priceInput}`}>
-                  <span className={styles.dollarIcon}>$</span>
-                  <input
-                    type='number'
-                    id={`price_${index}`}
-                    placeholder='Enter price'
-                    value={rate.price ? rate.price : ''}
-                    className={styles.input}
-                    required
-                    datatype={type}
-                    min={1}
-                    data-index={memberIndex}
-                    onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : null}
-                    onChange={(e) => handleChange(e, index, 'price', type)}
-                  />
-                </div>
-              </div>
-              <div className={styles.inputWrap}>
-                <label
-                  htmlFor={`additionalInfo_${index}`}
-                  className={`${styles.label} ${styles.additionalInfoLabel}`}
-                >
-                  Additional Information:
-                </label>
-                <input
-                  type='text'
-                  id={`additionalInfo_${index}`}
-                  placeholder='Enter additional information'
-                  value={rate.additionalInfo === null ? '' : rate.additionalInfo}
-                  className={styles.input}
+              <div className={styles.itemWrapper}>
+                <InputField
+                  name={'duration'}
+                  selectClassName={`${styles.duration} select`}
+                  fieldClassName={'selectOptionsWrapper'}
+                  type='select'
+                  id={`duration_${index}`}
                   datatype={type}
                   data-index={memberIndex}
-                  onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : null}
-                  onChange={(e) => handleChange(e, index, 'additionalInfo', type)}
+                  value={duration || ''}
+                  onChange={(e) => handleChange(e, index, 'duration')}
+                  onMouseDown={(name, fieldValue) => handleMouseDown(name, fieldValue, index, type, subType)}
+                  isRequired={true}
+                  options={optionsList}
+                  errorMessage={error}
+                />
+                <div className={styles.inputWrap}>
+                  <div className={`${styles.priceInput}`}>
+                    <input
+                      type='number'
+                      id={`price_${index}`}
+                      placeholder='Enter price'
+                      value={price || ''}
+                      className={styles.input}
+                      required
+                      datatype={type}
+                      min={1}
+                      data-index={memberIndex}
+                      onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : null}
+                      onChange={(e) => handleChange(e, index, 'price', type, subType)}
+                    />
+                    <span className={styles.dollarIcon}>$</span>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.itemWrapper}>
+                <div className={`${styles.inputWrap} ${styles.additionalInfoWrap}`}>
+                  <input
+                    type='text'
+                    id={`additionalInfo_${index}`}
+                    placeholder='Enter yor notes...'
+                    value={additionalInfo || ''}
+                    className={`${styles.input} ${styles.additionalInfo}`}
+                    datatype={type}
+                    data-index={memberIndex}
+                    onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : null}
+                    onChange={(e) => handleChange(e, index, 'additionalInfo', type, subType)}
+                  />
+                </div>
+                <RemoveIcon
+                  className={`${styles.smallButton}`}
+                  onClick={(e) => handleRemoveRate(e, index, type, subType)}
                 />
               </div>
-              <Button
-                type='button'
-                className={`${styles.smallButton} btn_small button`}
-                onClick={(e) => handleRemoveRate(e, index, type)}
-                children={'Remove'}
-              />
             </div>
           ))}
-          <Button
-            type='button'
-            className={`${styles.button} btn`}
-            onClick={(e) => handleAddRate(e, type)}
-            children={'ADD NEW RATE HERE'}
-          />
+          <div className={styles.add}>
+            <PlusIcon
+              className={styles.iconPlus}
+              text={'Add condition'}
+              textClassName={styles.buttonText}
+              fill={`var(--neutral-black)`}
+              onClick={(e) => handleAddRate(e, type, subType)}
+            />
+          </div>
         </div>
         {error &&
           <Text
@@ -131,6 +145,21 @@ export default function Rates ({title, type, memberFormData, memberIndex, onChil
           />
         }
       </div>
+      {!hideButtons &&
+        <div className={styles.buttons}>
+          <Button
+            children={'Cancel'}
+            variant={'general'}
+            onClick={cancelChanges}
+          />
+          <Button
+            type={'button'}
+            children={'Save changes'}
+            variant={'main'}
+            onClick={saveChanges}
+          />
+        </div>
+      }
     </>
   )
 }

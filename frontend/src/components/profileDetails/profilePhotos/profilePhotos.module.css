@@ -5,12 +5,19 @@
   padding-bottom: 24px;
   column-gap: 28px;
   row-gap: 32px;
+  position: relative;
+}
+
+.photoSection.empty {
+  padding-block: 24px;
 }
 
 .imageWrapper,
 .imageWrapper:nth-child(8) {
   max-width: 100%;
   width: 100%;
+  position: relative;
+  cursor: pointer;
 }
 
 .container {
@@ -22,6 +29,24 @@
   row-gap: 16px;
   padding-block: 40px;
   width: 100%;
+}
+
+.loader {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: 16px;
+  padding-block: 40px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--neutral-white-n10);
+  z-index: 3;
 }
 
 .title {
@@ -44,6 +69,48 @@
   line-height: 20px;
 }
 
+.editPhotosIconWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px 8px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--Main, #772A40);
+  background: var(--neutral-white-n10);
+  cursor: pointer;
+}
+
+.editPhotos {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 24px;
+}
+
+.addPhotos {
+  display: flex;
+  position: relative;
+}
+
+.addText {
+  color: var(--color-main);
+  font-family: var(--primary-bold-font);
+  font-size: 16px;
+  font-style: normal;
+  line-height: 20px;
+}
+
+.removeIcon {
+  position: absolute;
+  padding: 5px;
+  display: flex;
+  top: 8px;
+  right: 8px;
+  transition: all 0.2s;
+  border-radius: 10px;
+  border: 1px solid var(--neutral-white-n10);
+  background: var(--neutral-white-n10);
+}
+
 @media screen and (min-width: 500px) {
   .imageWrapper,
   .imageWrapper:nth-child(8) {
@@ -64,5 +131,17 @@
 
   .imageWrapper:nth-child(8) {
     max-width: 100%;
+  }
+}
+
+@media screen and (min-width: 850px) {
+  .removeIcon {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .imageWrapper:hover .removeIcon {
+    visibility: visible;
+    opacity: 1;
   }
 }

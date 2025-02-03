@@ -20,6 +20,11 @@ const GET_POPULAR_PROVIDERS_QUERIES = gql`
                   hairColor
                   isApprovedByAdmin
                   badge
+                  verificationStatus {
+                    hasBronzeBadge
+                    hasSilverBadge
+                    hasGoldBadge
+                  }
                   role {
                     data {
                       attributes {
@@ -27,17 +32,45 @@ const GET_POPULAR_PROVIDERS_QUERIES = gql`
                       }
                     }
                   }
-                  incallRates {
-                    id
+                  incall {
+                   general {
+                      id
+                      duration
+                      price
+                      additionalInfo
+                    	}
+                   	GFE {
+                       id
+                      duration
+                      price
+                      additionalInfo
+                      }
+                    PSE {
+                     id
                     duration
                     price
                     additionalInfo
+                    }
                   }
-                  outcallRates {
-                    id
+                  outcall {
+                    general {
+                      id
+                      duration
+                      price
+                      additionalInfo
+                    	}
+                   	GFE {
+                       id
+                      duration
+                      price
+                      additionalInfo
+                      }
+                    PSE {
+                     id
                     duration
                     price
                     additionalInfo
+                    }
                   }
                   profilePicture {
                     data {
@@ -80,6 +113,11 @@ const GET_TOP_PROVIDERS_QUERIES = gql`
                   hairColor
                   badge
                   isApprovedByAdmin
+                  verificationStatus {
+                    hasBronzeBadge
+                    hasSilverBadge
+                    hasGoldBadge
+                  }
                   role {
                     data {
                       attributes {
@@ -87,17 +125,45 @@ const GET_TOP_PROVIDERS_QUERIES = gql`
                       }
                     }
                   }
-                  incallRates {
-                    id
+                  incall {
+                   general {
+                      id
+                      duration
+                      price
+                      additionalInfo
+                    	}
+                   	GFE {
+                       id
+                      duration
+                      price
+                      additionalInfo
+                      }
+                    PSE {
+                     id
                     duration
                     price
                     additionalInfo
+                    }
                   }
-                  outcallRates {
-                    id
+                  outcall {
+                    general {
+                      id
+                      duration
+                      price
+                      additionalInfo
+                    	}
+                   	GFE {
+                       id
+                      duration
+                      price
+                      additionalInfo
+                      }
+                    PSE {
+                     id
                     duration
                     price
                     additionalInfo
+                    }
                   }
                   profilePicture {
                     data {
@@ -146,6 +212,11 @@ const GET_PROVIDERS_BY_TYPE_QUERIES = gql`
                   hairColor
                   badge
                   isApprovedByAdmin
+                  verificationStatus {
+                    hasBronzeBadge
+                    hasSilverBadge
+                    hasGoldBadge
+                  }
                   role {
                     data {
                       attributes {
@@ -153,17 +224,45 @@ const GET_PROVIDERS_BY_TYPE_QUERIES = gql`
                       }
                     }
                   }
-                  incallRates {
-                    id
+                  incall {
+                   general {
+                      id
+                      duration
+                      price
+                      additionalInfo
+                    	}
+                   	GFE {
+                       id
+                      duration
+                      price
+                      additionalInfo
+                      }
+                    PSE {
+                     id
                     duration
                     price
                     additionalInfo
+                    }
                   }
-                  outcallRates {
-                    id
+                  outcall {
+                    general {
+                      id
+                      duration
+                      price
+                      additionalInfo
+                    	}
+                   	GFE {
+                       id
+                      duration
+                      price
+                      additionalInfo
+                      }
+                    PSE {
+                     id
                     duration
                     price
                     additionalInfo
+                    }
                   }
                   profilePicture {
                     data {

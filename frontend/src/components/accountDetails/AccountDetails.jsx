@@ -5,7 +5,7 @@ import Text from '../text/Text';
 import ResetPassword from '../resetPassword/ResetPassword';
 import ProfileDetailsTabs from '../profileDetails/profileDetailsTabs/ProfileDetailsTabs';
 import { useState } from 'react';
-import Members from '@/app/my-account/[user]/members/page';
+// import Members from '@/app/my-account/[user]/members/page';
 
 // ToDo: combine the user's fields in one object //username, name, lastname, email
 export default function AccountDetails({
@@ -56,13 +56,13 @@ export default function AccountDetails({
           children={'Account Details'}
         />
       }
-      {isManagerDashboard && activeTabId === 0 &&
+      {/* {isManagerDashboard && activeTabId === 0 &&
         <Members
           id={id}
           email={email}
           user={username}
         />
-      }
+      } */}
       <div className="page-width">
         {(activeTabId === 1 || !isManagerDashboard) &&
           <>

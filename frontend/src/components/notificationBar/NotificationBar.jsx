@@ -2,44 +2,39 @@ import styles from './notificationBar.module.css';
 import Text from '../text/Text';
 import Button from '../button/Button';
 
-export default function NotificationBar({
-  notificationBarMessageAndStatus,
-  onCancelButtonClick,
-  onSaveButtonClick,
-}) {
-
+export default function NotificationBar({content, className}) {
+  if (!content) return;
+  const {Icon, text, buttons} = content;
   return (
-    <div className={styles.notificationBar}>
-      {notificationBarMessageAndStatus?.show ?
-        <Text
-          tag={'h4'}
-          className={`${styles.notificationText} text-middle white`}
-          children={notificationBarMessageAndStatus.message}
-        /> :
-        <>
+    <div className={`${styles.notificationBar} ${className || ''}`}>
+      <div className={`${styles.info}`}>
+        {Icon &&
+        <div className={styles.iconContainer}>
+          {Icon}
+        </div>
+        }
+        {text &&
           <Text
-            tag={'h4'}
-            className={`${styles.notificationText} text-middle`}
-            children={'Unsaved changes'}
+            className={styles.notificationText}
+            tag={'span'}
+            children={text}
           />
-          <div className={`${styles.primaryButtonsWrapper}`}>
+        }
+      </div>
+      {buttons && buttons?.length > 0 &&
+        <div className={styles.buttonsWrap}>
+          {buttons.map(button => (
             <Button
-              type='button'
-              className={`btn btn_SECONDARY ${styles.cancelButton}`}
-              onClick={onCancelButtonClick}
-              children={'Reset to the original'}
+              key={button.id}
+              type={button.type || 'button'}
+              variant={button.variant}
+              children={button.text}
+              className={styles.button}
+              onClick={button.onClick}
             />
-            {
-              <Button
-                type='button'
-                className={`btn btn_SECONDARY ${styles.submitButton}`}
-                onClick={onSaveButtonClick}
-                children={'Save as a draft'}
-              />
-            }
-          </div>
-        </>
+          ))}
+        </div>
       }
     </div>
   )
-}
+};

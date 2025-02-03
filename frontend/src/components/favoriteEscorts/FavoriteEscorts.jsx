@@ -5,7 +5,7 @@ import ProviderCard from '../providerCard/ProviderCard';
 import Banner from '../banner/Banner';
 import { useFetchData } from '@/app/utils/hooks/useFetch';
 import { navigate } from '@/app/actions';
-import Modal from '../modal/Modal';
+import Popup from '@/components/popup/Popup';
 import InfoIcon from '../icons/Info';
 import Button from '../button/Button';
 
@@ -132,7 +132,7 @@ const FavoriteEscorts = ({
         </section>
       </div>
       {showModal &&
-        <Modal
+        <Popup
           title={'Successfully removed'}
           text={'The girl has been removed from favorite escorts'}
           Icon={<InfoIcon/>}

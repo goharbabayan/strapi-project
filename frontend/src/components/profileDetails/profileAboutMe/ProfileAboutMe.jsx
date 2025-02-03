@@ -1,36 +1,147 @@
+import { useState } from 'react';
+import Text from '@/components/text/Text';
 import ProviderInterests from '../providerInterests/ProviderInterests';
 import styles from './profileAboutMe.module.css';
+import EditContentIcon from '@/components/icons/EditContent';
+import FormModal from '@/components/formModal/FormModal';
+import AboutMe from '@/components/aboutMe/AboutMe';
+import Interest from '@/components/interests/Interest';
+import { MY_CLOSET, MY_GLAM, EXTRAS } from '@/app/utils/constants/userPossibleOutfits';
 
-export default function ProfileAboutMe({aboutMeDescription, providerGlam, providerCloset, providerExtraOptions}) {
+export default function ProfileAboutMe ({aboutMeDescription, providerGlam, providerCloset, providerExtraOptions, data, errors}) {
+  const {
+    showEditButton,
+    showEmptyStateForDashboardPage,
+    onChanges,
+    onSaveButtonClick,
+    onCancelButtonClick,
+    token,
+  } = data || {};
+
+  const [showModal, setShowModal] = useState(false);
+  const [modalTitle, setModalTitle] = useState(null);
+
+  const handleEditIconClick = (modalTitle) => {
+    setShowModal(true);
+    setModalTitle(modalTitle);
+  };
+
+  const interestsContent = [
+    {
+      componentTitle: 'My Glam',
+      data: providerGlam,
+      optionsList: MY_GLAM,
+      updateChange: (value) => onChanges('glam', value),
+    },
+    {
+      componentTitle: 'My Closet',
+      data: providerCloset,
+      optionsList: MY_CLOSET,
+      updateChange: (value) => onChanges('closet', value),
+    },
+    {
+      componentTitle: 'My extras',
+      data: providerExtraOptions,
+      optionsList: EXTRAS,
+      updateChange: (value) => onChanges('extras', value),
+    },
+  ];
+
   return (
     <div className="page-width">
+      {showModal &&
+        <FormModal
+          title={modalTitle}
+          className={styles.locationForm}
+          onClose={() => {
+            setShowModal(false);
+            setModalTitle(null);
+          }}
+        >
+          {modalTitle === 'About Me' &&
+            <AboutMe
+              aboutMeData={aboutMeDescription}
+              onSaveChanges={onChanges}
+              error={errors}
+              onSaveButtonClick={onSaveButtonClick}
+              onCancelButtonClick={onCancelButtonClick}
+            />
+          }
+          {interestsContent.filter(item => item.componentTitle === modalTitle).map((item, index) => (
+            <Interest
+              key={index}
+              showServicesOptions={true}
+              userSelectedInterests={item.data}
+              optionsList={item.optionsList}
+              updateChange={item.updateChange}
+            />
+          ))}
+        </FormModal>
+      }
       {!!aboutMeDescription &&
         <div className={styles.aboutMeContainer}>
-          <h3 className={styles.aboutMeTitle}>About me</h3>
-          <p className={styles.aboutMeText}>
-            {aboutMeDescription}
-          </p>
+          <div className={styles.titleAndIconWrapper}>
+            <Text
+              tag={'h3'}
+              children={'About me'}
+              className={styles.aboutMeTitle}
+            />
+            {showEditButton &&
+            <>
+              <EditContentIcon
+                className={styles.editIcon}
+                onClick={() => handleEditIconClick('About Me')}
+              />
+            </>
+            }
+          </div>
+          <Text
+            tag={'p'}
+            children={aboutMeDescription}
+            className={styles.aboutMeText}
+          />
+        </div>
+      }
+      {!aboutMeDescription && showEmptyStateForDashboardPage &&
+        <div className={styles.aboutMeContainer}>
+          <div className={styles.titleAndIconWrapper}>
+            <Text
+              tag={'h3'}
+              children={'About me'}
+              className={styles.aboutMeTitle}
+            />
+            {showEditButton &&
+              <EditContentIcon
+                className={styles.editIcon}
+                onClick={() => {
+                  handleEditIconClick('About Me',
+                  <AboutMe
+                    aboutMeData={aboutMeDescription}
+                    confirmChange={onChanges}
+                    onSaveButtonClick={onSaveButtonClick}
+                    onCancelButtonClick={onCancelButtonClick}
+                  />
+                )}}
+              />
+            }
+          </div>
         </div>
       }
       <div className={styles.aboutMeInterestsContainer}>
-        {!!providerGlam.length &&
-          <ProviderInterests
-            componentTitle="My glam"
-            data={providerGlam}
-          />
-        }
-        {!!providerGlam.length &&
-          <ProviderInterests
-            componentTitle="My closet"
-            data={providerCloset}
-          />
-        }
-        {!!providerExtraOptions.length &&
-          <ProviderInterests
-            componentTitle="My extras"
-            data={providerExtraOptions}
-          />
-        }
+        {interestsContent.map((interest, index) => {
+          const {componentTitle, data} = interest;
+          if (!showEmptyStateForDashboardPage && data?.length === 0) return null;
+          return (
+            <ProviderInterests
+              key={index}
+              componentTitle={componentTitle}
+              data={data}
+              showEmptyStateForDashboardPage={showEmptyStateForDashboardPage}
+              showEditButton={showEditButton}
+              onClick={() => handleEditIconClick(componentTitle)}
+            />
+          )
+        })}
       </div>
     </div>
   )

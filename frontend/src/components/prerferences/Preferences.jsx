@@ -1,13 +1,34 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './preferences.module.css';
 import Text from '../text/Text';
 import Button from '../button/Button';
 
-export default function Preferences({field, subtitle, data, onPreferencesChange, error}) {
+export default function Preferences({
+  field,
+  subtitle,
+  data,
+  resetInput,
+  onPreferencesChange,
+  error
+}) {
   const [currentItem, setCurrentItem] = useState({
     services: {item: ''},
     additionalInfo: {item: ''},
-  })
+  });
+
+  useEffect(() => {
+    setCurrentItem({
+      services: {item: ''},
+      additionalInfo: {item: ''},
+    });
+  }, []);
+
+  useEffect(() => {
+    setCurrentItem({
+      services: { item: '' },
+      additionalInfo: { item: '' },
+    });
+  }, [resetInput]);
 
   const handleInputChange = (event) => {
     const id = event.target.id;
@@ -29,7 +50,7 @@ export default function Preferences({field, subtitle, data, onPreferencesChange,
   };
 
   return (
-    <div>
+    <>
       {subtitle &&
         <Text
           tag={'h4'}
@@ -38,37 +59,35 @@ export default function Preferences({field, subtitle, data, onPreferencesChange,
         />
       }
       <div className={styles.itemContainer}>
-        <div className={styles.preferences}>
-          <div className={styles.preferencesList}>
-            {data && data.map((item, index) => (item.item.trim() != '' &&
-              <div key={index} className={styles.preference}>
-                <Text
-                  tag={'span'}
-                  className={`text-small`}
-                  children={item.item}
-                />
-                <span aria-hidden='true' className={styles.closeIcon} onClick={() => handleRemoveItem(field, index)}>x</span>
-              </div>
-            ))}
-          </div>
-          <div>
-            <input
-              id={field}
-              type='text'
-              value={currentItem[field].item === null ? '' : currentItem[field].item}
-              onChange={handleInputChange}
-              onKeyDown={(e) => e.key === 'Enter' ? handleAddItem(e, field) : null}
-              placeholder='Enter here ...'
-              className={`input text-small`}
-            />
-            {currentItem[field].item && (
-              <Button
-                className={`${styles.button} btn_small`}
-                onClick={(e) => handleAddItem(e, field)}
-                children={'Add'}
+        <div className={`${styles.selectedItems} ${field === 'additionalInfo' ? styles.additionalInfo : ''}`}>
+          {data && data.map((item, index) => (item.item.trim() != '' &&
+            <div key={index} className={styles.selectedItem}>
+              <Text
+                tag={'span'}
+                className={styles.selectedItemTitle}
+                children={item.item}
               />
-            )}
-          </div>
+              <span aria-hidden='true' className={styles.closeIcon} onClick={() => handleRemoveItem(field, index)}>x</span>
+            </div>
+          ))}
+        </div>
+        <div className={styles.textInput}>
+          <input
+            id={field}
+            type='text'
+            value={currentItem[field].item === null ? '' : currentItem[field].item}
+            onChange={handleInputChange}
+            onKeyDown={(e) => e.key === 'Enter' ? handleAddItem(e, field) : null}
+            placeholder='Type some text here...'
+            className={styles.input}
+          />
+          {currentItem[field].item && (
+            <Button
+              className={`${styles.button} btn_small`}
+              onClick={(e) => handleAddItem(e, field)}
+              children={'Add'}
+            />
+          )}
         </div>
         {error &&
           <Text
@@ -78,6 +97,6 @@ export default function Preferences({field, subtitle, data, onPreferencesChange,
           />
         }
       </div>
-    </div>
+    </>
   )
 }

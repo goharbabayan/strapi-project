@@ -11,11 +11,18 @@ import StarIcon from '@/components/icons/StarIcon';
 import { useContext } from 'react';
 import { AuthContext } from '@/app/Context';
 import { CLIENT } from '@/app/utils/constants/userRoles';
+import UploadIcon from '@/components/icons/UploadIcon';
+import { getVerificationBadge, uploadImage, uploadImageWithWatermark } from '@/app/utils/helpers';
+import Text from '@/components/text/Text';
+import GoldenBadge from '@/components/icons/badges/GoldenBadge';
+import SilverBadge from '@/components/icons/badges/SilverBadge';
+import BronzeBadge from '@/components/icons/badges/BronzeBadge';
+import SwitchButton from '@/components/switchButton/SwitchButton';
+import EditContentIcon from '@/components/icons/EditContent';
+import Loading from '@/app/loading';
+import IconOnline from '@/components/iconOnline';
 
 export default function ProfileMainInfo(props) {
-  const {loggedInUserData} = useContext(AuthContext);
-  const [findFromFavoritesResponse, setFindFromFavoritesResponse] = useState(null);
-
   const {
     profilePhoto,
     profilePhotoName,
@@ -25,8 +32,29 @@ export default function ProfileMainInfo(props) {
     provierSocialLinks,
     providerWebsiteLink,
     providerId,
-    hideStarIcon
+    hideStarIcon,
+    showUploadIcon,
+    isDashboardPage,
+    showEditIcon,
+    editButtonText,
+    token,
+    verificationStatus,
+    profileIsAvialabile,
+    profileDigitalService,
+    onChanges,
+    onEditProfileInfoButtonClick,
+    errors,
   } = props;
+
+  const {loggedInUserData} = useContext(AuthContext);
+  const [findFromFavoritesResponse, setFindFromFavoritesResponse] = useState(null);
+  const [isSwitchOn, setIsSwitchOn] = useState(profileIsAvialabile);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const toggleSwitch = () => {
+    setIsSwitchOn((prev) => !prev);
+    onChanges('availableNow', !profileIsAvialabile)
+  };
 
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
@@ -37,6 +65,7 @@ export default function ProfileMainInfo(props) {
   const fetchData = async (action, endpoint) => {
     // To do get token from Context
     const token = JSON.parse(localStorage.getItem('token'));
+    if (!token || !providerId || !loggedInUserData?.id) return;
     let data = {
       providerId: providerId,
       clientId: loggedInUserData?.id,
@@ -70,6 +99,15 @@ export default function ProfileMainInfo(props) {
     fetchData('add', '/api/user/addToFavorites');
   };
 
+  const handleUploadImage = async (e) => {
+    setIsLoading(true);
+    const watermarkedImages = await uploadImageWithWatermark(e, token, false);
+    if (watermarkedImages) {
+      setIsLoading(false);
+      onChanges('profilePicture', watermarkedImages[0]);
+    };
+  };
+
   return (
     <>
       <div className='page-width'>
@@ -90,17 +128,149 @@ export default function ProfileMainInfo(props) {
                 }
               </>
             }
-            <Image
-              src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${profilePhoto}`}
-              alt={profilePhotoName || 'profile photo'}
-              width={320}
-              height={440}
-            />
+            {isLoading
+              ?
+                <div className={styles.emptyImageWrapper}>
+                  <Loading/>
+                </div>
+              :
+                <>
+                  {profilePhoto
+                    ?
+                      <div className={styles.imageWrapper}>
+                        <Image
+                          src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${profilePhoto}`}
+                          alt={profilePhotoName || 'profile photo'}
+                          width={320}
+                          height={440}
+                          VerificationIcon={getVerificationBadge(verificationStatus)}
+                          showVerificationBadge={true}
+                        />
+                        {!isDashboardPage && profileIsAvialabile &&
+                          <div className={styles.available}>
+                            <IconOnline/>
+                            <Text
+                              children={'Available now'}
+                              tag={'span'}
+                              className={styles.badge}
+                            />
+                          </div>
+                        }
+                        {showUploadIcon &&
+                          <div>
+                            <input
+                              type='file'
+                              id='profilePicture'
+                              name='profilePicture'
+                              accept='image/*'
+                              className={'hidden'}
+                              onChange={(e) => handleUploadImage(e)}
+                            />
+                            <label
+                              htmlFor='profilePicture'
+                              className={styles.editProfilePictureButton}
+                            >
+                              <UploadIcon
+                                strokeColor={`var(--color-main)`}
+                                className={styles.iconUpload}
+                              />
+                            </label>
+                            {showEditIcon &&
+                              <div className={styles.editButtonMobile} onClick={onEditProfileInfoButtonClick}>
+                                <EditContentIcon/>
+                              </div>
+                            }
+                          </div>
+                        }
+                      </div>
+                    :
+                      <div className={`${styles.emptyImageWrapper} ${errors && errors?.profilePicture ? styles.invalidBorder : ''}`}>
+                        <div className={`${styles.emptyImageContainer}`}>
+                          <Text
+                            tag={'span'}
+                            className={`${styles.uploadText} ${errors && errors?.profilePicture ? styles.invalidText : ''}`}
+                            children={'Upload your profile picture'}
+                          />
+                          <div>
+                            <input
+                              type='file'
+                              id='profilePicture'
+                              name='profilePicture'
+                              accept='image/*'
+                              className={'hidden'}
+                              onChange={(e) => handleUploadImage(e)}
+                            />
+                            <label
+                              htmlFor='profilePicture'
+                              className={styles.editButtonEmptyState}
+                            >
+                              <UploadIcon
+                                strokeColor={`var(--color-main)`}
+                              />
+                              <Text
+                                tag={'span'}
+                                className={styles.editButtonText}
+                                children={'Upload profile picture'}
+                              />
+                              {showEditIcon &&
+                                <div className={styles.editButtonMobile} onClick={onEditProfileInfoButtonClick}>
+                                  <EditContentIcon/>
+                                    
+                                </div>
+                              }
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                  }
+                </>
+            }
           </div>
           <div className={styles.profileInfoWrapper}>
-            <h3 className={styles.profileFullName}>
-              {profileProviderFullName.name} {profileProviderFullName.lastname}
-            </h3>
+            {showEditIcon &&
+              <div className={`${styles.editButton} ${errors ? styles.invalidBorder : ''}`} onClick={onEditProfileInfoButtonClick}>
+                <EditContentIcon fillColor={`${errors ? 'var(--red-r5)' : 'var(--color-main)'}`}/>
+                  {editButtonText &&
+                    <Text
+                      tag={'span'}
+                      className={`${styles.editText} ${errors ? styles.invalidText : ''}`}
+                      children={editButtonText}
+                    />
+                  }
+              </div>
+            }
+            <div className={styles.profileFullNameAndAvailability}>
+              {profileProviderFullName.name || profileProviderFullName.lastname
+                ?
+                  <Text
+                    tag={'h3'}
+                    className={styles.profileFullName}
+                    children={`${profileProviderFullName.name} ${profileProviderFullName.lastname}`}
+                  />
+                :
+                  <Text
+                    tag={'h3'}
+                    className={styles.profileFullName}
+                    children={`Name Lastname`}
+                  />
+              }
+              {isDashboardPage &&
+                <SwitchButton
+                  isOn={isSwitchOn}
+                  handleToggle={toggleSwitch}
+                  label={'Available now'}
+                />
+              }
+             {!isDashboardPage && profileDigitalService && profileDigitalService === 'true' &&
+                <div className={styles.digitalService}>
+                  <Text
+                    tag={'span'}
+                    className={styles.digitalText}
+                    children={`Digital service`}
+                  />
+                </div>
+              }
+            </div>
             <div className={styles.profileInfoTextContainer}>
               {profileProviderPersonalInfo.map((infoItem, index) => {
                   return (

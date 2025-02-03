@@ -25,6 +25,7 @@
   --color-main: #772A40;
   --color-hover: #753642;
   --red-r5: #FF4D4F;
+  --orange-20: #E8D8D9;
   --orange-50: #C2576B;
   --orange-60: #B63450;
   --green-g1: #F6FFED;
@@ -50,7 +51,8 @@ body {
 
 body.overflow_hidden,
 body:has(.navigation_is_open),
-body:has(.navigation_is_hovered) {
+body:has(.navigation_is_hovered),
+body:has(.modal-component) {
   overflow: hidden;
 }
 
@@ -430,7 +432,7 @@ body.overflow-hidden {
   list-style: none;
   padding: 0;
   scrollbar-width: thin;
-  scrollbar-color: var(--neutral-n70) var(--neutral-n90);
+  scrollbar-color: var(--neutral-n60) var(--neutral-n20);
 }
 
 .unstyled-anchor {
@@ -561,13 +563,6 @@ body.overflow-hidden {
   margin-top: 40px;
 }
 
-.fullName {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 19px;
-  width: 100%;
-}
-
 .infoMessage {
   min-height: 20px;
 }
@@ -583,28 +578,6 @@ body.overflow-hidden {
 
 .container {
   margin-bottom: 40px;
-}
-
-.socialLinks {
-  display: flex;
-  column-gap: 10px;
-  row-gap: 30px;
-  margin-top: 25px;
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-.socialLinks.member {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-}
-
-.socialLink {
-  flex-grow: 1;
-}
-
-.socialLink.email {
-  width: calc(50% - 10px);
 }
 
 .buttonsWrap {
@@ -643,18 +616,6 @@ body.overflow-hidden {
   top: 100%; /* Position options below the select element */
   left: 0;
   width: 100%;
-}
-
-.userDetails {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  column-gap: 10px;
-  margin-top: 25px;
-  row-gap: 25px;
-}
-
-.userDetails.location {
-  grid-template-columns: repeat(3, 1fr);
 }
 
 .suburbs {
@@ -773,14 +734,20 @@ body.overflow-hidden {
   margin-bottom: 8px;
 }
 
-.label, .input, .date {
-  color: var(--neutral-black);
+.label, .input, .date, .item {
   font-family: var(--primary-font);
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;
-  
+  line-height: 20px;
+}
+
+.label {
+  color: var(--neutral-n100);
+}
+
+.input, .selectClassName, .date, .item {
+  color: var(--neutral-black);
 }
 
 .input {
@@ -1011,6 +978,7 @@ body.overflow-hidden {
   .infoIcon {
     height: 15px;
     width: 15px;
+    cursor: pointer;
   }
 
   .selectOptionLabel .arrow {
@@ -1025,9 +993,9 @@ body.overflow-hidden {
 }
 
 @media screen and (max-width: 550px) {
-  .userDetails {
+  /* .userDetails {
     grid-template-columns: repeat(3, 1fr);
-  }
+  } */
 
   .ratesContainer {
     padding: 15px 8px;
@@ -1060,14 +1028,6 @@ body.overflow-hidden {
   .inputWrap > label.additionalInfoLabel {
     margin-bottom: 5px;
     white-space: wrap;
-  }
-
-  .fullName, .userDetails.location {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .userDetails {
-    grid-template-columns: repeat(2, 1fr);
   }
 }
 /* endstyles for user dashboard */

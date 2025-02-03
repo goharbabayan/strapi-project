@@ -1,3 +1,7 @@
+.pageContainer {
+  background: var(--neutral-n20);
+}
+
 .buttons {
   display: flex;
   justify-content: flex-end;
@@ -36,6 +40,17 @@
   font-family: var(--headings-font);
   color: var(--neutral-black);
   font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-block: 20px;
+}
+
+.subtitle {
+  text-align: center;
+  font-family: var(--primary-font);
+  color: var(--neutral-black);
+  font-size: 20px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;

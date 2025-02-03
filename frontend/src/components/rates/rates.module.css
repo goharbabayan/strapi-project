@@ -4,6 +4,8 @@
   align-items: flex-start;
   width: 100%;
   position: relative;
+  gap: 16px;
+  margin-top: 25px;
 }
 
 .error {
@@ -43,6 +45,51 @@
   margin-block: 40px 8px;
 }
 
+.add {
+  display: flex;
+}
+
+.input[type="number"]::-webkit-inner-spin-button,
+.input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide arrows for Firefox */
+.input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.iconPlus {
+  border-radius: 10px;
+  border: 1px solid var(--neutral-n50);
+  background: var(--neutral-white-n10);
+  cursor: pointer;
+  display: flex;
+  padding: 4px 12px 4px 4px;
+  align-items: center;
+  gap: 6px;
+}
+
+.buttonText {
+  display: flex;
+  color: var(--neutral-black);
+  font-family: var(--primary-bold-font);
+  font-size: 14px;
+  font-style: normal;
+  line-height: 23px;
+}
+
+.subType {
+  margin: 0;
+  color: var(--neutral-black);
+  font-family: var(--headings-font);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
 .section {
   padding-top: 40px;
 }
@@ -51,7 +98,7 @@
   width: 100%;
   padding: 7px 10px;
   border: 1px solid var(--neutral-n50);
-  border-radius: 3px;
+  border-radius: 8px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -82,34 +129,48 @@
 .ratesContainer {
   width: 100%;
   display: block;
-  padding: 24px;
-  /* border-radius: 10px; */
-  border: 1px solid var(--neutral-n50);
 }
 
 .rateItem {
-  display: grid;
-  grid-template-columns: 3fr 3fr 6fr 1fr;
+  display: flex;
+  gap: 8px;
   align-items: center;
-  grid-gap: 10px;
   margin-bottom: 20px;
 }
 
+.itemWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 .button {
   border: 1px solid var(--neutral-n50);
 }
 
 .smallButton {
-  align-self: end;
+  cursor: pointer;
+  display: flex;
+  border-radius: 10px;
+  border: 1px solid var(--neutral-n50);
+  background: var(--neutral-white-n10);
+  padding: 7px;
+  max-width: 40px;
+}
+
+.smallButton > svg {
+  display: flex;
+}
+
+.duration, .additionalInfo, .priceInput {
+  min-height: 40px;
 }
 
 .priceInput {
   display: flex;
   align-items: center;
   border: 1px solid var(--neutral-n50);
-  border-radius: 3px;
+  border-radius: 8px;
 }
-
 
 .formGroup .priceInput .input {
   border: none;
@@ -118,6 +179,21 @@
 .dollarIcon {
   margin-right: 5px;
   margin-left: 8px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 24px;
+  margin-top: 28px;
+}
+
+.buttons > button {
+  padding: 13px 24px;
+  flex: 1;
+  max-width: 187px;
+  white-space: nowrap;
 }
 
 @media screen and (max-width: 749px)  {
@@ -139,9 +215,12 @@
   }
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 569px) {
   .ratesContainer {
     padding: 15px 8px;
+    max-height: 230px;
+    overflow: auto;
+    scrollbar-width: thin;
   }
 
   .input {
@@ -153,24 +232,24 @@
     margin-left: 2px;
   }
 
-  .rateItem .duration {
-    margin-top: 20px;
-  }
-
-  .rateItem .inputWrap > label {
-    margin-bottom: 20px;
-  }
-
   .inputWrap > label.additionalInfoLabel {
     display: flex;
     white-space: nowrap;
   }
-}
 
-@media screen and (max-width: 450px) {
+  .itemWrapper {
+    flex-grow: 1;
+  }
+
   .rateItem {
-    grid-gap: 8px;
-    grid-template-columns: unset;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .additionalInfoWrap {
+    display: flex;
+    flex-grow: 1;
   }
 }
 

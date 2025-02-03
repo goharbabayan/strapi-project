@@ -1,10 +1,20 @@
-export default function SelectOption({labelClassName, selectClassName, onChange}) {
+import styles from './selectOption.module.css';
+
+export default function SelectOption({id, name, label, options, onChange}) {
   return (
     <div>
-      <label htmlFor="digitalService" className={labelClassName}>Digital service</label>
-      <select name="digitalService" id="digitalService" className={selectClassName} onChange={onChange}>
-        <option value="true">Yes</option>
-        <option value="false">No</option>
+      <label htmlFor={id} className={styles.label}>{label}</label>
+      <select name={name} id={id} className={styles.select} onChange={onChange}>
+        {options && Array.isArray(options) && options.length > 0 &&
+          options.map((option, index) => (
+            <option
+              value={option}
+              key={index}
+            >
+              {option.capitalize()}
+            </option>
+          ))
+        }
       </select>
     </div>
   )

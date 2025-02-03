@@ -753,14 +753,21 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     closet: Attribute.Component<'elements.text', true>;
     glam: Attribute.Component<'elements.text', true>;
     extras: Attribute.Component<'elements.text', true>;
-    incallRates: Attribute.Component<'elements.data', true>;
-    outcallRates: Attribute.Component<'elements.data', true>;
-    services: Attribute.Component<'elements.text', true>;
     schedule: Attribute.Component<'elements.working-time', true>;
     additionalInfo: Attribute.Component<'elements.text', true>;
     reviews: Attribute.Component<'elements.review', true>;
     favoriteProvidersIds: Attribute.Component<'elements.text', true>;
     badge: Attribute.String;
+    verificationStatus: Attribute.Component<'entry.data-with-boolean-values'>;
+    pendingData: Attribute.JSON;
+    twitterLink: Attribute.String;
+    otherLink: Attribute.String;
+    availableNow: Attribute.Boolean & Attribute.DefaultTo<false>;
+    digitalService: Attribute.String;
+    managerEscortEmail: Attribute.String;
+    services: Attribute.Component<'elements.user-data'>;
+    incall: Attribute.Component<'block.incall'>;
+    outcall: Attribute.Component<'block.incall'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

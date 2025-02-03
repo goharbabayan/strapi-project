@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_block_services",
+  "info": {
+    "displayName": "services"
+  },
+  "options": {},
+  "attributes": {
+    "item": {
+      "displayName": "arrayData",
+      "type": "component",
+      "repeatable": true,
+      "component": "block.array-data"
+    }
+  }
+}
