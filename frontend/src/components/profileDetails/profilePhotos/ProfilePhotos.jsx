@@ -19,11 +19,23 @@ export default function ProfilePhotos({photos, isVerified, data}) {
     showEditAndDeleteButtons,
     shouldUploadImage,
     showNoPicturesForDashboardPage,
+    areProviderSelfies,
     onChanges,
     token,
     setErrors,
     error,
   } = data || {};
+
+  const [showLastImageCantBeDeletedPopup, setShowLastImageCantBeDeletedPopup] = useState(false);
+
+  const inFoMessageForDeletingLastPhotoContent = [
+    {
+      title: '',
+      text: `As this is your last image it can't be deleted, Please contact our admin if you want to delete last image and deactivate your account.`,
+      showButtons: false,
+      buttons: null
+    }
+  ];
 
   const confirmationForDeletingPhotoContent = [
     {
@@ -60,9 +72,15 @@ export default function ProfilePhotos({photos, isVerified, data}) {
   };
 
   const handleRemoveButtonClick = (e, index) => {
+    if (index === null || index === undefined) return;
     if (!isVerified) {
       setImageIndex(index);
       setShowRemoveImageConfirmationPopup(true);
+      return;
+    };
+    const isLastPhotoOfVerifiedUser = isVerified && photos.length === 1 && !areProviderSelfies;
+    if (isLastPhotoOfVerifiedUser) {
+      setShowLastImageCantBeDeletedPopup(true);
       return;
     };
     const updatedImages = [...photos];
@@ -76,10 +94,16 @@ export default function ProfilePhotos({photos, isVerified, data}) {
 
   const handleModalClose = () => {
     setShowRemoveImageConfirmationPopup(false);
+    setErrors(null);
+  };
+
+  const handleCloseLastImageCantBeDeletedPopup = () => {
+    setShowLastImageCantBeDeletedPopup(false);
+    setErrors(null);
   };
 
   const handleConfirmDeletePhoto = () => {
-    if (!!imageIndex) return;
+    if (imageIndex === null || imageIndex === undefined) return;
     const updatedImages = [...photos];
     updatedImages.splice(imageIndex, 1);
     onChanges(`${field}`, updatedImages);
@@ -163,6 +187,13 @@ export default function ProfilePhotos({photos, isVerified, data}) {
           </div>
         }
       </div>
+      {showLastImageCantBeDeletedPopup &&
+        <Modal
+          title={`Are you sure you want to delete this image?`}
+          content={inFoMessageForDeletingLastPhotoContent}
+          closeModal={handleCloseLastImageCantBeDeletedPopup}
+        />
+      }
     </div>
   )
 }

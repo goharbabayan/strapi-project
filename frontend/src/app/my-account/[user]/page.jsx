@@ -284,15 +284,6 @@ export default function MyAccountPage() {
   const submitManagerEscortData = async (formData, showSuccessMessage) => {
     const memberToken = process.env.NEXT_PUBLIC_API_TOKEN_MEMBER;;
     if (!memberToken || !userData?.userId || !formData) return;
-    // const errors = validateForm(userData.user, false) || {};
-    // const hasErrors = Object.keys(errors).length > 0;
-    // if (hasErrors) {
-    //   setErrors(errors);
-    //   return;
-    // } else {
-    //   setErrors(null);
-    // };
-
     useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/members/${userData?.userId}`, {
       method: 'PUT',
       body: JSON.stringify(formData),
@@ -303,7 +294,7 @@ export default function MyAccountPage() {
     }).then(res => {
       if (!res.error) {
         const isVerified = userData?.userVerificationStatus?.verifiedLevel ? true : false;
-        showSuccessMessage && isVerified && showNonApprovalFieldChangesSuccessMessage();
+        showSuccessMessage && showNonApprovalFieldChangesSuccessMessage();
       }
     })
   };
@@ -471,6 +462,18 @@ export default function MyAccountPage() {
     setUserData(updatedUserData);
   };
 
+  const handleUpdateManagerNewEscortLocationData = (locationData) => {
+    setErrors(null);
+    const updatedUserData = {
+      ...userData,
+      managerNewEscort: {
+        ...userData.managerNewEscort,
+        ...locationData,
+      },
+    };
+    setUserData(updatedUserData);
+  }
+
   const updateUserPendingOvverridesAndSubmitUserData = (fieldsUpdatedData) => {
     // setErrors(null);
     const updatedUserData = {
@@ -486,19 +489,26 @@ export default function MyAccountPage() {
         ...fieldsUpdatedData,
       }
     });
-    // const errors = validateForm(userData.user, false) || {};
-    // const hasErrors = Object.keys(errors).length > 0;
-    // if (hasErrors) {
-    //   setErrors(errors);
-    //   return;
-    // } else {
-    //   setErrors(null);
-    // };
-
     userData.role === MANAGER.type ? submitManagerEscortData(updatedUserData) : submitData(updatedUserData);
     const isVerified = userData?.userVerificationStatus?.verifiedLevel ? true : false;
     isVerified && showNonApprovalFieldChangesSuccessMessage();
   };
+
+  const updateServicesTypeChange = () => {
+    setUserData({
+      ...userData,
+      userWithPendingOverrides: {
+        ...userData.userWithPendingOverrides,
+        services: { general: [], PSE: [], GFE: [] },
+        incall: { general: [], PSE: [], GFE: [] },
+        outcall: { general: [], PSE: [], GFE: [] },
+      },
+      unsavedChanges: {
+        ...userData?.unsavedChanges,
+        services: { general: [], PSE: [], GFE: [] },
+      },
+    });
+  }
 
   const applyAdminApprovalFieldsChangesForVerifiedProvider = () => {
     // processed with user and userWithPendingOverrides data changes
@@ -589,6 +599,8 @@ export default function MyAccountPage() {
     });
   };
 
+  // console.log('userData', userData, 'errors', errors);
+  
   return (
     <div className={`${styles.mainWrap}`}>
       <div className="dashboard">
@@ -681,6 +693,7 @@ export default function MyAccountPage() {
               unsavedChanges={userData.unsavedChanges}
               errors={errors}
               setErrors={setErrors}
+              updateServicesTypeChange={updateServicesTypeChange}
             />
           }
           {/* need to pass userId={userData?.userId} to ClientDetails component */}
@@ -717,6 +730,7 @@ export default function MyAccountPage() {
                 matchUserAndOriginalUserData={matchUserAndOriginalUserData}
                 updateUser={handleUpdateUser}
                 updateManagerNewEscort={handleUpdateManagerNewEscort}
+                updateManagerNewEscortLocationData={handleUpdateManagerNewEscortLocationData}
                 submitManagerEscortData={submitManagerEscortData}
                 updateUserPendingOvverridesAndSubmitUserData={updateUserPendingOvverridesAndSubmitUserData}
                 updateUserPendingOverrides={updateUserPendingOverrides}
@@ -733,6 +747,7 @@ export default function MyAccountPage() {
                 contentToDisplay={activeTab}
                 setContentToDisplay={setActiveTab}
                 resetNewEscortData={handleResetNewEscortData}
+                updateServicesTypeChange={updateServicesTypeChange}
               />
               {/* should be edited: removed image uploading and gender */}
             
@@ -745,8 +760,89 @@ export default function MyAccountPage() {
   );
 }
 
+// admin approval Fields
 
-// incall or out rate structure 
+// Name - string
+// Last name  - string
+// Gender  - string
+// Cover photo - object
+// Profile picture - object
+// Photos - array
+// About me text -string
+// Services - object
+// Selfies - array
+
+
+// coverPhoto, profilePicture - {
+//   "id": 2659,
+//   "name": "image0_jpeg_watermarked_8cacf7a538.png",
+//   "alternativeText": null,
+//   "caption": null,
+//   "width": 1440,
+//   "height": 960,
+//   "formats": {
+//       "thumbnail": {
+//           "name": "thumbnail_image0_jpeg_watermarked_8cacf7a538.png",
+//           "hash": "thumbnail_image0_jpeg_watermarked_8cacf7a538_9fa2e87e0e",
+//           "ext": ".png",
+//           "mime": "image/png",
+//           "path": null,
+//           "width": 234,
+//           "height": 156,
+//           "size": 100.03,
+//           "sizeInBytes": 100025,
+//           "url": "/uploads/thumbnail_image0_jpeg_watermarked_8cacf7a538_9fa2e87e0e.png"
+//       },
+//       "small": {
+//           "name": "small_image0_jpeg_watermarked_8cacf7a538.png",
+//           "hash": "small_image0_jpeg_watermarked_8cacf7a538_9fa2e87e0e",
+//           "ext": ".png",
+//           "mime": "image/png",
+//           "path": null,
+//           "width": 500,
+//           "height": 333,
+//           "size": 433.31,
+//           "sizeInBytes": 433312,
+//           "url": "/uploads/small_image0_jpeg_watermarked_8cacf7a538_9fa2e87e0e.png"
+//       },
+//       "medium": {
+//           "name": "medium_image0_jpeg_watermarked_8cacf7a538.png",
+//           "hash": "medium_image0_jpeg_watermarked_8cacf7a538_9fa2e87e0e",
+//           "ext": ".png",
+//           "mime": "image/png",
+//           "path": null,
+//           "width": 750,
+//           "height": 500,
+//           "size": 963.64,
+//           "sizeInBytes": 963635,
+//           "url": "/uploads/medium_image0_jpeg_watermarked_8cacf7a538_9fa2e87e0e.png"
+//       },
+//       "large": {
+//           "name": "large_image0_jpeg_watermarked_8cacf7a538.png",
+//           "hash": "large_image0_jpeg_watermarked_8cacf7a538_9fa2e87e0e",
+//           "ext": ".png",
+//           "mime": "image/png",
+//           "path": null,
+//           "width": 1000,
+//           "height": 667,
+//           "size": 1693.94,
+//           "sizeInBytes": 1693935,
+//           "url": "/uploads/large_image0_jpeg_watermarked_8cacf7a538_9fa2e87e0e.png"
+//       }
+//   },
+//   "hash": "image0_jpeg_watermarked_8cacf7a538_9fa2e87e0e",
+//   "ext": ".png",
+//   "mime": "image/png",
+//   "size": 728.99,
+//   "url": "/uploads/image0_jpeg_watermarked_8cacf7a538_9fa2e87e0e.png",
+//   "previewUrl": null,
+//   "provider": "local",
+//   "provider_metadata": null,
+//   "createdAt": "2025-02-04T11:42:01.583Z",
+//   "updatedAt": "2025-02-04T11:42:01.583Z"
+// }
+
+// incall or outcall rate structure 
   // {
   //   "id": 1,
   //   "general": [
@@ -766,6 +862,7 @@ export default function MyAccountPage() {
   //   "PSE": [],
   //   "GFE": []
   // }
+
   // services data structure
   // {
   //   "id": 2,

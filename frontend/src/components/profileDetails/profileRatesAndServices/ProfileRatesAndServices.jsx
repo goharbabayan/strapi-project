@@ -18,12 +18,16 @@ export default function ProfileRatesAndServices({
   incall,
   outcall,
   services,
+  selectedPlaceOfServiceType,
+  isVerifiedUser,
   isDashboardPage,
   showEditButton,
   updateUserPendingOvverridesAndSubmitUserData,
+  updateUserPendingOverrides,
   onDataChanges,
   errors,
   setErrors,
+  updateServicesTypeChange,
 }) {
 
   const [selectedServiceOptionType, setSelectedServiceOptionType] = useState(null);
@@ -42,7 +46,7 @@ export default function ProfileRatesAndServices({
   const serviceTypeChangeContent = [
     {
       title: '',
-      text: '',
+      text: isVerifiedUser ? 'Changes need to be reviewed and approved by admin.' : '',
       showButtons: true,
       showButtonsCentered: true,
       buttons: [
@@ -87,12 +91,20 @@ export default function ProfileRatesAndServices({
     setSelectedServiceOptionType((prevType) =>
       prevType === 'general' ? 'gfePse' : 'general'
     );
-    // remove all data
-    updateUserPendingOvverridesAndSubmitUserData({
-      'services': { general: [], PSE: [], GFE: [] },
-      'incall': { general: [], PSE: [], GFE: [] },
-      'outcall': { general: [], PSE: [], GFE: [] },
-    });
+    setIncallRates({ general: [], PSE: [], GFE: [] });
+    setOutcallRates({ general: [], PSE: [], GFE: [] });
+    setSelectedServices({ general: [], PSE: [], GFE: [] });
+
+    if (isVerifiedUser) {
+      updateServicesTypeChange();
+    } else {
+      // remove all data
+      updateUserPendingOvverridesAndSubmitUserData({
+        'services': { general: [], PSE: [], GFE: [] },
+        'incall': { general: [], PSE: [], GFE: [] },
+        'outcall': { general: [], PSE: [], GFE: [] },
+      });
+    }
     handleModalClose();
   };
 
@@ -117,13 +129,15 @@ export default function ProfileRatesAndServices({
       error: '',
       isValid: true,
     });
-    const {isValid, error} = (type === 'incall' || type === 'outcall') ? validateRates(updatedSubTypes, type) : validateServices(updatedSubTypes);
-    if (!isValid) {
-      setUpdate({
-        isValid: isValid,
-        error: error,
-      });
-      return;
+    if (isVerifiedUser) {
+      const {isValid, error} = (type === 'incall' || type === 'outcall') ? validateRates(updatedSubTypes, type, selectedPlaceOfServiceType) : validateServices(updatedSubTypes);
+      if (!isValid) {
+        setUpdate({
+          isValid: isValid,
+          error: error,
+        });
+        return;
+      }
     }
     const userSelectedData = {
       services: selectedServices,
@@ -137,6 +151,10 @@ export default function ProfileRatesAndServices({
         ...updatedSubTypes,
       });
     }
+    setModalInfo({
+      show: false,
+      title: '',
+    });
   };
 
   return (

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Text from '@/components/text/Text';
 import ProviderInterests from '../providerInterests/ProviderInterests';
 import styles from './profileAboutMe.module.css';
@@ -8,14 +8,11 @@ import AboutMe from '@/components/aboutMe/AboutMe';
 import Interest from '@/components/interests/Interest';
 import { MY_CLOSET, MY_GLAM, EXTRAS } from '@/app/utils/constants/userPossibleOutfits';
 
-export default function ProfileAboutMe ({aboutMeDescription, providerGlam, providerCloset, providerExtraOptions, data, errors}) {
+export default function ProfileAboutMe ({aboutMeDescription, providerGlam, providerCloset, providerExtraOptions, data}) {
   const {
     showEditButton,
     showEmptyStateForDashboardPage,
     onChanges,
-    onSaveButtonClick,
-    onCancelButtonClick,
-    token,
   } = data || {};
 
   const [showModal, setShowModal] = useState(false);
@@ -31,19 +28,28 @@ export default function ProfileAboutMe ({aboutMeDescription, providerGlam, provi
       componentTitle: 'My Glam',
       data: providerGlam,
       optionsList: MY_GLAM,
-      updateChange: (value) => onChanges('glam', value),
+      updateChange: (value) => {
+        onChanges('glam', value);
+        setShowModal(false);
+      }
     },
     {
       componentTitle: 'My Closet',
       data: providerCloset,
       optionsList: MY_CLOSET,
-      updateChange: (value) => onChanges('closet', value),
+      updateChange: (value) => {
+        onChanges('closet', value);
+        setShowModal(false);
+      }
     },
     {
       componentTitle: 'My extras',
       data: providerExtraOptions,
       optionsList: EXTRAS,
-      updateChange: (value) => onChanges('extras', value),
+      updateChange: (value) => {
+        onChanges('extras', value);
+        setShowModal(false);
+      }
     },
   ];
 
@@ -62,9 +68,7 @@ export default function ProfileAboutMe ({aboutMeDescription, providerGlam, provi
             <AboutMe
               aboutMeData={aboutMeDescription}
               onSaveChanges={onChanges}
-              error={errors}
-              onSaveButtonClick={onSaveButtonClick}
-              onCancelButtonClick={onCancelButtonClick}
+              setShowModal={setShowModal}
             />
           }
           {interestsContent.filter(item => item.componentTitle === modalTitle).map((item, index) => (
@@ -113,15 +117,7 @@ export default function ProfileAboutMe ({aboutMeDescription, providerGlam, provi
             {showEditButton &&
               <EditContentIcon
                 className={styles.editIcon}
-                onClick={() => {
-                  handleEditIconClick('About Me',
-                  <AboutMe
-                    aboutMeData={aboutMeDescription}
-                    confirmChange={onChanges}
-                    onSaveButtonClick={onSaveButtonClick}
-                    onCancelButtonClick={onCancelButtonClick}
-                  />
-                )}}
+                onClick={() => handleEditIconClick('About Me')}
               />
             }
           </div>

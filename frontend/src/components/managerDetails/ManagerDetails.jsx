@@ -29,6 +29,7 @@ export default function ManagerDetails ({
   updateUser,
   updateUserPendingOvverridesAndSubmitUserData,
   updateManagerNewEscort,
+  updateManagerNewEscortLocationData,
   updateUserPendingOverrides,
   discardUserPendingOverrides,
   confirmAdminApprovalFieldsChanges,
@@ -45,6 +46,7 @@ export default function ManagerDetails ({
   originalUser,
   userWithPendingOverrides,
   resetNewEscortData,
+  updateServicesTypeChange,
  }) {
   const {username, name, lastName, email, password, id} = manager;
   const [popup, setPopup] = useState({
@@ -119,7 +121,6 @@ export default function ManagerDetails ({
               show: false,
               title: '',
             });
-            setActiveTabId('my_escorts');
           }, 3000);
         }
       })
@@ -194,10 +195,10 @@ export default function ManagerDetails ({
             onMouseDown={handleChange}
             onCancelButtonClick={() => setContentToDisplay('account')}
             onSaveButtonClick={onSaveButtonClick}
+            updateManagerNewEscortLocationData={updateManagerNewEscortLocationData}
             pageTitle={'Create escort profile'}
             role={role}
             showUsername={true}
-            hideSaveAndCancelButtons={true}
             isCreatingNewEscort={true}
             errors={errors}
           />
@@ -228,6 +229,7 @@ export default function ManagerDetails ({
             unsavedChanges={unsavedChanges}
             errors={errors}
             setErrors={setErrors}
+            updateServicesTypeChange={updateServicesTypeChange}
           />
         </>
       }

@@ -6,6 +6,7 @@ import BronzeBadge from "@/components/icons/badges/BronzeBadge";
 import { ADMIN_APPROVAL_FIELDS } from "./constants/userAdminApprovalFields";
 import { USER_FORM_NEW_MEMBER, USER_REQUIRED_FIELDS } from "./constants/userForm";
 import { CLIENT, MANAGER, SERVICE_PROVIDER } from "./constants/userRoles";
+import { formatFieldName } from "./validation";
 
 export async function debounce(callback, delay) {
   let timeoutId;
@@ -353,6 +354,13 @@ export const checkIsRequiredField = (field) => {
   return USER_REQUIRED_FIELDS.includes(field);
 };
 
+export const getUserPendingFieldsNames = (pendingDataJSON) => {
+  const pendingData = pendingDataJSON ? JSON.parse(pendingDataJSON) : {};
+  const fieldsNames = Object.keys(pendingData).map(fieldName => formatFieldName(fieldName)).join(', ');
+  console.log('fieldsNames', fieldsNames);
+  return fieldsNames;
+};
+
 export const transformUserWithPendingOverrides = (user, pendingDataJSON) => {
   const fieldsToMerge = ['photos', 'selfies', 'aboutMeText', 'services'];
   const pendingData = pendingDataJSON ? JSON.parse(pendingDataJSON) : {};
@@ -364,8 +372,8 @@ export const transformUserWithPendingOverrides = (user, pendingDataJSON) => {
   return transformedUser;
 };
 
-export const fetchUserRatesAndServices = async (customerToken, username) => {
-  if (!customerToken && !username) return null;
+export const fetchUserRatesAndServices = async (customerToken, username, userId) => {
+  if (!customerToken && !username && !userId) return null;
   try {
     let data;
     if (customerToken) {
@@ -377,6 +385,11 @@ export const fetchUserRatesAndServices = async (customerToken, username) => {
       });
     } else if (username) {
       const ratesDataArray = await useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users?filters[username][$eq]=${username}&populate[services][populate][0]=general&populate[services][populate][1]=PSE&populate[services][populate][2]=GFE&populate[incall][populate][0]=general&populate[incall][populate][1]=PSE&populate[incall][populate][2]=GFE&populate[outcall][populate][0]=general&populate[outcall][populate][1]=PSE&populate[outcall][populate][2]=GFE`, {
+        method: 'GET',
+      });
+      data = ratesDataArray[0];      
+    } else if (userId) {
+      const ratesDataArray = await useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users?filters[id][$eq]=${userId}&populate[services][populate][0]=general&populate[services][populate][1]=PSE&populate[services][populate][2]=GFE&populate[incall][populate][0]=general&populate[incall][populate][1]=PSE&populate[incall][populate][2]=GFE&populate[outcall][populate][0]=general&populate[outcall][populate][1]=PSE&populate[outcall][populate][2]=GFE`, {
         method: 'GET',
       });
       data = ratesDataArray[0];

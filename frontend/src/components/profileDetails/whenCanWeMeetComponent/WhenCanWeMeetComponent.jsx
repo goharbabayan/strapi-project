@@ -50,6 +50,7 @@ export default function WhenCanWeMeetComponent({
 
   const onSaveChanges = () => {
     updateUserPendingOvverridesAndSubmitUserData({'schedule': mySchedule, 'additionalInfo': myAdditionalInfo});
+    setShowModal(false);
   };
 
   const onCancelChanges = () => {

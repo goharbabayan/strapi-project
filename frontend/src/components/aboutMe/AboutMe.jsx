@@ -3,7 +3,7 @@ import Text from '../text/Text';
 import Button from '../button/Button';
 import { useState } from 'react';
 
-export default function AboutMe ({aboutMeData, onSaveChanges}) {
+export default function AboutMe ({aboutMeData, onSaveChanges, setShowModal}) {
   const [aboutMeText, setAboutMeText] = useState(aboutMeData);
 
   const handleChange = (value) => {
@@ -11,6 +11,7 @@ export default function AboutMe ({aboutMeData, onSaveChanges}) {
   };
 
   const saveChanges = () => {
+    setShowModal(false);
     onSaveChanges('aboutMe', aboutMeText);
   };
 

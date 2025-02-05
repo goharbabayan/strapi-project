@@ -11,6 +11,7 @@ export default function CombinedRates({
   userRates2,
   updateChange,
   optionsList,
+  setUpdate,
 }) {
   const [rates1, setRates1] = useState(userRates1);
   const [rates2, setRates2] = useState(userRates2);
@@ -39,6 +40,7 @@ const saveChanges = () => {
         optionsList={optionsList}
         hideButtons={true}
         showSubType={true}
+        setUpdate={setUpdate}
       />
       <Rates
         type={type}
@@ -48,6 +50,7 @@ const saveChanges = () => {
         optionsList={optionsList}
         hideButtons={true}
         showSubType={true}
+        setUpdate={setUpdate}
       />
       <div className={styles.buttons}>
         <Button

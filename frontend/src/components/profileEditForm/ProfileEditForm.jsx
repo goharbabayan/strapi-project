@@ -20,7 +20,8 @@ export default function ProfileInfoEditForm ({
   pageTitle,
   role,
   showUsername,
-  hideSaveAndCancelButtons,
+  isCreatingNewEscort,
+  updateManagerNewEscortLocationData,
   errors,
   setErrors,
 }) {
@@ -46,13 +47,13 @@ export default function ProfileInfoEditForm ({
             >
               <LocationDetails
                 user={user}
-                onSaveChangesButtonClick={updateUserPendingOvverridesAndSubmitUserData}
+                onSaveChangesButtonClick={(locationInfo) => isCreatingNewEscort ? updateManagerNewEscortLocationData(locationInfo) : updateUserPendingOvverridesAndSubmitUserData(locationInfo)}
                 userCountry={user?.country}
                 userSuburbs={user?.suburbs}
                 userCity={user?.city}
-                hideSaveAndCancelButtons={hideSaveAndCancelButtons}
                 errorMessage={errors}
                 setErrors={setErrors}
+                setShowLocationMoodal={setShowLocationMoodal}
               />
             </FormModal>
           }
@@ -63,14 +64,15 @@ export default function ProfileInfoEditForm ({
             onClick={handleClick}
             errorMessage={errors}
             showUsername={showUsername}
+            role={role}
           />
-            <ContactDetails
-              formData={user}
-              onChange={onChange}
-              onMouseDown={onMouseDown}
-              errorMessage={errors}
-              role={role}
-            />
+          <ContactDetails
+            formData={user}
+            onChange={onChange}
+            onMouseDown={onMouseDown}
+            errorMessage={errors}
+            role={role}
+          />
           <div className={styles.buttons}>
             <Button
               children={'Cancel'}

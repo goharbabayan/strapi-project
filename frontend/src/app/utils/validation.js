@@ -57,11 +57,17 @@ export const validateServices = (services) => {
   return { isValid: isValid, error: error };
 };
 
-export const validateRates = (rates, type) => {
+export const validateRates = (rates, type, selectedPlaceOfServiceType) => {
   let isValid = true;
   let error = null;
-  if (!rates || (!rates?.general?.length && !rates?.PSE?.length && !rates?.GFE?.length)) {
-    error = `Please add at least one rate for ${type}`;
+  let isSelectedOutcallPlaceOfServiceAndOutcallRatesAreEmpty, isSelectedIncallPlaceOfServiceAndIncallRatesAreEmpty;
+  if (selectedPlaceOfServiceType && selectedPlaceOfServiceType != '') {
+    isSelectedOutcallPlaceOfServiceAndOutcallRatesAreEmpty = selectedPlaceOfServiceType === 'Out-Call' && type === 'outcall' && (!rates || (!rates?.general?.length && !rates?.PSE?.length && !rates?.GFE?.length));
+    isSelectedIncallPlaceOfServiceAndIncallRatesAreEmpty = selectedPlaceOfServiceType === 'In-Call' && type === 'incall' && (!rates || (!rates?.general?.length && !rates?.PSE?.length && !rates?.GFE?.length));
+  };
+
+  if (isSelectedIncallPlaceOfServiceAndIncallRatesAreEmpty || isSelectedOutcallPlaceOfServiceAndOutcallRatesAreEmpty) {
+    error = `Please add at least one rate for ${type} rates`;
     isValid = false;
   } else {
     ['general', 'PSE', 'GFE'].forEach(category => {
@@ -95,6 +101,7 @@ export const validateForm = (formData, isClientDashboardPage) => {
     });
     return errors;
   }
+console.log('formData', formData);
 
   for (const fieldName in formData) {
     const fieldValue = formData[fieldName];
@@ -134,9 +141,16 @@ export const validateForm = (formData, isClientDashboardPage) => {
 
   //  Validate incall and outcall rates
   if (formData.placeOfService) {
-    const validateRates = (rates, type) => {
-      if (!rates || (!rates.general.length && !rates.PSE.length && !rates.GFE.length)) {
-        errors[type] = `Please add at least one rate for ${type}`;
+    const validateRates = (rates, type, selectedPlaceOfServiceType) => {
+      if (!rates || !rates.general.length && !rates.PSE.length && !rates.GFE.length) {
+        if (!errors['services']) {
+          console.log('aaa');
+          
+          errors['services'] = `Please add at least one rate for ${type} rates`;
+        } else {
+          errors['services'] += ` and ${type} rates`;
+        }
+        // errors['services'] = `Please add at least one rate for ${type} rates`;
       } else {
         ['general', 'PSE', 'GFE'].forEach(category => {
           rates[category]?.forEach(rate => {
@@ -156,17 +170,17 @@ export const validateForm = (formData, isClientDashboardPage) => {
 
     if (formData.placeOfService.includes('In-Call')) {
       if (formData.incall) {
-        validateRates(formData.incall, 'incall');
+        validateRates(formData.incall, 'incall', formData.placeOfService);
       } else {
-        errors['incall'] = 'Please add at least one rate for incall';
+        errors['incall'] = 'Please add at least one rate for incall rates';
       }
     }
 
     if (formData.placeOfService.includes('Out-Call')) {
       if (formData.outcall) {
-        validateRates(formData.outcall, 'outcall');
+        validateRates(formData.outcall, 'outcall', formData.placeOfService);
       } else {
-        errors['outcall'] = 'Please add at least one rate for outcall';
+        errors['outcall'] = 'Please add at least one rate for outcall rates';
       }
     }
   }
@@ -247,10 +261,7 @@ export const validateForm = (formData, isClientDashboardPage) => {
       // Services validation
       case 'services': {
         const isGeneralOGFEPSEServicesFilled =
-          fieldValue &&
-          (fieldValue?.general?.length !== 0 ||
-            fieldValue?.PSE?.length !== 0 ||
-            fieldValue?.GFE?.length !== 0);
+          fieldValue && (fieldValue?.general?.length !== 0 || (fieldValue?.PSE?.length !== 0 && fieldValue?.GFE?.length !== 0));
         if (!isGeneralOGFEPSEServicesFilled) {
           errors[fieldName] = 'Please, add at least one service';
         }

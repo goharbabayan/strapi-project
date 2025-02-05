@@ -25,7 +25,7 @@ export default function ErrorInfo ({errors, requiredFieldsArray, showInfoIcon}) 
   return (
     <div className="page-width">
       <div className={styles.errors}>
-        {(requiredFieldsInfoMessage || message) &&
+        {(requiredFieldsInfoMessage) &&
           <div className={styles.container}>
             {showInfoIcon && <InfoIcon/>}
             <span className={`${styles.message}`}>

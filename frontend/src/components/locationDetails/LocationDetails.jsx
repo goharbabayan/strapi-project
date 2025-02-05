@@ -15,6 +15,7 @@ export default function LocationDetails ({
   hideSaveAndCancelButtons,
   errorMessage,
   setErrors,
+  setShowLocationMoodal,
 }) {
 
   const initialLocationInfo = {
@@ -88,6 +89,7 @@ export default function LocationDetails ({
      // locationFieldsData is object with country, city, suburbs data, so I need to update this 3 fields data in userWithPendingOverrides and also submit data to database
     const hasAtLeastOneChange = isChangedAtLeastOneData();
     hasAtLeastOneChange && onSaveChangesButtonClick(locationInfo);
+    setShowLocationMoodal && setShowLocationMoodal(false);
   };
 
   const onSelectedSuburbDelete = (removedSuburb) => {

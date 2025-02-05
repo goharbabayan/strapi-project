@@ -57,6 +57,11 @@
   margin-block: 20px;
 }
 
+.bold {
+  color: var(--red-r5);
+  font-family: var(--primary-bold-font);
+}
+
 .mainInfo {
   margin: 40px auto;
   display: grid;

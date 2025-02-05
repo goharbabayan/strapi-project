@@ -1,8 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react';
-import { useFetchData } from '@/app/utils/hooks/useFetch';
-import { USER_FORM, USER_FORM_WITH_DATA, USER_REQUIRED_FIELDS } from '@/app/utils/constants/userForm';
+import { useState } from 'react';
+import { USER_REQUIRED_FIELDS } from '@/app/utils/constants/userForm';
 import ProfileMainInfo from '@/components/profileDetails/profileMainInfo/ProfileMainInfo';
 import ProfileCoverPhoto from '@/components/profileDetails/profileCoverPhoto/ProfileCoverPhoto';
 import Loading from '@/app/loading';
@@ -20,18 +19,16 @@ import ProfileReviews from '@/components/profileReviews/ProfileReviews';
 import ProfileRatesAndServices from '@/components/profileDetails/profileRatesAndServices/ProfileRatesAndServices';
 import WhenCanWeMeetComponent from '@/components/profileDetails/whenCanWeMeetComponent/WhenCanWeMeetComponent';
 import Text from '../text/Text';
-import Button from '../button/Button';
 import { ESCORT_DASHBOARD_PAGE_TABS } from '@/app/utils/constants/dashboardPageTabs';
 import ProfileInfoEditForm from '../profileEditForm/ProfileEditForm';
 import ResetPassword from '../resetPassword/ResetPassword';
-import { ADMIN_APPROVAL_FIELDS } from '@/app/utils/constants/userAdminApprovalFields';
 import Modal from '../modal/Modal';
 import { checkIsAdminApprovalField, checkIsRequiredField, generateTextFromArray, transformUserWithPendingOverrides } from '@/app/utils/helpers';
-import { MANAGER } from '@/app/utils/constants/userRoles';
 import { validateRequiredFieldValue } from '@/app/utils/validation';
 import InfoIcon from '../icons/Info';
 import ErrorInfo from '../errorInfo/ErrorInfo';
 import { USER_PROFILE_DATA } from '@/app/utils/constants/userProfileData';
+import { MANAGER } from '@/app/utils/constants/userRoles';
 
 export default function ServiceProviderDetails ({
   user,
@@ -54,6 +51,7 @@ export default function ServiceProviderDetails ({
   unsavedChanges,
   errors,
   setErrors,
+  updateServicesTypeChange,
 }) {
   
   const [loader, setLoader] = useState(false);
@@ -149,6 +147,10 @@ export default function ServiceProviderDetails ({
 
   const handleChange = (field, value) => {
     setErrors(null);
+
+    const hasMadeChange = JSON.stringify(user[field]) !== JSON.stringify(value);
+    // console.log('hasMadeChange', hasMadeChange, JSON.stringify(user[field]), JSON.stringify(value));
+    if (!hasMadeChange) return;
     const isAdminApprovalField = checkIsAdminApprovalField(field);
     const isRequiredField = checkIsRequiredField(field);
     if (isVerified && isRequiredField) {
@@ -220,26 +222,26 @@ export default function ServiceProviderDetails ({
             />
           }
           {errors
-          ?
-            <ErrorInfo
-              errors={errors}
-              requiredFields={USER_REQUIRED_FIELDS}
-            />
-          :
-            <>
-              {generalActiveTabId !== 'settings' &&
-                <div className={`${styles.infoMessage} page-width`}>
-                  <div className={styles.errorContainer}>
-                    <InfoIcon/>
-                    <Text
-                      tag={'span'}
-                      children={`${generateTextFromArray(USER_REQUIRED_FIELDS, false)} are required fields, please fill them in before get verified.`}
-                      className={styles.infoText}
-                    />
+            ?
+              <ErrorInfo
+                errors={errors}
+                requiredFields={USER_REQUIRED_FIELDS}
+              />
+            :
+              <>
+                {generalActiveTabId !== 'settings' &&
+                  <div className={`${styles.infoMessage} page-width`}>
+                    <div className={styles.errorContainer}>
+                      <InfoIcon/>
+                      <Text
+                        tag={'span'}
+                        children={`${generateTextFromArray(USER_REQUIRED_FIELDS, false)} are required fields, please fill them in before get verified.`}
+                        className={styles.infoText}
+                      />
+                    </div>
                   </div>
-                </div>
-              }
-            </>
+                }
+              </>
           }
           {generalActiveTabId === 'account' &&
             <div className={styles.providerPageContainer}>
@@ -275,7 +277,7 @@ export default function ServiceProviderDetails ({
                 profileDigitalService={user?.digitalService}
                 profileProviderPersonalInfo={USER_PROFILE_DATA(user)}
                 providerContactInfo={{
-                  email: user?.email,
+                  email: role === MANAGER.type ? user?.managerEscortEmail : user?.email,
                   phone: user?.phoneNumber,
                 }}
                 provierSocialLinks={{
@@ -327,10 +329,7 @@ export default function ServiceProviderDetails ({
                   data={{
                     showEditButton: true,
                     showEmptyStateForDashboardPage: true,
-                    token: token,
                     onChanges: handleChange,
-                    onCancelButtonClick: handleCancelButtonClick,
-                    onSaveButtonClick: onSaveButtonClick,
                   }}
                 />
               }
@@ -339,9 +338,12 @@ export default function ServiceProviderDetails ({
                   incall={user?.incall}
                   outcall={user?.outcall}
                   services={user?.services}
+                  selectedPlaceOfServiceType={user?.placeOfService}
+                  isVerifiedUser={isVerified}
                   isDashboardPage={true}
                   showEditButton={true}
                   updateUserPendingOvverridesAndSubmitUserData={updateUserPendingOvverridesAndSubmitUserData}
+                  updateUserPendingOverrides={updateUserPendingOverrides}
                   onDataChanges={handleChange}
                   errors={{
                     services: errors?.services,
@@ -349,6 +351,7 @@ export default function ServiceProviderDetails ({
                     outcall: errors?.outcall
                   }}
                   setErrors={setErrors}
+                  updateServicesTypeChange={updateServicesTypeChange}
                 />
               }
               {menuActiveTabId === 3 &&
@@ -369,6 +372,7 @@ export default function ServiceProviderDetails ({
                   isVerified={isVerified}
                   data={{
                     field: 'selfies',
+                    areProviderSelfies: true,
                     showEditAndDeleteButtons: true,
                     shouldUploadImage: true,
                     showNoPicturesForDashboardPage: true,
@@ -399,7 +403,6 @@ export default function ServiceProviderDetails ({
               pageTitle={'Edit profile info'}
               role={role}
               showUsername={false}
-              hideSaveAndCancelButtons={false}
               errors={errors}
               setErrors={setErrors}
             />

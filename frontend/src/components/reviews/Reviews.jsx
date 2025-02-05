@@ -12,7 +12,8 @@ export default function Reviews ({
   userReviews,
   updateChange,
   title,
-  showEditAndDeleteButtons
+  showEditAndDeleteButtons,
+  setShowEditReviewsPopup,
 }) {
   const [reviewsCheckboxesState, setReviewsCheckboxesState] = useState([]);
   const [updatedReviews, setUpdatedReviews] = useState(userReviews);
@@ -23,6 +24,7 @@ export default function Reviews ({
 
   const saveChanges = () => {
     updateChange({'reviews': updatedReviews});
+    setShowEditReviewsPopup && setShowEditReviewsPopup(false);
   };
 
   const cancelChanges = () => {

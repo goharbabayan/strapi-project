@@ -220,8 +220,6 @@ export const USER_REQUIRED_FIELDS = [
   'gender',
   'services',
   'schedule',
-  'incall',
-  'outcall'
 ];
 
 export const USER_REQUIRED_FIELDS_FOR_CLIENT_ROLE = [

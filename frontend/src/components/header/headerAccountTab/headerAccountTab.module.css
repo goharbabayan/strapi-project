@@ -58,3 +58,30 @@
 .headerAccountTabItem:hover {
   text-decoration: underline;
 }
+
+@media screen and (max-width: 1215px) {
+  .userName {
+    max-width: 180px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
+
+@media screen and (max-width: 1019px) {
+  .userName {
+    max-width: 100px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
+
+@media screen and (max-width: 979px) {
+  .userName {
+    max-width: 75px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}

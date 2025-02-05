@@ -12,6 +12,7 @@ import {
   GENDER_OPTIONS,
 } from '@/app/utils/constants/userPhisicalDetails';
 import Text from '../text/Text';
+import { MANAGER } from '@/app/utils/constants/userRoles';
 
 export default function PersonalDetails ({
   formData,
@@ -20,7 +21,9 @@ export default function PersonalDetails ({
   onClick,
   errorMessage,
   showUsername,
+  role,
 }) {
+console.log('role', role);
 
   return (
     <div>

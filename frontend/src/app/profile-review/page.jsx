@@ -13,12 +13,7 @@ import ProfilePhotos from '@/components/profileDetails/profilePhotos/ProfilePhot
 import ProfileAboutMe from '@/components/profileDetails/profileAboutMe/ProfileAboutMe.jsx';
 import ProfileRatesAndServices from '@/components/profileDetails/profileRatesAndServices/ProfileRatesAndServices.jsx';
 import WhenCanWeMeetComponent from '@/components/profileDetails/whenCanWeMeetComponent/WhenCanWeMeetComponent.jsx';
-import PhotosIcon from '@/components/icons/PhotosIcon';
-import AboutIcon from '@/components/icons/AboutIcon';
-import RatesAndServicesIcon from '@/components/icons/RatesAndServicesIcon';
-import WhenCanWeMeetIcon from '@/components/icons/WhenCanWeMeetIcon';
-import SelfiesIcon from '@/components/icons/SelfiesIcon';
-import { fetchUserRatesAndServices, upgradeVerificationStatus } from '../utils/helpers';
+import { fetchUserRatesAndServices, getUserPendingFieldsNames, transformUserWithPendingOverrides, upgradeVerificationStatus } from '../utils/helpers';
 import { USER_PROFILE_DATA } from '../utils/constants/userProfileData';
 import { PROFILE_DETAILS_TABS } from '../utils/constants/profileDetailsPageTabs';
 import Loading from '../loading';
@@ -27,13 +22,7 @@ import ProfileReviews from '@/components/profileReviews/ProfileReviews';
 export default function ProfileReview() {
   const [loader, setLoader] = useState(true);
   const [user, setUser] = useState(null);
-  // const [userId, setUserId] = useState(null);
-  // const [token, setToken] = useState(null);
-  const [userRatesAndServices, setUserRatesAndServices] = useState({
-    services: [],
-    incall: [],
-    outcall: [],
-  });
+  const [requestedFieldsToChange, setRequestedFieldsToChange] = useState(null);
   const [showMessage, setShowMessage] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [activeTabId, setActiveTabId] = useState(0);
@@ -62,7 +51,8 @@ export default function ProfileReview() {
           // navigate('/login');
         } else {
           setLoader(false);
-          Array.isArray(data) ? setUser(data[0]) : setUser(data);
+          const userData = Array.isArray(data) ? data[0] : data;
+          fetchUserWithRatesAndServices(userData, userData.id);
         }
       })
       .catch(err => console.log('err', err))
@@ -88,12 +78,20 @@ export default function ProfileReview() {
       });
     };
 
-    fetchRatesAndServices(token);
   }, [])
 
-  const fetchRatesAndServices = async (token) => {
-    const ratesAndServicesData = await fetchUserRatesAndServices(token);
-    ratesAndServicesData && setUserRatesAndServices(ratesAndServicesData);
+  const fetchUserWithRatesAndServices = async (userData, userId) => {
+    const ratesAndServicesData = await fetchUserRatesAndServices(null, null, userId);
+    if(!ratesAndServicesData) setUser(userData);
+    if (requestType === 'data_change') {
+      const transformedUser = transformUserWithPendingOverrides({...userData, ...ratesAndServicesData}, userData.pendingData)
+      console.log('requestType', requestType, 'transformedUser', transformedUser);
+      console.log('svskdv');
+      setRequestedFieldsToChange(getUserPendingFieldsNames(userData.pendingData));
+      setUser(transformedUser);
+    } else {
+      setUser({...userData, ...ratesAndServicesData});
+    }
   };
 
   const handleButtonClick = (action, requestType) => {
@@ -151,16 +149,11 @@ export default function ProfileReview() {
       });
   };
 
-const {coverPhoto, profilePicture, managerEscortEmail, email, name, lastName, phoneNumber, instagramLink, onlyFansLink, websiteLink, verificationStatus, photos, aboutMe, glam, closet, extras, username, schedule, additionalInfo, selfies, reviews, availableNow, digitalService} = user || {};
+const {coverPhoto, profilePicture, managerEscortEmail,managerID, email, name, lastName, phoneNumber, instagramLink, onlyFansLink, websiteLink, verificationStatus, photos, aboutMe, glam, closet, extras, username, schedule, additionalInfo, selfies, reviews, availableNow, digitalService, incall, outcall, services} = user || {};
 
   return (
     <>
       <div className={`${styles.mainWrap} page-width`}>
-        <Text
-          tag={'h2'}
-          className={styles.heading}
-          children={'Profile review'}
-        />
         {requestInfo?.title &&
           <Text
             tag={'h4'}
@@ -168,12 +161,19 @@ const {coverPhoto, profilePicture, managerEscortEmail, email, name, lastName, ph
             children={requestInfo?.title}
           />
         }
+        {requestedFieldsToChange &&
+          <Text
+            tag={'h2'}
+            className={styles.subtitle}>
+            Changes are made in  <span className={styles.bold}>{requestedFieldsToChange}</span>.
+            </Text>
+        }
         <div className={styles.buttons}>
           <Button
             className={styles.button}
             onClick={() => handleButtonClick('accept', requestInfo?.type)}
             variant={'main'}
-            children={'Accept'}
+            children={`${requestType === 'data_change' ? 'Accept changes' : 'Accept'}`}
           />
           <Button
             href={`mailto:${user?.email}`}
@@ -211,7 +211,7 @@ const {coverPhoto, profilePicture, managerEscortEmail, email, name, lastName, ph
                 }}
                 profileProviderPersonalInfo={USER_PROFILE_DATA(user)}
                 providerContactInfo={{
-                  email: managerEscortEmail || email,
+                  email: managerID ? managerEscortEmail : email,
                   phone: phoneNumber
                 }}
                 provierSocialLinks={{
@@ -245,9 +245,9 @@ const {coverPhoto, profilePicture, managerEscortEmail, email, name, lastName, ph
               }
               {activeTabId === 2 &&
                 <ProfileRatesAndServices
-                  incall={userRatesAndServices?.incall}
-                  outcall={userRatesAndServices?.outcall}
-                  services={userRatesAndServices?.services}
+                  incall={incall}
+                  outcall={outcall}
+                  services={services}
                 />
               }
               {activeTabId === 3 &&

@@ -112,6 +112,7 @@ export default function ProfileReviews ({
               userSelectedInterests={null}
               userReviews={reviews}
               updateChange={updateUserPendingOvverridesAndSubmitUserData}
+              setShowEditReviewsPopup={setShowEditReviewsPopup}
             />
           </FormModal>
         }

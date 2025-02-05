@@ -71,7 +71,7 @@ export default function Provider () {
             profileDigitalService={providerData?.digitalService}
             profileProviderPersonalInfo={USER_PROFILE_DATA(providerData)}
             providerContactInfo={{
-              email: providerData?.managerEscortEmail || providerData?.email,
+              email: (providerData?.managerID && providerData?.managerID !== '') ? providerData?.managerEscortEmail : providerData?.email,
               phone: providerData?.phoneNumber
             }}
             provierSocialLinks={{
