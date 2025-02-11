@@ -34,7 +34,7 @@ export default function FilterCategories({
             <Button
               children={'Apply filters'}
               variant={'main'}
-              onClick={onApplyFilterButtonClick}
+              onClick={() => onApplyFilterButtonClick(filteredOptions)}
             />
           </div>
         </div>

@@ -39,7 +39,7 @@ export default function CategoryField ({
   };
 
   const handleOnChange = (e, value, name) => {
-    const isSelected = filteredOptions[name].length ? filteredOptions[name].includes(value) : false;
+    const isSelected = filteredOptions[name]?.length ? filteredOptions[name]?.includes(value) : false;
     const updatedOptions = isSelected ? filteredOptions[name].filter(filteredOption => filteredOption !== value) : [...filteredOptions[name], value];
     setFilteredOptions({ ...filteredOptions, [name]: updatedOptions })
   };
@@ -98,7 +98,7 @@ export default function CategoryField ({
                     id={`option-${index}`}
                     name={option?.label || option}
                     onChange={(e) => handleOnChange(e, option?.value || option, name)}
-                    checked={filteredOptions[name].includes(option?.value || option)}
+                    checked={filteredOptions[name]?.includes(option?.value || option)}
                   />
                   {option?.label || option}
                 </label>

@@ -7,7 +7,7 @@ export default function ContactDetails ({formData, onChange, onMouseDown, errorM
   return (
     <div className={`${styles.socialLinks}`}>
       {role !== MANAGER.type &&
-        <div className='formGroup email socialLink'>
+        <div className='formGroup email'>
           <InputField
             label='Email Address'
             type='text'
@@ -41,7 +41,7 @@ export default function ContactDetails ({formData, onChange, onMouseDown, errorM
         type='number'
         name='phoneNumber'
         id='phoneNumber'
-        fieldClassName='socialLink phoneNumber'
+        fieldClassName='phoneNumber'
         value={formData.phoneNumber ? formData.phoneNumber : ''}
         onChange={onChange}
         isRequired={true}
@@ -67,7 +67,6 @@ export default function ContactDetails ({formData, onChange, onMouseDown, errorM
         type='text'
         name='websiteLink'
         id='websiteLink'
-        fieldClassName='socialLink'
         value={formData.websiteLink === null ? '' : formData.websiteLink}
         onChange={onChange}
         errorMessage={errorMessage}
@@ -77,7 +76,6 @@ export default function ContactDetails ({formData, onChange, onMouseDown, errorM
         type='text'
         name='instagramLink'
         id='instagramLink'
-        fieldClassName='socialLink'
         value={formData.instagramLink ? formData.instagramLink : ''}
         onChange={onChange}
         errorMessage={errorMessage}
@@ -97,7 +95,6 @@ export default function ContactDetails ({formData, onChange, onMouseDown, errorM
         type='text'
         name='onlyFansLink'
         id='onlyFansLink'
-        fieldClassName='socialLink'
         value={formData.onlyFansLink ? formData.onlyFansLink : ''}
         onChange={onChange}
         errorMessage={errorMessage}

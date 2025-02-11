@@ -10,8 +10,9 @@ import ProviderCard from '@/components/providerCard/ProviderCard';
 import Button from '@/components/button/Button';
 import Loading from '@/app/loading';
 import Text from '@/components/text/Text';
-import { buildQueriesForFilteredOptions, generateListOfOptionsForExistingResults } from '@/app/utils/helpers';
+import { buildDynamicQuery, buildDynamicVariables, generateListOfOptionsForExistingResults } from '@/app/utils/helpers';
 import Banner from '@/components/banner/Banner';
+import { useFetchData } from '@/app/utils/hooks/useFetch';
 
 export default function LocationCategoryPage({params}) {
   const { category } = params;
@@ -69,30 +70,20 @@ export default function LocationCategoryPage({params}) {
     setFilteredOptions(DEFAULT_CATEGORIES_OPTIONS);
   };
 
-  const fetchProvidersData = async () => {
-    const city = category && category.replaceAll('-', ' ');
-    try {
-      const response = await fetch(
-        `${baseUrl}/api/users?filters[city][$eq]=${city}&filters[isApprovedByAdmin][$eq]=true&filters[role][type][$eq]=service_provider&populate=*`
-      );
-      const results = await response.json();
-      results && setProvidersList(results);
-      results && setProvidersDefaultList(results);
-      generateOptionsForFilterCategories(results);
-    } catch (err) {
-      console.log(err);
-    };
-  };
 
-  const fetchUsersByFilteredOptions = async (query) => {
-    const city = category && category.replaceAll('-', ' ');
+  const fetchProvidersData = async (filteredOptions) => {
     try {
-      const response = await fetch(
-        `${baseUrl}/api/users?filters[city][$eq]=${city}&filters[isApprovedByAdmin][$eq]=true&filters[role][type][$eq]=service_provider&filters${query}&populate=*`
-      );
-      const results = await response.json();
-      results && setProvidersList(results);
-      if (results.length === 0) {
+      const results = await fetchUsers(filteredOptions);
+      const users = results.map(user => ({
+        ...user?.attributes,
+        id: Number(user?.id),
+      }));
+      users && setProvidersList(users);
+      if (!providersDefaultList.length && users) {
+        setProvidersDefaultList(users);
+        generateOptionsForFilterCategories(users);
+      };
+      if (users.length === 0) {
         setNoResults(true);
       } else {
         setNoResults(false);
@@ -100,6 +91,24 @@ export default function LocationCategoryPage({params}) {
     } catch (err) {
       console.log(err);
     };
+  };
+
+
+  const fetchUsers = async (filteredOptions) => {
+    const city = category && category && category.replaceAll('-', ' ');
+    const {from, to} = filteredOptions?.hourlyRate || {};
+    const data = await useFetchData(`${baseUrl}/graphql`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: buildDynamicQuery(from, to),
+        variables: buildDynamicVariables({...filteredOptions, city}),
+      }),
+    });
+
+    return data?.data?.usersPermissionsUsers?.data;
   };
 
   const isFilteredAtleastOneCategory = (options) => {
@@ -122,8 +131,8 @@ export default function LocationCategoryPage({params}) {
       setNoResults(false);
       return;
     };
-    const query = buildQueriesForFilteredOptions(filteredOptions);
-    fetchUsersByFilteredOptions(query);
+
+    fetchProvidersData(filteredOptions);
   };
 
   const categoryName = category.charAt(0).toUpperCase() + category.slice(1);
@@ -163,7 +172,7 @@ export default function LocationCategoryPage({params}) {
                         key={index}
                         provider={result}
                         count={4}
-                        roleType={result.role.type}
+                        roleType={result.role?.data?.attributes?.type}
                       />
                     )
                   }

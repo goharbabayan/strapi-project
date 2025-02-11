@@ -10,11 +10,11 @@ import Text from '@/components/text/Text';
 import Button from '@/components/button/Button';
 import Loading from '../loading';
 import FilterCategories from '@/components/filterCategories/FilterCategories';
-import { buildQueriesForFilteredOptions } from '../utils/helpers';
-import { SERVICE_PROVIDER } from '../utils/constants/userRoles';
 import { DEFAULT_CATEGORIES_OPTIONS } from '../utils/constants/categories';
 import Banner from '@/components/banner/Banner';
 import FilterIcon from '@/components/icons/Filter';
+import { useFetchData } from '../utils/hooks/useFetch';
+import { buildDynamicQuery, buildDynamicVariables } from '../utils/helpers';
 
 export default function Search() {
   const [desktopImage, setDesktopImage] = useState(null);
@@ -40,14 +40,23 @@ export default function Search() {
   }, [searchResults]);
 
   useEffect(() => {
-    const isSearchQueriesOrFilteredOptionsExist = searchQueries.length > 0   ||  hasAtLeastOneValue(filteredOptions);
-    isSearchQueriesOrFilteredOptionsExist && handleApllyFilteredOptions(filteredOptions);
+    let options = filteredOptions;
+    if (searchQueries.length > 0) {
+      options = {...filteredOptions, name: searchQueries, lastName: searchQueries};
+    } else {
+      let {name, lastName, ...other} = filteredOptions
+      options = other;
+    };
+
+    setFilteredOptions(options);
+    const isSearchQueriesOrFilteredOptionsExist = searchQueries.length > 0 || hasAtLeastOneValue(filteredOptions);
+    isSearchQueriesOrFilteredOptionsExist && handleApllyFilteredOptions(options);
   }, [searchQueries]);
 
   function hasAtLeastOneValue(object) {
     let valueIsNotEmpty = false;
     Object.values(object).forEach(item => {
-      if (item.length > 0) {
+      if (item?.length > 0) {
         valueIsNotEmpty = true;
         return;
       }
@@ -73,35 +82,42 @@ export default function Search() {
     setFilteredOptions(DEFAULT_CATEGORIES_OPTIONS);
   };
 
-  const handleApllyFilteredOptions = async () => {
-    let data = filteredOptions;
-    if (searchQueries.length > 0) {
-      data = {...filteredOptions, nameOrLastName: [searchQueries]};
-    } else {
-      data = {...filteredOptions, nameOrLastName: []};
-    };
-    setFilteredOptions(data);
-    const query = buildQueriesForFilteredOptions(data);
-    if (query === '') {
-      setSearchResults([]);
-      return;
-    };
+  const fetchUsers = async (filteredOptions) => {
+    const {from, to} = filteredOptions?.hourlyRate || {};
+    const data = await useFetchData(`${baseUrl}/graphql`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: buildDynamicQuery(from, to),
+        variables: buildDynamicVariables(filteredOptions),
+      }),
+    });
 
+    return data?.data?.usersPermissionsUsers?.data;
+  };
+
+  const fetchProvidersData = async (filteredOptions) => {
     try {
-      const response = await fetch(
-        `${baseUrl}/api/users?filters${query}&filters[isApprovedByAdmin][$eq]=true&filters[role][type][$eq]=service_provider&populate=*`
-      );
-      const results = await response.json();
-      setSearchResults(results);
-      const isAllMemebersDontProvidersOrNotApprovedYet = results.every(result => result.role.type !== SERVICE_PROVIDER.type || !result.isApprovedByAdmin)
-      if (results.length === 0 || isAllMemebersDontProvidersOrNotApprovedYet) {
+      const results = await fetchUsers(filteredOptions);
+      const users = results.map(user => ({
+        ...user?.attributes,
+        id: Number(user?.id),
+      }));
+      users && setSearchResults(users);
+      if (users.length === 0) {
         setNoResults(true);
       } else {
         setNoResults(false);
-      };
+      }
     } catch (err) {
       console.log(err);
     };
+  };
+
+  const handleApllyFilteredOptions = async (options) => {
+    fetchProvidersData(options);
   };
 
   return (
@@ -150,7 +166,7 @@ export default function Search() {
                     key={result.id}
                     provider={result}
                     count={4}
-                    roleType={result.role.type}
+                    roleType={result?.role?.data?.attributes?.type}
                   />
                 ))}
                 {showLoadMore && (

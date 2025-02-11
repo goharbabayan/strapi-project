@@ -1,5 +1,6 @@
 .card {
   width: 100%;
+  position: relative;
 }
 
 .card.hasCount {
@@ -7,7 +8,7 @@
   width: calc(var(--provider-card-width) - 17px);
 }
 
-.mainWrap {
+.mainWrap, .managerEscortCardWrapper {
   position: relative;
   padding: 13px 16px;
   border-radius: 10px;
@@ -24,11 +25,28 @@
 }
 
 .imageWrapper {
-  width: 100%;
-  height: 100%;
-  padding-top: var(--image-aspect-ratio);
   position: relative;
-  top: 0;
+}
+
+.available {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 24px;
+  background: var(--color-main);
+  padding: 5px 10px;
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 3;
+}
+
+.badge {
+  color: var(--neutral-white-n10);
+  font-family: var(--primary-bold-font);
+  font-size: 16px;
+  font-style: normal;
+  line-height: 20px;
 }
 
 .info {
@@ -82,7 +100,6 @@
 }
 
 .starIcon {
-  display: block;
   background-color: var(--neutral-white-n10);
   border-radius: 10px;
   border: 1px solid var(--neutral-white-n10);
@@ -91,7 +108,7 @@
   position: absolute;
   right: 22px;
   top: 19px;
-  z-index: 2;
+  z-index: 9;
 }
 
 .services {
@@ -107,7 +124,8 @@
   align-items: flex-start;
 }
 
-.otherInfo .text {
+.otherInfo .text,
+.digitalService {
   padding-top: 13px;
 }
 
@@ -130,6 +148,203 @@
   font-size: 16px;
   font-style: normal;
   line-height: 20px;
+}
+
+.digitalServiceText {
+  overflow: hidden;
+  color: #FFF;
+  text-overflow: ellipsis;
+  font-family: var(--primary-font);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  padding: 5px 11px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.20);
+}
+
+.managerEscortCard {
+  display: flex;
+  position: relative;
+}
+
+.managerEscortCardWrapper {
+  flex-grow: 1;
+  border-radius: 10px;
+  border: 2px solid var(--neutral-n20);
+  background: var(--neutral-white-n10);
+}
+
+.managerEscortInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding-top: 15px;
+  background: var(--neutral-n10);
+  transition: background-color .2s ease-in-out;
+  min-height: 135px;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.fullname {
+  color: var(--neutral-black);
+  font-family: var(--headings-font);
+  font-size: 38px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: calc(100% - 152px);
+}
+
+.profilePicture {
+  position: relative;
+  background-color: var(--grey);
+}
+
+.emptyImage {
+  padding-top: var(--ratio-percent);
+}
+
+.button {
+  cursor: pointer;
+  transition:opacity .2s ease-in;
+}
+
+.button:hover {
+  opacity: 80%;
+}
+
+.visitProfileButton {
+  gap: 8px;
+}
+
+.verificationBadgeContainer {
+  display: flex;
+  padding: 7px 4px;
+  position: absolute;
+  top: 25.5px;
+  left: 25.5px;
+  border-radius: 8px;
+  background: var(--neutral-white-n10);
+  z-index: 3;
+  cursor: pointer;
+}
+
+.verificationBadgeContainer > svg {
+  width: 36px;
+  height: 26px;
+}
+
+.verificationBadgeContainer::before {
+  content: "";
+  position: absolute;
+  bottom: -30%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 11px;
+  border-style: solid;
+  border-color: transparent transparent var(--neutral-white-n10) transparent ;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.verificationBadgeContainer::after {
+  content: var(--verification-badge-text);
+  position: absolute;
+  bottom: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--neutral-white-n10);
+  color: var(--neutral-black);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 20px;
+  padding: 4px 8px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  pointer-events: none;
+  z-index: 8;
+}
+
+.verifiedIconContainer {
+  position: absolute;
+  display: flex;
+  bottom: 155px;
+  right: 24.5px;
+  z-index: 8;
+  cursor: pointer;
+}
+
+.verifiedIconContainer::before {
+  content: "Approved by admin";
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--neutral-white-n10);
+  color: var(--neutral-black);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 20px;
+  padding: 4px 8px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  pointer-events: none;
+  z-index: 8;
+}
+
+.verifiedIconContainer::after {
+  content: "";
+  position: absolute;
+  bottom: 67%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 11px;
+  border-style: solid;
+  border-color: var(--neutral-white-n10) transparent transparent transparent;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.verifiedIconContainer:hover::before,
+.verifiedIconContainer:hover::after,
+.verificationBadgeContainer:hover::before,
+.verificationBadgeContainer:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+.logoText {
+  color: var(--neutral-white-n10);
+  font-family: var(--headings-font);
+  font-size: 1.75em;
+  font-weight: 400;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  line-height: 70px;
 }
 
 @media screen and (min-width: 900px) {
@@ -188,5 +403,9 @@
   .card.hasCount {
     max-width: 100%;
     width: 100%;
+  }
+
+  .fullname {
+    font-size: 24px;
   }
 }

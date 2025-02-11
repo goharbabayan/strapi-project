@@ -23,7 +23,6 @@ export default function PersonalDetails ({
   showUsername,
   role,
 }) {
-console.log('role', role);
 
   return (
     <div>

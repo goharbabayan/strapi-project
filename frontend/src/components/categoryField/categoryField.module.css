@@ -64,7 +64,7 @@
   flex-direction: column;
   max-height: 220px;
   padding-inline: 8px;
-  z-index: 2;
+  z-index: 9;
   background: var(--neutral-white-n10);
   border-radius: 8px;
   border: 1px solid var(--neutral-n50);

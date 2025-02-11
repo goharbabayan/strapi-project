@@ -135,8 +135,19 @@ module.exports = {
       ctx.request.body.email = ctx.request.body.email.toLowerCase();
     }
 
-    const updateData = {
+    const {adminApprovalDataChange} = ctx.request.body;
+    let updateData = {
       ...ctx.request.body,
+    };
+
+    const userPendingData = JSON.parse(user?.pendingData);
+    if (adminApprovalDataChange === 'accept') {
+      for (const [key, value] of Object.entries(userPendingData)) {
+        updateData[key] = value;
+      };
+      updateData.pendingData = null;
+    } else if (adminApprovalDataChange === 'decline') {
+      updateData.pendingData = null;
     };
 
     const data = await getService('user').edit(user.id, updateData);

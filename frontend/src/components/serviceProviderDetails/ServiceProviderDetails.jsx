@@ -47,10 +47,12 @@ export default function ServiceProviderDetails ({
   isVerified,
   role,
   userId,
+  isForManagerEscort,
   approvalFieldsInfo,
   unsavedChanges,
   errors,
   setErrors,
+  setShowVerificationPopup,
   updateServicesTypeChange,
 }) {
   
@@ -128,6 +130,9 @@ export default function ServiceProviderDetails ({
     confirmAdminApprovalFieldsChanges();
     // make empty unSaved changes
     setShowAdminApprovalDataChangeConfirmationModal(false);
+    setTimeout(() => {
+      setGeneralActiveTabId('account');
+    }, 5000)
   };
 
   const handleCancelRequestForApprovalDataChanges = () => {
@@ -149,7 +154,6 @@ export default function ServiceProviderDetails ({
     setErrors(null);
 
     const hasMadeChange = JSON.stringify(user[field]) !== JSON.stringify(value);
-    // console.log('hasMadeChange', hasMadeChange, JSON.stringify(user[field]), JSON.stringify(value));
     if (!hasMadeChange) return;
     const isAdminApprovalField = checkIsAdminApprovalField(field);
     const isRequiredField = checkIsRequiredField(field);
@@ -181,7 +185,6 @@ export default function ServiceProviderDetails ({
     setErrors(null);
     // cancel edit in form not confirmation question
     discardChanges();
-
     setGeneralActiveTabId('account');
   };
 
@@ -194,9 +197,16 @@ export default function ServiceProviderDetails ({
     };
     // showSuccessMessage
     const hasAtLeastOneChange = JSON.stringify(originalUser) !== JSON.stringify(currentUserWithoutPendingChanges);
-  //  console.log ('hasAtLeastOneChange', hasAtLeastOneChange);
+    if(!hasAtLeastOneChange) return;
     hasAtLeastOneChange && submitData(currentUserWithoutPendingChanges, true);
     matchUserAndOriginalUserData(currentUserWithoutPendingChanges);
+
+    setTimeout(() => {
+      setShowVerificationPopup(false);
+      if (!errors) {
+        setGeneralActiveTabId('account');
+      };
+    }, 5000);
   };
 
   return (
@@ -289,6 +299,7 @@ export default function ServiceProviderDetails ({
                 isDashboardPage={true}
                 showEditIcon={true}
                 editButtonText={'Edit profile info'}
+                isForManagerEscort={isForManagerEscort}
                 token={token}
                 onChanges={handleChange}
                 onEditProfileInfoButtonClick={handleEditProfileInfoButtonClick}

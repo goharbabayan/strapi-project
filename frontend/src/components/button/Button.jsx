@@ -12,6 +12,7 @@ const Button = ({
   href,
   textClassName,
   Icon,
+  IconAfterText,
   ...props
 }) => {
 
@@ -43,6 +44,7 @@ const Button = ({
         children={children}
         className={textClassName || ''}
       />
+      {IconAfterText && IconAfterText}
     </button>
   );
 };

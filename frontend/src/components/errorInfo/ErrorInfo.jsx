@@ -5,14 +5,14 @@ import styles from './errorInfo.module.css';
 export default function ErrorInfo ({errors, requiredFieldsArray, showInfoIcon}) {
   let requiredFields = [];
   if (!requiredFieldsArray) requiredFields = USER_REQUIRED_FIELDS;
-  const requiredFieldNames = errors 
+  const requiredFieldNames = errors
     ? Object.keys(errors)
         .filter((key) => requiredFields.includes(key))
         .map((key) =>
           `"${key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}"`
         )
         .join(', ')
-    : '';
+    : 'Something went wrong!';
 
   const isSingleField = errors 
     ? Object.keys(errors).filter((key) => requiredFields.includes(key)).length === 1

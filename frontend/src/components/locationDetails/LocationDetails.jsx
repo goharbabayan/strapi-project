@@ -110,6 +110,7 @@ export default function LocationDetails ({
       city: userCity,
     });
     setSuburbCheckboxesState([]);
+    setShowLocationMoodal(false);
   };
 
   return (

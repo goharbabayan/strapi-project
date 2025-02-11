@@ -144,8 +144,6 @@ console.log('formData', formData);
     const validateRates = (rates, type, selectedPlaceOfServiceType) => {
       if (!rates || !rates.general.length && !rates.PSE.length && !rates.GFE.length) {
         if (!errors['services']) {
-          console.log('aaa');
-          
           errors['services'] = `Please add at least one rate for ${type} rates`;
         } else {
           errors['services'] += ` and ${type} rates`;

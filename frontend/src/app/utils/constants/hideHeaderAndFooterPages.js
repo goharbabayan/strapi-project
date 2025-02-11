@@ -3,4 +3,5 @@ export const HIDE_FOOTER_FROM_SELECTED_PAGES = [
   '/login',
   '/recover',
   '/reset-password',
+  '/profile-review',
 ]

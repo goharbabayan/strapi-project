@@ -64,3 +64,14 @@
     padding: 0 16px;
   }
 }
+
+
+@media screen and (max-width: 470px) {
+  .container {
+    column-gap: 15px;
+  }
+
+  .container.noWrap {
+    flex-wrap: nowrap;
+  }
+}

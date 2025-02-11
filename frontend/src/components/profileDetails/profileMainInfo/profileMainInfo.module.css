@@ -45,7 +45,7 @@
   cursor: pointer;
 }
 
-.editButton, .editProfilePictureButton {
+.editButton, .editProfilePictureButton, .emptyEditButton {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -58,15 +58,15 @@
   padding: 8px;
 }
 
-.editButton {
+.editButton, .emptyEditButton {
   border: 1px solid var(--color-main);
 }
 
-.editButton:hover, .editButtonEmptyState:hover {
+.editButton:hover, .editButtonEmptyState:hover, .emptyEditButton:hover {
   opacity: 80%;
 }
 
-.editButtonMobile {
+.editButtonMobile, .emptyEditButtonMobile {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -75,7 +75,7 @@
   cursor: pointer;
   position: absolute;
   bottom: 23px;
-  right: 5px;
+  right: 8px;
   padding: 8px;
 }
 
@@ -91,7 +91,7 @@
   position: relative;
 }
 
-.editButtonMobile {
+.editButtonMobile, .emptyEditButtonMobile {
   display: none;
 }
 
@@ -183,6 +183,10 @@
   max-width: 40%;
 }
 
+.profileFullName.fullWidth {
+  max-width: 70%;
+}
+
 .profileInfoTextContainer {
   display: grid;
   grid-template-rows: repeat(2, 1fr);
@@ -231,13 +235,8 @@
   display: flex;
 }
 
-@media screen and (max-width: 1449px) {
-
-}
-
 @media screen and (max-width: 1069px) {
   .profileFullNameAndAvailability {
-    max-width: 65%;
     flex-wrap: wrap;
   }
 
@@ -245,7 +244,8 @@
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .profileFullName {
+  .profileFullName,
+  .profileFullName.fullWidth {
     max-width: unset;
   }
 }
@@ -267,7 +267,6 @@
 
   .profileFullName {
     font-size: 26px;
-    margin-top: 24px;
     margin-bottom: 18px;
   }
 
@@ -293,6 +292,16 @@
   }
 }
 
+@media screen and (max-width: 490px) {
+  .emptyEditButtonMobile {
+    display: flex;
+  }
+
+  .emptyEditButton {
+    display: none;
+  }
+}
+
 @media screen and (max-width: 749px) {
   .editText {
     display: none;
@@ -300,5 +309,17 @@
 
   .providerContactInfo {
     margin-top: 16px;
+  }
+}
+
+@media screen and (min-width: 980px) {
+  .profileInfoWrapper {
+    max-width: calc(100% - 320px - 24px);
+  }
+}
+
+@media screen and (min-width: 980px) and (max-width: 1100px) {
+  .profileFullNameAndAvailability.isDashboardPage {
+    padding-block: 35px;
   }
 }

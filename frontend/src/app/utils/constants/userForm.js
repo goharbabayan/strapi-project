@@ -234,3 +234,20 @@ export const USER_REQUIRED_FIELDS_FOR_ADDING_REVIEW = [
   'text',
   'date',
 ];
+
+export const USER_FIELDS_IN_PROFILE_EDIT_FORM = [
+  'name',
+  'lastName',
+  'gender',
+  'country',
+  'city',
+  'age',
+  'eyeColor',
+  'hairColor',
+  'bust',
+  'placeOfService',
+  'height',
+  'dressSize',
+  'managerEscortEmail',
+  'phoneNumber',
+];

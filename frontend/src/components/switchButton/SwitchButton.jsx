@@ -7,7 +7,7 @@ const SwitchButton = ({ isOn, handleToggle, label }) => {
       {label &&
         <Text
           tag={'span'}
-          children={`${label} *`}
+          children={label}
           className={styles.switchLabel}
         />
       }

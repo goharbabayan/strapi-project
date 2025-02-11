@@ -12,7 +12,7 @@ import { useContext } from 'react';
 import { AuthContext } from '@/app/Context';
 import { CLIENT } from '@/app/utils/constants/userRoles';
 import UploadIcon from '@/components/icons/UploadIcon';
-import { getVerificationBadge, uploadImage, uploadImageWithWatermark } from '@/app/utils/helpers';
+import { checkHasProfileInfoErroros, getVerificationBadge, getVerificationBadgeText, uploadImageWithWatermark } from '@/app/utils/helpers';
 import Text from '@/components/text/Text';
 import GoldenBadge from '@/components/icons/badges/GoldenBadge';
 import SilverBadge from '@/components/icons/badges/SilverBadge';
@@ -41,6 +41,8 @@ export default function ProfileMainInfo(props) {
     verificationStatus,
     profileIsAvialabile,
     profileDigitalService,
+    isForManagerEscort,
+    isProfileReviewPage,
     onChanges,
     onEditProfileInfoButtonClick,
     errors,
@@ -49,6 +51,7 @@ export default function ProfileMainInfo(props) {
   const {loggedInUserData} = useContext(AuthContext);
   const [findFromFavoritesResponse, setFindFromFavoritesResponse] = useState(null);
   const [isSwitchOn, setIsSwitchOn] = useState(profileIsAvialabile);
+  const [hasProfileInfoErrors, setHasProfileInfoErrors] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const toggleSwitch = () => {
@@ -61,6 +64,10 @@ export default function ProfileMainInfo(props) {
   useEffect(() => {
     loggedInUserData?.role === CLIENT.type && isProviderExistingInClientsFavorites();
   }, []);
+
+  useEffect(() => {
+    setHasProfileInfoErrors(checkHasProfileInfoErroros(errors));
+  }, [errors]);
 
   const fetchData = async (action, endpoint) => {
     // To do get token from Context
@@ -145,6 +152,7 @@ export default function ProfileMainInfo(props) {
                           height={440}
                           VerificationIcon={getVerificationBadge(verificationStatus)}
                           showVerificationBadge={true}
+                          verificationBadgeText={getVerificationBadgeText(verificationStatus)}
                         />
                         {!isDashboardPage && profileIsAvialabile &&
                           <div className={styles.available}>
@@ -176,7 +184,7 @@ export default function ProfileMainInfo(props) {
                               />
                             </label>
                             {showEditIcon &&
-                              <div className={styles.editButtonMobile} onClick={onEditProfileInfoButtonClick}>
+                              <div className={`${styles.editButtonMobile}`} onClick={onEditProfileInfoButtonClick}>
                                 <EditContentIcon/>
                               </div>
                             }
@@ -212,15 +220,15 @@ export default function ProfileMainInfo(props) {
                                 className={styles.editButtonText}
                                 children={'Upload profile picture'}
                               />
-                              {showEditIcon &&
-                                <div className={styles.editButtonMobile} onClick={onEditProfileInfoButtonClick}>
-                                  <EditContentIcon/>
-                                    
-                                </div>
-                              }
                             </label>
                           </div>
                         </div>
+                        {showEditIcon &&
+                          <div className={`${styles.emptyEditButtonMobile}`} onClick={onEditProfileInfoButtonClick}>
+                            <EditContentIcon/>
+                              
+                          </div>
+                        }
                       </div>
                   }
                 </>
@@ -228,23 +236,23 @@ export default function ProfileMainInfo(props) {
           </div>
           <div className={styles.profileInfoWrapper}>
             {showEditIcon &&
-              <div className={`${styles.editButton} ${errors ? styles.invalidBorder : ''}`} onClick={onEditProfileInfoButtonClick}>
-                <EditContentIcon fillColor={`${errors ? 'var(--red-r5)' : 'var(--color-main)'}`}/>
+              <div className={`${!profilePhoto ? styles.emptyEditButton : styles.editButton} ${hasProfileInfoErrors ? styles.invalidBorder : ''}`} onClick={onEditProfileInfoButtonClick}>
+                <EditContentIcon fillColor={`${hasProfileInfoErrors ? 'var(--red-r5)' : 'var(--color-main)'}`}/>
                   {editButtonText &&
                     <Text
                       tag={'span'}
-                      className={`${styles.editText} ${errors ? styles.invalidText : ''}`}
+                      className={`${styles.editText} ${hasProfileInfoErrors ? styles.invalidText : ''}`}
                       children={editButtonText}
                     />
                   }
               </div>
             }
-            <div className={styles.profileFullNameAndAvailability}>
+            <div className={`${styles.profileFullNameAndAvailability} ${isDashboardPage ? styles.isDashboardPage : ''}`}>
               {profileProviderFullName.name || profileProviderFullName.lastname
                 ?
                   <Text
                     tag={'h3'}
-                    className={styles.profileFullName}
+                    className={`${styles.profileFullName} ${(isForManagerEscort || isProfileReviewPage )? styles.fullWidth : ''}`}
                     children={`${profileProviderFullName.name} ${profileProviderFullName.lastname}`}
                   />
                 :
@@ -254,11 +262,11 @@ export default function ProfileMainInfo(props) {
                     children={`Name Lastname`}
                   />
               }
-              {isDashboardPage &&
+              {isDashboardPage && !isForManagerEscort &&
                 <SwitchButton
                   isOn={isSwitchOn}
                   handleToggle={toggleSwitch}
-                  label={'Available now'}
+                  label={'Available now *'}
                 />
               }
              {!isDashboardPage && profileDigitalService && profileDigitalService === 'true' &&

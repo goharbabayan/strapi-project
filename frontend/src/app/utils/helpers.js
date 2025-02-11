@@ -4,7 +4,7 @@ import GoldenBadge from "@/components/icons/badges/GoldenBadge";
 import SilverBadge from "@/components/icons/badges/SilverBadge";
 import BronzeBadge from "@/components/icons/badges/BronzeBadge";
 import { ADMIN_APPROVAL_FIELDS } from "./constants/userAdminApprovalFields";
-import { USER_FORM_NEW_MEMBER, USER_REQUIRED_FIELDS } from "./constants/userForm";
+import { USER_FIELDS_IN_PROFILE_EDIT_FORM, USER_FORM_NEW_MEMBER, USER_REQUIRED_FIELDS } from "./constants/userForm";
 import { CLIENT, MANAGER, SERVICE_PROVIDER } from "./constants/userRoles";
 import { formatFieldName } from "./validation";
 
@@ -98,10 +98,16 @@ export const generateListOfOptionsForExistingResults = (results) => {
       const optionIsNotExistingInOptionsListAndIsNotServicesOption = provider[categoryName] && categoryName !== 'services' && !options[categoryName].includes(provider[categoryName]);
 
       if (isEmptyCategoryArrayValue) return;
-      if (isCategoryArrayField && categoryName === 'services') {
-        provider[categoryName].forEach(item => {
-          const itemIsNotIncludedInOptionsListAndItemValueIsNotEmpty = item.item && !options[categoryName].includes(item.item);
-          itemIsNotIncludedInOptionsListAndItemValueIsNotEmpty && options[categoryName].push(item.item);
+      if (provider[categoryName] && categoryName === 'services') {
+        if (!provider[categoryName]) return;
+        const { general, GFE, PSE } = provider[categoryName];
+        [general, GFE, PSE].forEach(category => {
+          if (Array.isArray(category)) {
+            category.forEach(service => {
+              const itemIsNotIncludedInOptionsListAndItemValueIsNotEmpty = service.item && !options[categoryName].includes(service.item);
+              itemIsNotIncludedInOptionsListAndItemValueIsNotEmpty && options[categoryName].push(service.item);
+          });
+          }
         });
       } else if (isCategoryArrayField && categoryName === 'suburbs') {
         provider[categoryName].forEach(item => {
@@ -283,6 +289,20 @@ export function getVerificationBadge (verificationStatus) {
   } else if (hasBronzeBadge) return (<BronzeBadge />);
 };
 
+export function getVerificationBadgeText (verificationStatus) {
+  if (!verificationStatus) {
+    return '';
+  };
+
+  const {hasBronzeBadge, hasSilverBadge, hasGoldBadge} = verificationStatus;
+
+  if (hasGoldBadge) {
+    return 'SNEAKY photoshoot verified';
+  } else if (hasSilverBadge) {
+    return 'Video verified';
+  } else if (hasBronzeBadge) return 'Photos verified';
+};
+
 export const getVerificationStatus = (verificationStatus) => {
   if (!verificationStatus) {
     return { verifiedLevel: null, badgeIcon: <BronzeBadge /> };
@@ -357,8 +377,28 @@ export const checkIsRequiredField = (field) => {
 export const getUserPendingFieldsNames = (pendingDataJSON) => {
   const pendingData = pendingDataJSON ? JSON.parse(pendingDataJSON) : {};
   const fieldsNames = Object.keys(pendingData).map(fieldName => formatFieldName(fieldName)).join(', ');
-  console.log('fieldsNames', fieldsNames);
   return fieldsNames;
+};
+
+const complexTypesFields = ['coverPhoto', 'profilePicture', 'photos', 'services', 'selfies'];
+
+export function stringifyPendingDataKeys(userPendingData){
+  for (const key of complexTypesFields) {
+    if (userPendingData[key] && typeof userPendingData[key] === 'object') {
+      userPendingData[key] = JSON.stringify(userPendingData[key]);
+    };
+  }
+  return JSON.stringify(obj);
+};
+
+export function parsePendingDataKeys(stringifiedPendingData) {
+  const parsedPendingData = JSON.parse(stringifiedPendingData);
+  for (const key of complexTypesFields) {
+    if (parsedPendingData[key] && typeof parsedPendingData[key] === 'string') {
+      parsedPendingData[key] = JSON.parse(parsedPendingData[key]);
+    }
+  }
+  return parsedPendingData;
 };
 
 export const transformUserWithPendingOverrides = (user, pendingDataJSON) => {
@@ -376,23 +416,23 @@ export const fetchUserRatesAndServices = async (customerToken, username, userId)
   if (!customerToken && !username && !userId) return null;
   try {
     let data;
-    if (customerToken) {
+    if (username) {
+      const ratesDataArray = await useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users?filters[username][$eq]=${username}&populate[services][populate][0]=general&populate[services][populate][1]=PSE&populate[services][populate][2]=GFE&populate[incall][populate][0]=general&populate[incall][populate][1]=PSE&populate[incall][populate][2]=GFE&populate[outcall][populate][0]=general&populate[outcall][populate][1]=PSE&populate[outcall][populate][2]=GFE`, {
+        method: 'GET',
+      });
+      data = ratesDataArray[0];
+    } else if (userId) {
+      const ratesDataArray = await useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users?filters[id][$eq]=${userId}&populate[services][populate][0]=general&populate[services][populate][1]=PSE&populate[services][populate][2]=GFE&populate[incall][populate][0]=general&populate[incall][populate][1]=PSE&populate[incall][populate][2]=GFE&populate[outcall][populate][0]=general&populate[outcall][populate][1]=PSE&populate[outcall][populate][2]=GFE`, {
+        method: 'GET',
+      });
+      data = ratesDataArray[0];
+    } else if (customerToken) {
       data = await useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/me?populate[services][populate][0]=general&populate[services][populate][1]=PSE&populate[services][populate][2]=GFE&populate[incall][populate][0]=general&populate[incall][populate][1]=PSE&populate[incall][populate][2]=GFE&populate[outcall][populate][0]=general&populate[outcall][populate][1]=PSE&populate[outcall][populate][2]=GFE`, {
         method: 'GET',
         headers: {
           'authorization': `Bearer ${customerToken}`
         }
       });
-    } else if (username) {
-      const ratesDataArray = await useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users?filters[username][$eq]=${username}&populate[services][populate][0]=general&populate[services][populate][1]=PSE&populate[services][populate][2]=GFE&populate[incall][populate][0]=general&populate[incall][populate][1]=PSE&populate[incall][populate][2]=GFE&populate[outcall][populate][0]=general&populate[outcall][populate][1]=PSE&populate[outcall][populate][2]=GFE`, {
-        method: 'GET',
-      });
-      data = ratesDataArray[0];      
-    } else if (userId) {
-      const ratesDataArray = await useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users?filters[id][$eq]=${userId}&populate[services][populate][0]=general&populate[services][populate][1]=PSE&populate[services][populate][2]=GFE&populate[incall][populate][0]=general&populate[incall][populate][1]=PSE&populate[incall][populate][2]=GFE&populate[outcall][populate][0]=general&populate[outcall][populate][1]=PSE&populate[outcall][populate][2]=GFE`, {
-        method: 'GET',
-      });
-      data = ratesDataArray[0];
     }
 
     const services = await data?.services || {
@@ -520,59 +560,271 @@ export const fetchUserUpdatedData = async (customerToken, userData, username) =>
   };
 };
 
-export const fetchUserData = async (customerToken, getVerificationStatus, userData, username) => {
-  const userUpdatedData = await fetchUserUpdatedData(customerToken, getVerificationStatus, userData, username);
+export const fetchUserData = async (customerToken, userData, username) => {
+  const userUpdatedData = await fetchUserUpdatedData(customerToken, userData, username);
   return userUpdatedData;
-  // useFetchData(`${strapiBaseUrl}/api/users/me?populate=*`, {
-  //   method: 'GET',
-  //   headers: {
-  //     'authorization': `Bearer ${customerToken}`
-  //   }
-  // }).then(data => {
-  //   if (data.error) {
-  //     // the token is expired, need to login again to update existing token;
-  //     navigate('/login');
-  //   } else {
-  //     const { id, blocked, createdAt, updatedAt, confirmed, role, ...user } = data;
-  //     const isProviderRole = role.type === SERVICE_PROVIDER.type;
-  //     const isManagerRole = role.type === MANAGER.type;
-  //     console.log('services', services);
-      
-  //     const userInfo = {...user, services: services};
-  //     const transformedUser = transformUserWithPendingOverrides(userInfo, userInfo.pendingData)
+};
 
-  //     // I have added userVerificationStatus and userWithPendingOverrides only for service provider role
-  //     // userWithPendingOverrides is only for displaying pendin data values on provider's dashboard untill they will be accepted or declined and removed from user.pendingData.
-  //     if (isManagerRole) {
-  //       setUserData({
-  //         ...userData,
-  //         originalUser: userInfo,
-  //         manager: userInfo,
-  //         managerId: id,
-  //         managerEmail: userInfo.email,
-  //         role: role?.type.toLowerCase(),
-  //         managerNewEscort: USER_FORM_NEW_MEMBER(userInfo.email, `${id}`),
-  //         user: USER_FORM_NEW_MEMBER(userInfo.email, `${id}`),
-  //         originalUser: USER_FORM_NEW_MEMBER(userInfo.email, `${id}`),
-  //         userWithPendingOverrides: USER_FORM_NEW_MEMBER(userInfo.email, `${id}`),
-  //         userVerificationStatus: getVerificationStatus(null),
-  //         customSelectedEscort: {},
-  //         customSelectedEscortId: null,
-  //       });
-  //     } else {
-  //       setUserData({
-  //         ...userData,
-  //         originalUser: userInfo,
-  //         user: userInfo,
-  //         userId: id,
-  //         role: role?.type.toLowerCase(),
-  //         ...(isProviderRole && {
-  //           userVerificationStatus: getVerificationStatus(userInfo?.verificationStatus),
-  //           userWithPendingOverrides: transformedUser,
-  //         }),
-  //       });
-  //     }
-  //   };
-  // })
-  // .catch(err => console.log('err', err))
+export const checkHasProfileInfoErroros = (errors) => {
+  if (!errors) return false;
+  const EditProfileFieldsArray = USER_FIELDS_IN_PROFILE_EDIT_FORM;
+  return EditProfileFieldsArray.some((field) => errors[field]);
+};
+
+// Function to build the GraphQL query dynamically
+export const buildDynamicQuery = (minRate, maxRate) => {
+  const isMinRateOrMaxRatesExisting = !(minRate === '' && maxRate === '') && !!(minRate || maxRate);
+  let queryParameters = `
+    $city: [String]
+    $name: String
+    $lastName: String
+    $suburbs: [String]
+    $gender: [String]
+    $services: [String]
+    $hairColor: [String]
+    $age: [String]
+    $eyeColor: [String]
+    $bodyType: [String]
+    $bust: [String]
+    $placeOfService: [String]
+    $extras: [String]
+  `;
+
+  if (isMinRateOrMaxRatesExisting) {
+    queryParameters += `
+      $minRate: Int
+      $maxRate: Int
+    `;
+  };
+
+  let ratesCondition;
+  if (isMinRateOrMaxRatesExisting) {
+    ratesCondition = `
+      { 
+        or: [
+          { incall: { general: { duration: { eq: "1 hour" }, price: { gte: $minRate, lte: $maxRate } } } },
+          { incall: { GFE: { duration: { eq: "1 hour" }, price: { gte: $minRate, lte: $maxRate } } } },
+          { incall: { PSE: { duration: { eq: "1 hour" }, price: { gte: $minRate, lte: $maxRate } } } },
+          { outcall: { general: { duration: { eq: "1 hour" }, price: { gte: $minRate, lte: $maxRate } } } },
+          { outcall: { GFE: { duration: { eq: "1 hour" }, price: { gte: $minRate, lte: $maxRate } } } },
+          { outcall: { PSE: { duration: { eq: "1 hour" }, price: { gte: $minRate, lte: $maxRate } } } }
+        ]
+      }`;
+  };
+
+  let query = `
+    query GetProviders(${queryParameters}) {
+      usersPermissionsUsers(
+        filters: {
+        and: [
+          { isApprovedByAdmin: { eq: true } },
+          { role: { type: { eq: "service_provider" } } },
+          {
+            or: [
+              { city: { in: $city } }
+            ]
+          },
+          ${ratesCondition ? ratesCondition : null},
+          {
+            or: [
+              { name: { containsi: $name } },
+              { lastName: { containsi: $lastName } }
+            ]
+          },
+          {
+            or: [
+              { suburbs: { name: { in: $suburbs } } }
+            ]
+          },
+          {
+            or: [
+              { extras: { item: { in: $extras } } }
+            ]
+          },
+          {
+            or: [
+              { gender: { in: $gender } }
+            ]
+          },
+          {
+            or: [
+              { hairColor: { in: $hairColor } }
+            ]
+          },
+          {
+            or: [
+              { age: { in: $age } }
+            ]
+          },
+          {
+            or: [
+              { eyeColor: { in: $eyeColor } }
+            ]
+          },
+          {
+            or: [
+              { bodyType: { in: $bodyType } }
+            ]
+          },
+          {
+            or: [
+              { bust: { in: $bust } }
+            ]
+          },
+          {
+            or: [
+              { placeOfService: { in: $placeOfService } }
+            ]
+          },
+          {
+            or: [
+              { services: { general: { item: { in: $services } } } },
+              { services: { GFE: { item: { in: $services } } } },
+              { services: { PSE: { item: { in: $services } } } }
+            ]
+          },
+        ]
+      }
+        pagination: { pageSize: 100 }
+      ) {
+        data {
+          id
+          attributes {
+            username
+            name
+            lastName
+            dressSize
+            isApprovedByAdmin
+            verificationStatus {
+              hasBronzeBadge
+              hasGoldBadge
+              hasSilverBadge
+            }
+            availableNow
+            digitalService
+            suburbs {
+              name
+            }
+            gender
+            services {
+              general {
+                item
+              }
+              GFE {
+                item
+              }
+              PSE {
+                item
+              }
+            }
+            hairColor
+            age
+            eyeColor
+            bodyType
+            bust
+            placeOfService
+            extras {
+              item
+            }
+            isApprovedByAdmin
+            availableNow
+            digitalService
+            verificationStatus {
+              hasBronzeBadge
+              hasSilverBadge
+              hasGoldBadge
+            }
+            role {
+              data {
+                attributes {
+                  type
+                }
+              }
+            }
+            incall {
+              general {
+                id
+                duration
+                price
+                additionalInfo
+              }
+              GFE {
+                id
+                duration
+                price
+                additionalInfo
+              }
+              PSE {
+                id
+                duration
+                price
+                additionalInfo
+              }
+            }
+            outcall {
+              general {
+                id
+                duration
+                price
+                additionalInfo
+              }
+              GFE {
+                id
+                duration
+                price
+                additionalInfo
+              }
+              PSE {
+                id
+                duration
+                price
+                additionalInfo
+              }
+            }
+            profilePicture {
+              data {
+                attributes {
+                  name
+                  alternativeText
+                  width
+                  height
+                  url
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  return query;
+};
+
+export const buildDynamicVariables = (options) =>  {
+  let minRate, maxRate;
+  return Object.fromEntries( 
+    Object.entries(options)
+      .filter(([key, value]) => {
+        if (Array.isArray(value)) {
+          return value.length > 0;
+        } else if (typeof value === "object" && value !== null) {
+          return Object.keys(value).length > 0;
+        }
+        return value !== undefined && value !== null && value !== "";
+      })
+      .flatMap(([key, value]) => {
+        if (key === "hourlyRate" && typeof value === "object") {
+          minRate = value.from ? Number(value.from) : 0;
+          maxRate = value.to ? Number(value.to) : 10000000;
+      
+          const isMinRateOrMaxRatesExisting = !(value.from === '' && value.to === '') && !!(value.from || value.to);
+          if (!isMinRateOrMaxRatesExisting) {
+            minRate = undefined;
+            maxRate = undefined;
+          };
+          return isMinRateOrMaxRatesExisting ? [["minRate", minRate], ["maxRate", maxRate]] : [];
+        }
+        return [[key, value]];
+      })
+  );
 };

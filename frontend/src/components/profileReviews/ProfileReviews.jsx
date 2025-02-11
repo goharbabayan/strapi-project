@@ -22,6 +22,7 @@ export default function ProfileReviews ({
   providerId,
   isDashboardPage,
   updateUserPendingOvverridesAndSubmitUserData,
+  hideAddReviewButton,
 }) {
   const [showReviewPopup, setShowReviewPopup] = useState(false);
   const [showEditReviewsPopup, setShowEditReviewsPopup] = useState(false);
@@ -84,12 +85,16 @@ export default function ProfileReviews ({
                   }
                 </>
               :
-                <Button
-                  children={'Add Review'}
-                  onClick={handleShowReviewPopup}
-                  className={styles.button}
-                  variant={'general'}
-                />
+              <>
+                {!hideAddReviewButton &&
+                  <Button
+                    children={'Add Review'}
+                    onClick={handleShowReviewPopup}
+                    className={styles.button}
+                    variant={'general'}
+                  />
+                }
+              </>
             }
           </div>
         }

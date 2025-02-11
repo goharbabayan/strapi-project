@@ -19,6 +19,8 @@ const GET_POPULAR_PROVIDERS_QUERIES = gql`
                   dressSize
                   hairColor
                   isApprovedByAdmin
+                  availableNow
+                  digitalService
                   badge
                   verificationStatus {
                     hasBronzeBadge
@@ -113,6 +115,8 @@ const GET_TOP_PROVIDERS_QUERIES = gql`
                   hairColor
                   badge
                   isApprovedByAdmin
+                  availableNow
+                  digitalService
                   verificationStatus {
                     hasBronzeBadge
                     hasSilverBadge
@@ -212,6 +216,8 @@ const GET_PROVIDERS_BY_TYPE_QUERIES = gql`
                   hairColor
                   badge
                   isApprovedByAdmin
+                  availableNow
+                  digitalService
                   verificationStatus {
                     hasBronzeBadge
                     hasSilverBadge

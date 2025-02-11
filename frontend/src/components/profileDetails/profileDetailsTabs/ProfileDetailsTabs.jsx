@@ -12,7 +12,7 @@ export default function ProfileDetailsTabs({
   return (
     <div className={`${styles.mainWrapper} ${hideMainWrapperBorders ? styles.noBorders : ''}`}>
       <div className='page-width'>
-        <div className={`${styles.container} ${isMenuTabs ? styles.menuTabs : ''}`}>
+        <div className={`${styles.container} ${isMenuTabs ? styles.menuTabs : ''} ${!isMenuTabs ? styles.noWrap : ''}`}>
           {profileDetailsTabsData.map((profileDetailsTab, index) => {
               const {id, label, name, icon} = profileDetailsTab;
               const DynamicIconComponent = icon ? DynamicComponent(icon) : null;

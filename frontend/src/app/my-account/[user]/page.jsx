@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import { AuthContext } from '@/app/Context';
 import styles from './my-account.module.css';
@@ -12,22 +12,16 @@ import { navigate } from '../../actions.js';
 import { CLIENT, SERVICE_PROVIDER, MANAGER } from '../../utils/constants/userRoles.js';
 import { validateForm } from '@/app/utils/validation.js';
 import { useFetchData } from '@/app/utils/hooks/useFetch.jsx';
-import Button from '@/components/button/Button.jsx';
-import Text from '@/components/text/Text.jsx';
-import { fetchAndSetUserData, fetchUserData, fetchUserRatesAndServices, fetchUserUpdatedData, getVerificationStatus, isInputLengthValid, transformUserWithPendingOverrides } from '@/app/utils/helpers';
+import { fetchUserData } from '@/app/utils/helpers';
 import Modal from '@/components/modal/Modal';
 import BronzeBadge from '@/components/icons/badges/BronzeBadge';
 import SilverBadge from '@/components/icons/badges/SilverBadge';
 import GoldenBadge from '@/components/icons/badges/GoldenBadge';
 import InfoIcon from '@/components/icons/Info';
 import Popup from '@/components/popup/Popup';
-import ProfileInfoEditForm from '@/components/profileEditForm/ProfileEditForm';
-import { USER_FORM, USER_FORM_NEW_MEMBER, USER_FORM_WITH_DATA } from '@/app/utils/constants/userForm';
+import { USER_FORM_NEW_MEMBER } from '@/app/utils/constants/userForm';
 import ProfileDetailsTabs from '@/components/profileDetails/profileDetailsTabs/ProfileDetailsTabs';
-import { ESCORT_DASHBOARD_PAGE_TABS, MANAGER_PROFILE_DETAILS_TABS } from '@/app/utils/constants/dashboardPageTabs';
-import ResetPassword from '@/components/resetPassword/ResetPassword';
-import Escorts from '@/components/escorts/Escorts';
-import ClientProfile from '@/components/clientProfile/ClientProfile';
+import { MANAGER_PROFILE_DETAILS_TABS } from '@/app/utils/constants/dashboardPageTabs';
 import { ADMIN_APPROVAL_FIELDS } from '@/app/utils/constants/userAdminApprovalFields';
 
 export default function MyAccountPage() {
@@ -77,7 +71,12 @@ export default function MyAccountPage() {
       show: false,
       text: 'There are errors in your submission. Please correct the highlighted fields on the dashboard and try submitting again.',
       title: 'Errors!',
-    }
+    },
+    successMessage: {
+      show: false,
+      text: 'Changes has been submitted successfully!',
+      title: 'Successfully submitted!',
+    },
   });
 
   useEffect(() => {
@@ -104,7 +103,7 @@ export default function MyAccountPage() {
         ...prevState,
         dataChangeRequest: {
           ...prevState.dataChangeRequest,
-          text: `Your ${userData?.approvalFieldsInfo.fieldsNames} ${userData?.approvalFieldsInfo.isSingleField ? 'change' : 'changes'} request has been submitted for admin approval. ${userData?.approvalFieldsInfo.hasNonApprovalFieldChange ? 'Other changes have been saved successfully.' : ''}`,
+          text: `Your ${userData?.approvalFieldsInfo?.fieldsNames} ${userData?.approvalFieldsInfo.isSingleField ? 'change' : 'changes'} request has been submitted for admin approval. ${userData?.approvalFieldsInfo.hasNonApprovalFieldChange ? 'Other changes have been saved successfully.' : ''}`,
         },
       }));
     }
@@ -204,6 +203,8 @@ export default function MyAccountPage() {
     const isManagerRole = userData?.role === MANAGER.type;
     const errors = validateForm(userData.user, isClientRole) || {};
     const hasErrors = Object.keys(errors).length > 0;
+    // close verification popup
+    handleCloseVerificationModal();
     // trigger error cases
     if (hasErrors) {
       setErrors(errors);
@@ -217,10 +218,6 @@ export default function MyAccountPage() {
       return;
     } else {
       setErrors(null);
-      // if (!isClientRole) {
-      //   showSuccessMessage(true)
-      // };
-      // showSuccessMessage(false)
     };
 
     // separate cases when form is submitted for different roles
@@ -237,10 +234,6 @@ export default function MyAccountPage() {
       if (customerToken) submitData(userData.user);
     };
   };
-    // comment
-    // should be created an userUnsavedData in userData object and when user makes changes on fields userData.unsavedChanges should be appdlied
-    // if user clicks on Save changes button, this unsaved data should be applied on userData.user, if clicks on Cancel, the userData.unsavedChanges should be deleted ({})
-  // }
 
   const matchUserAndOriginalUserData = (updatedUserData) => {
     setUserData({
@@ -281,10 +274,11 @@ export default function MyAccountPage() {
     };
   };
 
-  const submitManagerEscortData = async (formData, showSuccessMessage) => {
-    const memberToken = process.env.NEXT_PUBLIC_API_TOKEN_MEMBER;;
-    if (!memberToken || !userData?.userId || !formData) return;
-    useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/members/${userData?.userId}`, {
+  const submitManagerEscortData = async (formData, showSuccessMessage, escortId) => {
+    const memberToken = process.env.NEXT_PUBLIC_API_TOKEN_MEMBER;
+    if (!memberToken || (!userData?.userId && !escortId) || !formData) return;
+    const id = userData?.userId || escortId;
+    useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/members/${id}`, {
       method: 'PUT',
       body: JSON.stringify(formData),
       headers: {
@@ -293,26 +287,78 @@ export default function MyAccountPage() {
       }
     }).then(res => {
       if (!res.error) {
-        const isVerified = userData?.userVerificationStatus?.verifiedLevel ? true : false;
         showSuccessMessage && showNonApprovalFieldChangesSuccessMessage();
+      } else {
+        console.log('else case');
+        // should be corrected error text
+        setErrors(res?.error?.message);
+        setNotificationState({
+          ...notificationState,
+          errorInfo: {
+            ...notificationState.errorInfo,
+            text: 'Something went wrong, please try againg.',
+            show: true,
+          },
+        });
+        setTimeout(() => {
+          setNotificationState({
+            ...notificationState,
+            errorInfo: {
+              text: '',
+              show: false,
+            },
+          })
+        }, 5000);
       }
     })
   };
 
-  const showNonApprovalFieldChangesSuccessMessage = () => {
-    if (!userData?.userVerificationStatus?.verifiedLevel) {
+  const submitManagerPersonalProfileData = async () => {
+    if (!customerToken || !userData?.managerId || !userData.manager) return;
+    // validate Form when user if verified or when user submit to get verified from verification modal;
+    const { id, blocked, createdAt, updatedAt, confirmed, role, ...managerFormData } = userData.manager;
+    const response = await useFetchData(`${strapiBaseUrl}/api/users/${userData?.managerId}`, {
+      method: 'PUT',
+        headers: {
+          'Content-type': 'application/json',
+          'authorization': `Bearer ${customerToken}`
+        },
+        body: JSON.stringify(managerFormData),
+    });
+
+    if (response.error) {
+      console.error('Error updating user data:', response.error.message);
+    } else {
+      showGeneralSuccessMessage();
+    };
+  };
+
+  const showGeneralSuccessMessage = () => {
+    setNotificationState((prevState) => ({
+      ...prevState,
+      successMessage: { ...prevState.successMessage, show: true },
+    }));
+
+    setTimeout(() => {
       setNotificationState((prevState) => ({
         ...prevState,
-        dataChangeWithoutRequest: { ...prevState.dataChangeWithoutRequest, show: true },
+        successMessage: { ...prevState.successMessage, show: false },
       }));
-  
-      setTimeout(() => {
-        setNotificationState((prevState) => ({
-          ...prevState,
-          dataChangeWithoutRequest: { ...prevState.dataChangeWithoutRequest, show: false },
-        }));
-      }, 5000);
-    }
+    }, 5000);
+  }
+
+  const showNonApprovalFieldChangesSuccessMessage = () => {
+    setNotificationState((prevState) => ({
+      ...prevState,
+      dataChangeWithoutRequest: { ...prevState.dataChangeWithoutRequest, show: true },
+    }));
+
+    setTimeout(() => {
+      setNotificationState((prevState) => ({
+        ...prevState,
+        dataChangeWithoutRequest: { ...prevState.dataChangeWithoutRequest, show: false },
+      }));
+    }, 5000);
   };
 
   const requestReviewForApproval = async (requestType) => {
@@ -370,7 +416,6 @@ export default function MyAccountPage() {
   };
 
   const updateUserPendingOverrides = (field, value) => {
-    const ArrayDataFields = ['photos', 'selfies', 'aboutMe', 'services'];
     setUserData(prevState => ({
       ...prevState,
       userWithPendingOverrides: {
@@ -423,7 +468,6 @@ export default function MyAccountPage() {
 
   const handleUpdateUser = (field, value, isProfileEditPage) => {
     const isVerified = userData?.userVerificationStatus?.verifiedLevel ? true : false;
-    
     setErrors(null);
     const isServiceProviderRole = userData?.role === SERVICE_PROVIDER.type;
     const isManagerRole = userData?.role === MANAGER.type;
@@ -510,15 +554,39 @@ export default function MyAccountPage() {
     });
   }
 
-  const applyAdminApprovalFieldsChangesForVerifiedProvider = () => {
+  const applyAdminApprovalFieldsChangesForVerifiedProvider = async () => {
     // processed with user and userWithPendingOverrides data changes
-    const pendingDataJSON = getPendingDataJson(userData.unsavedChanges);
+    // fetch user, update states accordingly
+    // compare new fetched user data with data unsavedChanges
+    // const username = userData?.user?.username || "";
+    // const { user: newUserData } = await fetchUserData(customerToken, userData, username);
+
+    const newUserData = (await fetchUserData(customerToken, userData, userData?.user?.username)).user;
+    const updatedUnsavedChanges = {}
+    // for (const [key, value] of Object.entries(userData.unsavedChanges)) {
+    //   console.log(newUserData[key], value);
+    //   if (typeof value === 'object') {
+    //     if (JSON.stringify(newUserData[key]) !== JSON.stringify(value)) {
+    //       updatedUnsavedChanges[key] = value;
+    //     };
+    //   };
+    //   if (typeof value !== 'object' && newUserData[key] !== value) {
+    //     console.log(newUserData[key], value);
+        
+    //     updatedUnsavedChanges[key] = value;
+    //   }
+    // };
+    // console.log('userData.unsavedChanges', userData.unsavedChanges, 'updatedUnsavedChanges', updatedUnsavedChanges);
+
+    const pendingDataJSON = getPendingDataJson(userData.unsavedChanges, userData.user);
+    // console.log('pendingDataJSON', pendingDataJSON);
     
     if (!pendingDataJSON) return;
     const userWithUpdatedPendingData = {
       ...userData.user,
       pendingData: pendingDataJSON,
     };
+// console.log('userWithUpdatedPendingData to setstate', userWithUpdatedPendingData);
 
     setUserData({
       ...userData,
@@ -526,7 +594,6 @@ export default function MyAccountPage() {
       unsavedChanges: null,
       requestType: 'data_change',
     });
-
     // submit user data in database with updated pending data
     userData?.role === MANAGER.type ? submitManagerEscortData(userWithUpdatedPendingData) : submitData(userWithUpdatedPendingData);
     // sent a review link for admin
@@ -535,7 +602,6 @@ export default function MyAccountPage() {
 
   const handleCloseVerificationModal = () => {
     setShowVerificationPopup(false);
-    // setErrors(null);
   };
 
   const handleSetActionType = (actionType) => {
@@ -552,7 +618,7 @@ export default function MyAccountPage() {
     }));
   };
 
-  // for client Role
+  // for client profile changes
   const setChanges = (field, value) => {
     setErrors(null);
     setUserData({
@@ -564,10 +630,23 @@ export default function MyAccountPage() {
     });
   };
 
-  const getPendingDataJson = (approvalData) => {
+  // for manager personal profile changes
+  const setManagerPersonalProfileChange = (field, value) => {
+    setErrors(null);
+    setUserData({
+      ...userData,
+      manager: {
+        ...userData.manager,
+        [field]: value,
+      }
+    });
+  };
+
+  const getPendingDataJson = (approvalData, newUserData) => {
     if (!approvalData || Object.keys(approvalData).length === 0) return null;
     let pendingDataJSON;
-    let existingPendingData = userData.user?.pendingData ? JSON.parse(userData.user?.pendingData) : {};
+    let existingPendingData = newUserData?.pendingData ? JSON.parse(newUserData?.pendingData) : {};
+
     const existingAndRequestingParsedData = { ...existingPendingData, ...approvalData };
     pendingDataJSON = JSON.stringify(existingAndRequestingParsedData);
     return pendingDataJSON;
@@ -576,7 +655,7 @@ export default function MyAccountPage() {
   const getApprovalFieldsInfo = () => {
     if (!userData?.unsavedChanges) return null;
     const fieldsNames = Object.keys(userData?.unsavedChanges)
-      .map((field) => `"${field}"`)
+      .map((field) => `"${field.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}"`)
       .join(', ');
     const isSingleField = Object.keys(userData?.unsavedChanges).length === 1;
     const hasNonApprovalFieldChange = JSON.stringify(userData?.originalUser) !== JSON.stringify(userData?.user);
@@ -587,19 +666,13 @@ export default function MyAccountPage() {
     };
   };
 
-// should be edited when doing manager dashboard
-  const handleChildFormDataChange = (field, value) => {
-    onChanges({...formData, [field]: value})
-  };
-
   const handleResetNewEscortData = () => {
     setUserData({
       ...userData,
       managerNewEscort: USER_FORM_NEW_MEMBER(userData?.managerEmail, `${userData?.managerId}`),
     });
   };
-
-  // console.log('userData', userData, 'errors', errors);
+// console.log('userdata', userData);
   
   return (
     <div className={`${styles.mainWrap}`}>
@@ -693,10 +766,10 @@ export default function MyAccountPage() {
               unsavedChanges={userData.unsavedChanges}
               errors={errors}
               setErrors={setErrors}
+              setShowVerificationPopup={setShowVerificationPopup}
               updateServicesTypeChange={updateServicesTypeChange}
             />
           }
-          {/* need to pass userId={userData?.userId} to ClientDetails component */}
           {userData?.user && userData?.role === CLIENT.type &&
             <>
               <ClientDetails
@@ -711,171 +784,69 @@ export default function MyAccountPage() {
           }
           {userData?.user && userData?.role === MANAGER.type &&
             <>
-            <div className={styles.mainWrap}>
-              <ProfileDetailsTabs
-                profileDetailsTabsData={MANAGER_PROFILE_DETAILS_TABS}
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-              />
-              <ManagerDetails
-                userData={userData}
-                setUserData={setUserData}
-                user={userData?.user}
-                originalUser={userData?.originalUser}
-                userWithPendingOverrides={userData?.userWithPendingOverrides}
-                newEscort={userData?.managerNewEscort}
-                manager={userData?.manager}
-                managerId={`${userData?.managerId}`}
-                token={customerToken}
-                matchUserAndOriginalUserData={matchUserAndOriginalUserData}
-                updateUser={handleUpdateUser}
-                updateManagerNewEscort={handleUpdateManagerNewEscort}
-                updateManagerNewEscortLocationData={handleUpdateManagerNewEscortLocationData}
-                submitManagerEscortData={submitManagerEscortData}
-                updateUserPendingOvverridesAndSubmitUserData={updateUserPendingOvverridesAndSubmitUserData}
-                updateUserPendingOverrides={updateUserPendingOverrides}
-                discardUserPendingOverrides={discardUserPendingOverrides}
-                confirmAdminApprovalFieldsChanges={applyAdminApprovalFieldsChangesForVerifiedProvider}
-                discardChanges={discardChanges}
-                isVerified={userData?.userVerificationStatus?.verifiedLevel ? true : false}
-                role={userData?.role}
-                userId={userData?.userId}
-                approvalFieldsInfo={userData?.approvalFieldsInfo}
-                unsavedChanges={userData.unsavedChanges}
-                errors={errors}
-                setErrors={setErrors}
-                contentToDisplay={activeTab}
-                setContentToDisplay={setActiveTab}
-                resetNewEscortData={handleResetNewEscortData}
-                updateServicesTypeChange={updateServicesTypeChange}
-              />
-              {/* should be edited: removed image uploading and gender */}
-            
-            </div>
+              <div className={styles.mainWrap}>
+                <ProfileDetailsTabs
+                  profileDetailsTabsData={MANAGER_PROFILE_DETAILS_TABS}
+                  activeTab={activeTab}
+                  setActiveTab={setActiveTab}
+                />
+                <ManagerDetails
+                  userData={userData}
+                  setUserData={setUserData}
+                  user={userData?.user}
+                  originalUser={userData?.originalUser}
+                  userWithPendingOverrides={userData?.userWithPendingOverrides}
+                  newEscort={userData?.managerNewEscort}
+                  manager={userData?.manager}
+                  managerId={`${userData?.managerId}`}
+                  token={customerToken}
+                  matchUserAndOriginalUserData={matchUserAndOriginalUserData}
+                  updateUser={handleUpdateUser}
+                  updateManagerNewEscort={handleUpdateManagerNewEscort}
+                  updateManagerNewEscortLocationData={handleUpdateManagerNewEscortLocationData}
+                  submitManagerEscortData={submitManagerEscortData}
+                  submitManagerPersonalProfileData={submitManagerPersonalProfileData}
+                  updateUserPendingOvverridesAndSubmitUserData={updateUserPendingOvverridesAndSubmitUserData}
+                  updateUserPendingOverrides={updateUserPendingOverrides}
+                  discardUserPendingOverrides={discardUserPendingOverrides}
+                  confirmAdminApprovalFieldsChanges={applyAdminApprovalFieldsChangesForVerifiedProvider}
+                  discardChanges={discardChanges}
+                  isVerified={userData?.userVerificationStatus?.verifiedLevel ? true : false}
+                  role={userData?.role}
+                  userId={userData?.userId}
+                  approvalFieldsInfo={userData?.approvalFieldsInfo}
+                  unsavedChanges={userData.unsavedChanges}
+                  errors={errors}
+                  setErrors={setErrors}
+                  setShowVerificationPopup={setShowVerificationPopup}
+                  contentToDisplay={activeTab}
+                  setContentToDisplay={setActiveTab}
+                  setManagerPersonalProfileChange={setManagerPersonalProfileChange}
+                  resetNewEscortData={handleResetNewEscortData}
+                  updateServicesTypeChange={updateServicesTypeChange}
+                />
+              </div>
             </>
           }
         </form>
+        {notificationState?.successMessage?.show &&
+          <Popup
+            title={notificationState?.successMessage?.title}
+            text={notificationState?.successMessage?.text}
+            Icon={<InfoIcon />}
+            onClose={() =>
+              setNotificationState((prev) => ({
+                ...prev,
+                successMessage: {
+                  ...prev['successMessage'],
+                  show: false,
+                },
+              }))
+            }
+            contentClassName={styles.modal}
+          />
+        }
       </div>
     </div>
   );
 }
-
-// admin approval Fields
-
-// Name - string
-// Last name  - string
-// Gender  - string
-// Cover photo - object
-// Profile picture - object
-// Photos - array
-// About me text -string
-// Services - object
-// Selfies - array
-
-
-// coverPhoto, profilePicture - {
-//   "id": 2659,
-//   "name": "image0_jpeg_watermarked_8cacf7a538.png",
-//   "alternativeText": null,
-//   "caption": null,
-//   "width": 1440,
-//   "height": 960,
-//   "formats": {
-//       "thumbnail": {
-//           "name": "thumbnail_image0_jpeg_watermarked_8cacf7a538.png",
-//           "hash": "thumbnail_image0_jpeg_watermarked_8cacf7a538_9fa2e87e0e",
-//           "ext": ".png",
-//           "mime": "image/png",
-//           "path": null,
-//           "width": 234,
-//           "height": 156,
-//           "size": 100.03,
-//           "sizeInBytes": 100025,
-//           "url": "/uploads/thumbnail_image0_jpeg_watermarked_8cacf7a538_9fa2e87e0e.png"
-//       },
-//       "small": {
-//           "name": "small_image0_jpeg_watermarked_8cacf7a538.png",
-//           "hash": "small_image0_jpeg_watermarked_8cacf7a538_9fa2e87e0e",
-//           "ext": ".png",
-//           "mime": "image/png",
-//           "path": null,
-//           "width": 500,
-//           "height": 333,
-//           "size": 433.31,
-//           "sizeInBytes": 433312,
-//           "url": "/uploads/small_image0_jpeg_watermarked_8cacf7a538_9fa2e87e0e.png"
-//       },
-//       "medium": {
-//           "name": "medium_image0_jpeg_watermarked_8cacf7a538.png",
-//           "hash": "medium_image0_jpeg_watermarked_8cacf7a538_9fa2e87e0e",
-//           "ext": ".png",
-//           "mime": "image/png",
-//           "path": null,
-//           "width": 750,
-//           "height": 500,
-//           "size": 963.64,
-//           "sizeInBytes": 963635,
-//           "url": "/uploads/medium_image0_jpeg_watermarked_8cacf7a538_9fa2e87e0e.png"
-//       },
-//       "large": {
-//           "name": "large_image0_jpeg_watermarked_8cacf7a538.png",
-//           "hash": "large_image0_jpeg_watermarked_8cacf7a538_9fa2e87e0e",
-//           "ext": ".png",
-//           "mime": "image/png",
-//           "path": null,
-//           "width": 1000,
-//           "height": 667,
-//           "size": 1693.94,
-//           "sizeInBytes": 1693935,
-//           "url": "/uploads/large_image0_jpeg_watermarked_8cacf7a538_9fa2e87e0e.png"
-//       }
-//   },
-//   "hash": "image0_jpeg_watermarked_8cacf7a538_9fa2e87e0e",
-//   "ext": ".png",
-//   "mime": "image/png",
-//   "size": 728.99,
-//   "url": "/uploads/image0_jpeg_watermarked_8cacf7a538_9fa2e87e0e.png",
-//   "previewUrl": null,
-//   "provider": "local",
-//   "provider_metadata": null,
-//   "createdAt": "2025-02-04T11:42:01.583Z",
-//   "updatedAt": "2025-02-04T11:42:01.583Z"
-// }
-
-// incall or outcall rate structure 
-  // {
-  //   "id": 1,
-  //   "general": [
-  //       {
-  //           "id": 49,
-  //           "duration": "40min",
-  //           "price": 2,
-  //           "additionalInfo": null
-  //       },
-  //       {
-  //           "id": 50,
-  //           "duration": "1 hour",
-  //           "price": 3,
-  //           "additionalInfo": null
-  //       }
-  //   ],
-  //   "PSE": [],
-  //   "GFE": []
-  // }
-
-  // services data structure
-  // {
-  //   "id": 2,
-  //   "general": [
-  //       {
-  //           "id": 5,
-  //           "item": "gen 1"
-  //       },
-  //       {
-  //           "id": 6,
-  //           "item": "gen 2"
-  //       }
-  //   ],
-  //   "PSE": [],
-  //   "GFE": []
-  // }

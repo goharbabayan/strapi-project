@@ -1,7 +1,7 @@
 import { calculateImageAspectRatio } from '@/app/utils/helpers';
 import styles from './image.module.css';
 
-export default function Image({src, alt, width, height, link, className, providerCartAspectRatio, isLocationPage, showVerificationBadge, VerificationIcon}) {
+export default function Image({src, alt, width, height, link, className, providerCartAspectRatio, isLocationPage, showVerificationBadge, VerificationIcon, verificationBadgeText}) {
 
   const imageAspectRatio = providerCartAspectRatio ? providerCartAspectRatio : calculateImageAspectRatio(width, height);
   return (
@@ -31,7 +31,7 @@ export default function Image({src, alt, width, height, link, className, provide
           className={`${styles.image} ${className ? styles[className] : ''}`}
         />
         {showVerificationBadge && VerificationIcon &&
-          <div className={styles.verificationBadgeContainer}>
+          <div className={styles.verificationBadgeContainer} style={{'--verification-badge-text': `"${verificationBadgeText}"`}}>
             {VerificationIcon}
           </div>
         }

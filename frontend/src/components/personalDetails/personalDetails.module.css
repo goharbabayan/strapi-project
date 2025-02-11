@@ -47,12 +47,22 @@
   flex-direction: column;
 }
 
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 875px) {
   .fullName, .userDetails.location {
     grid-template-columns: repeat(2, 1fr);
   }
 
   .userDetails {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .fullName, .userDetails.location {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .userDetails {
+    grid-template-columns: repeat(1, 1fr);
   }
 }

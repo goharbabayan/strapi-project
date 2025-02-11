@@ -14,16 +14,18 @@ import { checkIsAdminApprovalField, fetchUserRatesAndServices, getVerificationSt
 import ServiceProviderDetails from '../serviceProviderDetails/ServiceProviderDetails';
 import InfoIcon from '../icons/Info';
 import Popup from '../popup/Popup';
+import Text from '../text/Text';
+import PlusIcon from '../icons/plusIcon';
+import ManagerProfile from '../managerProfile/ManagerProfile';
 
 export default function ManagerDetails ({
-  // user, onChanges, onSubmit, errorMessage,
   userData,
   setUserData,
+  setShowVerificationPopup,
   contentToDisplay,
   setContentToDisplay,
   newEscort,
   manager,
-  managerId,
   token,
   matchUserAndOriginalUserData,
   updateUser,
@@ -45,6 +47,8 @@ export default function ManagerDetails ({
   user,
   originalUser,
   userWithPendingOverrides,
+  setManagerPersonalProfileChange,
+  submitManagerPersonalProfileData,
   resetNewEscortData,
   updateServicesTypeChange,
  }) {
@@ -65,29 +69,13 @@ export default function ManagerDetails ({
   };
 
   const onSaveButtonClick = async () => {
-    if (contentToDisplay === 'create_new_escort') {
-      const validationInfo = inputValidation('Username', newEscort.username, 3, false);
-      if (!newEscort.username || !validationInfo.isValid) {
-        setErrors({'username': validationInfo.errorMessage});
-        return;
-      };
-      await createNewEscort(newEscort);
-      setContentToDisplay('account');
+    const validationInfo = inputValidation('Username', newEscort.username, 3, false);
+    if (!newEscort.username || !validationInfo.isValid) {
+      setErrors({'username': validationInfo.errorMessage});
       return;
-    } else if (contentToDisplay === 'edit_escort') {
-      // if there is admin approval field change should show showAdminApprovalDataChangeConfirmationModal
-      const requiresApproval = !!unsavedChanges;
-      if (requiresApproval && isVerified) {
-        setShowAdminApprovalDataChangeConfirmationModal(true);
-        return;
-      } else {
-        // not verified user or verified user and not admin-approval field change
-        submitManagerEscortData(user, true);
-      }
-    }
-    // showSuccessMessage
-    // const hasAtLeastOneChange = JSON.stringify(originalUser) !== JSON.stringify(currentUserWithoutPendingChanges);
-    // hasAtLeastOneChange && submitManagerEscortData(newEscort, true);
+    };
+
+    await createNewEscort(newEscort);
   };
 
   const createNewEscort = async (formData) => {
@@ -121,13 +109,15 @@ export default function ManagerDetails ({
               show: false,
               title: '',
             });
+            setContentToDisplay('account');
           }, 3000);
         }
       })
       resetNewEscortData();
   };
 
-  const handleEditEscortButtonClick = async (username) => {
+  const handleVisitProfileButtonClick = async (username) => {
+    setErrors(null);
     const userRatesAndServicesData = await fetchUserRatesAndServices(null, username);
     await useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users?filters[username][$eq]=${username}&populate=*`, {
       method: 'GET',
@@ -170,22 +160,36 @@ export default function ManagerDetails ({
   };
 
   return (
-    <div className={styles.mainWrap}>
+    <>
       {contentToDisplay === 'account' &&
-        <section className={`${styles.section} page-width`}>
-          <div className={`${styles.container} ${styles.buttonsWrap}`}>
-            <Button
-              children={'Create new escort'}
-              onClick={() => setContentToDisplay('create_new_escort')}
-              variant={'general'}
-            />
-          </div>
-          <Escorts
-            managerId={userData?.managerId}
-            setUserData={setUserData}
-            onEditEscortButtonClick={handleEditEscortButtonClick}
-          />
-        </section>
+        <div className={styles.sectionWrapper}>
+          <section className="page-width">
+            <div className={styles.mainWrap}>
+              <div className={`${styles.wrapper}`}>
+                <Text
+                  tag={'h2'}
+                  className={styles.title}
+                  children={'My escorts'}
+                />
+                <PlusIcon
+                  className={styles.iconPlus}
+                  text={'Add Escort'}
+                  textClassName={styles.buttonText}
+                  fill={`var(--neutral-white-n10)`}
+                  onClick={() => setContentToDisplay('create_new_escort')}
+                />
+              </div>
+              <Escorts
+                managerId={userData?.managerId}
+                userData={userData}
+                setUserData={setUserData}
+                setErrors={setErrors}
+                submitManagerEscortData={submitManagerEscortData}
+                onVisitProfileButtonClick={handleVisitProfileButtonClick}
+              />
+            </div>
+          </section>
+        </div>
       }
       {contentToDisplay === 'create_new_escort' &&
         <>
@@ -225,20 +229,22 @@ export default function ManagerDetails ({
             isVerified={isVerified}
             role={role}
             userId={userId}
+            isForManagerEscort={true}
             approvalFieldsInfo={approvalFieldsInfo}
             unsavedChanges={unsavedChanges}
+            updateServicesTypeChange={updateServicesTypeChange}
             errors={errors}
             setErrors={setErrors}
-            updateServicesTypeChange={updateServicesTypeChange}
+            setShowVerificationPopup={setShowVerificationPopup}
           />
         </>
       }
       {contentToDisplay === 'profile' &&
-        <ClientProfile
-          hideImage={true}
+        <ManagerProfile
           title={'Profile'}
           formData={userData?.manager}
-          // onChildFormDataChange={handleChildFormDataChange}
+          updateData={setManagerPersonalProfileChange}
+          submitManagerPersonalProfileData={submitManagerPersonalProfileData}
           errorMessage={errors}
         />
       }
@@ -254,6 +260,6 @@ export default function ManagerDetails ({
           contentClassName={styles.modal}
         />
       }
-    </div>
+    </>
   )
 }

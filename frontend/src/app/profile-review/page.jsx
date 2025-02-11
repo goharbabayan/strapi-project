@@ -22,7 +22,13 @@ import ProfileReviews from '@/components/profileReviews/ProfileReviews';
 export default function ProfileReview() {
   const [loader, setLoader] = useState(true);
   const [user, setUser] = useState(null);
-  const [requestedFieldsToChange, setRequestedFieldsToChange] = useState(null);
+  const [requestedFieldsToChange, setRequestedFieldsToChange] = useState({
+    show: false,
+    requestedFieldsNames: null,
+  });
+  const [showButtons, setShowButtons] = useState(false);
+  const [showRequestIsProcessedText, setShowRequestIsProcessedText] = useState(false);
+  const [showPageContent, setShowPageContent] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [activeTabId, setActiveTabId] = useState(0);
@@ -64,7 +70,7 @@ export default function ProfileReview() {
     if (requestType === 'data_change') {
       setRequestInfo({
         type: 'dataChange',
-        title: 'The escort has made changes to her profile that require admin approval.',
+        title: `The escort's profile has been updated and requires your review.`,
       });
     } else if (requestType === 'verification_upgrade') {
       setRequestInfo({
@@ -77,21 +83,32 @@ export default function ProfileReview() {
         title: 'Escort has submitted a request for profile verification ',
       });
     };
-
   }, [])
+
+  useEffect(() => {
+    if (requestedFieldsToChange.requestedFieldsNames) {
+      setShowButtons(true);
+    }
+  }, [requestedFieldsToChange]);
 
   const fetchUserWithRatesAndServices = async (userData, userId) => {
     const ratesAndServicesData = await fetchUserRatesAndServices(null, null, userId);
     if(!ratesAndServicesData) setUser(userData);
     if (requestType === 'data_change') {
       const transformedUser = transformUserWithPendingOverrides({...userData, ...ratesAndServicesData}, userData.pendingData)
-      console.log('requestType', requestType, 'transformedUser', transformedUser);
-      console.log('svskdv');
-      setRequestedFieldsToChange(getUserPendingFieldsNames(userData.pendingData));
+      const fieldsNames = getUserPendingFieldsNames(userData.pendingData);
+      setRequestedFieldsToChange({
+        requestedFieldsNames: fieldsNames || null,
+        show: true,
+      });
       setUser(transformedUser);
+    } else if (requestType === 'get_verification' && userData?.isApprovedByAdmin === true) {
+      setShowRequestIsProcessedText(true);
     } else {
+      setShowPageContent(true);
+      setShowButtons(true);
       setUser({...userData, ...ratesAndServicesData});
-    }
+    };
   };
 
   const handleButtonClick = (action, requestType) => {
@@ -121,12 +138,16 @@ export default function ProfileReview() {
       } else if (requestType === 'dataChange') {
         body = {
           formData,
-          isApprovedByAdmin: true,
+          adminApprovalDataChange: 'accept',
         };
       }
-    };
+    } else if (action === 'decline' && requestType === 'dataChange') {
+      body = {
+        formData,
+        adminApprovalDataChange: 'decline',
+      };
+    }
 
-    
 // update user data
     user && fetch(`${baseUrl}/api/users/${user.id}`, {
       method: 'PUT',
@@ -154,47 +175,62 @@ const {coverPhoto, profilePicture, managerEscortEmail,managerID, email, name, la
   return (
     <>
       <div className={`${styles.mainWrap} page-width`}>
-        {requestInfo?.title &&
+        {requestInfo?.title && (requestedFieldsToChange.requestedFieldsNames || showPageContent) &&
           <Text
             tag={'h4'}
             className={styles.heading}
             children={requestInfo?.title}
           />
         }
-        {requestedFieldsToChange &&
+        {requestedFieldsToChange.show && (
+          <Text tag="h2" className={styles.subtitle}>
+            {requestedFieldsToChange.requestedFieldsNames ? (
+              <>
+                Changes are made in <span className={styles.bold}>{requestedFieldsToChange.requestedFieldsNames}</span>.
+              </>
+            ) : (
+              `All changes have been reviewed and processed. No further approvals are needed at this time.`
+            )}
+          </Text>
+        )}
+        {showRequestIsProcessedText &&
           <Text
-            tag={'h2'}
-            className={styles.subtitle}>
-            Changes are made in  <span className={styles.bold}>{requestedFieldsToChange}</span>.
-            </Text>
+            tag="h2"
+            className={styles.subtitle}
+            children={`Profile verification request has already been accepted and processed.`}
+          />
         }
-        <div className={styles.buttons}>
-          <Button
-            className={styles.button}
-            onClick={() => handleButtonClick('accept', requestInfo?.type)}
-            variant={'main'}
-            children={`${requestType === 'data_change' ? 'Accept changes' : 'Accept'}`}
-          />
-          <Button
-            href={`mailto:${user?.email}`}
-            className={styles.button}
-            onClick={() => handleButtonClick('decline', requestInfo?.type)}
-            variant={'general'}
-            children={'Decline'}
-          />
-        </div>
-        <Text
-          className={`${styles.message} ${showMessage ? styles.show : ''}`}
-          tag={'h4'}
-          children={isApproved ? 'Request accepted' : 'Request denied'}
-        />
+        {showButtons &&
+          <>
+            <div className={styles.buttons}>
+              <Button
+                className={styles.button}
+                onClick={() => handleButtonClick('accept', requestInfo?.type)}
+                variant={'main'}
+                children={`${requestType === 'data_change' ? 'Accept changes' : 'Accept'}`}
+              />
+              <Button
+                href={`mailto:${user?.email}`}
+                className={styles.button}
+                onClick={() => handleButtonClick('decline', requestInfo?.type)}
+                variant={'general'}
+                children={'Decline'}
+              />
+            </div>
+            <Text
+              className={`${styles.message} ${showMessage ? styles.show : ''}`}
+              tag={'h4'}
+              children={isApproved ? 'Request accepted' : 'Request denied'}
+            />
+          </>
+        }
       </div>
       {loader
         ?
           <Loading/>
         :
           <>
-          {user &&
+          {user && (requestedFieldsToChange.requestedFieldsNames || showPageContent) &&
             <div className={styles.pageContainer}>
               <ProfileCoverPhoto
                 coverPhotoUrl={coverPhoto?.url}
@@ -222,6 +258,7 @@ const {coverPhoto, profilePicture, managerEscortEmail,managerID, email, name, la
                 providerId={userId}
                 verificationStatus={verificationStatus}
                 isDashboardPage={false}
+                isProfileReviewPage={true}
               />
               <ProfileDetailsTabs
                 profileDetailsTabsData={PROFILE_DETAILS_TABS}
@@ -267,6 +304,7 @@ const {coverPhoto, profilePicture, managerEscortEmail,managerID, email, name, la
                 <ProfileReviews
                   reviews={reviews}
                   providerId={userId}
+                  hideAddReviewButton={true}
                 />
               }
             </div>

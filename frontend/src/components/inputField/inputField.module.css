@@ -201,13 +201,8 @@
     top: 60px;
   }
 
-  .editIcon,
-  .infoIcon {
+  .editIcon {
     height: 15px;
     width: 15px;
-  }
-
-  .infoIcon {
-    bottom: 15px;
   }
 }

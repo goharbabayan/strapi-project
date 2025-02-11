@@ -7,7 +7,13 @@ import Text from '../text/Text';
 import Image from '../image/Image';
 import StarIcon from '../icons/StarIcon';
 import { SERVICE_PROVIDER } from '@/app/utils/constants/userRoles';
-import { getVerificationBadge } from '@/app/utils/helpers';
+import { getVerificationBadge, getVerificationBadgeText } from '@/app/utils/helpers';
+import IconOnline from '../iconOnline';
+import SwitchButton from '../switchButton/SwitchButton';
+import Button from '../button/Button';
+import ArrowRight from '../icons/ArrowRight';
+import RemoveIcon from '../icons/RemoveIcon';
+import IconVerified from '../icons/Verified';
 
 const ProviderCard = ({
   provider,
@@ -17,7 +23,13 @@ const ProviderCard = ({
   roleType,
   showStarIcon,
   onStarIconClick,
+  onChanges,
+  isManagerEscort,
+  onVisitProfileButtonClick,
+  onRemoveIconClick,
+  hideVerificationBadge,
 }) => {
+
   if (!provider) return;
   const [hourlyRate, setHourlyRate] = useState(null);
   const {
@@ -33,6 +45,8 @@ const ProviderCard = ({
     outcall,
     isApprovedByAdmin,
     verificationStatus,
+    availableNow,
+    digitalService,
   } = provider;
 
   const {
@@ -41,14 +55,24 @@ const ProviderCard = ({
     height: imageHeight,
     width: imageWidth,
     url
-  } = profilePicture?.data ? profilePicture?.data?.attributes : profilePicture;
+  } = profilePicture?.data?.attributes || profilePicture || {};
+
   const cardWidth = count && count === 3 ? '33.3%' : count && count === 4 ? '25%' : '100%';
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
+  const VerififcationIcon = getVerificationBadge(verificationStatus);
+  const verificationBadgeText = getVerificationBadgeText(verificationStatus);
+
+  const [isSwitchOn, setIsSwitchOn] = useState(availableNow);
 
   useEffect(() => {
     getVerificationBadge();
     (incall || outcall) && setHourlyRate(findLowestCost(incall, outcall));
   }, [incall, outcall]);
+
+  const toggleSwitch = () => {
+    setIsSwitchOn((prev) => !prev);
+    onChanges('availableNow', !availableNow, username)
+  };
 
   const findLowestCost = (incall, outcall) => {
     const getPriceForOneHour = (categories) => {
@@ -70,7 +94,101 @@ const ProviderCard = ({
 
   return (
     <>
-    {roleType === SERVICE_PROVIDER.type && isApprovedByAdmin &&
+      {isManagerEscort ?
+        <div
+          className={`${styles.card} ${styles.managerEscortCard} ${count ? styles.hasCount : ''}`}
+          style={{ '--provider-card-width': `${cardWidth}`}}
+        >
+          <div className={styles.managerEscortCardWrapper}>
+            <div className={`${styles.profilePicture} ${!profilePicture ? styles.emptyImage : ''}`} style={{'--ratio-percent':  '126%'}}>
+              {profilePicture &&
+                <div className={`${styles.imageWrapper}`}>
+                  <Image
+                    src={`${baseUrl}${url}`}
+                    alt={alternativeText || imageName}
+                    width={369}
+                    height={461}
+                    providerCartAspectRatio={0.79}
+                  />
+                  {availableNow &&
+                    <div className={styles.available}>
+                      <IconOnline/>
+                      <Text
+                        children={'Available now'}
+                        tag={'span'}
+                        className={styles.badge}
+                      />
+                    </div>
+                  }
+                
+                </div>
+              }
+              {!profilePicture &&
+                <Text
+                  tag={'span'}
+                  className={styles.logoText}
+                  children={'SNEAKY LINX'}
+                />
+              }
+              {availableNow &&
+                <div className={styles.available}>
+                  <IconOnline/>
+                  <Text
+                    children={'Available now'}
+                    tag={'span'}
+                    className={styles.badge}
+                  />
+                </div>
+              }
+            </div>
+            <div className={styles.managerEscortInfo}>
+              <div className={styles.wrapper}>
+                <Text
+                  tag={'h4'}
+                  className={`${styles.fullname}`}
+                  children={`${name} ${lastName}`}
+                />
+                <div className={styles.availabilitySwithButton}>
+                  <SwitchButton
+                    isOn={isSwitchOn}
+                    handleToggle={toggleSwitch}
+                    label={'Available now'}
+                  />
+                </div>
+                
+              </div>
+            
+              <div className={styles.wrapper}>
+                <Button
+                  type={'button'}
+                  variant={'secondary'}
+                  onClick={onVisitProfileButtonClick}
+                  className={`${styles.visitProfileButton} ${styles.button}`}
+                  children={'Visit profile'}
+                  IconAfterText={<ArrowRight color={'var(--color-main)'}/>}
+                />
+                <RemoveIcon
+                  color={'var(--color-main)'}
+                  onClick={() => onRemoveIconClick(id)}
+                  className={styles.button}
+                />
+              </div>
+            </div>
+          </div>
+          {isApprovedByAdmin &&
+            <div className={styles.verifiedIconContainer}>
+              <IconVerified className={styles.verifiedIcon}/>
+            </div>
+          }
+          {!hideVerificationBadge && VerififcationIcon && verificationBadgeText &&
+            <div className={styles.verificationBadgeContainer} style={{'--verification-badge-text': `"${verificationBadgeText}"`}}>
+              {VerififcationIcon}
+            </div>
+          }
+        </div>
+      : <></>
+    }
+    {roleType === SERVICE_PROVIDER.type && isApprovedByAdmin && !isManagerEscort &&
       <div
         className={`${styles.card} ${count ? styles.hasCount : ''}`}
         style={{ '--provider-card-width': `${cardWidth}`}}
@@ -90,16 +208,26 @@ const ProviderCard = ({
                 <StarIcon className={styles.starIcon} onClick={(e) => onStarIconClick(e, id)}/>
               }
               {url &&
-                <Image
-                  src={`${baseUrl}${url}`}
-                  alt={alternativeText || imageName}
-                  width={imageWidth}
-                  height={imageHeight}
-                  providerCartAspectRatio={0.70}
-                  className={styles.image}
-                  showVerificationBadge={true}
-                  VerificationIcon={getVerificationBadge(verificationStatus)}
-                />
+                <div className={styles.imageWrapper}>
+                  <Image
+                    src={`${baseUrl}${url}`}
+                    alt={alternativeText || imageName}
+                    width={imageWidth}
+                    height={imageHeight}
+                    providerCartAspectRatio={0.70}
+                    className={styles.image}
+                  />
+                  {availableNow &&
+                    <div className={styles.available}>
+                      <IconOnline/>
+                      <Text
+                        children={'Available now'}
+                        tag={'span'}
+                        className={styles.badge}
+                      />
+                    </div>
+                  }
+                </div>
               }
               <div className={styles.info}>
                 <div className={styles.data}>
@@ -140,6 +268,15 @@ const ProviderCard = ({
                   </div>
                 }
                 <div className={styles.otherInfo}>
+                  {digitalService && digitalService === 'true' &&
+                    <div className={`${styles.digitalService}`}>
+                      <Text
+                        tag={'span'}
+                        className={` ${styles.digitalServiceText}`}
+                        children={'Digital services available'}
+                      />
+                    </div>
+                  }
                   {age &&
                     <Text
                       tag={'span'}
@@ -158,6 +295,11 @@ const ProviderCard = ({
               </div>
             </div>
           </Link>
+        }
+        {!hideVerificationBadge && VerififcationIcon &&
+          <div className={styles.verificationBadgeContainer} style={{'--verification-badge-text': `"${verificationBadgeText}"`}}>
+            {VerififcationIcon}
+          </div>
         }
       </div>
       }
