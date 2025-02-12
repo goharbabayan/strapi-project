@@ -140,7 +140,13 @@ module.exports = {
       ...ctx.request.body,
     };
 
-    const userPendingData = JSON.parse(user?.pendingData);
+    let userPendingData = {};
+    if (typeof user.pendingData === 'string') {
+      userPendingData = JSON.parse(user.pendingData);
+    } else if (user.pendingData !== null) {
+      userPendingData = user.pendingData;
+    };
+
     if (adminApprovalDataChange === 'accept') {
       for (const [key, value] of Object.entries(userPendingData)) {
         updateData[key] = value;

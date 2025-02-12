@@ -375,36 +375,18 @@ export const checkIsRequiredField = (field) => {
 };
 
 export const getUserPendingFieldsNames = (pendingDataJSON) => {
-  const pendingData = pendingDataJSON ? JSON.parse(pendingDataJSON) : {};
+  const pendingData = typeof pendingDataJSON === 'string' ? JSON.parse(pendingDataJSON) : pendingDataJSON === null ? {} : pendingDataJSON;
   const fieldsNames = Object.keys(pendingData).map(fieldName => formatFieldName(fieldName)).join(', ');
   return fieldsNames;
 };
 
-const complexTypesFields = ['coverPhoto', 'profilePicture', 'photos', 'services', 'selfies'];
-
-export function stringifyPendingDataKeys(userPendingData){
-  for (const key of complexTypesFields) {
-    if (userPendingData[key] && typeof userPendingData[key] === 'object') {
-      userPendingData[key] = JSON.stringify(userPendingData[key]);
-    };
-  }
-  return JSON.stringify(obj);
-};
-
-export function parsePendingDataKeys(stringifiedPendingData) {
-  const parsedPendingData = JSON.parse(stringifiedPendingData);
-  for (const key of complexTypesFields) {
-    if (parsedPendingData[key] && typeof parsedPendingData[key] === 'string') {
-      parsedPendingData[key] = JSON.parse(parsedPendingData[key]);
-    }
-  }
-  return parsedPendingData;
-};
-
 export const transformUserWithPendingOverrides = (user, pendingDataJSON) => {
-  const fieldsToMerge = ['photos', 'selfies', 'aboutMeText', 'services'];
-  const pendingData = pendingDataJSON ? JSON.parse(pendingDataJSON) : {};
-
+  let pendingData = {};
+  if (typeof pendingDataJSON === 'string') {
+    pendingData = JSON.parse(pendingDataJSON);
+  } else if (pendingDataJSON !== null) {
+    pendingData = pendingDataJSON;
+  };
   const transformedUser = {
       ...user,
       ...pendingData,

@@ -430,7 +430,12 @@ export default function MyAccountPage() {
   };
 
   const discardUserPendingOverrides = () => {
-    const userPendingData = JSON.parse(userData.user.pendingData);
+    let userPendingData = {};
+    if (typeof userData.user.pendingData === 'string') {
+      userPendingData = JSON.parse(userData.user.pendingData);
+    } else if (userData.user.pendingData !== null) {
+      userPendingData = userData.user.pendingData;
+    };
     let previousValues = {};
     const approvalFieldsArray = Object.keys(userData.unsavedChanges);
     approvalFieldsArray.forEach(field => {
@@ -448,7 +453,12 @@ export default function MyAccountPage() {
   };
 
   const discardChanges = () => {
-    const userPendingData = JSON.parse(userData?.originalUser?.pendingData);
+    let userPendingData = {};
+    if (typeof userData.originalUser.pendingData === 'string') {
+      userPendingData = JSON.parse(userData.originalUser.pendingData);
+    } else if (userData.originalUser.pendingData !== null) {
+      userPendingData = userData.originalUser.pendingData;
+    };
     let previousValues = {};
     const approvalFieldsArray = ADMIN_APPROVAL_FIELDS;
     approvalFieldsArray.forEach(field => {
@@ -558,35 +568,26 @@ export default function MyAccountPage() {
     // processed with user and userWithPendingOverrides data changes
     // fetch user, update states accordingly
     // compare new fetched user data with data unsavedChanges
-    // const username = userData?.user?.username || "";
-    // const { user: newUserData } = await fetchUserData(customerToken, userData, username);
 
     const newUserData = (await fetchUserData(customerToken, userData, userData?.user?.username)).user;
-    const updatedUnsavedChanges = {}
-    // for (const [key, value] of Object.entries(userData.unsavedChanges)) {
-    //   console.log(newUserData[key], value);
-    //   if (typeof value === 'object') {
-    //     if (JSON.stringify(newUserData[key]) !== JSON.stringify(value)) {
-    //       updatedUnsavedChanges[key] = value;
-    //     };
-    //   };
-    //   if (typeof value !== 'object' && newUserData[key] !== value) {
-    //     console.log(newUserData[key], value);
-        
-    //     updatedUnsavedChanges[key] = value;
-    //   }
-    // };
-    // console.log('userData.unsavedChanges', userData.unsavedChanges, 'updatedUnsavedChanges', updatedUnsavedChanges);
-
-    const pendingDataJSON = getPendingDataJson(userData.unsavedChanges, userData.user);
-    // console.log('pendingDataJSON', pendingDataJSON);
+    const pendingDataJSON = getPendingDataJson(userData.unsavedChanges, userData.user, newUserData);
     
     if (!pendingDataJSON) return;
-    const userWithUpdatedPendingData = {
-      ...userData.user,
-      pendingData: pendingDataJSON,
-    };
-// console.log('userWithUpdatedPendingData to setstate', userWithUpdatedPendingData);
+    const existingPendingData = typeof userData.user.pendingData === 'string' ? JSON.parse(userData.user.pendingData) : userData.user.pendingData === null ? {} : userData.user.pendingData;
+    const isExistingPendingDataChangesAlreadyAppliedToUser = Object.keys(existingPendingData).length > 0 && Object.entries(existingPendingData).every(([key, value]) => JSON.stringify(newUserData[key]) === JSON.stringify(value));
+    let userWithUpdatedPendingData;
+    if (isExistingPendingDataChangesAlreadyAppliedToUser) {
+      userWithUpdatedPendingData = {
+        ...userData.user,
+        ...existingPendingData,
+        pendingData: pendingDataJSON,
+      }
+    } else {
+      userWithUpdatedPendingData = {
+        ...userData.user,
+        pendingData: pendingDataJSON,
+      };
+    }
 
     setUserData({
       ...userData,
@@ -642,13 +643,18 @@ export default function MyAccountPage() {
     });
   };
 
-  const getPendingDataJson = (approvalData, newUserData) => {
+  const getPendingDataJson = (approvalData, newUserData, newUser) => {
     if (!approvalData || Object.keys(approvalData).length === 0) return null;
     let pendingDataJSON;
-    let existingPendingData = newUserData?.pendingData ? JSON.parse(newUserData?.pendingData) : {};
-
-    const existingAndRequestingParsedData = { ...existingPendingData, ...approvalData };
-    pendingDataJSON = JSON.stringify(existingAndRequestingParsedData);
+    const existingPendingData = typeof newUserData?.pendingData === 'string' ? JSON.parse(newUserData?.pendingData) : newUserData?.pendingData === null ? {} : newUserData?.pendingData;
+    const isExistingPendingDataChangesAlreadyAppliedToUser =  Object.keys(existingPendingData).length > 0 && Object.entries(existingPendingData).every(([key, value]) => JSON.stringify(newUser[key]) === JSON.stringify(value));
+    let requestingParsedData;
+    if (isExistingPendingDataChangesAlreadyAppliedToUser) {
+      requestingParsedData = approvalData;
+    } else {
+      requestingParsedData = { ...existingPendingData, ...approvalData };
+    };
+    pendingDataJSON = JSON.stringify(requestingParsedData);
     return pendingDataJSON;
   };
 
@@ -672,8 +678,7 @@ export default function MyAccountPage() {
       managerNewEscort: USER_FORM_NEW_MEMBER(userData?.managerEmail, `${userData?.managerId}`),
     });
   };
-// console.log('userdata', userData);
-  
+
   return (
     <div className={`${styles.mainWrap}`}>
       <div className="dashboard">
