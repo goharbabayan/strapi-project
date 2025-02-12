@@ -101,7 +101,6 @@ export const validateForm = (formData, isClientDashboardPage) => {
     });
     return errors;
   }
-console.log('formData', formData);
 
   for (const fieldName in formData) {
     const fieldValue = formData[fieldName];
