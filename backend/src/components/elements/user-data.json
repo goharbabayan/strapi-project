@@ -11,12 +11,12 @@
       "repeatable": true,
       "component": "block.array-data"
     },
-    "GFE": {
+    "Specialized": {
       "type": "component",
       "repeatable": true,
       "component": "block.array-data"
     },
-    "PSE": {
+    "Experienced": {
       "type": "component",
       "repeatable": true,
       "component": "block.array-data"

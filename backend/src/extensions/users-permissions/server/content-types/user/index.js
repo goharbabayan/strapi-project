@@ -113,17 +113,8 @@ module.exports = {
     height: {
       type: "string"
     },
-    bust: {
-      type: "string"
-    },
-    dressSize: {
-      "type": "string"
-    },
     hairColor: {
       "type": "string"
-    },
-    bodyType: {
-      type: "string"
     },
     placeOfService: {
       type: "string"
@@ -170,17 +161,12 @@ module.exports = {
     aboutMe: {
       type: 'richtext'
     },
-    closet: {
+    qualifications: {
       type: "component",
       repeatable: true,
       component: "elements.text"
     },
-    glam: {
-      type: "component",
-      repeatable: true,
-      component: "elements.text"
-    },
-    extras: {
+    experience: {
       type: "component",
       repeatable: true,
       component: "elements.text"
@@ -230,7 +216,7 @@ module.exports = {
     digitalService: {
       type: "string"
     },
-    managerEscortEmail: {
+    managerProviderEmail: {
       type: "string"
     },
     services: {

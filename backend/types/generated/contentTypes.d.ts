@@ -736,10 +736,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     age: Attribute.String;
     eyeColor: Attribute.String;
     height: Attribute.String;
-    bust: Attribute.String;
-    dressSize: Attribute.String;
     hairColor: Attribute.String;
-    bodyType: Attribute.String;
     placeOfService: Attribute.String;
     selfies: Attribute.Media;
     profilePicture: Attribute.Media;
@@ -750,9 +747,8 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     onlyFansLink: Attribute.String;
     websiteLink: Attribute.String;
     aboutMe: Attribute.RichText;
-    closet: Attribute.Component<'elements.text', true>;
-    glam: Attribute.Component<'elements.text', true>;
-    extras: Attribute.Component<'elements.text', true>;
+    qualifications: Attribute.Component<'elements.text', true>;
+    experience: Attribute.Component<'elements.text', true>;
     schedule: Attribute.Component<'elements.working-time', true>;
     additionalInfo: Attribute.Component<'elements.text', true>;
     reviews: Attribute.Component<'elements.review', true>;
@@ -764,7 +760,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     otherLink: Attribute.String;
     availableNow: Attribute.Boolean & Attribute.DefaultTo<false>;
     digitalService: Attribute.String;
-    managerEscortEmail: Attribute.String;
+    managerProviderEmail: Attribute.String;
     services: Attribute.Component<'elements.user-data'>;
     incall: Attribute.Component<'block.incall'>;
     outcall: Attribute.Component<'block.incall'>;

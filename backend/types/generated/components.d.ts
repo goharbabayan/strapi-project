@@ -50,8 +50,8 @@ export interface BlockIncall extends Schema.Component {
   };
   attributes: {
     general: Attribute.Component<'elements.data', true>;
-    GFE: Attribute.Component<'elements.data', true>;
-    PSE: Attribute.Component<'elements.data', true>;
+    Specialized: Attribute.Component<'elements.data', true>;
+    Experienced: Attribute.Component<'elements.data', true>;
   };
 }
 
@@ -222,8 +222,8 @@ export interface ElementsUserData extends Schema.Component {
   };
   attributes: {
     general: Attribute.Component<'block.array-data', true>;
-    GFE: Attribute.Component<'block.array-data', true>;
-    PSE: Attribute.Component<'block.array-data', true>;
+    Specialized: Attribute.Component<'block.array-data', true>;
+    Experienced: Attribute.Component<'block.array-data', true>;
   };
 }
 
@@ -259,8 +259,8 @@ export interface EntryRates extends Schema.Component {
   };
   attributes: {
     general: Attribute.Component<'elements.data', true>;
-    GFE: Attribute.Component<'elements.data', true>;
-    PSE: Attribute.Component<'elements.data', true>;
+    Specialized: Attribute.Component<'elements.data', true>;
+    Experienced: Attribute.Component<'elements.data', true>;
   };
 }
 

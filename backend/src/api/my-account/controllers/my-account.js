@@ -24,14 +24,14 @@ module.exports = createCoreController('api::my-account.my-account',
           const reviewLink = ctx.request.body ? `${url}/profile-review?token=${token}&userId=${id}&action=${action}` :`${url}/profile-review?token=${token}`;
           let emailText, emailSubject;
           if (action === 'data_change') {
-            emailText = `Escort just edited information from her dashboard. Please review and accept/decline here: `;
-            emailSubject= `Escort profile update awaiting review`;
+            emailText = `Provider just edited information from her dashboard. Please review and accept/decline here: `;
+            emailSubject= `Provider profile update awaiting review`;
           } else if (action === 'verification_upgrade') {
-            emailText = `Escort just requested a verification status level upgrade. Please review and accept/decline here:`;
-            emailSubject= `Escort Verification Level Upgrade Request`;
+            emailText = `Provider just requested a verification status level upgrade. Please review and accept/decline here:`;
+            emailSubject= `Provider Verification Level Upgrade Request`;
           } else if (action === 'get_verification') {
-            emailText = `Escort has submitted a request for profile verification. Review and approve/decline here: `;
-            emailSubject= `Escort Profile Verification Request`;
+            emailText = `Provider has submitted a request for profile verification. Review and approve/decline here: `;
+            emailSubject= `Provider Profile Verification Request`;
           };
           // Send email to admin with the review link
           // ToDo: The email template should not be static
