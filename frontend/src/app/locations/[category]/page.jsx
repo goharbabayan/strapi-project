@@ -74,7 +74,7 @@ export default function LocationCategoryPage({params}) {
   const fetchProvidersData = async (filteredOptions) => {
     try {
       const results = await fetchUsers(filteredOptions);
-      const users = results.map(user => ({
+      const users = results && results.map(user => ({
         ...user?.attributes,
         id: Number(user?.id),
       }));
@@ -83,7 +83,7 @@ export default function LocationCategoryPage({params}) {
         setProvidersDefaultList(users);
         generateOptionsForFilterCategories(users);
       };
-      if (users.length === 0) {
+      if (!users || users.length === 0) {
         setNoResults(true);
       } else {
         setNoResults(false);

@@ -50,7 +50,7 @@ export default function SearchInput({searchQueries, setSearchQueries, setSearchR
           inputClassName={styles.input}
           labelClassName={styles.label}
           onChange={processChange}
-          placeholder={'Search escorts'}
+          placeholder={'Search providers'}
         />
       </div>
       <CloseIcon

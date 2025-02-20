@@ -21,14 +21,14 @@ export default function ContactDetails ({formData, onChange, onMouseDown, errorM
           />
         </div>
       }
-      {/* show info that it will be shown on escort profile details*/}
+      {/* show info that it will be shown on provider profile details*/}
       {role === MANAGER.type &&
         <InputField
-          label='Escort email Address'
+          label='Provider email Address'
           type='text'
-          name='managerEscortEmail'
-          id='managerEscortEmail'
-          value={formData.managerEscortEmail || ''}
+          name='managerProviderEmail'
+          id='managerProviderEmail'
+          value={formData.managerProviderEmail || ''}
           inputClassName='inputEmail'
           onChange={onChange}
           // disabled={true}

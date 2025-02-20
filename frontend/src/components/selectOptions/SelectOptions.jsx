@@ -43,7 +43,7 @@ export default function SelectOptions({
     e.stopPropagation();
     const target = e.target;
     const { name, value } = target.children[0];
-    const needToBeNumberValue = name === 'dressSize' || name === 'phoneNumber';
+    const needToBeNumberValue = name === 'phoneNumber';
     const fieldValue = needToBeNumberValue ? Number(value) : value;
     onChange(name, fieldValue);
   };

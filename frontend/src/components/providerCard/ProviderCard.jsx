@@ -24,7 +24,7 @@ const ProviderCard = ({
   showStarIcon,
   onStarIconClick,
   onChanges,
-  isManagerEscort,
+  isManagerProvider,
   onVisitProfileButtonClick,
   onRemoveIconClick,
   hideVerificationBadge,
@@ -40,7 +40,6 @@ const ProviderCard = ({
     profilePicture,
     placeOfService,
     age,
-    dressSize,
     incall,
     outcall,
     isApprovedByAdmin,
@@ -77,7 +76,7 @@ const ProviderCard = ({
   const findLowestCost = (incall, outcall) => {
     const getPriceForOneHour = (categories) => {
       if (!categories) return null;
-      for (const category of ['general', 'GFE', 'PSE']) {
+      for (const category of ['general', 'Specialized', 'Experienced']) {
         if (categories[category]) {
           for (const rate of categories[category]) {
             if (rate.duration?.trim() === '1 hour') {
@@ -94,12 +93,12 @@ const ProviderCard = ({
 
   return (
     <>
-      {isManagerEscort ?
+      {isManagerProvider ?
         <div
-          className={`${styles.card} ${styles.managerEscortCard} ${count ? styles.hasCount : ''}`}
+          className={`${styles.card} ${styles.managerProviderCard} ${count ? styles.hasCount : ''}`}
           style={{ '--provider-card-width': `${cardWidth}`}}
         >
-          <div className={styles.managerEscortCardWrapper}>
+          <div className={styles.managerProviderCardWrapper}>
             <div className={`${styles.profilePicture} ${!profilePicture ? styles.emptyImage : ''}`} style={{'--ratio-percent':  '126%'}}>
               {profilePicture &&
                 <div className={`${styles.imageWrapper}`}>
@@ -141,7 +140,7 @@ const ProviderCard = ({
                 </div>
               }
             </div>
-            <div className={styles.managerEscortInfo}>
+            <div className={styles.managerProviderInfo}>
               <div className={styles.wrapper}>
                 <Text
                   tag={'h4'}
@@ -188,7 +187,7 @@ const ProviderCard = ({
         </div>
       : <></>
     }
-    {roleType === SERVICE_PROVIDER.type && isApprovedByAdmin && !isManagerEscort &&
+    {roleType === SERVICE_PROVIDER.type && isApprovedByAdmin && !isManagerProvider &&
       <div
         className={`${styles.card} ${count ? styles.hasCount : ''}`}
         style={{ '--provider-card-width': `${cardWidth}`}}
@@ -282,13 +281,6 @@ const ProviderCard = ({
                       tag={'span'}
                       className={`${styles.text}`}
                       children={`Age ${age}`}
-                    />
-                  }
-                  {dressSize &&
-                    <Text
-                      tag={'span'}
-                      className={`${styles.text}`}
-                      children={`Dress Size ${dressSize}`}
                     />
                   }
                 </div>

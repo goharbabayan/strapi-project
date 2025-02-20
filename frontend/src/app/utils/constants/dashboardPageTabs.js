@@ -1,7 +1,7 @@
 export const CLIENT_DASHBOARD_PAGE_TABS = [
   {
     id: 'account',
-    label: 'Favorite Escorts',
+    label: 'Favorite Providers',
     icon: null
   },
   {
@@ -16,7 +16,7 @@ export const CLIENT_DASHBOARD_PAGE_TABS = [
   }
 ];
 
-export const ESCORT_DASHBOARD_PAGE_TABS = [
+export const Provider_DASHBOARD_PAGE_TABS = [
   {
     id: 'account',
     label: 'Account',
@@ -37,7 +37,7 @@ export const ESCORT_DASHBOARD_PAGE_TABS = [
 export const MANAGER_PROFILE_DETAILS_TABS = [
   {
     id: 'account',
-    label: 'My escorts',
+    label: 'My providers',
     icon: null
   },
   {

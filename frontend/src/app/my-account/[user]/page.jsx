@@ -85,7 +85,7 @@ export default function MyAccountPage() {
     } else {
       setShowVerificationSuggestion(
         (userData.role === SERVICE_PROVIDER.type && activeTab !== 'settings') ||
-        (userData.role === MANAGER.type && activeTab === 'edit_escort')
+        (userData.role === MANAGER.type && activeTab === 'edit_Provider')
       );
     }
   }, [userData, activeTab]);
@@ -227,7 +227,7 @@ export default function MyAccountPage() {
       // sent a review link for admin
       requestReviewForApproval(userData.requestType);
     } else if (isManagerRole) {
-      if (customerToken && !userData?.userVerificationStatus?.verifiedLevel) submitManagerEscortData(userData.user);
+      if (customerToken && !userData?.userVerificationStatus?.verifiedLevel) submitManagerProviderData(userData.user);
       requestReviewForApproval(userData.requestType);
     } else {
       // update User data
@@ -274,10 +274,10 @@ export default function MyAccountPage() {
     };
   };
 
-  const submitManagerEscortData = async (formData, showSuccessMessage, escortId) => {
+  const submitManagerProviderData = async (formData, showSuccessMessage, ProviderId) => {
     const memberToken = process.env.NEXT_PUBLIC_API_TOKEN_MEMBER;
-    if (!memberToken || (!userData?.userId && !escortId) || !formData) return;
-    const id = userData?.userId || escortId;
+    if (!memberToken || (!userData?.userId && !ProviderId) || !formData) return;
+    const id = userData?.userId || ProviderId;
     useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/members/${id}`, {
       method: 'PUT',
       body: JSON.stringify(formData),
@@ -499,29 +499,29 @@ export default function MyAccountPage() {
       if (isServiceProviderRole) {
         submitData(updatedUserData, isVerified);
       } else if (isManagerRole) {
-        submitManagerEscortData(updatedUserData, isVerified);
+        submitManagerProviderData(updatedUserData, isVerified);
       };
     };
   };
 
-  const handleUpdateManagerNewEscort = (field, value) => {
+  const handleUpdateManagerNewProvider = (field, value) => {
     setErrors(null);
     const updatedUserData = {
       ...userData,
-      managerNewEscort: {
-        ...userData.managerNewEscort,
+      managerNewProvider: {
+        ...userData.managerNewProvider,
         [field]: value,
       },
     };
     setUserData(updatedUserData);
   };
 
-  const handleUpdateManagerNewEscortLocationData = (locationData) => {
+  const handleUpdateManagerNewProviderLocationData = (locationData) => {
     setErrors(null);
     const updatedUserData = {
       ...userData,
-      managerNewEscort: {
-        ...userData.managerNewEscort,
+      managerNewProvider: {
+        ...userData.managerNewProvider,
         ...locationData,
       },
     };
@@ -543,7 +543,7 @@ export default function MyAccountPage() {
         ...fieldsUpdatedData,
       }
     });
-    userData.role === MANAGER.type ? submitManagerEscortData(updatedUserData) : submitData(updatedUserData);
+    userData.role === MANAGER.type ? submitManagerProviderData(updatedUserData) : submitData(updatedUserData);
     const isVerified = userData?.userVerificationStatus?.verifiedLevel ? true : false;
     isVerified && showNonApprovalFieldChangesSuccessMessage();
   };
@@ -553,13 +553,13 @@ export default function MyAccountPage() {
       ...userData,
       userWithPendingOverrides: {
         ...userData.userWithPendingOverrides,
-        services: { general: [], PSE: [], GFE: [] },
-        incall: { general: [], PSE: [], GFE: [] },
-        outcall: { general: [], PSE: [], GFE: [] },
+        services: { general: [], Experienced: [], Specialized: [] },
+        incall: { general: [], Experienced: [], Specialized: [] },
+        outcall: { general: [], Experienced: [], Specialized: [] },
       },
       unsavedChanges: {
         ...userData?.unsavedChanges,
-        services: { general: [], PSE: [], GFE: [] },
+        services: { general: [], Experienced: [], Specialized: [] },
       },
     });
   }
@@ -596,7 +596,7 @@ export default function MyAccountPage() {
       requestType: 'data_change',
     });
     // submit user data in database with updated pending data
-    userData?.role === MANAGER.type ? submitManagerEscortData(userWithUpdatedPendingData) : submitData(userWithUpdatedPendingData);
+    userData?.role === MANAGER.type ? submitManagerProviderData(userWithUpdatedPendingData) : submitData(userWithUpdatedPendingData);
     // sent a review link for admin
     requestReviewForApproval('data_change');
   };
@@ -672,10 +672,10 @@ export default function MyAccountPage() {
     };
   };
 
-  const handleResetNewEscortData = () => {
+  const handleResetNewProviderData = () => {
     setUserData({
       ...userData,
-      managerNewEscort: USER_FORM_NEW_MEMBER(userData?.managerEmail, `${userData?.managerId}`),
+      managerNewProvider: USER_FORM_NEW_MEMBER(userData?.managerEmail, `${userData?.managerId}`),
     });
   };
 
@@ -801,15 +801,15 @@ export default function MyAccountPage() {
                   user={userData?.user}
                   originalUser={userData?.originalUser}
                   userWithPendingOverrides={userData?.userWithPendingOverrides}
-                  newEscort={userData?.managerNewEscort}
+                  newProvider={userData?.managerNewProvider}
                   manager={userData?.manager}
                   managerId={`${userData?.managerId}`}
                   token={customerToken}
                   matchUserAndOriginalUserData={matchUserAndOriginalUserData}
                   updateUser={handleUpdateUser}
-                  updateManagerNewEscort={handleUpdateManagerNewEscort}
-                  updateManagerNewEscortLocationData={handleUpdateManagerNewEscortLocationData}
-                  submitManagerEscortData={submitManagerEscortData}
+                  updateManagerNewProvider={handleUpdateManagerNewProvider}
+                  updateManagerNewProviderLocationData={handleUpdateManagerNewProviderLocationData}
+                  submitManagerProviderData={submitManagerProviderData}
                   submitManagerPersonalProfileData={submitManagerPersonalProfileData}
                   updateUserPendingOvverridesAndSubmitUserData={updateUserPendingOvverridesAndSubmitUserData}
                   updateUserPendingOverrides={updateUserPendingOverrides}
@@ -827,7 +827,7 @@ export default function MyAccountPage() {
                   contentToDisplay={activeTab}
                   setContentToDisplay={setActiveTab}
                   setManagerPersonalProfileChange={setManagerPersonalProfileChange}
-                  resetNewEscortData={handleResetNewEscortData}
+                  resetNewProviderData={handleResetNewProviderData}
                   updateServicesTypeChange={updateServicesTypeChange}
                 />
               </div>

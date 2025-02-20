@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Text from '@/components/text/Text';
 import ProviderInterests from '../providerInterests/ProviderInterests';
 import styles from './profileAboutMe.module.css';
@@ -6,9 +6,9 @@ import EditContentIcon from '@/components/icons/EditContent';
 import FormModal from '@/components/formModal/FormModal';
 import AboutMe from '@/components/aboutMe/AboutMe';
 import Interest from '@/components/interests/Interest';
-import { MY_CLOSET, MY_GLAM, EXTRAS } from '@/app/utils/constants/userPossibleOutfits';
+import { QUALIFICATIONS_OPTIONS, EXPERIENCE_OPTIONS } from '@/app/utils/constants/userPossibleOutfits';
 
-export default function ProfileAboutMe ({aboutMeDescription, providerGlam, providerCloset, providerExtraOptions, data}) {
+export default function ProfileAboutMe ({aboutMeDescription, providerExperience, providerQualififcations, data}) {
   const {
     showEditButton,
     showEmptyStateForDashboardPage,
@@ -25,29 +25,20 @@ export default function ProfileAboutMe ({aboutMeDescription, providerGlam, provi
 
   const interestsContent = [
     {
-      componentTitle: 'My Glam',
-      data: providerGlam,
-      optionsList: MY_GLAM,
+      componentTitle: 'My Experience',
+      data: providerExperience,
+      optionsList: EXPERIENCE_OPTIONS,
       updateChange: (value) => {
-        onChanges('glam', value);
+        onChanges('experience', value);
         setShowModal(false);
       }
     },
     {
-      componentTitle: 'My Closet',
-      data: providerCloset,
-      optionsList: MY_CLOSET,
+      componentTitle: 'My Qualifications',
+      data: providerQualififcations,
+      optionsList: QUALIFICATIONS_OPTIONS,
       updateChange: (value) => {
-        onChanges('closet', value);
-        setShowModal(false);
-      }
-    },
-    {
-      componentTitle: 'My extras',
-      data: providerExtraOptions,
-      optionsList: EXTRAS,
-      updateChange: (value) => {
-        onChanges('extras', value);
+        onChanges('qualifications', value);
         setShowModal(false);
       }
     },

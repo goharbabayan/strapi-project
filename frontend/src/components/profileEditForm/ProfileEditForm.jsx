@@ -20,8 +20,8 @@ export default function ProfileInfoEditForm ({
   pageTitle,
   role,
   showUsername,
-  isCreatingNewEscort,
-  updateManagerNewEscortLocationData,
+  isCreatingNewProvider,
+  updateManagerNewProviderLocationData,
   errors,
   setErrors,
 }) {
@@ -47,7 +47,7 @@ export default function ProfileInfoEditForm ({
             >
               <LocationDetails
                 user={user}
-                onSaveChangesButtonClick={(locationInfo) => isCreatingNewEscort ? updateManagerNewEscortLocationData(locationInfo) : updateUserPendingOvverridesAndSubmitUserData(locationInfo)}
+                onSaveChangesButtonClick={(locationInfo) => isCreatingNewProvider ? updateManagerNewProviderLocationData(locationInfo) : updateUserPendingOvverridesAndSubmitUserData(locationInfo)}
                 userCountry={user?.country}
                 userSuburbs={user?.suburbs}
                 userCity={user?.city}

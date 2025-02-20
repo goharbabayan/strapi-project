@@ -53,7 +53,7 @@ export default function CategoryField ({
     setFilteredOptions({ ...filteredOptions, hourlyRate: updatedOptions })
   }
 
-  const largerColumn = name === 'placeOfService' || name === 'hourlyRate' || name === 'extras';
+  const largerColumn = name === 'placeOfService' || name === 'hourlyRate';
   return (
     <div className={`${styles.category} ${largerColumn ? styles.largerColumn : ''}`}>
       <div className={`${styles.categoryName}`} ref={categoryRef} onClick={(e) => handleClick(e)} >

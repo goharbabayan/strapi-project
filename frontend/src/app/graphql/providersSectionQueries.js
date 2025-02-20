@@ -16,7 +16,6 @@ const GET_POPULAR_PROVIDERS_QUERIES = gql`
                   lastName
                   age
                   placeOfService
-                  dressSize
                   hairColor
                   isApprovedByAdmin
                   availableNow
@@ -41,13 +40,13 @@ const GET_POPULAR_PROVIDERS_QUERIES = gql`
                       price
                       additionalInfo
                     	}
-                   	GFE {
+                   	Specialized {
                        id
                       duration
                       price
                       additionalInfo
                       }
-                    PSE {
+                    Experienced {
                      id
                     duration
                     price
@@ -61,13 +60,13 @@ const GET_POPULAR_PROVIDERS_QUERIES = gql`
                       price
                       additionalInfo
                     	}
-                   	GFE {
+                   	Specialized {
                        id
                       duration
                       price
                       additionalInfo
                       }
-                    PSE {
+                    Experienced {
                      id
                     duration
                     price
@@ -111,7 +110,6 @@ const GET_TOP_PROVIDERS_QUERIES = gql`
                   lastName
                   age
                   placeOfService
-                  dressSize
                   hairColor
                   badge
                   isApprovedByAdmin
@@ -136,13 +134,13 @@ const GET_TOP_PROVIDERS_QUERIES = gql`
                       price
                       additionalInfo
                     	}
-                   	GFE {
+                   	Specialized {
                        id
                       duration
                       price
                       additionalInfo
                       }
-                    PSE {
+                    Experienced {
                      id
                     duration
                     price
@@ -156,13 +154,13 @@ const GET_TOP_PROVIDERS_QUERIES = gql`
                       price
                       additionalInfo
                     	}
-                   	GFE {
+                   	Specialized {
                        id
                       duration
                       price
                       additionalInfo
                       }
-                    PSE {
+                    Experienced {
                      id
                     duration
                     price
@@ -212,7 +210,6 @@ const GET_PROVIDERS_BY_TYPE_QUERIES = gql`
                   lastName
                   age
                   placeOfService
-                  dressSize
                   hairColor
                   badge
                   isApprovedByAdmin
@@ -237,13 +234,13 @@ const GET_PROVIDERS_BY_TYPE_QUERIES = gql`
                       price
                       additionalInfo
                     	}
-                   	GFE {
+                   	Specialized {
                        id
                       duration
                       price
                       additionalInfo
                       }
-                    PSE {
+                    Experienced {
                      id
                     duration
                     price
@@ -257,13 +254,13 @@ const GET_PROVIDERS_BY_TYPE_QUERIES = gql`
                       price
                       additionalInfo
                     	}
-                   	GFE {
+                   	Specialized {
                        id
                       duration
                       price
                       additionalInfo
                       }
-                    PSE {
+                    Experienced {
                      id
                     duration
                     price

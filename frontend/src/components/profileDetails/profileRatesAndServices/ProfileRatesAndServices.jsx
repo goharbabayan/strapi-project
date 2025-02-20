@@ -31,9 +31,9 @@ export default function ProfileRatesAndServices({
 }) {
 
   const [selectedServiceOptionType, setSelectedServiceOptionType] = useState(null);
-  const [incallRates, setIncallRates] = useState({ general: [], PSE: [], GFE: [] });
-  const [outcallRates, setOutcallRates] = useState({ general: [], PSE: [], GFE: [] });
-  const [selectedServices, setSelectedServices] = useState({ general: [], PSE: [], GFE: [] });
+  const [incallRates, setIncallRates] = useState({ general: [], Experienced: [], Specialized: [] });
+  const [outcallRates, setOutcallRates] = useState({ general: [], Experienced: [], Specialized: [] });
+  const [selectedServices, setSelectedServices] = useState({ general: [], Experienced: [], Specialized: [] });
   const [showServiceTypeChangeConfirmationPopup, setShowServiceTypeChangeConfirmationPopup] = useState(false);
   const [modalInfo, setModalInfo] = useState({
     show: false,
@@ -75,7 +75,7 @@ export default function ProfileRatesAndServices({
     const hasOutCallRate = checkHasAtLeastOneData(outcall);
     const hasService = checkHasAtLeastOneData(services);
     if (hasService) {
-      const userServiceType = services?.general?.length > 0 ? 'general' : 'gfePse';
+      const userServiceType = services?.general?.length > 0 ? 'general' : 'specializedPse';
       setSelectedServiceOptionType(userServiceType);
       setSelectedServices(services);
     };
@@ -89,20 +89,20 @@ export default function ProfileRatesAndServices({
 
   const handleConfirmChanges = () => {
     setSelectedServiceOptionType((prevType) =>
-      prevType === 'general' ? 'gfePse' : 'general'
+      prevType === 'general' ? 'specializedPse' : 'general'
     );
-    setIncallRates({ general: [], PSE: [], GFE: [] });
-    setOutcallRates({ general: [], PSE: [], GFE: [] });
-    setSelectedServices({ general: [], PSE: [], GFE: [] });
+    setIncallRates({ general: [], Experienced: [], Specialized: [] });
+    setOutcallRates({ general: [], Experienced: [], Specialized: [] });
+    setSelectedServices({ general: [], Experienced: [], Specialized: [] });
 
     if (isVerifiedUser) {
       updateServicesTypeChange();
     } else {
       // remove all data
       updateUserPendingOvverridesAndSubmitUserData({
-        'services': { general: [], PSE: [], GFE: [] },
-        'incall': { general: [], PSE: [], GFE: [] },
-        'outcall': { general: [], PSE: [], GFE: [] },
+        'services': { general: [], Experienced: [], Specialized: [] },
+        'incall': { general: [], Experienced: [], Specialized: [] },
+        'outcall': { general: [], Experienced: [], Specialized: [] },
       });
     }
     handleModalClose();
@@ -113,7 +113,7 @@ export default function ProfileRatesAndServices({
   };
 
   const checkHasAtLeastOneData = (data) => {
-    return data?.general?.length > 0 || (data?.PSE?.length > 0 && data?.GFE?.length > 0);
+    return data?.general?.length > 0 || (data?.Experienced?.length > 0 && data?.Specialized?.length > 0);
   };
 
   const handleEditIconClick = (title, id) => {
@@ -223,37 +223,37 @@ export default function ProfileRatesAndServices({
             </div>
           </>
         }
-        {selectedServiceOptionType && selectedServiceOptionType === 'gfePse' &&
+        {selectedServiceOptionType && selectedServiceOptionType === 'specializedPse' &&
           <>
             <ProviderInterests
-              componentTitle='GFE, PSE Services'
-              data={services?.GFE}
-              data2={services?.PSE}
+              componentTitle='Specialized, Experienced Services'
+              data={services?.Specialized}
+              data2={services?.Experienced}
               showEditButton={showEditButton}
-              dataTitle={'GFE'}
-              dataTitle2={'PSE'}
-              onClick={() => handleEditIconClick('GFE, PSE services', 'gfepse')}
+              dataTitle={'Specialized'}
+              dataTitle2={'Experienced'}
+              onClick={() => handleEditIconClick('Specialized, Experienced services', 'specializedexperienced')}
             />
             <div className={styles.rates}>
               <ProviderInterests
                 componentTitle="Incall"
-                data={incall?.GFE}
-                data2={incall?.PSE}
-                dataTitle={'GFE'}
-                dataTitle2={'PSE'}
+                data={incall?.Specialized}
+                data2={incall?.Experienced}
+                dataTitle={'Specialized'}
+                dataTitle2={'Experienced'}
                 isRateData={true}
                 showEditButton={showEditButton}
-                onClick={() => handleEditIconClick('Incall Rates', 'incall-gfepse')}
+                onClick={() => handleEditIconClick('Incall Rates', 'incall-specializedexperienced')}
               />
               <ProviderInterests
                 componentTitle="Outcall"
-                dataTitle={'GFE'}
-                dataTitle2={'PSE'}
-                data={outcall?.GFE}
-                data2={outcall?.PSE}
+                dataTitle={'Specialized'}
+                dataTitle2={'Experienced'}
+                data={outcall?.Specialized}
+                data2={outcall?.Experienced}
                 isRateData={true}
                 showEditButton={showEditButton}
-                onClick={() => handleEditIconClick('Outcall Rates', 'outcall-gfepse')}
+                onClick={() => handleEditIconClick('Outcall Rates', 'outcall-specializedexperienced')}
               />
             </div>
           </>

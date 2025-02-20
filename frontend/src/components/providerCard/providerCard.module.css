@@ -8,7 +8,7 @@
   width: calc(var(--provider-card-width) - 17px);
 }
 
-.mainWrap, .managerEscortCardWrapper {
+.mainWrap, .managerProviderCardWrapper {
   position: relative;
   padding: 13px 16px;
   border-radius: 10px;
@@ -164,19 +164,19 @@
   background: rgba(255, 255, 255, 0.20);
 }
 
-.managerEscortCard {
+.managerProviderCard {
   display: flex;
   position: relative;
 }
 
-.managerEscortCardWrapper {
+.managerProviderCardWrapper {
   flex-grow: 1;
   border-radius: 10px;
   border: 2px solid var(--neutral-n20);
   background: var(--neutral-white-n10);
 }
 
-.managerEscortInfo {
+.managerProviderInfo {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;

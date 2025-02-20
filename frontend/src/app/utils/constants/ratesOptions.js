@@ -23,6 +23,6 @@ export const RATES_OPTIONS = [
   {label: 'Dinner Date', value: 'Dinner Date'},
   {label: 'Couples', value: 'Couples'},
   {label: 'Weekend', value: 'Weekend'},
-  {label: 'Duos with another escort', value: 'Duos with another escort'},
+  {label: 'Duos with another provider', value: 'Duos with another provider'},
   {label: 'Social date', value: 'Social date'},
 ]

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react';
-import styles from './escorts.module.css';
+import styles from './members.module.css';
 import Text from '@/components/text/Text';
 import Button from '@/components/button/Button';
 import { navigate } from '@/app/actions';
@@ -17,13 +17,13 @@ import Modal from '../modal/Modal';
 import Popup from '../popup/Popup';
 import InfoIcon from '../icons/Info';
 
-export default function Escorts ({managerId, onVisitProfileButtonClick, userData, setUserData,setErrors, submitManagerEscortData}) {
+export default function Members ({managerId, onVisitProfileButtonClick, userData, setUserData,setErrors, submitManagerProviderData}) {
   const strapiBaseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
   const [members, setMembers] = useState(null);
   const [showSuccessfullRemoveMessage, setShowSuccessfullRemoveMessage] = useState(false);
-  const [showRemoveEscortConfirmationPopup, setShowRemoveEscortConfirmationPopup] = useState(false);
-  const [escortId, setEscortId] = useState(null);
+  const [showRemoveProviderConfirmationPopup, setShowRemoveProviderConfirmationPopup] = useState(false);
+  const [ProviderId, setProviderId] = useState(null);
 
   useEffect(() => {
     const managerToken = JSON.parse(localStorage.getItem('token'));
@@ -42,10 +42,10 @@ export default function Escorts ({managerId, onVisitProfileButtonClick, userData
     });
   }, [showSuccessfullRemoveMessage])
 
-  const inFoMessageForDeletingEscortContent = [
+  const inFoMessageForDeletingProviderContent = [
     {
       title: '',
-      text: 'The escort will be permanently deleted.',
+      text: 'The provider will be permanently deleted.',
       showButtons: true,
       buttons: [
         {
@@ -55,7 +55,7 @@ export default function Escorts ({managerId, onVisitProfileButtonClick, userData
           onClick: () => handleClosePopup(),
         },
         {
-          children: 'Delete Escort',
+          children: 'Delete Provider',
           variant: 'main',
           type: 'button',
           onClick: () => handleRemoveMember(),
@@ -64,7 +64,7 @@ export default function Escorts ({managerId, onVisitProfileButtonClick, userData
     }
   ];
 
-  const handleManagerEscortDataChange = async (field, value, username) => {
+  const handleManagerProviderDataChange = async (field, value, username) => {
     if (!field || !username) return;
     setErrors(null);
     const userRatesAndServicesData = await fetchUserRatesAndServices(null, username);
@@ -77,9 +77,9 @@ export default function Escorts ({managerId, onVisitProfileButtonClick, userData
           setErrors(error);
         } else {
           if (res && Array.isArray(res)) {
-            const { id, blocked, createdAt, updatedAt, confirmed, role, ...escortData } = res[0];
+            const { id, blocked, createdAt, updatedAt, confirmed, role, ...ProviderData } = res[0];
             const updatedUserData = {
-              ...escortData,
+              ...ProviderData,
               ...userRatesAndServicesData,
               [field]: value,
             };
@@ -91,7 +91,7 @@ export default function Escorts ({managerId, onVisitProfileButtonClick, userData
             setMembers(prevMembers =>
               prevMembers.map(member => member.id === id ? { ...member, availableNow: !member.availableNow } : member)
             );
-            submitManagerEscortData(updatedUserData, true, id);
+            submitManagerProviderData(updatedUserData, true, id);
           }
         }
       });
@@ -99,11 +99,11 @@ export default function Escorts ({managerId, onVisitProfileButtonClick, userData
 
   const handleRemoveMember = async () => {
     const memberToken = process.env.NEXT_PUBLIC_API_TOKEN_MEMBER;
-    if(!escortId || !memberToken) return;
+    if(!ProviderId || !memberToken) return;
 
-    useFetchData(`${strapiBaseUrl}/api/members/${escortId}`, {
+    useFetchData(`${strapiBaseUrl}/api/members/${ProviderId}`, {
       method: 'DELETE',
-      body: JSON.stringify(escortId),
+      body: JSON.stringify(ProviderId),
       headers: {
         'Content-type': 'application/json',
         'authorization': `Bearer ${memberToken}`
@@ -113,7 +113,7 @@ export default function Escorts ({managerId, onVisitProfileButtonClick, userData
           const errorMessage = data.error.message;
           console.error(errorMessage);
         } else {
-          setShowRemoveEscortConfirmationPopup(false);
+          setShowRemoveProviderConfirmationPopup(false);
           setShowSuccessfullRemoveMessage(true);
           setTimeout(() => {
             setShowSuccessfullRemoveMessage(false);
@@ -123,7 +123,7 @@ export default function Escorts ({managerId, onVisitProfileButtonClick, userData
   }
 
   const handleClosePopup = () => {
-    setShowRemoveEscortConfirmationPopup(false);
+    setShowRemoveProviderConfirmationPopup(false);
   }
   return (
     <>
@@ -137,29 +137,29 @@ export default function Escorts ({managerId, onVisitProfileButtonClick, userData
                 provider={member}
                 count={3}
                 roleType={SERVICE_PROVIDER.type}
-                isManagerEscort={true}
-                onChanges={handleManagerEscortDataChange}
+                isManagerProvider={true}
+                onChanges={handleManagerProviderDataChange}
                 onVisitProfileButtonClick={() => onVisitProfileButtonClick(member.username)}
                 onRemoveIconClick={(id) => {
-                  setShowRemoveEscortConfirmationPopup(true);
-                  setEscortId(id);
+                  setShowRemoveProviderConfirmationPopup(true);
+                  setProviderId(id);
                 }}
               />
             )
           })}
         </ul>
       }
-      {showRemoveEscortConfirmationPopup &&
+      {showRemoveProviderConfirmationPopup &&
         <Modal
-          title={`Are you sure you want to delete this escort?`}
-          content={inFoMessageForDeletingEscortContent}
+          title={`Are you sure you want to delete this provider?`}
+          content={inFoMessageForDeletingProviderContent}
           closeModal={handleClosePopup}
         />
       }
       {showSuccessfullRemoveMessage &&
         <Popup
           title={'Successfuly deleted'}
-          text={'The escort was successfully removed'}
+          text={'The provider was successfully removed'}
           Icon={<InfoIcon />}
           onClose={() => setShowSuccessfullRemoveMessage(false)}
           contentClassName={styles.modal}
@@ -169,7 +169,7 @@ export default function Escorts ({managerId, onVisitProfileButtonClick, userData
         <Text
           tag={'h4'}
           className={'text-middle'}
-          children={`You don't have escorts yet.`}
+          children={`You don't have providers yet.`}
         />
       }
     </>
@@ -194,7 +194,7 @@ export default function Escorts ({managerId, onVisitProfileButtonClick, userData
 //     </div>
 //     <div className={styles.editButtons}>
 //       <span className={`text-middle ${styles.approvedStatus} ${!isApproved ? styles.isNotApproved : ''}`}>{`${!isApproved ? 'Not approved': 'Approved'}`}</span>
-//       <div className={styles.editButton} onClick={() => onEditEscortButtonClick(member.username)}>
+//       <div className={styles.editButton} onClick={() => onEditProviderButtonClick(member.username)}>
 //         <EditIcon className={styles.editIcon} />
 //       </div>
 //       <div className={styles.editButton} onClick={() => handleRemoveMember(index)}>

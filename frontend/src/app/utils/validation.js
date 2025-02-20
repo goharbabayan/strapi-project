@@ -1,4 +1,4 @@
-import { USER_REQUIRED_FIELDS, USER_REQUIRED_FIELDS_FOR_CLIENT_ROLE, USER_REQUIRED_FIELDS_FOR_ADDING_REVIEW, USER_REQUIRED_FIELDS_FOR_CREATING_NEW_ESCORT } from './constants/userForm';
+import { USER_REQUIRED_FIELDS, USER_REQUIRED_FIELDS_FOR_CLIENT_ROLE, USER_REQUIRED_FIELDS_FOR_ADDING_REVIEW, USER_REQUIRED_FIELDS_FOR_CREATING_NEW_Provider } from './constants/userForm';
 import { CLIENT, MANAGER } from './constants/userRoles';
 
 export const validateFormData = (formData) => {
@@ -27,9 +27,9 @@ export const validateServices = (services) => {
   // Check if General services is filled
   const isGeneralFilled = services?.general?.length > 0;
   
-  // Check if GFE and PSE are filled properly
-  const isPSEFilled = services?.PSE?.length > 0;
-  const isGFEFilled = services?.GFE?.length > 0;
+  // Check if Specialized and Experienced are filled properly
+  const isPSEFilled = services?.Experienced?.length > 0;
+  const isSpecializedFilled = services?.Specialized?.length > 0;
 
   // If General is selected, ensure at least one service is selected in General
   if (services?.general && !isGeneralFilled) {
@@ -37,17 +37,17 @@ export const validateServices = (services) => {
     error = 'Please add at least one service under General';
   }
 
-  // If both PSE and GFE are selected, ensure at least one service is selected for each
-  if ((isPSEFilled || isGFEFilled) && !(isPSEFilled && isGFEFilled)) {
+  // If both Experienced and Specialized are selected, ensure at least one service is selected for each
+  if ((isPSEFilled || isSpecializedFilled) && !(isPSEFilled && isSpecializedFilled)) {
     isValid = false;
-    error = 'Please add at least one service for both PSE and GFE';
+    error = 'Please add at least one service for both Experienced and Specialized';
   }
 
-  // Ensure that at least one service is selected if neither General, PSE, or GFE is empty
+  // Ensure that at least one service is selected if neither General, Experienced, or Specialized is empty
   const servicesIsNotEmpty = 
     (services?.general && services?.general?.length > 0) || 
-    (services?.PSE && services?.PSE?.length > 0) || 
-    (services?.GFE && services?.GFE?.length > 0);
+    (services?.Experienced && services?.Experienced?.length > 0) || 
+    (services?.Specialized && services?.Specialized?.length > 0);
 
   if (!servicesIsNotEmpty) {
     isValid = false;
@@ -62,15 +62,15 @@ export const validateRates = (rates, type, selectedPlaceOfServiceType) => {
   let error = null;
   let isSelectedOutcallPlaceOfServiceAndOutcallRatesAreEmpty, isSelectedIncallPlaceOfServiceAndIncallRatesAreEmpty;
   if (selectedPlaceOfServiceType && selectedPlaceOfServiceType != '') {
-    isSelectedOutcallPlaceOfServiceAndOutcallRatesAreEmpty = selectedPlaceOfServiceType === 'Out-Call' && type === 'outcall' && (!rates || (!rates?.general?.length && !rates?.PSE?.length && !rates?.GFE?.length));
-    isSelectedIncallPlaceOfServiceAndIncallRatesAreEmpty = selectedPlaceOfServiceType === 'In-Call' && type === 'incall' && (!rates || (!rates?.general?.length && !rates?.PSE?.length && !rates?.GFE?.length));
+    isSelectedOutcallPlaceOfServiceAndOutcallRatesAreEmpty = selectedPlaceOfServiceType === 'Out-Call' && type === 'outcall' && (!rates || (!rates?.general?.length && !rates?.Experienced?.length && !rates?.Specialized?.length));
+    isSelectedIncallPlaceOfServiceAndIncallRatesAreEmpty = selectedPlaceOfServiceType === 'In-Call' && type === 'incall' && (!rates || (!rates?.general?.length && !rates?.Experienced?.length && !rates?.Specialized?.length));
   };
 
   if (isSelectedIncallPlaceOfServiceAndIncallRatesAreEmpty || isSelectedOutcallPlaceOfServiceAndOutcallRatesAreEmpty) {
     error = `Please add at least one rate for ${type} rates`;
     isValid = false;
   } else {
-    ['general', 'PSE', 'GFE'].forEach(category => {
+    ['general', 'Experienced', 'Specialized'].forEach(category => {
       rates[category]?.forEach(rate => {
         // Ensure duration and price are filled
         if (!rate?.duration || rate?.duration === "") {
@@ -113,24 +113,24 @@ export const validateForm = (formData, isClientDashboardPage) => {
     // Validation for services field
     if (fieldName === 'services') {
       const isGeneralFilled = fieldValue?.general?.length > 0;
-      const isPSEFilled = fieldValue?.PSE?.length > 0;
-      const isGFEFilled = fieldValue?.GFE?.length > 0;
+      const isPSEFilled = fieldValue?.Experienced?.length > 0;
+      const isSpecializedFilled = fieldValue?.Specialized?.length > 0;
 
       // Case 1: If 'general' is selected, make sure it has at least one service
       if (fieldValue?.general && isGeneralFilled && fieldValue?.general?.length === 0) {
         errors[fieldName] = 'Please add at least one service under General';
       }
 
-      // Case 2: If both 'GFE' and 'PSE' are selected, each must have at least one service
-      if ((isPSEFilled || isGFEFilled) && !(isPSEFilled && isGFEFilled)) {
-        errors[fieldName] = 'Please add at least one service for both PSE and GFE';
+      // Case 2: If both 'Specialized' and 'Experienced' are selected, each must have at least one service
+      if ((isPSEFilled || isSpecializedFilled) && !(isPSEFilled && isSpecializedFilled)) {
+        errors[fieldName] = 'Please add at least one service for both Experienced and Specialized';
       }
 
-      // Final Check: If no services are added at all in general, PSE, or GFE
+      // Final Check: If no services are added at all in general, Experienced, or Specialized
       const servicesIsNotEmpty =
         (fieldValue?.general && fieldValue?.general?.length > 0) ||
-        (fieldValue?.PSE && fieldValue?.PSE?.length > 0) ||
-        (fieldValue?.GFE && fieldValue?.GFE?.length > 0);
+        (fieldValue?.Experienced && fieldValue?.Experienced?.length > 0) ||
+        (fieldValue?.Specialized && fieldValue?.Specialized?.length > 0);
 
       if (!servicesIsNotEmpty) {
         errors[fieldName] = 'Please, add at least one service';
@@ -141,7 +141,7 @@ export const validateForm = (formData, isClientDashboardPage) => {
   //  Validate incall and outcall rates
   if (formData.placeOfService) {
     const validateRates = (rates, type, selectedPlaceOfServiceType) => {
-      if (!rates || !rates.general.length && !rates.PSE.length && !rates.GFE.length) {
+      if (!rates || !rates.general.length && !rates.Experienced.length && !rates.Specialized.length) {
         if (!errors['services']) {
           errors['services'] = `Please add at least one rate for ${type} rates`;
         } else {
@@ -149,7 +149,7 @@ export const validateForm = (formData, isClientDashboardPage) => {
         }
         // errors['services'] = `Please add at least one rate for ${type} rates`;
       } else {
-        ['general', 'PSE', 'GFE'].forEach(category => {
+        ['general', 'Experienced', 'Specialized'].forEach(category => {
           rates[category]?.forEach(rate => {
             // Ensure duration and price are filled
             if (!rate.duration || rate.duration === "") {
@@ -191,8 +191,6 @@ export const validateForm = (formData, isClientDashboardPage) => {
       case 'coverPhoto':
       case 'country':
       case 'city':
-      case 'bust':
-      case 'dressSize':
       case 'gender':
       case 'name':
       case 'lastName':
@@ -257,9 +255,9 @@ export const validateForm = (formData, isClientDashboardPage) => {
 
       // Services validation
       case 'services': {
-        const isGeneralOGFEPSEServicesFilled =
-          fieldValue && (fieldValue?.general?.length !== 0 || (fieldValue?.PSE?.length !== 0 && fieldValue?.GFE?.length !== 0));
-        if (!isGeneralOGFEPSEServicesFilled) {
+        const isGeneralOSpecializedPSEServicesFilled =
+          fieldValue && (fieldValue?.general?.length !== 0 || (fieldValue?.Experienced?.length !== 0 && fieldValue?.Specialized?.length !== 0));
+        if (!isGeneralOSpecializedPSEServicesFilled) {
           errors[fieldName] = 'Please, add at least one service';
         }
         break;
@@ -286,9 +284,7 @@ export const validateRequiredFieldValue = (fieldName, fieldValue) => {
     case 'coverPhoto':
     case 'country':
     case 'city':
-    case 'bust':
     case 'gender':
-    case 'dressSize':
     case 'name':
     case 'lastName':
     case 'age':
@@ -334,8 +330,8 @@ export const validateRequiredFieldValue = (fieldName, fieldValue) => {
       }
       break;
     case 'services':
-      const isGeneralOGFEPSEServicesFilled = fieldValue && (fieldValue?.general?.length !== 0 || (fieldValue?.PSE?.length !== 0 && fieldValue?.GFE?.length !== 0));
-      if (!isGeneralOGFEPSEServicesFilled) {
+      const isGeneralOSpecializedPSEServicesFilled = fieldValue && (fieldValue?.general?.length !== 0 || (fieldValue?.Experienced?.length !== 0 && fieldValue?.Specialized?.length !== 0));
+      if (!isGeneralOSpecializedPSEServicesFilled) {
         error = {[fieldName]: 'Services are required.'};
       };
       break;

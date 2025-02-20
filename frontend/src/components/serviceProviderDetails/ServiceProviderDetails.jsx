@@ -19,7 +19,7 @@ import ProfileReviews from '@/components/profileReviews/ProfileReviews';
 import ProfileRatesAndServices from '@/components/profileDetails/profileRatesAndServices/ProfileRatesAndServices';
 import WhenCanWeMeetComponent from '@/components/profileDetails/whenCanWeMeetComponent/WhenCanWeMeetComponent';
 import Text from '../text/Text';
-import { ESCORT_DASHBOARD_PAGE_TABS } from '@/app/utils/constants/dashboardPageTabs';
+import { Provider_DASHBOARD_PAGE_TABS } from '@/app/utils/constants/dashboardPageTabs';
 import ProfileInfoEditForm from '../profileEditForm/ProfileEditForm';
 import ResetPassword from '../resetPassword/ResetPassword';
 import Modal from '../modal/Modal';
@@ -47,7 +47,7 @@ export default function ServiceProviderDetails ({
   isVerified,
   role,
   userId,
-  isForManagerEscort,
+  isForManagerProvider,
   approvalFieldsInfo,
   unsavedChanges,
   errors,
@@ -82,7 +82,7 @@ export default function ServiceProviderDetails ({
     },
     {
       id: 3,
-      label: 'When can we meet',
+      label: 'When can we study',
       name: 'schedule',
       icon: WhenCanWeMeetIcon
     },
@@ -219,7 +219,7 @@ export default function ServiceProviderDetails ({
         <>
           {!hideTabs &&
             <ProfileDetailsTabs
-              profileDetailsTabsData={ESCORT_DASHBOARD_PAGE_TABS}
+              profileDetailsTabsData={Provider_DASHBOARD_PAGE_TABS}
               activeTab={generalActiveTabId}
               setActiveTab={setGeneralActiveTabId}
             />
@@ -287,7 +287,7 @@ export default function ServiceProviderDetails ({
                 profileDigitalService={user?.digitalService}
                 profileProviderPersonalInfo={USER_PROFILE_DATA(user)}
                 providerContactInfo={{
-                  email: role === MANAGER.type ? user?.managerEscortEmail : user?.email,
+                  email: role === MANAGER.type ? user?.managerProviderEmail : user?.email,
                   phone: user?.phoneNumber,
                 }}
                 provierSocialLinks={{
@@ -299,7 +299,7 @@ export default function ServiceProviderDetails ({
                 isDashboardPage={true}
                 showEditIcon={true}
                 editButtonText={'Edit profile info'}
-                isForManagerEscort={isForManagerEscort}
+                isForManagerProvider={isForManagerProvider}
                 token={token}
                 onChanges={handleChange}
                 onEditProfileInfoButtonClick={handleEditProfileInfoButtonClick}
@@ -334,9 +334,8 @@ export default function ServiceProviderDetails ({
               {menuActiveTabId === 1 &&
                 <ProfileAboutMe
                   aboutMeDescription={user?.aboutMe}
-                  providerCloset={user?.closet}
-                  providerGlam={user?.glam}
-                  providerExtraOptions={user?.extras}
+                  providerExperience={user?.experience}
+                  providerQualififcations={user?.qualifications}
                   data={{
                     showEditButton: true,
                     showEmptyStateForDashboardPage: true,

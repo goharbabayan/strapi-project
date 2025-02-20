@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import styles from './clientDetails.module.css';
-import FavoriteEscorts from '../favoriteEscorts/FavoriteEscorts';
+import FavoriteProviders from '../favoriteProviders/FavoriteProviders';
 import ResetPassword from '../resetPassword/ResetPassword';
 import ProfileDetailsTabs from '../profileDetails/profileDetailsTabs/ProfileDetailsTabs';
 import { GET_CLIENT_DASHBOARD_PAGE_QUERIES } from '@/app/graphql/clientDashboardPageQueries';
@@ -60,7 +60,7 @@ export default function ClientDetails({
             setActiveTab={setActiveTab}
           />
           {activeTab === 'account' &&
-            <FavoriteEscorts
+            <FavoriteProviders
               favoriteProvidersIds={formData.favoriteProvidersIds}
               bannerData={bannerData}
               clientId={user.id}

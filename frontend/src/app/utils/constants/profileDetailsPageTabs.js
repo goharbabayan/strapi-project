@@ -23,7 +23,7 @@ export const PROFILE_DETAILS_TABS = [
   },
   {
     id: 3,
-    label: 'When can we meet',
+    label: 'When can we study',
     icon: WhenCanWeMeetIcon,
   },
   {

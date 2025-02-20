@@ -41,7 +41,7 @@ export default function ProfileMainInfo(props) {
     verificationStatus,
     profileIsAvialabile,
     profileDigitalService,
-    isForManagerEscort,
+    isForManagerProvider,
     isProfileReviewPage,
     onChanges,
     onEditProfileInfoButtonClick,
@@ -252,7 +252,7 @@ export default function ProfileMainInfo(props) {
                 ?
                   <Text
                     tag={'h3'}
-                    className={`${styles.profileFullName} ${(isForManagerEscort || isProfileReviewPage )? styles.fullWidth : ''}`}
+                    className={`${styles.profileFullName} ${(isForManagerProvider || isProfileReviewPage )? styles.fullWidth : ''}`}
                     children={`${profileProviderFullName.name} ${profileProviderFullName.lastname}`}
                   />
                 :
@@ -262,7 +262,7 @@ export default function ProfileMainInfo(props) {
                     children={`Name Lastname`}
                   />
               }
-              {isDashboardPage && !isForManagerEscort &&
+              {isDashboardPage && !isForManagerProvider &&
                 <SwitchButton
                   isOn={isSwitchOn}
                   handleToggle={toggleSwitch}

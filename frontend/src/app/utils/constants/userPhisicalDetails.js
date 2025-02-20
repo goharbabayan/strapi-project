@@ -154,26 +154,11 @@ export const PLACE_OF_SERVICE_OPTIONS = [
   {value: 'In-Call, Out-Call', label: 'In-Call, Out-Call'},
 ]
 
-export const BUST_OPTIONS = [
-  {value: 'A Cup', label: 'A Cup'},
-  {value: 'B Cup', label: 'B Cup'},
-  {value: 'C Cup', label: 'C Cup'},
-  {value: 'D Cup', label: 'D Cup'},
-  {value: 'DD Cup', label: 'DD Cup'},
-  {value: 'E Cup', label: 'E Cup'},
-  {value: 'F Cup', label: 'F Cup'},
-  {value: 'H Cup', label: 'H Cup'},
-  {value: 'I Cup', label: 'I Cup'},
-  {value: 'J Cup', label: 'J Cup'},
-  {value: 'K Cup', label: 'K Cup'},
-]
-
 export const BODY_TYPE_OPTIONS = [
   {value: 'curvy', label: 'Curvy'},
   {value: 'athletic', label: 'Athletic'},
   {value: 'slim', label: 'Slim'},
   {value: 'voluptuous', label: 'Voluptuous'},
-  {value: 'busty', label: 'Busty'},
   {value: 'bbw', label: 'Bbw'},
   {value: 'hour glass', label: 'Hour glass'},
   {value: 'petite', label: 'Petite'},

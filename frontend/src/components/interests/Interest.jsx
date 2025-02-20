@@ -1,6 +1,6 @@
 import styles from './interest.module.css';
 import Text from '../text/Text';
-import { EXTRAS, MY_GLAM, MY_CLOSET } from '@/app/utils/constants/userPossibleOutfits';
+import { EXPERIENCE_OPTIONS, QUALIFICATIONS_OPTIONS } from '@/app/utils/constants/userPossibleOutfits';
 import Button from '../button/Button';
 import { useEffect, useState } from 'react';
 import Checkbox from '../checkbox/CheckBox';
@@ -109,7 +109,7 @@ export default function Interest ({userSelectedInterests, optionsList, updateCha
           </div>
         }
         {Array.isArray(options) && options.length > 0 && showServicesOptions &&
-          <ul id="optionsList" className={`${styles.options} ${title === 'GFE' || title === 'PSE' ? styles.gfepseOptions : ''} unstyled-list`}>
+          <ul id="optionsList" className={`${styles.options} ${title === 'Specialized' || title === 'Experienced' ? styles.specializedexperiencedOptions : ''} unstyled-list`}>
             {options.map((option, index) => {
               const {value} = option;
               return (

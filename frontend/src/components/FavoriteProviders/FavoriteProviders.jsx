@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import styles from './favoriteEscorts.module.css';
+import styles from './favoriteProviders.module.css';
 import Text from '../text/Text';
 import ProviderCard from '../providerCard/ProviderCard';
 import Banner from '../banner/Banner';
@@ -9,7 +9,7 @@ import Popup from '@/components/popup/Popup';
 import InfoIcon from '../icons/Info';
 import Button from '../button/Button';
 
-const FavoriteEscorts = ({
+const FavoriteProviders = ({
   favoriteProvidersIds,
   bannerData,
   clientId,
@@ -101,7 +101,7 @@ const FavoriteEscorts = ({
             <Text
               tag={'h4'}
               className='subtitle'
-              children={`You don't have favorite escorts yet.`}
+              children={`You don't have favorite providers yet.`}
             />
           }
           {displayedProviders.length > 0 &&
@@ -134,7 +134,7 @@ const FavoriteEscorts = ({
       {showModal &&
         <Popup
           title={'Successfully removed'}
-          text={'The girl has been removed from favorite escorts'}
+          text={'The girl has been removed from favorite providers'}
           Icon={<InfoIcon/>}
           onClose={handleCloseModal}
           contentClassName={styles.modal}
@@ -144,4 +144,4 @@ const FavoriteEscorts = ({
   )
 };
 
-export default FavoriteEscorts;
+export default FavoriteProviders;

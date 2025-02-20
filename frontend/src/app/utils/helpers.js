@@ -55,7 +55,7 @@ export const buildQueriesForFilteredOptions = (data) => {
     } else {
       if (!fieldValues.length) continue;
       if (fieldValues.length < 2) {
-        if (field === 'services' || field === 'extras') {
+        if (field === 'services') {
           fieldQuery = fieldValues.map((value) => `[$and][${ind}][${field}][item]=${value}`).join(`&filters`);
         } else if (field === 'nameOrLastName') {
           fieldQuery = fieldValues.map((value) => `[$and][${ind}][$or][0][name][$containsi]=${value}&filters[$and][${ind}][$or][1][lastName][$containsi]=${value}`).join(`&filters`);
@@ -65,7 +65,7 @@ export const buildQueriesForFilteredOptions = (data) => {
           fieldQuery = fieldValues.map((value) => `[$and][${ind}][${field}][$eq]=${value}`).join(`&filters`);
         };
       } else {
-        if (field === 'services' || field === 'extras') {
+        if (field === 'services') {
           fieldQuery = fieldValues.map((value, index) => `[$and][${ind}][$or][${index++}][${field}][item]=${value}`).join(`&filters`);
         } else if (field === 'suburbs') {
           fieldQuery = fieldValues.map((value, index) => `[$and][${ind}][$or][${index++}][${field}][name]=${value}`).join(`&filters`);
@@ -100,8 +100,8 @@ export const generateListOfOptionsForExistingResults = (results) => {
       if (isEmptyCategoryArrayValue) return;
       if (provider[categoryName] && categoryName === 'services') {
         if (!provider[categoryName]) return;
-        const { general, GFE, PSE } = provider[categoryName];
-        [general, GFE, PSE].forEach(category => {
+        const { general, Specialized, Experienced } = provider[categoryName];
+        [general, Specialized, Experienced].forEach(category => {
           if (Array.isArray(category)) {
             category.forEach(service => {
               const itemIsNotIncludedInOptionsListAndItemValueIsNotEmpty = service.item && !options[categoryName].includes(service.item);
@@ -113,11 +113,6 @@ export const generateListOfOptionsForExistingResults = (results) => {
         provider[categoryName].forEach(item => {
           const itemIsNotIncludedInOptionsListAndItemValueIsNotEmpty = item.name && !options[categoryName].includes(item.name);
           itemIsNotIncludedInOptionsListAndItemValueIsNotEmpty && options[categoryName].push(item.name);
-        });
-      } else if (isCategoryArrayField && categoryName === 'extras') {
-        provider[categoryName].forEach(item => {
-          const itemIsNotIncludedInOptionsListAndItemValueIsNotEmpty = item.item && !options[categoryName].includes(item.item);
-          itemIsNotIncludedInOptionsListAndItemValueIsNotEmpty && options[categoryName].push(item.item);
         });
       } else if (optionIsNotExistingInOptionsListAndIsNotServicesOption) {
         options[categoryName].push(provider[categoryName]);
@@ -399,17 +394,17 @@ export const fetchUserRatesAndServices = async (customerToken, username, userId)
   try {
     let data;
     if (username) {
-      const ratesDataArray = await useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users?filters[username][$eq]=${username}&populate[services][populate][0]=general&populate[services][populate][1]=PSE&populate[services][populate][2]=GFE&populate[incall][populate][0]=general&populate[incall][populate][1]=PSE&populate[incall][populate][2]=GFE&populate[outcall][populate][0]=general&populate[outcall][populate][1]=PSE&populate[outcall][populate][2]=GFE`, {
+      const ratesDataArray = await useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users?filters[username][$eq]=${username}&populate[services][populate][0]=general&populate[services][populate][1]=Experienced&populate[services][populate][2]=Specialized&populate[incall][populate][0]=general&populate[incall][populate][1]=Experienced&populate[incall][populate][2]=Specialized&populate[outcall][populate][0]=general&populate[outcall][populate][1]=Experienced&populate[outcall][populate][2]=Specialized`, {
         method: 'GET',
       });
       data = ratesDataArray[0];
     } else if (userId) {
-      const ratesDataArray = await useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users?filters[id][$eq]=${userId}&populate[services][populate][0]=general&populate[services][populate][1]=PSE&populate[services][populate][2]=GFE&populate[incall][populate][0]=general&populate[incall][populate][1]=PSE&populate[incall][populate][2]=GFE&populate[outcall][populate][0]=general&populate[outcall][populate][1]=PSE&populate[outcall][populate][2]=GFE`, {
+      const ratesDataArray = await useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users?filters[id][$eq]=${userId}&populate[services][populate][0]=general&populate[services][populate][1]=Experienced&populate[services][populate][2]=Specialized&populate[incall][populate][0]=general&populate[incall][populate][1]=Experienced&populate[incall][populate][2]=Specialized&populate[outcall][populate][0]=general&populate[outcall][populate][1]=Experienced&populate[outcall][populate][2]=Specialized`, {
         method: 'GET',
       });
       data = ratesDataArray[0];
     } else if (customerToken) {
-      data = await useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/me?populate[services][populate][0]=general&populate[services][populate][1]=PSE&populate[services][populate][2]=GFE&populate[incall][populate][0]=general&populate[incall][populate][1]=PSE&populate[incall][populate][2]=GFE&populate[outcall][populate][0]=general&populate[outcall][populate][1]=PSE&populate[outcall][populate][2]=GFE`, {
+      data = await useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/me?populate[services][populate][0]=general&populate[services][populate][1]=Experienced&populate[services][populate][2]=Specialized&populate[incall][populate][0]=general&populate[incall][populate][1]=Experienced&populate[incall][populate][2]=Specialized&populate[outcall][populate][0]=general&populate[outcall][populate][1]=Experienced&populate[outcall][populate][2]=Specialized`, {
         method: 'GET',
         headers: {
           'authorization': `Bearer ${customerToken}`
@@ -418,20 +413,20 @@ export const fetchUserRatesAndServices = async (customerToken, username, userId)
     }
 
     const services = await data?.services || {
-      GFE: [],
-      PSE: [],
+      Specialized: [],
+      Experienced: [],
       general: [],
     };
 
     const incall = await data?.incall || {
-      GFE: [],
-      PSE: [],
+      Specialized: [],
+      Experienced: [],
       general: [],
     };
 
     const outcall = await data?.outcall || {
-      GFE: [],
-      PSE: [],
+      Specialized: [],
+      Experienced: [],
       general: [],
     };
 
@@ -439,16 +434,16 @@ export const fetchUserRatesAndServices = async (customerToken, username, userId)
   } catch (error) {
     return {
       services: {
-        GFE: [],
-        PSE: [],
+        Specialized: [],
+        Experienced: [],
         general: [],
       }, incall: {
-        GFE: [],
-        PSE: [],
+        Specialized: [],
+        Experienced: [],
         general: [],
       }, outcall: {
-        GFE: [],
-        PSE: [],
+        Specialized: [],
+        Experienced: [],
         general: [],
       }
     };
@@ -471,6 +466,8 @@ export const fetchUserUpdatedData = async (customerToken, userData, username) =>
           authorization: `Bearer ${customerToken}`,
         },
       });
+      console.log('data', data);
+      
     };
     // Handle error case
     if (data.error) {
@@ -493,6 +490,8 @@ export const fetchUserUpdatedData = async (customerToken, userData, username) =>
     };
     // returned 2 different data based on user role
     if (isManagerRole) {
+      console.log(USER_FORM_NEW_MEMBER(userInfo.email, `${id}`));
+      
       return {
         ...userData,
         originalUser: userInfo,
@@ -500,12 +499,12 @@ export const fetchUserUpdatedData = async (customerToken, userData, username) =>
         managerId: id,
         managerEmail: userInfo.email,
         role: role?.type.toLowerCase(),
-        managerNewEscort: USER_FORM_NEW_MEMBER(userInfo.email, `${id}`),
+        managerNewProvider: USER_FORM_NEW_MEMBER(userInfo.email, `${id}`),
         user: USER_FORM_NEW_MEMBER(userInfo.email, `${id}`),
         userWithPendingOverrides: USER_FORM_NEW_MEMBER(userInfo.email, `${id}`),
         userVerificationStatus: getVerificationStatus(null),
-        customSelectedEscort: {},
-        customSelectedEscortId: null,
+        customSelectedProvider: {},
+        customSelectedProviderId: null,
       };
     } else if (isProviderRole) {
       return {
@@ -566,10 +565,7 @@ export const buildDynamicQuery = (minRate, maxRate) => {
     $hairColor: [String]
     $age: [String]
     $eyeColor: [String]
-    $bodyType: [String]
-    $bust: [String]
     $placeOfService: [String]
-    $extras: [String]
   `;
 
   if (isMinRateOrMaxRatesExisting) {
@@ -585,11 +581,11 @@ export const buildDynamicQuery = (minRate, maxRate) => {
       { 
         or: [
           { incall: { general: { duration: { eq: "1 hour" }, price: { gte: $minRate, lte: $maxRate } } } },
-          { incall: { GFE: { duration: { eq: "1 hour" }, price: { gte: $minRate, lte: $maxRate } } } },
-          { incall: { PSE: { duration: { eq: "1 hour" }, price: { gte: $minRate, lte: $maxRate } } } },
+          { incall: { Specialized: { duration: { eq: "1 hour" }, price: { gte: $minRate, lte: $maxRate } } } },
+          { incall: { Experienced: { duration: { eq: "1 hour" }, price: { gte: $minRate, lte: $maxRate } } } },
           { outcall: { general: { duration: { eq: "1 hour" }, price: { gte: $minRate, lte: $maxRate } } } },
-          { outcall: { GFE: { duration: { eq: "1 hour" }, price: { gte: $minRate, lte: $maxRate } } } },
-          { outcall: { PSE: { duration: { eq: "1 hour" }, price: { gte: $minRate, lte: $maxRate } } } }
+          { outcall: { Specialized: { duration: { eq: "1 hour" }, price: { gte: $minRate, lte: $maxRate } } } },
+          { outcall: { Experienced: { duration: { eq: "1 hour" }, price: { gte: $minRate, lte: $maxRate } } } }
         ]
       }`;
   };
@@ -600,7 +596,7 @@ export const buildDynamicQuery = (minRate, maxRate) => {
         filters: {
         and: [
           { isApprovedByAdmin: { eq: true } },
-          { role: { type: { eq: "service_provider" } } },
+          { role: { type: { eq: "provider" } } },
           {
             or: [
               { city: { in: $city } }
@@ -616,11 +612,6 @@ export const buildDynamicQuery = (minRate, maxRate) => {
           {
             or: [
               { suburbs: { name: { in: $suburbs } } }
-            ]
-          },
-          {
-            or: [
-              { extras: { item: { in: $extras } } }
             ]
           },
           {
@@ -645,24 +636,14 @@ export const buildDynamicQuery = (minRate, maxRate) => {
           },
           {
             or: [
-              { bodyType: { in: $bodyType } }
-            ]
-          },
-          {
-            or: [
-              { bust: { in: $bust } }
-            ]
-          },
-          {
-            or: [
               { placeOfService: { in: $placeOfService } }
             ]
           },
           {
             or: [
               { services: { general: { item: { in: $services } } } },
-              { services: { GFE: { item: { in: $services } } } },
-              { services: { PSE: { item: { in: $services } } } }
+              { services: { Specialized: { item: { in: $services } } } },
+              { services: { Experienced: { item: { in: $services } } } }
             ]
           },
         ]
@@ -675,7 +656,6 @@ export const buildDynamicQuery = (minRate, maxRate) => {
             username
             name
             lastName
-            dressSize
             isApprovedByAdmin
             verificationStatus {
               hasBronzeBadge
@@ -692,22 +672,17 @@ export const buildDynamicQuery = (minRate, maxRate) => {
               general {
                 item
               }
-              GFE {
+              Specialized {
                 item
               }
-              PSE {
+              Experienced {
                 item
               }
             }
             hairColor
             age
             eyeColor
-            bodyType
-            bust
             placeOfService
-            extras {
-              item
-            }
             isApprovedByAdmin
             availableNow
             digitalService
@@ -730,13 +705,13 @@ export const buildDynamicQuery = (minRate, maxRate) => {
                 price
                 additionalInfo
               }
-              GFE {
+              Specialized {
                 id
                 duration
                 price
                 additionalInfo
               }
-              PSE {
+              Experienced {
                 id
                 duration
                 price
@@ -750,13 +725,13 @@ export const buildDynamicQuery = (minRate, maxRate) => {
                 price
                 additionalInfo
               }
-              GFE {
+              Specialized {
                 id
                 duration
                 price
                 additionalInfo
               }
-              PSE {
+              Experienced {
                 id
                 duration
                 price

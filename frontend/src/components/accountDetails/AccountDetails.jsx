@@ -25,7 +25,7 @@ export default function AccountDetails({
   const MANAGER_PROFILE_DETAILS_TABS = [
     {
       id: 0,
-      label: 'My escorts',
+      label: 'My providers',
       icon: null
     },
     {

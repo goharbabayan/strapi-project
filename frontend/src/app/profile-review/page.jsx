@@ -70,17 +70,17 @@ export default function ProfileReview() {
     if (requestType === 'data_change') {
       setRequestInfo({
         type: 'dataChange',
-        title: `The escort's profile has been updated and requires your review.`,
+        title: `The provider's profile has been updated and requires your review.`,
       });
     } else if (requestType === 'verification_upgrade') {
       setRequestInfo({
         type: 'verificationUpgrade',
-        title: 'The escort has requested for verification status level upgrade.',
+        title: 'The provider has requested for verification status level upgrade.',
       });
     } else if (requestType === 'get_verification') {
       setRequestInfo({
         type: 'verification',
-        title: 'Escort has submitted a request for profile verification ',
+        title: 'Provider has submitted a request for profile verification ',
       });
     };
   }, [])
@@ -170,7 +170,7 @@ export default function ProfileReview() {
       });
   };
 
-const {coverPhoto, profilePicture, managerEscortEmail,managerID, email, name, lastName, phoneNumber, instagramLink, onlyFansLink, websiteLink, verificationStatus, photos, aboutMe, glam, closet, extras, username, schedule, additionalInfo, selfies, reviews, availableNow, digitalService, incall, outcall, services} = user || {};
+const {coverPhoto, profilePicture, managerProviderEmail,managerID, email, name, lastName, phoneNumber, instagramLink, onlyFansLink, websiteLink, verificationStatus, photos, aboutMe, experience, qualifications, username, schedule, additionalInfo, selfies, reviews, availableNow, digitalService, incall, outcall, services} = user || {};
 
   return (
     <>
@@ -247,7 +247,7 @@ const {coverPhoto, profilePicture, managerEscortEmail,managerID, email, name, la
                 }}
                 profileProviderPersonalInfo={USER_PROFILE_DATA(user)}
                 providerContactInfo={{
-                  email: managerID ? managerEscortEmail : email,
+                  email: managerID ? managerProviderEmail : email,
                   phone: phoneNumber
                 }}
                 provierSocialLinks={{
@@ -275,9 +275,8 @@ const {coverPhoto, profilePicture, managerEscortEmail,managerID, email, name, la
               {activeTabId === 1 &&
                 <ProfileAboutMe
                   aboutMeDescription={aboutMe}
-                  providerGlam={glam}
-                  providerCloset={closet}
-                  providerExtraOptions={extras}
+                  providerExperience={experience}
+                  providerQualifications={qualifications}
                 />
               }
               {activeTabId === 2 &&

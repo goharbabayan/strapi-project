@@ -8,7 +8,6 @@ import {
   HAIR_COLOR_OPTIONS,
   PLACE_OF_SERVICE_OPTIONS,
   BODY_TYPE_OPTIONS,
-  BUST_OPTIONS,
   GENDER_OPTIONS,
 } from '@/app/utils/constants/userPhisicalDetails';
 import Text from '../text/Text';
@@ -29,7 +28,7 @@ export default function PersonalDetails ({
       <div className={styles.fullName}>
         {showUsername &&
           <InputField
-            label='Escort username'
+            label='Provider username'
             type='text'
             name='username'
             id='username'
@@ -136,21 +135,6 @@ export default function PersonalDetails ({
           errorMessage={errorMessage}
         />
         <InputField
-          label='Bust'
-          labelClassName={'selectOptionLabel'}
-          selectClassName={'select'}
-          fieldClassName={'selectOptionsWrapper'}
-          type='select'
-          name='bust'
-          id='bust'
-          value={formData.bust ? formData.bust : ''}
-          onChange={onChange}
-          onMouseDown={onMouseDown}
-          isRequired={true}
-          options={BUST_OPTIONS}
-          errorMessage={errorMessage}
-        />
-        <InputField
           label='Place of service'
           labelClassName={'selectOptionLabel'}
           selectClassName={'select'}
@@ -178,32 +162,6 @@ export default function PersonalDetails ({
           onMouseDown={onMouseDown}
           isRequired={true}
           options={HEIGHT_OPTIONS}
-          errorMessage={errorMessage}
-        />
-        <InputField
-          label='Dress size'
-          type='number'
-          name='dressSize'
-          id='dressSize'
-          value={formData.dressSize ? formData.dressSize : ''}
-          onChange={onChange}
-          isRequired={true}
-          min={1}
-          errorMessage={errorMessage}
-        />
-        <InputField
-          label='Body type'
-          labelClassName={'selectOptionLabel'}
-          selectClassName={'select'}
-          fieldClassName={'selectOptionsWrapper'}
-          type='select'
-          name='bodyType'
-          id='bodyType'
-          value={formData.bodyType ? formData.bodyType : ''}
-          onChange={onChange}
-          onMouseDown={onMouseDown}
-          isRequired={false}
-          options={BODY_TYPE_OPTIONS}
           errorMessage={errorMessage}
         />
       </div>

@@ -71,7 +71,7 @@ export default function Provider () {
             profileDigitalService={providerData?.digitalService}
             profileProviderPersonalInfo={USER_PROFILE_DATA(providerData)}
             providerContactInfo={{
-              email: (providerData?.managerID && providerData?.managerID !== '') ? providerData?.managerEscortEmail : providerData?.email,
+              email: (providerData?.managerID && providerData?.managerID !== '') ? providerData?.managerProviderEmail : providerData?.email,
               phone: providerData?.phoneNumber
             }}
             provierSocialLinks={{
@@ -98,9 +98,8 @@ export default function Provider () {
           {activeTabId === 1 &&
             <ProfileAboutMe
               aboutMeDescription={providerData?.aboutMe}
-              providerGlam={providerData?.glam}
-              providerCloset={providerData?.closet}
-              providerExtraOptions={providerData?.extras}
+              providerExperience={providerData?.experience}
+              providerQualififcations={providerData?.qualifications}
             />
           }
           {activeTabId === 2 &&

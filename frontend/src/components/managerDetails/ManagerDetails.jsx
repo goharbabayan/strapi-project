@@ -1,22 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './managerDetails.module.css';
-import AccountDetails from '../accountDetails/AccountDetails';
 import { MANAGER } from '@/app/utils/constants/userRoles';
-import ProfileDetailsTabs from '../profileDetails/profileDetailsTabs/ProfileDetailsTabs';
-import ClientProfile from '../clientProfile/ClientProfile';
 import ResetPassword from '../resetPassword/ResetPassword';
-import Escorts from '../escorts/Escorts';
-import Button from '../button/Button';
 import ProfileInfoEditForm from '../profileEditForm/ProfileEditForm';
-
 import { useFetchData } from '@/app/utils/hooks/useFetch';
-import { checkIsAdminApprovalField, fetchUserRatesAndServices, getVerificationStatus, inputValidation, isInputLengthValid, transformUserWithPendingOverrides } from '@/app/utils/helpers';
+import { fetchUserRatesAndServices, getVerificationStatus, inputValidation, isInputLengthValid, transformUserWithPendingOverrides } from '@/app/utils/helpers';
 import ServiceProviderDetails from '../serviceProviderDetails/ServiceProviderDetails';
 import InfoIcon from '../icons/Info';
 import Popup from '../popup/Popup';
 import Text from '../text/Text';
 import PlusIcon from '../icons/plusIcon';
 import ManagerProfile from '../managerProfile/ManagerProfile';
+import Members from '../managerMembers/Members';
 
 export default function ManagerDetails ({
   userData,
@@ -24,19 +19,19 @@ export default function ManagerDetails ({
   setShowVerificationPopup,
   contentToDisplay,
   setContentToDisplay,
-  newEscort,
+  newProvider,
   manager,
   token,
   matchUserAndOriginalUserData,
   updateUser,
   updateUserPendingOvverridesAndSubmitUserData,
-  updateManagerNewEscort,
-  updateManagerNewEscortLocationData,
+  updateManagerNewProvider,
+  updateManagerNewProviderLocationData,
   updateUserPendingOverrides,
   discardUserPendingOverrides,
   confirmAdminApprovalFieldsChanges,
   discardChanges,
-  submitManagerEscortData,
+  submitManagerProviderData,
   isVerified,
   approvalFieldsInfo,
   unsavedChanges,
@@ -49,7 +44,7 @@ export default function ManagerDetails ({
   userWithPendingOverrides,
   setManagerPersonalProfileChange,
   submitManagerPersonalProfileData,
-  resetNewEscortData,
+  resetNewProviderData,
   updateServicesTypeChange,
  }) {
   const {username, name, lastName, email, password, id} = manager;
@@ -65,20 +60,20 @@ export default function ManagerDetails ({
       show: false,
       title: '',
     });
-    updateManagerNewEscort(field, value);
+    updateManagerNewProvider(field, value);
   };
 
   const onSaveButtonClick = async () => {
-    const validationInfo = inputValidation('Username', newEscort.username, 3, false);
-    if (!newEscort.username || !validationInfo.isValid) {
+    const validationInfo = inputValidation('Username', newProvider.username, 3, false);
+    if (!newProvider.username || !validationInfo.isValid) {
       setErrors({'username': validationInfo.errorMessage});
       return;
     };
 
-    await createNewEscort(newEscort);
+    await createNewProvider(newProvider);
   };
 
-  const createNewEscort = async (formData) => {
+  const createNewProvider = async (formData) => {
     await useFetchData(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/local/registerMember`, {
       method: 'POST',
       headers: {
@@ -96,11 +91,11 @@ export default function ManagerDetails ({
           });
         } else if (user) {
           // show success message for creating user
-          // redirect to My escorts page
+          // redirect to My providers page
           setPopup({
             ...popup,
             show: true,
-            title: 'Escort successfully created!'
+            title: 'Provider successfully created!'
           });
 
           setTimeout(() => {
@@ -113,7 +108,7 @@ export default function ManagerDetails ({
           }, 3000);
         }
       })
-      resetNewEscortData();
+      resetNewProviderData();
   };
 
   const handleVisitProfileButtonClick = async (username) => {
@@ -127,29 +122,29 @@ export default function ManagerDetails ({
           setErrors(error)
         } else {
           if (res && Array.isArray(res)) {
-            const { id, blocked, createdAt, updatedAt, confirmed, role, ...escortData } = res[0];
+            const { id, blocked, createdAt, updatedAt, confirmed, role, ...ProviderData } = res[0];
             setUserData({
               ...userData,
               user: {
-                ...escortData,
+                ...ProviderData,
                 ...userRatesAndServicesData,
               },
               userId: id,
               originalUser: {
-                ...escortData,
+                ...ProviderData,
                 ...userRatesAndServicesData,
               },
               userWithPendingOverrides: transformUserWithPendingOverrides({
-                ...escortData,
+                ...ProviderData,
                 ...userRatesAndServicesData,
-              }, escortData?.pendingData),
-              userVerificationStatus: getVerificationStatus(escortData.verificationStatus),
+              }, ProviderData?.pendingData),
+              userVerificationStatus: getVerificationStatus(ProviderData.verificationStatus),
             })
           }
         }
       });
 
-    setContentToDisplay('edit_escort');
+    setContentToDisplay('edit_Provider');
   };
 
   const handleClosePopup = () => {
@@ -169,46 +164,46 @@ export default function ManagerDetails ({
                 <Text
                   tag={'h2'}
                   className={styles.title}
-                  children={'My escorts'}
+                  children={'My providers'}
                 />
                 <PlusIcon
                   className={styles.iconPlus}
-                  text={'Add Escort'}
+                  text={'Add Provider'}
                   textClassName={styles.buttonText}
                   fill={`var(--neutral-white-n10)`}
-                  onClick={() => setContentToDisplay('create_new_escort')}
+                  onClick={() => setContentToDisplay('create_new_Provider')}
                 />
               </div>
-              <Escorts
+              <Members
                 managerId={userData?.managerId}
                 userData={userData}
                 setUserData={setUserData}
                 setErrors={setErrors}
-                submitManagerEscortData={submitManagerEscortData}
+                submitManagerProviderData={submitManagerProviderData}
                 onVisitProfileButtonClick={handleVisitProfileButtonClick}
               />
             </div>
           </section>
         </div>
       }
-      {contentToDisplay === 'create_new_escort' &&
+      {contentToDisplay === 'create_new_Provider' &&
         <>
           <ProfileInfoEditForm
-            user={newEscort}
+            user={newProvider}
             onChange={(e) => handleChange(e.target.name, e.target.value)}
             onMouseDown={handleChange}
             onCancelButtonClick={() => setContentToDisplay('account')}
             onSaveButtonClick={onSaveButtonClick}
-            updateManagerNewEscortLocationData={updateManagerNewEscortLocationData}
-            pageTitle={'Create escort profile'}
+            updateManagerNewProviderLocationData={updateManagerNewProviderLocationData}
+            pageTitle={'Create provider profile'}
             role={role}
             showUsername={true}
-            isCreatingNewEscort={true}
+            isCreatingNewProvider={true}
             errors={errors}
           />
         </>
       }
-      {(contentToDisplay === 'edit_escort' || contentToDisplay === 'profile_info') &&
+      {(contentToDisplay === 'edit_Provider' || contentToDisplay === 'profile_info') &&
         <>
           <ServiceProviderDetails
             activeTab={contentToDisplay}
@@ -220,7 +215,7 @@ export default function ManagerDetails ({
             hideTabs={true}
             updateUser={updateUser}
             matchUserAndOriginalUserData={matchUserAndOriginalUserData}
-            submitData={submitManagerEscortData}
+            submitData={submitManagerProviderData}
             updateUserPendingOvverridesAndSubmitUserData={updateUserPendingOvverridesAndSubmitUserData}
             updateUserPendingOverrides={updateUserPendingOverrides}
             discardUserPendingOverrides={discardUserPendingOverrides}
@@ -229,7 +224,7 @@ export default function ManagerDetails ({
             isVerified={isVerified}
             role={role}
             userId={userId}
-            isForManagerEscort={true}
+            isForManagerProvider={true}
             approvalFieldsInfo={approvalFieldsInfo}
             unsavedChanges={unsavedChanges}
             updateServicesTypeChange={updateServicesTypeChange}

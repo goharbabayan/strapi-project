@@ -17,24 +17,12 @@ export const USER_PROFILE_DATA = (userData) => {
       data: userData?.hairColor,
     },
     {
-      label: 'Bust size',
-      data: userData?.bust,
-    },
-    {
       label: 'Place of service',
       data: userData?.placeOfService
     },
     {
       label: 'Height',
       data: userData?.height
-    },
-    {
-      label: 'Dress size',
-      data: userData?.dressSize
-    },
-    {
-      label: 'Body type',
-      data: userData?.bodyType
     },
     {
       label: 'Gender',
