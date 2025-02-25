@@ -292,10 +292,10 @@ export function getVerificationBadgeText (verificationStatus) {
   const {hasBronzeBadge, hasSilverBadge, hasGoldBadge} = verificationStatus;
 
   if (hasGoldBadge) {
-    return 'SNEAKY photoshoot verified';
+    return 'Super tutor';
   } else if (hasSilverBadge) {
-    return 'Video verified';
-  } else if (hasBronzeBadge) return 'Photos verified';
+    return 'Certified tutor';
+  } else if (hasBronzeBadge) return 'Verified tutor';
 };
 
 export const getVerificationStatus = (verificationStatus) => {
@@ -664,6 +664,7 @@ export const buildDynamicQuery = (minRate, maxRate) => {
             }
             availableNow
             digitalService
+            city
             suburbs {
               name
             }

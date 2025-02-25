@@ -42,12 +42,12 @@ export const MANAGER_PROFILE_DETAILS_TABS = [
   },
   {
     id: 'profile',
-    label: 'Manager Profile',
+    label: 'My Profile',
     icon: null,
   },
   {
     id: 'settings',
-    label: 'Manager Settings',
+    label: 'My Settings',
     icon: null
   },
 ];

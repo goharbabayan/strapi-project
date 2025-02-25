@@ -1,13 +1,26 @@
 import { calculateImageAspectRatio } from '@/app/utils/helpers';
 import styles from './image.module.css';
 
-export default function Image({src, alt, width, height, link, className, providerCartAspectRatio, isLocationPage, showVerificationBadge, VerificationIcon, verificationBadgeText}) {
+export default function Image({
+  src,
+  alt,
+  width,
+  height,
+  ratioPercent,
+  link,
+  className,
+  providerCartAspectRatio,
+  isLocationPage,
+  showVerificationBadge,
+  VerificationIcon,
+  verificationBadgeText
+}) {
 
   const imageAspectRatio = providerCartAspectRatio ? providerCartAspectRatio : calculateImageAspectRatio(width, height);
   return (
     <>
     {link ? (
-      <a style={{ '--ratio-percent': `${1 / imageAspectRatio * 100}%` }} href={link || ''} className={`${styles.link} ${className ? styles[className] : ''} ${isLocationPage ? styles.locationPageImage : ''}`}>
+      <a style={{ '--ratio-percent': `${ratioPercent || (1 / imageAspectRatio * 100)}%` }} href={link || ''} className={`${styles.link} ${className ? styles[className] : ''} ${isLocationPage ? styles.locationPageImage : ''}`}>
         <img
           src={src}
           alt={alt}
@@ -22,7 +35,7 @@ export default function Image({src, alt, width, height, link, className, provide
         }
       </a>
     ) : (
-      <div style={{ '--ratio-percent': `${1 / imageAspectRatio * 100}%` }} className={`${styles.link} ${className ? styles[className] : ''} ${isLocationPage ? styles.locationPageImage : ''}`}>
+      <div style={{ '--ratio-percent': `${ratioPercent || (1 / imageAspectRatio * 100)}%` }} className={`${styles.link} ${className ? styles[className] : ''} ${isLocationPage ? styles.locationPageImage : ''}`}>
         <img
           src={src}
           alt={alt}

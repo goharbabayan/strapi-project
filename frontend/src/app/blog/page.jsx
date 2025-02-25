@@ -68,6 +68,7 @@ const Blog = () => {
       <Banner
         desktopImage={blogQueryData.data.blog.data.attributes.Image_for_desktop?.data?.attributes}
         mobileImage={blogQueryData.data.blog.data.attributes.Image_for_mobile?.data?.attributes}
+        ratioPercent={65}
         text={blogQueryData.data.blog.data.attributes.blog_title}
         showOverlay={true}
         shouldBeCentered={true}

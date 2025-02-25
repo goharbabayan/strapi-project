@@ -1,0 +1,65 @@
+.banner {
+  position: relative;
+  min-height: 331px;
+}
+
+.banner.empty {
+  height: 331px;
+  width: 100%;
+  background-color: var(--neutral-n100);
+}
+
+.results {
+  margin-block: 32px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 22px;
+  row-gap: 24px;
+}
+
+.noResults {
+  margin-block: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  row-gap: 16px;
+  max-width: 652px;
+}
+
+.banner .locationPageFilter {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: none;
+}
+
+.button {
+  flex-grow: 1;
+  flex-basis: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+@media screen and (max-width: 849px) {
+  .banner.empty {
+    height: 355px;
+  }
+
+  .banner {
+    min-height: 355px;
+  }
+}
+
+@media screen and (max-width: 590px) {
+  .banner.empty {
+    height: 520px;
+  }
+
+  .banner {
+    min-height: 520px;
+  }
+}

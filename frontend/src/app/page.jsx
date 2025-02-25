@@ -80,6 +80,7 @@ export default function HomePage() {
             bannerLink={bannerLink}
             desktopImage={desktopImage}
             mobileImage={mobileImage}
+            ratioPercent={35}
             text={text}
             button={button}
           />

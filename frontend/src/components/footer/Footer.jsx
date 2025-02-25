@@ -15,7 +15,6 @@ export default function Footer() {
   const [navigationItems, setNavigationItems] = useState([]);
   const {loading, error, data} = useQuery(GET_FOOTER_QUERIES);
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
-console.log('data', data);
 
   useEffect(() => {
     data !== undefined && setLogo(data?.footer?.data?.attributes?.logo?.data?.attributes);

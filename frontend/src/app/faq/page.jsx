@@ -38,6 +38,7 @@ export default function FaqPage() {
       }
       {bannerData &&
         <Banner
+          ratioPercent={35}
           desktopImage={bannerData?.desktopImage}
           mobileImage={bannerData?.mobileImage}
           showOverlay={true}

@@ -82,7 +82,7 @@ export default function ServiceProviderDetails ({
     },
     {
       id: 3,
-      label: 'When can we study',
+      label: 'Schedule',
       name: 'schedule',
       icon: WhenCanWeMeetIcon
     },

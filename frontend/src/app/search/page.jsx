@@ -130,6 +130,7 @@ export default function Search() {
           <section className={`${styles.banner} ${!desktopImage?.url ? styles.empty : ''}`}>
             {desktopImage && desktopImage?.url &&
               <Banner
+                ratioPercent={35}
                 mobileImage={mobileImage}
                 desktopImage={desktopImage}
               />

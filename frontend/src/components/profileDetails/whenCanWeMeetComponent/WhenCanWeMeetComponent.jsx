@@ -92,7 +92,7 @@ export default function WhenCanWeMeetComponent({
       <div className={`${(showEditButton || hideSubscribeNow) ? styles.whenCanWeMeetContainerDashboardPage : styles.whenCanWeMeetContainer}`}>
         <div className={styles.scheduleContainer}>
           <ProviderInterests
-            componentTitle={'When can we study?'}
+            componentTitle={'Schedule'}
             data={myAdditionalInfo}
             schedule={schedule}
             isScheduleData={true}

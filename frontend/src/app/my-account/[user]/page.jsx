@@ -145,7 +145,7 @@ export default function MyAccountPage() {
     : [
         {
           title: 'Bronze Badge',
-          text: `Verify your identity with ease! Upload a clear, high-quality photo of yourself that meets our guidelines to secure the Bronze Badge and enhance your profile's trustworthiness.`,
+          text: `Get verified: Submit your Bronze badge today.`,
           Icon: <BronzeBadge/>,
           isVerifiedLevel: ['bronze', 'silver', 'golden'].includes(userData?.userVerificationStatus?.verifiedLevel),
           showButtons: !userData?.userVerificationStatus?.verifiedLevel,
@@ -692,7 +692,7 @@ export default function MyAccountPage() {
                         content={
                           {
                             Icon: badgeIcon,
-                            text: 'Boost your profile with verification badges! Get Bronze with a photo, Silver with a video, or go Golden with a photobooth shoot. Get verified now and stand out!',
+                            text: 'Boost your profile with verification badges! Get Bronze to get verified, Silver with a video, or go Golden with a photobooth shoot. Get verified now and stand out!',
                             buttons : [
                               {
                                 type: 'button',

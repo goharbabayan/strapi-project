@@ -3,7 +3,18 @@ import Button from '../button/Button';
 import Image from '../image/Image';
 import Text from '../text/Text';
 
-const Banner = ({bannerLink, desktopImage, mobileImage, text, infoWrapperClassName, button, showOverlay, isLocationPage, shouldBeCentered}) => {
+const Banner = ({
+  ratioPercent,
+  bannerLink,
+  desktopImage,
+  mobileImage,
+  text,
+  infoWrapperClassName,
+  button,
+  showOverlay,
+  isLocationPage,
+  shouldBeCentered
+}) => {
   const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
 
   return (
@@ -21,6 +32,7 @@ const Banner = ({bannerLink, desktopImage, mobileImage, text, infoWrapperClassNa
               width={desktopImage.width}
               className={'desktop'}
               isLocationPage={isLocationPage}
+              ratioPercent={ratioPercent}
               {...(bannerLink && { link: bannerLink })}
             />
           }
@@ -32,6 +44,7 @@ const Banner = ({bannerLink, desktopImage, mobileImage, text, infoWrapperClassNa
               width={mobileImage.width}
               className={'mobile'}
               isLocationPage={isLocationPage}
+              ratioPercent={ratioPercent}
               {...(bannerLink && { link: bannerLink })}
             />
           : desktopImage && desktopImage.url &&
@@ -42,6 +55,7 @@ const Banner = ({bannerLink, desktopImage, mobileImage, text, infoWrapperClassNa
               width={desktopImage.width}
               className={'mobile'}
               isLocationPage={isLocationPage}
+              ratioPercent={ratioPercent}
               {...(bannerLink && { link: bannerLink })}
             />
           }
